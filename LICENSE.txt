@@ -14,7 +14,7 @@ Software: Undebate
 
 License: MIT
 
-Licensor: EnCiv, Inc (a 501c3 Non Profit)
+Licensor: EnCiv, Inc (a 501c3 Nonprofit)
 
 Copyright 2019 EnCiv, Inc
 
