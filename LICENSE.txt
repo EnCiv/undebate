@@ -1,0 +1,25 @@
+Public Good License Condition v1.0
+
+The Software is provided to you by the Licensor under the License, as defined below, subject to the following additional conditions.
+
+Notwithstanding any reference in the License granting permission to “sell copies of the Software,” but without otherwise limiting other terms in the License, the grant of rights under the License will not include, and the License does not grant to you any rights to sell, provide, or otherwise transfer the Software or any product or service whose value derives, entirely or substantially, from the functionality of the Software to—
+
+(i) third parties for a fee or other consideration (including without limitation fees for hosting or consulting/ support services related to the Software); or
+
+(ii) any third party that is not either a natural person, an entity incorporated in the United States that has qualified for an exemption from federal income tax liability under Section 501(c)(3) of the United States Tax Code, or, in the case of entities incorporated or organized in jurisdictions outside the United States, an entity that would meet the qualifications for such exemption if it were incorporated or organized in the United States.
+
+Any license notice or attribution required by the License must also include this License Condition notice.
+
+Software: Undebate
+
+License: MIT
+
+Licensor: EnCiv, Inc (a 501c3 Non Profit)
+
+Copyright 2019 EnCiv, Inc
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
