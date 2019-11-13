@@ -2,6 +2,8 @@
 Not debates, but a place where voters can get to know their candidates and candidates can connect to voters
 
 ![November 5, 2019 San Francisco Districe Attorney Race](https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,w_360/v1573682312/2019Nov5_San_Francisco_Districe_Attorney_rtexr1.png)
+
+
 See our MVP/demo of the November, 5, 2019 San Francisco District Attorney race at: https://undebate.herokuapp.com/san-francisco-district-attorney
 
 
@@ -22,10 +24,12 @@ https://code.visualstudio.com/
 
 go to your github account and login
 
-open a git-bash shell - on VSC use Control-`
-Control-Shift-P
-in the input field type "Select Default Shell"
+If you have just installed VSC you need to setup the bash shell. Use Control-Shift-P
+in the input field type "Select Default Shell" 
 Choose "Git Bash"
+
+Then open a git-bash shell - on VSC use Control-\`
+
 
     mkdir enciv
     cd enciv
@@ -37,7 +41,7 @@ Note - if you are using multiple accounts with heroku, make sure that on your br
 
 This is where we add the MongoDB database.  You will be able to use this one database when you are running locally, and when you are running in the cloud.
 
-    heroku create undebate-<something unique>
+    heroku create undebate-\<something unique\>
     heroku addons:create mongolab:sandbox
 
 This is where we get the environment variable with the URI for that database and store it in your bash configuration file so you can use it when you run locally.  This string has a password in it and it should never be shared or commited to a repo.  The .gitignore file ignores .bashrc so it won't get pushed into a repo - just make sure it stays that way.
@@ -73,9 +77,9 @@ To run this in the cloud:
 
     git push heroku HEAD:master
 
-Then you will be able to browse to https://undebate-<something unique>.herokuapp.com/schoolboard-conversation and see the same thing.
+Then you will be able to browse to https://undebate-\<something unique\>.herokuapp.com/schoolboard-conversation and see the same thing.
 
-Then, to record your own part in the schoolboard conversation browser to: localhost:3011/schoolboard-conversation-candidate-recorder or https://undebate-<something unique>.herokuapp.com/schoolboard-conversation-candidate-recorder
+Then, to record your own part in the schoolboard conversation browser to: localhost:3011/schoolboard-conversation-candidate-recorder or https://undebate-\<something unique\>.herokuapp.com/schoolboard-conversation-candidate-recorder
 
 
 # EMAIL Setup
