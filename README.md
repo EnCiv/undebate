@@ -1,8 +1,7 @@
 # undebate
 Not debates, but a place where voters can get to know their candidates and candidates can connect to voters
 
-![November 5, 2019 San Francisco Districe Attorney Race](https://octodex.github.com/images/yaktocat.png)
-https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,w_360/v1573682312/2019Nov5_San_Francisco_Districe_Attorney_rtexr1.png
+![November 5, 2019 San Francisco Districe Attorney Race](https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,w_360/v1573682312/2019Nov5_San_Francisco_Districe_Attorney_rtexr1.png)
 See our MVP/demo of the November, 5, 2019 San Francisco District Attorney race at: https://undebate.herokuapp.com/san-francisco-district-attorney
 
 
