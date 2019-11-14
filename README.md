@@ -7,10 +7,10 @@ See our MVP/demo of the November, 5, 2019 San Francisco District Attorney race a
 
 **Copyright 2019 EnCiv, Inc.** This work is licensed under the terms described in [LICENSE.txt](https://github.com/EnCiv/undebate/blob/master/LICENSE.txt) which an MIT license with a Public Good License Condition
 
-#Getting started
+# Getting started
 You will need a github.com account, and a heroku.com account.  Heroku is like a server in the cloud that you can push git repo's to, and after you push, heroku will build and run them. It's also great because they give you free accounts that you can use for development.
 
-##Install
+## Install
 You will need to install the following, if you do not already have them.
 1. Git: On windows go to https://git-scm.com/download/win and install it. If you are on a Mac, install brew first, https://brew.sh/ and then `brew install git`
 2. Node.js: https://nodejs.org/en/download/
@@ -18,7 +18,7 @@ You will need to install the following, if you do not already have them.
 4. I use visual studio code, but you can use another environment, but you will need to be able to run git-bash terminal windows in your environment.
 https://code.visualstudio.com/
 
-##Setup
+## Setup
 On your browser go to your github account and login 
 
 If you have just installed VSC you need to setup the bash shell. Use Control-Shift-P
@@ -35,11 +35,11 @@ Then open a git-bash shell - on VSC use Control-\`
 
 Note - if you are using multiple accounts with heroku, make sure that on your browser you are logged into the account that you want to use.
 
-Create an 'app' on heroku to run this application.  The app needs to have a unique name so add something unique after undebate.
+Heroku calls them 'apps' but think of it as a server instance in the cloud with a URL, the name you give it is part of the url. Create create one:
 
     heroku create undebate-something-unique
 
-This is where we add the MongoDB database.  You will be able to use this one database when you are running locally, and when you are running in the cloud. 
+The we add the MongoDB database. It's also in cloud. You will be able to use this one database when you are running locally, and when you are running in the cloud. 
 
     heroku addons:create mongolab:sandbox
 
@@ -47,7 +47,7 @@ Now lets get the environment variable with the URI for that database and store i
 
     echo "export MONGODB_URI="\"`heroku config:get MONGODB_URI`\" >> .bashrc
 
-Now we will add Cloudinary - a content delivery network that had image and video manipulation features.  A CDN give you a place to store these things, and deliver them quickly over the internet.   Your node server would be slower.
+Now we will add Cloudinary - a Content Delivery Network that has image and video manipulation features.  A CDN gives you a place to store these things, and deliver them quickly over the internet.   Your node server would be slower, and doesn't keep the files after the server restarts.
 
     heroku addons:create cloudinary:starter
 
@@ -68,7 +68,7 @@ Now you should be able to run it.
 
     npm run dev
 
-You should no be able to browser to localhost:3011/schoolboard-conversation and see an undebate.  This is running locally on our machine.  It's using webpack, which is really neat bacuase when you save changes to the source code, it will automatically be compliled and applied to the server and to the application in your browser.   You may still have to refresh your browser page though
+You should now be able to browser to localhost:3011/schoolboard-conversation and see an undebate.  The server is running locally on our machine.  It's using webpack, which is really neat bacuase when you save changes to the source code, it will automatically be compliled and applied to the server and to the application in your browser.   You may still have to refresh your browser page though.
 
 You can use <Control>C to terminate the server
 
@@ -76,9 +76,9 @@ To run this in the cloud on heroku:
 
     git push heroku HEAD:master
 
-Then you will be able to browse to https://undebate-something-unique.herokuapp.com/schoolboard-conversation and see the same thing.
+Then you will be able to browse to `https://undebate-something-unique.herokuapp.com/schoolboard-conversation` and see the same thing.
 
-Then, to record your own part in the schoolboard conversation browser to: localhost:3011/schoolboard-conversation-candidate-recorder or https://undebate-something-unique.herokuapp.com/schoolboard-conversation-candidate-recorder
+Then, to record your own part in the schoolboard conversation browser to: localhost:3011/schoolboard-conversation-candidate-recorder or `https://undebate-something-unique.herokuapp.com/schoolboard-conversation-candidate-recorder`
 
 # EMAIL Setup
 Setting up email from the server is not required, and is kind of hard. For information on how to do it for g-suite see https://medium.com/@imre_7961/nodemailer-with-g-suite-oauth2-4c86049f778a
