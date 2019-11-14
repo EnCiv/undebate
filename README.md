@@ -1,7 +1,7 @@
 # undebate
 Not debates, but a place where voters can get to know their candidates and candidates can connect to voters
 
-![November 5, 2019 San Francisco Districe Attorney Race](https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,w_360/v1573682312/2019Nov5_San_Francisco_Districe_Attorney_rtexr1.png)
+![November 5, 2019 San Francisco District Attorney Race](https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,w_360/v1573682312/2019Nov5_San_Francisco_Districe_Attorney_rtexr1.png)
 
 See our MVP/demo of the November, 5, 2019 San Francisco District Attorney race at: https://undebate.herokuapp.com/san-francisco-district-attorney
 
@@ -39,11 +39,11 @@ Heroku calls them 'apps' but think of it as a server instance in the cloud with 
 
     heroku create undebate-something-unique
 
-The we add the MongoDB database. It's also in cloud. You will be able to use this one database when you are running locally, and when you are running in the cloud. 
+Then we add the MongoDB database. It's also in cloud. You will be able to use this one database when you are running locally, and when you are running in the cloud. 
 
     heroku addons:create mongolab:sandbox
 
-Now lets get the environment variable with the URI for that database and store it in your bash configuration file so you can use it when you run locally.  This string has a password in it and it should never be shared or commited to a repo.  The .gitignore file ignores .bashrc so it won't get pushed into a repo - just make sure it stays that way.
+Now lets get the environment variable with the URI for that database and store it in your bash configuration file so you can use it when you run locally.  This string has a password in it and it should never be shared or commited to a repo.  The .gitignore file ignores .bashrc so it won't get added into a repo - just make sure it stays that way.
 
     echo "export MONGODB_URI="\"`heroku config:get MONGODB_URI`\" >> .bashrc
 
@@ -70,7 +70,7 @@ Now you should be able to run it.
 
 You should now be able to browser to localhost:3011/schoolboard-conversation and see an undebate.  The server is running locally on our machine.  It's using webpack, which is really neat bacuase when you save changes to the source code, it will automatically be compliled and applied to the server and to the application in your browser.   You may still have to refresh your browser page though.
 
-You can use <Control>C to terminate the server
+You can use Control-C to terminate the server
 
 To run this in the cloud on heroku:
 
@@ -80,7 +80,7 @@ Then you will be able to browse to `https://undebate-something-unique.herokuapp.
 
 Then, to record your own part in the schoolboard conversation browser to: localhost:3011/schoolboard-conversation-candidate-recorder or `https://undebate-something-unique.herokuapp.com/schoolboard-conversation-candidate-recorder`
 
-# EMAIL Setup
+## EMAIL Setup
 Setting up email from the server is not required, and is kind of hard. For information on how to do it for g-suite see https://medium.com/@imre_7961/nodemailer-with-g-suite-oauth2-4c86049f778a
 If you do, edit the .bashrc file and add these lines
 
@@ -98,7 +98,7 @@ If you use Zoho, you can do it like this.
 If you use some other service, or 'things change' as they always do, go to app/server/util/send-mail.js and address them, but don't break the above configurations
 After you make changes to the .bashrc file you will need to heroku config:set them to get them to heroku
 
-# Database
+## Database
 There is a tool that lets you view and edit the database in a browser window.  This has been really useful in development. To get there:
 1. Browse to heroku and login to your account.
 2. In the list find the undebate-something-unique app that you created.
