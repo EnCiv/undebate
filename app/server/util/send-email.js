@@ -45,7 +45,9 @@ async function start(){
 		console.error(err)
 	}
 }
-start();
+
+if(process.env.NODEMAILER_SERVICE)
+	start();
 
 
 function sendEmail(options = {}) {
