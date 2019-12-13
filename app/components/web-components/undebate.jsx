@@ -961,7 +961,7 @@ class RASPUndebate extends React.Component {
                     introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
 
 
-                    
+                     
                     seatStyle.nextUp.top= speakingWidthRatio * HDRatio * width - (nextUpWidthRatio * HDRatio * width ) - verticalSeatSpace;
                     seatStyle.nextUp.width=nextUpWidthRatio*100+'vw';
                     seatStyle.nextUp.left= (seatStyle.speaking.left-nextUpWidthRatio * width)/2; // depends on width
@@ -981,7 +981,7 @@ class RASPUndebate extends React.Component {
                         introSeatStyle['seat'+seat]={left: -(seatWidthRatio * width + horizontalSeatSpace + ShadowBox)}
                         seatTop+=seatVerticalPitch
                         seat++;
-                    }
+                    }   
 
                     seatTop=height - seatWidthRatio * HDRatio * width - verticalSeatSpace;
                     seatLeft+= seatWidthRatio * width + horizontalSeatSpace;
