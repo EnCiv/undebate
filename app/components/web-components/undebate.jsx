@@ -30,6 +30,10 @@ function promiseSleep(time){
 }
 
 const styles = {
+
+    conversationTopic: {
+        textAlign: 'center'
+    },
     'scrollableIframe': {},
     'wrapper': {
         width: "100vw",
@@ -947,16 +951,17 @@ class RASPUndebate extends React.Component {
                 if((width/height) > (1.8)){ // it's very long and short like a note 8
 
                     const speakingWidthRatio= (height * 0.4 / HDRatio / width) ;
-                    const nextUpWidthRatio= speakingWidthRatio * .75;
+                    const nextUpWidthRatio= speakingWidthRatio * .5;
                     const seatWidthRatio= speakingWidthRatio * .5;
                     const verticalSeatSpaceRatio=0.025;
                     const horizontalSeatSpaceRatio=0.025;
+                    const navBarHeightRatio=0.08;
 
                     const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height, 2.5*fontSize);
                     const horizontalSeatSpace=horizontalSeatSpaceRatio * width;
 
                     seatStyle.speaking.left= ((1-speakingWidthRatio) * width)/2; /// centered
-                    seatStyle.speaking.top=TopMargin;
+                    seatStyle.speaking.top=navBarHeightRatio * height;
                     seatStyle.speaking.width= speakingWidthRatio*100+'vw';
                     introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
 
@@ -1002,7 +1007,7 @@ class RASPUndebate extends React.Component {
                     seatStyle.finishUp.top=  0.5*height;
                     seatStyle.finishUp.width='1vw';
 
-                    agendaStyle.top=speakingWidthRatio * HDRatio * width * 0.10;
+                    agendaStyle.top=navBarHeightRatio * height;  //speakingWidthRatio * HDRatio * width * 0.10;
                     agendaStyle.left=seatStyle.speaking.left + speakingWidthRatio * width + 2 * horizontalSeatSpace; // 2 because it's rotated
                     //agendaStyle.height=speakingWidthRatio * HDRatio * width * 0.8;
 
@@ -2346,6 +2351,7 @@ class RASPUndebate extends React.Component {
 
         var main=()=>!done && (
                 <>
+                    <h3 className={classes['conversationTopic']}>{this.props.subject}</h3>             
                     <div className={classes['outerBox']}>
                         {Object.keys(this.props.participants).map((participant,i)=>videoBox(participant,i,seatStyle))}
                         {agenda(agendaStyle)}
