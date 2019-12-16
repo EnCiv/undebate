@@ -955,13 +955,13 @@ class RASPUndebate extends React.Component {
                     const seatWidthRatio= speakingWidthRatio * .5;
                     const verticalSeatSpaceRatio=0.025;
                     const horizontalSeatSpaceRatio=0.025;
-                    const navBarHeightRatio=0.08;
+                    const navBarHeightRatio=0.1;
 
                     const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height, 2.5*fontSize);
                     const horizontalSeatSpace=horizontalSeatSpaceRatio * width;
 
                     seatStyle.speaking.left= ((1-speakingWidthRatio) * width)/2; /// centered
-                    seatStyle.speaking.top=navBarHeightRatio * height;
+                    seatStyle.speaking.top=navBarHeightRatio * height;  // TopMargin;
                     seatStyle.speaking.width= speakingWidthRatio*100+'vw';
                     introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
 
@@ -976,7 +976,7 @@ class RASPUndebate extends React.Component {
 
                     let seatTop=seatStyle.nextUp.top + nextUpWidthRatio * HDRatio * width  + verticalSeatSpace;
                     let seatVerticalPitch= seatWidthRatio * HDRatio * width + verticalSeatSpace;
-                    let seatLeft=Math.min(seatStyle.nextUp.left, horizontalSeatSpace)
+                    let seatLeft=seatStyle.nextUp.left  //Math.min(seatStyle.nextUp.left, horizontalSeatSpace)
 
                     // down the left side
                     while((seatTop+seatVerticalPitch < height) && (seat<=7) ){
@@ -1018,7 +1018,7 @@ class RASPUndebate extends React.Component {
                     introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
 
                     buttonBarStyle.left=seatStyle.speaking.left; // left align with speaking
-                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width + verticalSeatSpace;  // below speaking
+                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width + verticalSeatSpace + navBarHeightRatio*height;  // below speaking
                     buttonBarStyle.width= seatStyle.speaking.width;
                     buttonBarStyle.height= Math.max(0.05*height, 4*fontSize);
 
@@ -1039,16 +1039,17 @@ class RASPUndebate extends React.Component {
 
                 } else {
                     const speakingWidthRatio=0.5;
-                    const nextUpWidthRatio= 0.20;
+                    const nextUpWidthRatio= 0.15;
                     const seatWidthRatio= 0.15;
                     const verticalSeatSpaceRatio=0.05;
                     const horizontalSeatSpaceRatio=0.0125;
+                    const navBarHeightRatio=0.08;
 
                     const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height,3*fontSize);
                     const horizontalSeatSpace=Math.max(horizontalSeatSpaceRatio * width, fontSize);
 
                     seatStyle.speaking.left= ((2.5 + 20 + 2.5) /100) * width;
-                    seatStyle.speaking.top=TopMargin;
+                    seatStyle.speaking.top=navBarHeightRatio * height;  //TopMargin;
                     seatStyle.speaking.width= speakingWidthRatio * 100 + 'vw';
                     introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
 
@@ -2351,7 +2352,7 @@ class RASPUndebate extends React.Component {
 
         var main=()=>!done && (
                 <>
-                    <h3 className={classes['conversationTopic']}>{this.props.subject}</h3>             
+                    <h2 className={classes['conversationTopic']}>{this.props.subject}</h2>             
                     <div className={classes['outerBox']}>
                         {Object.keys(this.props.participants).map((participant,i)=>videoBox(participant,i,seatStyle))}
                         {agenda(agendaStyle)}
