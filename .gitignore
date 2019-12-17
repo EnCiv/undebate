@@ -73,4 +73,6 @@ assets/js/
 backups/
 
 #private stuff 
-_netrcyarn.lock
+_netrc
+
+yarn.lock
