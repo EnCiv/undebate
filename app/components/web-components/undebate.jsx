@@ -721,7 +721,7 @@ class RASPUndebate extends React.Component {
                 top: `-30vw`
             },
             'nextUp': {
-                left: '-25vw'
+                left: '-20vw'
             },
             'seat2': {
                 left: '-20vw'
@@ -1069,7 +1069,7 @@ class RASPUndebate extends React.Component {
                     seatStyle.speaking.width= speakingWidthRatio * 100 + 'vw';
                     introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
 
-                    seatStyle.nextUp.left=(2.5 /100) * width;
+                    seatStyle.nextUp.left=horizontalSeatSpace; //(2.5 /100) * width;
                     seatStyle.nextUp.top= TopMargin + speakingWidthRatio * HDRatio * width - nextUpWidthRatio * HDRatio * width;
                     seatStyle.nextUp.width= nextUpWidthRatio * 100 + 'vw';
                     introSeatStyle.nextUp={left: -(seatStyle.nextUp.left + nextUpWidthRatio * width + ShadowBox)}
@@ -1141,18 +1141,19 @@ class RASPUndebate extends React.Component {
                 const seatWidthRatio= 0.25;
                 const verticalSeatSpaceRatio=0.05;
                 const horizontalSeatSpaceRatio=0.025;
+                const navBarHeightRatio=0.11;
 
                 const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height,3*fontSize);
                 const horizontalSeatSpace=Math.max(horizontalSeatSpaceRatio * width, fontSize);
 
                 seatStyle.speaking.left= ((1-speakingWidthRatio) * width)/2; /// centered
-                seatStyle.speaking.top=TopMargin;
+                seatStyle.speaking.top=navBarHeightRatio*height;//TopMargin;
                 seatStyle.speaking.width= speakingWidthRatio*100+'vw';
                 introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
 
 
                 seatStyle.nextUp.left= horizontalSeatSpace;
-                seatStyle.nextUp.top= speakingWidthRatio * HDRatio * width + verticalSeatSpace;
+                seatStyle.nextUp.top= speakingWidthRatio * HDRatio * width + verticalSeatSpace + navBarHeightRatio*height;
                 seatStyle.nextUp.width=nextUpWidthRatio*100+'vw';
                 introSeatStyle.nextUp={left: -(nextUpWidthRatio * width + horizontalSeatSpace + ShadowBox)}
 
