@@ -32,6 +32,15 @@ function promiseSleep(time){
 const styles = {
 
     conversationTopic: {
+        fontSize: '150%',
+        fontWeight: 'bold',
+        position: 'absolute',
+        top: 0,
+        'transition': "all 5s ease"
+        
+    },
+    conversationTopicContent:{
+        width: '100vw',
         textAlign: 'center'
     },
     'scrollableIframe': {},
@@ -676,6 +685,10 @@ class RASPUndebate extends React.Component {
             },
         },
 
+        conversationTopic: {
+            top: `${TopMargin}`
+        },
+
         agendaStyle: {
             top: '8vh',
             width: '17.5vw',
@@ -729,6 +742,9 @@ class RASPUndebate extends React.Component {
                 top: '190vw'
             },
             'finishUp': {},
+            conversationTopic: {
+                top: '-32vw'
+            },
             agenda: {
                 top: `calc( -1 * 25vw *  ${HDRatio} -${TopMargin})`,
                 left: '100vw'
@@ -955,7 +971,7 @@ class RASPUndebate extends React.Component {
                     const seatWidthRatio= speakingWidthRatio * .5;
                     const verticalSeatSpaceRatio=0.025;
                     const horizontalSeatSpaceRatio=0.025;
-                    const navBarHeightRatio=0.1;
+                    const navBarHeightRatio=0.11;
 
                     const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height, 2.5*fontSize);
                     const horizontalSeatSpace=horizontalSeatSpaceRatio * width;
@@ -1121,7 +1137,7 @@ class RASPUndebate extends React.Component {
                 }
             } else { // portrait mode
                 const speakingWidthRatio=0.95;
-                const nextUpWidthRatio= 0.30;
+                const nextUpWidthRatio= 0.25;
                 const seatWidthRatio= 0.25;
                 const verticalSeatSpaceRatio=0.05;
                 const horizontalSeatSpaceRatio=0.025;
@@ -2350,9 +2366,18 @@ class RASPUndebate extends React.Component {
                         <button className={classes['hangUpButton']} onClick={this.hangup} key='hangup'>Hang Up</button>
                     </div>)
 
+        const conversationTopic= (topicStyle) => {
+            const style= intro ? topicStyle : Object.assign({},topicStyle,introSeatStyle['conversationTopic']);
+
+            return(
+            <div style={style} className={classes['conversationTopic']}>
+                <p className={classes['conversationTopicContent']}>{this.props.subject}</p>    
+            </div>)
+        }
+
         var main=()=>!done && (
                 <>
-                    <h2 className={classes['conversationTopic']}>{this.props.subject}</h2>             
+                    {conversationTopic()}
                     <div className={classes['outerBox']}>
                         {Object.keys(this.props.participants).map((participant,i)=>videoBox(participant,i,seatStyle))}
                         {agenda(agendaStyle)}
