@@ -1627,8 +1627,14 @@ class RASPUndebate extends React.Component {
         return seating[(seatOffset + i) % this.numParticipants]
     }
 
+    svgFile= <svg width="55" height="55" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="27.5" cy="27.5" r="27.5" fill="black"/>
+                        <path d="M39.6667 41.3334L23 28L39.6667 14.6667V41.3334Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16.333 39.6666V16.3333" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>; 
+
     buttons=[
-        {name: ()=>"Prev Section", func: this.prevSection},
+        {name: ()=>this.svgFile , func: this.prevSection},
         {name: ()=>"Prev Speaker", func: this.prevSpeaker},
         {name: ()=>this.state.allPaused ? "Continue" : "Pause", func: this.allPause},
         {name: ()=>"Next Speaker", func: this.nextSpeaker},
