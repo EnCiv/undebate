@@ -49,19 +49,19 @@ Heroku calls them 'apps' but think of it as a server instance in the cloud with 
 
 Then we add the MongoDB database. It's also in cloud. You will be able to use this one database when you are running locally, and when you are running in the cloud. 
 
-    heroku addons:create mongolab:sandbox
+    heroku addons:create mongolab:sandbox -a undebate-something-unique
 
 Now lets get the environment variable with the URI for that database and store it in your bash configuration file so you can use it when you run locally.  This string has a password in it and it should never be shared or commited to a repo.  The .gitignore file ignores .bashrc so it won't get added into a repo - just make sure it stays that way.
 
-    echo "export MONGODB_URI="\"`heroku config:get MONGODB_URI`\" >> .bashrc
+    echo "export MONGODB_URI="\"`heroku config:get MONGODB_URI -a undebate-something-unique`\" >> .bashrc
 
 Now we will add Cloudinary - a Content Delivery Network that has image and video manipulation features.  A CDN gives you a place to store these things, and deliver them quickly over the internet.   Your node server would be slower, and doesn't keep the files after the server restarts.
 
-    heroku addons:create cloudinary:starter
+    heroku addons:create cloudinary:starter -a undebate-something-unique
 
 Again we get the environment variable with the URL for Cloudinary and store it in your config file for local use.  There's a password in the string, so keep it secret.
 
-    echo "export CLOUDINARY_URL="\"`heroku config:get CLOUDINARY_URL`\" >> .bashrc
+    echo "export CLOUDINARY_URL="\"`heroku config:get CLOUDINARY_URL -a undebate-something-unique`\" >> .bashrc
 
 Now we just tell node we are in development mode.  Later we will set it to production
 
