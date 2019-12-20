@@ -1034,8 +1034,8 @@ class RASPUndebate extends React.Component {
 
                     introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
 
-                    buttonBarStyle.left=seatStyle.speaking.left; // left align with speaking
-                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width + verticalSeatSpace + navBarHeightRatio*height;  // below speaking
+                    buttonBarStyle.left="0"; // left align with speaking
+                    buttonBarStyle.top= speakingWidthRatio*42+'vw';  // below speaking
                     buttonBarStyle.width= seatStyle.speaking.width;
                     buttonBarStyle.height= Math.max(0.05*height, 4*fontSize);
 
@@ -1119,8 +1119,8 @@ class RASPUndebate extends React.Component {
                     
             
                     buttonBarStyle.width= "50vw";
-                    buttonBarStyle.left= "25vw";
-                    buttonBarStyle.top= seatStyle.speaking.top+speakingWidthRatio * HDRatio * width + verticalSeatSpace;
+                    buttonBarStyle.left= "0vw";
+                    buttonBarStyle.top= buttonBarStyle.top= speakingWidthRatio*40+'vw';;
                     buttonBarStyle.height= Math.max(0.035*height, 4*fontSize);
                     
                     recorderButtonBarStyle.left=buttonBarStyle.left;
@@ -2277,7 +2277,8 @@ class RASPUndebate extends React.Component {
         const ending = () => done && !this.state.hungUp && (
             <React.Fragment>
                 <div className={cx(classes['outerBox'],scrollableIframe&&classes['scrollableIframe'])} key="ending">
-                    <div style={{ width: '100%', height: '100%', display: 'table' }} >
+                    <
+                    div style={{ width: '100%', height: '100%', display: 'table' }} >
                         <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }} >
                             <span className={cx(classes['thanks'],scrollableIframe&&classes['scrollableIframe'])}>{closing.thanks}</span>
                             {surveyForm()}
@@ -2323,6 +2324,10 @@ class RASPUndebate extends React.Component {
                 humanSpeaking = true;
             const style= intro ? seatStyle[chair] : Object.assign({},seatStyle[chair],introSeatStyle[chair]) 
             /*src={"https://www.youtube.com/embed/"+getYouTubeID(this.participants[participant].listeningObjectURL)+"?enablejsapi=1&autoplay=1&loop=1&controls=0&disablekb=1&fs=0&modestbranding=1&rel=0"}*/
+            var buttonBarVar = null; 
+            if (this.seat(i) === 'speaking') {
+                buttonBarVar = buttonBar(buttonBarStyle);
+             };
             return (
                 <div style={style} className={cx(className, classes['box'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])} key={participant}>
                     <div style={{width: seatStyle[this.seat(i)].width, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio + 'vw' }}
@@ -2349,6 +2354,7 @@ class RASPUndebate extends React.Component {
                             </video>
                     }
                     <div className={cx(classes['videoFoot'], finishUp && classes['finishUp'])}><span>{!finishUp && (seatToName[this.seat(i)]+': ')}</span><span>{this.props.participants[participant].name}</span></div>
+                    {buttonBarVar}
                     <div className={cx(classes['stalledOverlay'],this.state.stalled===participant && classes['stalledNow'])} 
                         style={{width: parseFloat(seatStyle[this.seat(i)].width) * innerWidth / 100, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio * innerWidth / 100}}
                     >
@@ -2436,7 +2442,7 @@ class RASPUndebate extends React.Component {
                     {(this.participants.human && this.state.preambleAgreed || !this.participants.human) && beginOverlay()}
                     {this.participants.human && !intro && !begin && !done && <Preamble agreed={this.state.preambleAgreed} onClick={()=>{logger.info("Undebate preambleAgreed true"); this.setState({preambleAgreed: true})}} /> }
                     {ending()}
-                    {buttonBar(buttonBarStyle)}
+                    
                     {recorderButtonBar(recorderButtonBarStyle)}
                     {permissionOverlay()}
                     {waitingOnModeratorOverlay()}
