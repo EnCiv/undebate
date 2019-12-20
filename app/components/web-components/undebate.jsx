@@ -371,8 +371,8 @@ const styles = {
             'fontSize': 'inherit',
             'textAlign': "center",
             '-webkit-appearance': 'none',
-            'border-radius': "1px",
-            'backgroundColor': 'lightgray',
+            // 'border-radius': "1px",
+            'backgroundColor': 'rgba(0, 0, 0, 0)',
             'overflow': 'hidden',
             'textOverflow': 'clip',
         }
@@ -1633,32 +1633,32 @@ class RASPUndebate extends React.Component {
                             <path d="M16.333 39.6666V16.3333" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>; 
 
-    previousSpeakerIcon= <svg width="55" height="55" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+    previousSpeakerIcon= <svg width="55%" height="55%" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="27.5" cy="27.5" r="27.5" fill="black"/>
                             <path d="M19 36L10.6667 29.3333L19 22.6667V36Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M45.3333 40V37.3333C45.3333 35.9188 44.7714 34.5623 43.7712 33.5621C42.771 32.5619 41.4145 32 40 32H29.3333C27.9188 32 26.5623 32.5619 25.5621 33.5621C24.5619 34.5623 24 35.9188 24 37.3333V40" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M34.6667 16C31.7211 16 29.3333 18.3878 29.3333 21.3334C29.3333 24.2789 31.7211 26.6667 34.6667 26.6667C37.6122 26.6667 40 24.2789 40 21.3334C40 18.3878 37.6122 16 34.6667 16Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>;
 
-    nextSectionIcon= <svg width="55" height="55" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+    nextSectionIcon= <svg width="55%" height="55%" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="27.5" cy="27.5" r="27.5" fill="black"/>
                         <path d="M16.333 14.6667L32.9997 28L16.333 41.3334V14.6667Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M39.667 16.3333V39.6666" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>;  
                     
-    nextSpeakerIcon= <svg width="55" height="55" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+    nextSpeakerIcon= <svg width="55%" height="55%" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="27.5" cy="27.5" r="27.5" fill="black"/>
                         <path d="M36 21.3333L44.3333 28L36 34.6666V21.3333Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M32.0003 40V37.3333C32.0003 35.9188 31.4384 34.5623 30.4382 33.5621C29.438 32.5619 28.0815 32 26.667 32H16.0003C14.5858 32 13.2293 32.5619 12.2291 33.5621C11.2289 34.5623 10.667 35.9188 10.667 37.3333V40" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M21.3333 26.6667C24.2789 26.6667 26.6667 24.2789 26.6667 21.3333C26.6667 18.3878 24.2789 16 21.3333 16C18.3878 16 16 18.3878 16 21.3333C16 24.2789 18.3878 26.6667 21.3333 26.6667Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>;  
          
-    playIcon= <svg width="65" height="65" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+    playIcon= <svg width="65%" height="65%" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="32.5" cy="32.5" r="32.5" fill="black"/>
                 <path d="M24 13L52.3017 33L24 52.9999V13Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>;
             
-    pauseIcon= <svg width="65" height="65" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+    pauseIcon= <svg width="65%" height="65%" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="32.5" cy="32.5" r="32.5" fill="black"/>
                 <path d="M28.75 17.5H21.25V47.5H28.75V17.5Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M43.75 17.5H36.25V47.5H43.75V17.5Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2383,7 +2383,7 @@ class RASPUndebate extends React.Component {
             <div style={buttonBarStyle} className={classes['buttonBar']} key="buttonBar">
                 {this.buttons.map(button=>
                     <div style={{width: 100/this.buttons.length+'%', display: "inline-block", height: "100%"}} key={button.name}>
-                            <button disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>{button.name()}</button>
+                            <div disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>{button.name()}</div>
                     </div>
                 )}
             </div>
