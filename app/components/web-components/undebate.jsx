@@ -356,6 +356,7 @@ const styles = {
     },
     "buttonBar": {
         //display: "table",
+        'textAlign': "center",
         position: "absolute",
         width: "50vw",
         left: "25vw",
