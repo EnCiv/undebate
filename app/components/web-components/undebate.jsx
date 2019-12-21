@@ -1009,7 +1009,7 @@ class RASPUndebate extends React.Component {
                     seatLeft+= seatWidthRatio * width + horizontalSeatSpace;
                     let seatHorizontalPitch=seatWidthRatio * width + horizontalSeatSpace;
                     // across the bottom
-                    let i=0;  // for calculating the intro
+                    let i=0;  // for calcula`ting the intro
                     while(seat<=7){ // some will go off the screen
                         seatStyle['seat'+seat].top=seatTop;
                         seatStyle['seat'+seat].left=seatLeft;
@@ -1034,9 +1034,9 @@ class RASPUndebate extends React.Component {
 
                     introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
 
-                    buttonBarStyle.left="0"; // left align with speaking
-                    buttonBarStyle.top= speakingWidthRatio*42+'vw';  // below speaking
-                    buttonBarStyle.width= seatStyle.speaking.width;
+                    buttonBarStyle.left="25%"; // left align with speaking
+                    buttonBarStyle.top= speakingWidthRatio*47+'vw';  // below speaking
+                    buttonBarStyle.width= seatStyle.nextUp.width;
                     buttonBarStyle.height= Math.max(0.05*height, 4*fontSize);
 
                     recorderButtonBarStyle.left=buttonBarStyle.left;
@@ -1118,9 +1118,9 @@ class RASPUndebate extends React.Component {
                     introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
                     
             
-                    buttonBarStyle.width= "50vw";
-                    buttonBarStyle.left= "0vw";
-                    buttonBarStyle.top= buttonBarStyle.top= speakingWidthRatio*40+'vw';;
+                    buttonBarStyle.width= speakingWidthRatio*50+'vw';
+                    buttonBarStyle.left= "25%";
+                    buttonBarStyle.top= speakingWidthRatio*47+'vw';
                     buttonBarStyle.height= Math.max(0.035*height, 4*fontSize);
                     
                     recorderButtonBarStyle.left=buttonBarStyle.left;
@@ -1198,9 +1198,9 @@ class RASPUndebate extends React.Component {
                 agendaStyle.height=agendaStyle.width; //fontSize * 20;
                 introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
 
-                buttonBarStyle.left=horizontalSeatSpace + seatWidthRatio * width + horizontalSeatSpace; //"30vw";
-                buttonBarStyle.top=seatTop - fontSize - .05*height; //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
-                buttonBarStyle.width="67.5vw";
+                buttonBarStyle.left="25%";
+                buttonBarStyle.top=speakingWidthRatio*47+'vw'; //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
+                buttonBarStyle.width=speakingWidthRatio*50 + 'vw';
                 buttonBarStyle.height="5vh"
 
                 recorderButtonBarStyle.left=buttonBarStyle.left;
@@ -1628,38 +1628,38 @@ class RASPUndebate extends React.Component {
         return seating[(seatOffset + i) % this.numParticipants]
     }
 
-    previousSectionIcon= <svg width="55%" height="55%" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+    previousSectionIcon= <svg width="60%" height="60%" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="27.5" cy="27.5" r="27.5" fill="black"/>
                             <path d="M39.6667 41.3334L23 28L39.6667 14.6667V41.3334Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M16.333 39.6666V16.3333" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>; 
 
-    previousSpeakerIcon= <svg width="55%" height="55%" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+    previousSpeakerIcon= <svg width="60%" height="60%" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="27.5" cy="27.5" r="27.5" fill="black"/>
                             <path d="M19 36L10.6667 29.3333L19 22.6667V36Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M45.3333 40V37.3333C45.3333 35.9188 44.7714 34.5623 43.7712 33.5621C42.771 32.5619 41.4145 32 40 32H29.3333C27.9188 32 26.5623 32.5619 25.5621 33.5621C24.5619 34.5623 24 35.9188 24 37.3333V40" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M34.6667 16C31.7211 16 29.3333 18.3878 29.3333 21.3334C29.3333 24.2789 31.7211 26.6667 34.6667 26.6667C37.6122 26.6667 40 24.2789 40 21.3334C40 18.3878 37.6122 16 34.6667 16Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>;
 
-    nextSectionIcon= <svg width="55%" height="55%" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+    nextSectionIcon= <svg width="60%" height="60%" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="27.5" cy="27.5" r="27.5" fill="black"/>
                         <path d="M16.333 14.6667L32.9997 28L16.333 41.3334V14.6667Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M39.667 16.3333V39.6666" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>;  
                     
-    nextSpeakerIcon= <svg width="55%" height="55%" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+    nextSpeakerIcon= <svg width="60%" height="60%" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="27.5" cy="27.5" r="27.5" fill="black"/>
                         <path d="M36 21.3333L44.3333 28L36 34.6666V21.3333Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M32.0003 40V37.3333C32.0003 35.9188 31.4384 34.5623 30.4382 33.5621C29.438 32.5619 28.0815 32 26.667 32H16.0003C14.5858 32 13.2293 32.5619 12.2291 33.5621C11.2289 34.5623 10.667 35.9188 10.667 37.3333V40" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M21.3333 26.6667C24.2789 26.6667 26.6667 24.2789 26.6667 21.3333C26.6667 18.3878 24.2789 16 21.3333 16C18.3878 16 16 18.3878 16 21.3333C16 24.2789 18.3878 26.6667 21.3333 26.6667Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>;  
          
-    playIcon= <svg width="65%" height="65%" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+    playIcon= <svg width="75%" height="75%" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="32.5" cy="32.5" r="32.5" fill="black"/>
                 <path d="M24 13L52.3017 33L24 52.9999V13Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>;
             
-    pauseIcon= <svg width="65%" height="65%" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+    pauseIcon= <svg width="75%" height="75%" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="32.5" cy="32.5" r="32.5" fill="black"/>
                 <path d="M28.75 17.5H21.25V47.5H28.75V17.5Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M43.75 17.5H36.25V47.5H43.75V17.5Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2442,7 +2442,7 @@ class RASPUndebate extends React.Component {
                     {(this.participants.human && this.state.preambleAgreed || !this.participants.human) && beginOverlay()}
                     {this.participants.human && !intro && !begin && !done && <Preamble agreed={this.state.preambleAgreed} onClick={()=>{logger.info("Undebate preambleAgreed true"); this.setState({preambleAgreed: true})}} /> }
                     {ending()}
-                    
+
                     {recorderButtonBar(recorderButtonBarStyle)}
                     {permissionOverlay()}
                     {waitingOnModeratorOverlay()}
