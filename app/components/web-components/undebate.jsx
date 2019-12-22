@@ -2324,10 +2324,6 @@ class RASPUndebate extends React.Component {
                 humanSpeaking = true;
             const style= intro ? seatStyle[chair] : Object.assign({},seatStyle[chair],introSeatStyle[chair]) 
             /*src={"https://www.youtube.com/embed/"+getYouTubeID(this.participants[participant].listeningObjectURL)+"?enablejsapi=1&autoplay=1&loop=1&controls=0&disablekb=1&fs=0&modestbranding=1&rel=0"}*/
-            var buttonBarVar = null; 
-            if (this.seat(i) === 'speaking') {
-                buttonBarVar = buttonBar(buttonBarStyle);
-             };
             return (
                 <div style={style} className={cx(className, classes['box'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])} key={participant}>
                     <div style={{width: seatStyle[this.seat(i)].width, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio + 'vw' }}
@@ -2354,7 +2350,6 @@ class RASPUndebate extends React.Component {
                             </video>
                     }
                     <div className={cx(classes['videoFoot'], finishUp && classes['finishUp'])}><span>{!finishUp && (seatToName[this.seat(i)]+': ')}</span><span>{this.props.participants[participant].name}</span></div>
-                    {buttonBarVar}
                     <div className={cx(classes['stalledOverlay'],this.state.stalled===participant && classes['stalledNow'])} 
                         style={{width: parseFloat(seatStyle[this.seat(i)].width) * innerWidth / 100, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio * innerWidth / 100}}
                     >
@@ -2442,7 +2437,7 @@ class RASPUndebate extends React.Component {
                     {(this.participants.human && this.state.preambleAgreed || !this.participants.human) && beginOverlay()}
                     {this.participants.human && !intro && !begin && !done && <Preamble agreed={this.state.preambleAgreed} onClick={()=>{logger.info("Undebate preambleAgreed true"); this.setState({preambleAgreed: true})}} /> }
                     {ending()}
-
+                    {buttonBar(buttonBarStyle)}                        
                     {recorderButtonBar(recorderButtonBarStyle)}
                     {permissionOverlay()}
                     {waitingOnModeratorOverlay()}
