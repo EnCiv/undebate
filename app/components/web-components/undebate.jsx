@@ -1034,8 +1034,8 @@ class RASPUndebate extends React.Component {
 
                     introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
 
-                    buttonBarStyle.left="25%"; // left align with speaking
-                    buttonBarStyle.top= speakingWidthRatio*47+'vw';  // below speaking
+                    buttonBarStyle.left=seatStyle.speaking.left + speakingWidthRatio*width*0.25;
+                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width + verticalSeatSpace*0.8; 
                     buttonBarStyle.width= seatStyle.nextUp.width;
                     buttonBarStyle.height= Math.max(0.05*height, 4*fontSize);
 
@@ -1119,8 +1119,8 @@ class RASPUndebate extends React.Component {
                     
             
                     buttonBarStyle.width= speakingWidthRatio*50+'vw';
-                    buttonBarStyle.left= "25%";
-                    buttonBarStyle.top= speakingWidthRatio*47+'vw';
+                    buttonBarStyle.left= seatStyle.speaking.left + speakingWidthRatio*width*0.25;
+                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width + verticalSeatSpace*0.8;
                     buttonBarStyle.height= Math.max(0.035*height, 4*fontSize);
                     
                     recorderButtonBarStyle.left=buttonBarStyle.left;
@@ -1198,8 +1198,8 @@ class RASPUndebate extends React.Component {
                 agendaStyle.height=agendaStyle.width; //fontSize * 20;
                 introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
 
-                buttonBarStyle.left="25%";
-                buttonBarStyle.top=speakingWidthRatio*47+'vw'; //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
+                buttonBarStyle.left=seatStyle.speaking.left + speakingWidthRatio*width*0.25;
+                buttonBarStyle.top=speakingWidthRatio * HDRatio * width + verticalSeatSpace*1.2; //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
                 buttonBarStyle.width=speakingWidthRatio*50 + 'vw';
                 buttonBarStyle.height="5vh"
 
