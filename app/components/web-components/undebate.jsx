@@ -1199,7 +1199,7 @@ class RASPUndebate extends React.Component {
                 introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
 
                 buttonBarStyle.left=seatStyle.speaking.left + speakingWidthRatio*width*0.25;
-                buttonBarStyle.top=speakingWidthRatio * HDRatio * width + verticalSeatSpace*0.8; //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
+                buttonBarStyle.top=speakingWidthRatio * HDRatio * width + verticalSeatSpace*1.2; //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
                 buttonBarStyle.width=speakingWidthRatio*50 + 'vw';
                 buttonBarStyle.height="5vh"
 
