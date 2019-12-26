@@ -964,6 +964,7 @@ class RASPUndebate extends React.Component {
             var introSeatStyle=cloneDeep(this.state.introSeatStyle);
             var introStyle=cloneDeep(this.state.introStyle);
             const fontSize=this.calcFontSize();
+
             if(width / height > 0.8 ){ // landscape mode
                 if((width/height) > (1.8)){ // it's very long and short like a note 8
 
@@ -1035,7 +1036,7 @@ class RASPUndebate extends React.Component {
                     introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
 
                     buttonBarStyle.left=seatStyle.speaking.left + speakingWidthRatio*width*0.25;
-                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width + verticalSeatSpace*0.8; 
+                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.1; 
                     buttonBarStyle.width= seatStyle.nextUp.width;
                     buttonBarStyle.height= Math.max(0.05*height, 4*fontSize);
 
@@ -1120,7 +1121,20 @@ class RASPUndebate extends React.Component {
             
                     buttonBarStyle.width= speakingWidthRatio*50+'vw';
                     buttonBarStyle.left= seatStyle.speaking.left + speakingWidthRatio*width*0.25;
-                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width + verticalSeatSpace*0.8;
+                    // buttonBarStyle.top= speakingWidthRatio * HDRatio * width;
+                    if (width / height < 0.87) {
+                        buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.18;
+                    } else if (width / height < 1) {
+                        buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.13;
+                    } else if (width / height < 1.2) {
+                        buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.08;
+                    } else if (width / height < 1.4) {
+                        buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.04;
+                    } else if (width / height < 1.6) {
+                        buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1;
+                    } else {
+                        buttonBarStyle.top= speakingWidthRatio * HDRatio * width;
+                    }
                     buttonBarStyle.height= Math.max(0.035*height, 4*fontSize);
                     
                     recorderButtonBarStyle.left=buttonBarStyle.left;
