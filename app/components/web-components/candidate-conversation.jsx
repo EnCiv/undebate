@@ -2465,7 +2465,7 @@ class RASPUndebate extends React.Component {
 
 /*                     <div className={cx(intro&&classes['intro'],classes['innerImageOverlay'])}></div> */
 
-export default injectSheet(styles)(Undebate);
+export default injectSheet(styles)(CandidateConversation);
 
 
 
