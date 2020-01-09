@@ -12,7 +12,8 @@ const schema = Joi.object({
     participants: Joi.object(),
     component: Joi.object(),
     userId: Joi.string(),
-    parentId: Joi.string()
+    parentId: Joi.string(),
+    bp_info: Joi.object()
 });
  
 class Iota extends MongoModels {
