@@ -979,7 +979,7 @@ class RASPUndebate extends React.Component {
                     const horizontalSeatSpace=horizontalSeatSpaceRatio * width;
 
                     seatStyle.speaking.left= ((1-speakingWidthRatio) * width)/2; /// centered
-                    seatStyle.speaking.top=navBarHeightRatio * height;  // TopMargin;
+                    seatStyle.speaking.top=height - seatWidthRatio * HDRatio * width - verticalSeatSpace;//navBarHeightRatio * height;  // TopMargin;
                     seatStyle.speaking.width= speakingWidthRatio*100+'vw';
                     introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
 
@@ -997,16 +997,17 @@ class RASPUndebate extends React.Component {
                     let seatLeft=seatStyle.nextUp.left  //Math.min(seatStyle.nextUp.left, horizontalSeatSpace)
 
                     // down the left side
-                    while((seatTop+seatVerticalPitch < height) && (seat<=7) ){
-                        seatStyle['seat'+seat].top=seatTop;
-                        seatStyle['seat'+seat].left=seatLeft;
-                        seatStyle['seat'+seat].width= seatWidthRatio*100+'vw';
-                        introSeatStyle['seat'+seat]={left: -(seatWidthRatio * width + horizontalSeatSpace + ShadowBox)}
-                        seatTop+=seatVerticalPitch
-                        seat++;
-                    }   
+                    // while((seatTop+seatVerticalPitch < height) && (seat<=7) ){
+                    //     seatStyle['seat'+seat].top=seatTop;
+                    //     seatStyle['seat'+seat].left=seatLeft;
+                    //     seatStyle['seat'+seat].width= seatWidthRatio*100+'vw';
+                    //     introSeatStyle['seat'+seat]={left: -(seatWidthRatio * width + horizontalSeatSpace + ShadowBox)}
+                    //     seatTop+=seatVerticalPitch
+                    //     seat++;
+                    // }   
 
-                    seatTop=height - seatWidthRatio * HDRatio * width - verticalSeatSpace;
+                    seatTop=speakingWidthRatio * HDRatio * width - (nextUpWidthRatio * HDRatio * width ) - verticalSeatSpace;
+                    //height - seatWidthRatio * HDRatio * width - verticalSeatSpace;
                     seatLeft+= seatWidthRatio * width + horizontalSeatSpace;
                     let seatHorizontalPitch=seatWidthRatio * width + horizontalSeatSpace;
                     // across the bottom
