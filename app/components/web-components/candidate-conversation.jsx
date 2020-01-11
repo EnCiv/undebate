@@ -40,8 +40,7 @@ const styles = {
         
     },
     conversationTopicContent:{
-        width: '100vw',
-        textAlign: 'center'
+        width: '100vw'
     },
     'scrollableIframe': {},
     'wrapper': {
@@ -687,7 +686,7 @@ class RASPUndebate extends React.Component {
         },
 
         conversationTopic: {
-            top: `${TopMargin}`
+            //top: `${TopMargin}`
         },
 
         agendaStyle: {
@@ -978,16 +977,16 @@ class RASPUndebate extends React.Component {
                     const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height, 2.5*fontSize);
                     const horizontalSeatSpace=horizontalSeatSpaceRatio * width;
 
-                    seatStyle.speaking.left= ((1-speakingWidthRatio) * width)/2; /// centered
-                    seatStyle.speaking.top=height - seatWidthRatio * HDRatio * width - verticalSeatSpace;//navBarHeightRatio * height;  // TopMargin;
-                    seatStyle.speaking.width= speakingWidthRatio*100+'vw';
+                    seatStyle.speaking.left= 0; //((1-speakingWidthRatio) * width)/4; /// centered
+                    seatStyle.speaking.top=height - seatWidthRatio * HDRatio * width*3 - verticalSeatSpace;//navBarHeightRatio * height;  // TopMargin;
+                    seatStyle.speaking.width= speakingWidthRatio*140+'vw';
                     introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
 
 
                      
-                    seatStyle.nextUp.top= speakingWidthRatio * HDRatio * width - (nextUpWidthRatio * HDRatio * width ) - verticalSeatSpace;
+                    seatStyle.nextUp.top= speakingWidthRatio * HDRatio * width*0.8 - (nextUpWidthRatio * HDRatio * width ) - verticalSeatSpace;
                     seatStyle.nextUp.width=nextUpWidthRatio*100+'vw';
-                    seatStyle.nextUp.left= (seatStyle.speaking.left-nextUpWidthRatio * width)/2; // depends on width
+                    seatStyle.nextUp.left= (seatStyle.speaking.left)/2; // depends on width
                     introSeatStyle.nextUp={left: -(seatStyle.nextUp.left + nextUpWidthRatio * width + ShadowBox)}
 
                     let seat=2;
@@ -1006,7 +1005,7 @@ class RASPUndebate extends React.Component {
                     //     seat++;
                     // }   
 
-                    seatTop=speakingWidthRatio * HDRatio * width - (nextUpWidthRatio * HDRatio * width ) - verticalSeatSpace;
+                    seatTop=speakingWidthRatio * HDRatio * width*0.8 - (nextUpWidthRatio * HDRatio * width ) - verticalSeatSpace;
                     //height - seatWidthRatio * HDRatio * width - verticalSeatSpace;
                     seatLeft+= seatWidthRatio * width + horizontalSeatSpace;
                     let seatHorizontalPitch=seatWidthRatio * width + horizontalSeatSpace;
@@ -1026,8 +1025,8 @@ class RASPUndebate extends React.Component {
                     seatStyle.finishUp.top=  0.5*height;
                     seatStyle.finishUp.width='1vw';
 
-                    agendaStyle.top=navBarHeightRatio * height;  //speakingWidthRatio * HDRatio * width * 0.10;
-                    agendaStyle.left=seatStyle.speaking.left + speakingWidthRatio * width + 2 * horizontalSeatSpace; // 2 because it's rotated
+                    agendaStyle.top=height - seatWidthRatio * HDRatio * width*2 - verticalSeatSpace;;  //speakingWidthRatio * HDRatio * width * 0.10;
+                    agendaStyle.left=speakingWidthRatio*140+'vw'; // 2 because it's rotated
                     //agendaStyle.height=speakingWidthRatio * HDRatio * width * 0.8;
 
                     agendaStyle.width=  Math.max(speakingWidthRatio * HDRatio * width * 0.8,20 * fontSize);
