@@ -978,22 +978,20 @@ class RASPUndebate extends React.Component {
                     const horizontalSeatSpace=horizontalSeatSpaceRatio * width;
 
                     seatStyle.speaking.left= 0; //((1-speakingWidthRatio) * width)/4; /// centered
-                    seatStyle.speaking.top=height - seatWidthRatio * HDRatio * width*3 - verticalSeatSpace;//navBarHeightRatio * height;  // TopMargin;
-                    seatStyle.speaking.width= speakingWidthRatio*140+'vw';
+                    seatStyle.speaking.top=height - seatWidthRatio * HDRatio * width*3.2 - verticalSeatSpace;//navBarHeightRatio * height;  // TopMargin;
+                    seatStyle.speaking.width= speakingWidthRatio*170+'vw';
                     introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
-
-
                      
                     seatStyle.nextUp.top= speakingWidthRatio * HDRatio * width*0.8 - (nextUpWidthRatio * HDRatio * width ) - verticalSeatSpace;
                     seatStyle.nextUp.width=nextUpWidthRatio*100+'vw';
-                    seatStyle.nextUp.left= (seatStyle.speaking.left)/2; // depends on width
+                    seatStyle.nextUp.left= seatStyle.speaking.left; // depends on width
                     introSeatStyle.nextUp={left: -(seatStyle.nextUp.left + nextUpWidthRatio * width + ShadowBox)}
 
                     let seat=2;
 
                     let seatTop=seatStyle.nextUp.top + nextUpWidthRatio * HDRatio * width  + verticalSeatSpace;
                     let seatVerticalPitch= seatWidthRatio * HDRatio * width + verticalSeatSpace;
-                    let seatLeft=seatStyle.nextUp.left  //Math.min(seatStyle.nextUp.left, horizontalSeatSpace)
+                    let seatLeft= seatStyle.nextUp.left;//Math.min(seatStyle.nextUp.left, horizontalSeatSpace);
 
                     // down the left side
                     // while((seatTop+seatVerticalPitch < height) && (seat<=7) ){
@@ -1026,12 +1024,12 @@ class RASPUndebate extends React.Component {
                     seatStyle.finishUp.width='1vw';
 
                     agendaStyle.top=height - seatWidthRatio * HDRatio * width*2 - verticalSeatSpace;;  //speakingWidthRatio * HDRatio * width * 0.10;
-                    agendaStyle.left=speakingWidthRatio*140+'vw'; // 2 because it's rotated
+                    agendaStyle.left=seatStyle.speaking.width; // 2 because it's rotated
                     //agendaStyle.height=speakingWidthRatio * HDRatio * width * 0.8;
 
-                    agendaStyle.width=  Math.max(speakingWidthRatio * HDRatio * width * 0.8,20 * fontSize);
-                    if(agendaStyle.left + agendaStyle.width > width) agendaStyle.width=width-agendaStyle.left - 2*horizontalSeatSpace; 
-                    agendaStyle.height=agendaStyle.width
+                    agendaStyle.width= width;// - seatStyle.speaking.width;//Math.max(speakingWidthRatio * HDRatio * width * 0.8,20 * fontSize);
+                 //   if(agendaStyle.left + agendaStyle.width > width) agendaStyle.width=width-agendaStyle.left - 2*horizontalSeatSpace; 
+                   // agendaStyle.height=agendaStyle.width
 
                     introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
 
