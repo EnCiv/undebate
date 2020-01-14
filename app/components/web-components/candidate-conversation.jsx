@@ -236,11 +236,11 @@ const styles = {
     },
     'videoFoot': {
         'text-align': 'center',
-        'color': '#404',
+        'color': 'white',
         'font-weight': '600',
         'font-size': '100%',
         'transition': 'all .5s linear',
-        'background-color': 'white',
+        'background-color': 'black',
         'overflow': 'hidden',
         'text-overflow': 'ellipsis',
         'white-space': 'nowrap',
@@ -249,6 +249,7 @@ const styles = {
         }
     },
     'agenda': {
+        paddingLeft: '2em', 
         position: 'absolute',
         'background-color': 'white',
         padding: '1em',
@@ -281,9 +282,11 @@ const styles = {
         'display': 'table-cell'
     },
     'agendaTitle': {
+        'textAlign': 'center',
         'font-size': "125%"
     },
     'agendaItem': {
+        'lineHeight': '3em',
         'font-weight': '200',
         'list-style-type': "none",
         'padding-left': "1em"
