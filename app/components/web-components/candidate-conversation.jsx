@@ -1017,11 +1017,10 @@ class RASPUndebate extends React.Component {
 
                     agendaStyle.top=seatWidthRatio*HDRatio*103 + navBarHeightRatio*100*HDRatio +'vw';  //speakingWidthRatio * HDRatio * width * 0.10;
                     agendaStyle.left=speakingWidthRatio*175+'vw';
-                    // agendaStyle.height=seatStyle.speaking.width* HDRatio * width;
-
+                    agendaStyle.height=speakingWidthRatio*165*HDRatio +'vw';//seatStyle.speaking.width*HDRatio;
+                    
                     agendaStyle.width= 100 - speakingWidthRatio*185 +'vw';//Math.max(speakingWidthRatio * HDRatio * width * 0.8,20 * fontSize);
                  //   if(agendaStyle.left + agendaStyle.width > width) agendaStyle.width=width-agendaStyle.left - 2*horizontalSeatSpace; 
-                   // agendaStyle.height=agendaStyle.width
 
                     // introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
 
@@ -1094,9 +1093,10 @@ class RASPUndebate extends React.Component {
                     agendaStyle.top= seatWidthRatio*HDRatio*120 + navBarHeightRatio*100 +'vw';
                     agendaStyle.left= seatStyle.speaking.left + speakingWidthRatio * width + horizontalSeatSpace;
                     agendaStyle.width=  100 - speakingWidthRatio*108 +'vw';
-                    if(agendaStyle.left + agendaStyle.width > width) agendaStyle.width=width-agendaStyle.left - 2*horizontalSeatSpace; 
-                    agendaStyle.height= Math.max(.175*width,20 * fontSize);
-                    introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
+                    agendaStyle.height=speakingWidthRatio*100*HDRatio +'vw'
+                    // if(agendaStyle.left + agendaStyle.width > width) agendaStyle.width=width-agendaStyle.left - 2*horizontalSeatSpace; 
+                    // agendaStyle.height= Math.max(.175*width,20 * fontSize);
+                    // introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
                     
             
                     buttonBarStyle.width= speakingWidthRatio*40+'vw';
