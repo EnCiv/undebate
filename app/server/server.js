@@ -193,7 +193,7 @@ class HttpServer extends EventEmitter {
       console.info("httpToHttps", req.secure, req.protocol, req.hostname);
       if ((!req.secure) || (req.protocol !== 'https')) {
         console.info("server.httpToHttps redirecting to ", req.secure, 'https://' + req.hostname + req.url)
-        res.redirect('https://' + req.hostName + req.url);
+        res.redirect('https://' + req.hostname + req.url);
       } else
         next(); /* Continue to other routes if we're not redirecting */
     })
