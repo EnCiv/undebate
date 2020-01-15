@@ -248,12 +248,10 @@ const styles = {
             'font-size': '1%'
         }
     },
-    'agenda': {
-        paddingLeft: '2em', 
+    'agenda': { 
         position: 'absolute',
         'background-color': 'white',
         padding: '1em',
-        // 'box-shadow': `${ShadowBox}px ${ShadowBox}px ${ShadowBox}px grey`,
         'box-sizing': 'border-box',
         //transform: 'rotate(-2deg)',
         //'font-family': 'Comic Sans MS',
@@ -282,14 +280,20 @@ const styles = {
         'display': 'table-cell'
     },
     'agendaTitle': {
-        'textAlign': 'center',
-        'font-size': "125%"
+        'font-size': "125%",
+        'backgroundColor': 'orange',
+        'padding': '0.5em'
     },
     'agendaItem': {
-        'lineHeight': '3em',
+        'lineHeight': '2em',
         'font-weight': '200',
         'list-style-type': "none",
-        'padding-left': "1em"
+        'paddingLeft': '0',
+    },
+    'item': {
+        'padding': '1em',
+        'backgroundColor': 'rgba(240, 240, 240, 0.6)',
+        'border-bottom': '1px solid white'
     },
     'thanks': {
         'font-size': "200%",
@@ -709,6 +713,7 @@ class RASPUndebate extends React.Component {
             position: "absolute",
             overflow: "hidden",
             "textOverflow": "clip",
+            'cursor': 'pointer'
         },
 
         recorderButtonBarStyle: {
@@ -2369,7 +2374,7 @@ class RASPUndebate extends React.Component {
                             <>
                                 <span className={classes['agendaTitle']}>Agenda</span>
                                 <ul className={classes['agendaItem']}>
-                                    {this.props.participants.moderator.agenda[round] && this.props.participants.moderator.agenda[round].map((item, i) => <li key={item + i}>{item}</li>)}
+                                    {this.props.participants.moderator.agenda[round] && this.props.participants.moderator.agenda[round].map((item, i) => <li className={classes['item']} key={item + i}>{item}</li>)}
                                 </ul>
                             </>
                         }
