@@ -190,6 +190,7 @@ class HttpServer extends EventEmitter {
         hostName=hostParts.join('.');
         addWWW=true;
       }*/
+      console.info("httpToHttps",req.secure, req.protocol, req.hostname);
       if(!req.secure || addWWW){
         console.info("server.httpToHttps redirecting to ", req.secure, 'https://' + hostname + req.url)
         res.redirect('https://' + hostName + req.url);
