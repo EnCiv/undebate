@@ -184,13 +184,14 @@ class HttpServer extends EventEmitter {
       let hostParts=hostName.split('.');
       if(hostParts.length===4 && hostParts[0]==='192' && hostParts[1]==='168') return next(); // it's coming from the lan
       let addWWW=false;
+      /*
       if((hostParts.length && hostParts[1]!=="herokuapp") && (!hostParts.length || hostParts[0]!=='www')){
         hostParts.unshift("www");
         hostName=hostParts.join('.');
         addWWW=true;
-      }
+      }*/
       if(!req.secure || addWWW){
-        console.info("server.httpToHttps redirecting to ", req.secure, 'https://' + req.hostname + req.url)
+        console.info("server.httpToHttps redirecting to ", req.secure, 'https://' + hostname + req.url)
         res.redirect('https://' + hostName + req.url);
       } else
         next(); /* Continue to other routes if we're not redirecting */
