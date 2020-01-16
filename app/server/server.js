@@ -181,16 +181,6 @@ class HttpServer extends EventEmitter {
     this.app.use((req, res, next) => {
       let hostName = req.hostname;
       if (hostName === 'localhost') return next();
-      let hostParts = hostName.split('.');
-      if (hostParts.length === 4 && hostParts[0] === '192' && hostParts[1] === '168') return next(); // it's coming from the lan
-      let addWWW = false;
-      /*
-      if((hostParts.length && hostParts[1]!=="herokuapp") && (!hostParts.length || hostParts[0]!=='www')){
-        hostParts.unshift("www");
-        hostName=hostParts.join('.');
-        addWWW=true;
-      }*/
-      console.info("httpToHttps", req.secure, req.protocol, req.hostname);
       if ((!req.secure) || (req.protocol !== 'https')) {
         console.info("server.httpToHttps redirecting to ", req.secure, 'https://' + req.hostname + req.url)
         res.redirect('https://' + req.hostname + req.url);
