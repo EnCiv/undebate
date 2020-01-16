@@ -35,14 +35,19 @@ const styles = {
         fontSize: '150%',
         fontWeight: 'bold',
         position: 'absolute',
-        top: 0,
+        top: '0',
         marginTop: '0px',
         'transition': "all 5s ease"
         
     },
     conversationTopicContent:{
-        marginTop: '0px',
-        width: '100vw'
+        marginTop: '5px',
+        marginLeft: '3vh',
+        'marginBottom': '10px',
+        'paddingLeft': '10px',
+        'paddingRight': '10px',
+        'borderLeft': '6px solid blue',
+        'borderRight': '6px solid orange'
     },
     'scrollableIframe': {},
     'wrapper': {
@@ -249,8 +254,9 @@ const styles = {
         }
     },
     'agenda': { 
+        'textAlign': 'center',
+        'backgroundColor': 'rgb(200, 200, 200)',
         position: 'absolute',
-        'background-color': 'white',
         padding: '1em',
         'box-sizing': 'border-box',
         //transform: 'rotate(-2deg)',
@@ -285,15 +291,16 @@ const styles = {
         'padding': '0.5em'
     },
     'agendaItem': {
+        'textAlign': 'left',
         'lineHeight': '2em',
         'font-weight': '200',
         'list-style-type': "none",
         'paddingLeft': '0',
     },
     'item': {
+        'backgroundColor': 'white',
         'padding': '1em',
-        'backgroundColor': 'rgba(240, 240, 240, 0.6)',
-        'border-bottom': '1px solid white'
+        'border-bottom': '1px solid lightGray'
     },
     'thanks': {
         'font-size': "200%",
