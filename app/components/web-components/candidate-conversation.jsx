@@ -36,9 +36,9 @@ const styles = {
         fontWeight: 'bold',
         position: 'absolute',
         top: '0',
+        left: '0',
         marginTop: '0px',
         'transition': "all 5s ease"
-        
     },
     conversationTopicContent:{
         marginTop: '5px',
@@ -46,8 +46,13 @@ const styles = {
         'marginBottom': '10px',
         'paddingLeft': '10px',
         'paddingRight': '10px',
-        'borderLeft': '6px solid blue',
-        'borderRight': '6px solid orange'
+        'borderLeft': '0.2em solid blue',
+        'borderRight': '0.2em solid orange'
+    },
+    logo:{
+        marginRight: '4px',
+        height: '6vh',
+        float: 'right'
     },
     'scrollableIframe': {},
     'wrapper': {
@@ -2419,9 +2424,13 @@ class RASPUndebate extends React.Component {
             const style= intro ? topicStyle : Object.assign({},topicStyle,introSeatStyle['conversationTopic']);
 
             return(
+            <>
             <div style={style} className={classes['conversationTopic']}>
-                <p className={classes['conversationTopicContent']}>{this.props.subject}</p>    
-            </div>)
+                <p className={classes['conversationTopicContent']}>{this.props.subject}</p> 
+            </div>
+            <img className={classes['logo']} src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png" />   
+            </>
+            )
         }
 
         var main=()=>!done && (
