@@ -2428,7 +2428,7 @@ class RASPUndebate extends React.Component {
             <div style={style} className={classes['conversationTopic']}>
                 <p className={classes['conversationTopicContent']}>{this.props.subject}</p> 
             </div>
-            <img className={classes['logo']} src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png" />   
+            <a target="#" href="https://ballotpedia.org/Candidate_Conversations"><img className={classes['logo']} src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png" /></a>   
             </>
             )
         }
