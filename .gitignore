@@ -76,3 +76,6 @@ backups/
 _netrc
 
 yarn.lock
+
+# svgr files are generated from assets/svg using svgr
+app/svgr
