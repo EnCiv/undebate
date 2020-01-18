@@ -260,12 +260,9 @@ const styles = {
     },
     'agenda': { 
         'textAlign': 'center',
-        'backgroundColor': 'rgb(200, 200, 200)',
+        'backgroundColor': 'white',
         position: 'absolute',
-        padding: '1em',
         'box-sizing': 'border-box',
-        //transform: 'rotate(-2deg)',
-        //'font-family': 'Comic Sans MS',
         'font-weight': '600',
         display: 'table',
         '&$finishUp': {
@@ -287,15 +284,17 @@ const styles = {
         }
     },
     'innerAgenda': {
-        'vertical-align': 'middle',
         'display': 'table-cell'
     },
     'agendaTitle': {
+        'textAlign': 'center',
         'font-size': "125%",
         'backgroundColor': 'orange',
-        'padding': '0.5em'
+        'padding': '1em',
+        'font-weight': 'bold'
     },
     'agendaItem': {
+        'margin-block-start': '0',
         'textAlign': 'left',
         'lineHeight': '2em',
         'font-weight': '200',
@@ -1036,15 +1035,15 @@ class RASPUndebate extends React.Component {
                     seatStyle.finishUp.width='1vw';
 
                     agendaStyle.top=seatWidthRatio*HDRatio*103 + navBarHeightRatio*100*HDRatio +'vw';  //speakingWidthRatio * HDRatio * width * 0.10;
-                    agendaStyle.left=speakingWidthRatio*175+'vw';
+                    agendaStyle.left=speakingWidthRatio*174+'vw';
                     agendaStyle.height=speakingWidthRatio*165*HDRatio +'vw';//seatStyle.speaking.width*HDRatio;
                     
-                    agendaStyle.width= 100 - speakingWidthRatio*185 +'vw';//Math.max(speakingWidthRatio * HDRatio * width * 0.8,20 * fontSize);
+                    agendaStyle.width= 100 - speakingWidthRatio*180 +'vw';//Math.max(speakingWidthRatio * HDRatio * width * 0.8,20 * fontSize);
                  //   if(agendaStyle.left + agendaStyle.width > width) agendaStyle.width=width-agendaStyle.left - 2*horizontalSeatSpace; 
 
                     // introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
 
-                    buttonBarStyle.left=speakingWidthRatio*85 - nextUpWidthRatio*50 +'vw';
+                    buttonBarStyle.left=speakingWidthRatio*89 - nextUpWidthRatio*50 +'vw';
                     buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 2.2; 
                     buttonBarStyle.width= seatStyle.nextUp.width;
                     buttonBarStyle.height= Math.max(0.05*height, 4*fontSize);
@@ -1120,7 +1119,7 @@ class RASPUndebate extends React.Component {
                     
             
                     buttonBarStyle.width= speakingWidthRatio*40+'vw';
-                    buttonBarStyle.left= seatStyle.speaking.left + speakingWidthRatio*width*0.25;
+                    buttonBarStyle.left= seatStyle.speaking.left + speakingWidthRatio*width*0.32;
                     // buttonBarStyle.top= speakingWidthRatio * HDRatio * width;
                     if (width / height < 0.87) {
                         buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.34;
@@ -2384,8 +2383,8 @@ class RASPUndebate extends React.Component {
                     <div className={classes['innerAgenda']}>
                         {this.props.participants.moderator.agenda[round] &&
                             <>
-                                <span className={classes['agendaTitle']}>Agenda</span>
                                 <ul className={classes['agendaItem']}>
+                                    <div className={classes['agendaTitle']}>Agenda</div>
                                     {this.props.participants.moderator.agenda[round] && this.props.participants.moderator.agenda[round].map((item, i) => <li className={classes['item']} key={item + i}>{item}</li>)}
                                 </ul>
                             </>
