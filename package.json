@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node dist/server/start.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "svgr": "svgr --icon --filename-case kebab assets/svg --out-dir app/svgr",
     "transpile": "babel app --ignore app/test --out-dir dist --source-maps",
     "hot-transpile": "babel --watch app --ignore app/test --out-dir dist/ --source-maps",
     "hot-server": "nodemon --inspect dist/server/start.js",
@@ -29,6 +30,7 @@
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
+    "@svgr/cli": "^5.0.1",
     "concurrently": "^4.1.2",
     "nodemon": "^1.19.2"
   },
