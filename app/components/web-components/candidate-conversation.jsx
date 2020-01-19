@@ -28,7 +28,9 @@ import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from
 function promiseSleep(time){
     return new Promise((ok,ko)=>setTimeout(ok,time))
 }
-
+// this is where we should use a theme but for now
+const BLUE='#1B47A7'
+const YELLOW='#E5A650'
 const styles = {
 
     conversationTopic: {
@@ -42,12 +44,12 @@ const styles = {
     },
     conversationTopicContent:{
         marginTop: '5px',
-        marginLeft: '3vh',
+        marginLeft: 0,
         'marginBottom': '10px',
         'paddingLeft': '10px',
         'paddingRight': '10px',
-        'borderLeft': '0.2em solid blue',
-        'borderRight': '0.2em solid orange'
+        'borderLeft': `0.2em solid ${BLUE}`,
+        'borderRight': `0.2em solid ${YELLOW}`
     },
     logo:{
         marginRight: '4px',
@@ -66,10 +68,10 @@ const styles = {
         position: 'relative', 
         width: '100vw', 
         height: '100vh', 
-        backgroundImage: "url(/assets/images/marble_table_top.png)", 
+        backgroundColor: "#F2F2F1", 
         backgroundSize: "cover", 
         overflow: 'hidden', 
-        fontFamily: "'Montserrat', sans-serif",
+        fontFamily: "'Libre Franklin','Montserrat', sans-serif",
         "&$scrollableIframe": {
             height: "auto"
         }
@@ -85,7 +87,7 @@ const styles = {
         opacity: 0.1,
         backgroundSize: "cover", 
         overflow: 'hidden', 
-        fontFamily: "'Montserrat', sans-serif",
+        fontFamily: "`Libre Franklin`, 'Montserrat', sans-serif",
         'transition': `all ${TransitionTime}ms linear`,
         "&$scrollableIframe": {
             height: "auto"
@@ -262,6 +264,7 @@ const styles = {
         'textAlign': 'center',
         'backgroundColor': 'white',
         position: 'absolute',
+        'box-shadow': '0px 4px 4px rgba(0,0,0,0.25)',
         'box-sizing': 'border-box',
         'font-weight': '600',
         display: 'table',
@@ -287,11 +290,20 @@ const styles = {
         'display': 'table-cell'
     },
     'agendaTitle': {
+        fontFamily: 'Libre Franklin',
         'textAlign': 'center',
-        'font-size': "125%",
-        'backgroundColor': 'orange',
-        'padding': '1em',
+        'font-size': "200%",
+        'backgroundColor': `${YELLOW}`,
+        'paddingTop': '0.5em',
+        'paddingBottom': '0.5em',
         'font-weight': 'bold'
+    },
+    'agendaList': {
+        textAlign: 'left',
+        listStyleType: 'none',
+        '& li:first-child': {
+            fontWeight: 'bold'
+        }
     },
     'agendaItem': {
         'margin-block-start': '0',
@@ -302,9 +314,14 @@ const styles = {
         'paddingLeft': '0',
     },
     'item': {
+        fontFamily: 'Roboto',
+        fontSize: '125%',
+        fontWeight: 'normal',
         'backgroundColor': 'white',
         'padding': '1em',
-        'border-bottom': '1px solid lightGray'
+        'border-bottom': '1px solid lightGray',
+        'padding-top': '0.5em',
+        'padding-bottom': '0.25em'
     },
     'thanks': {
         'font-size': "200%",
@@ -705,8 +722,8 @@ class RASPUndebate extends React.Component {
             },
         },
 
-        conversationTopic: {
-            //top: `${TopMargin}`
+        conversationTopicStyle: {
+            left: '1.4vw'
         },
 
         agendaStyle: {
@@ -983,6 +1000,7 @@ class RASPUndebate extends React.Component {
             var recorderButtonBarStyle=cloneDeep(this.state.recorderButtonBarStyle);
             var introSeatStyle=cloneDeep(this.state.introSeatStyle);
             var introStyle=cloneDeep(this.state.introStyle);
+            var conversationTopicStyle=cloneDeep(this.state.conversationTopicStyle);
             const fontSize=this.calcFontSize();
 
             if(width / height > 0.8 ){ // landscape mode
@@ -996,12 +1014,14 @@ class RASPUndebate extends React.Component {
                     const navBarHeightRatio=0.08;
 
                     const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height, 2.5*fontSize);
-                    const horizontalSeatSpace=horizontalSeatSpaceRatio * width;
+                    const horizontalSeatSpace=fontSize;
 
-                    seatStyle.speaking.left= 20; //((1-speakingWidthRatio) * width)/4; /// centered
+
+                    seatStyle.speaking.left= horizontalSeatSpace; //((1-speakingWidthRatio) * width)/4; /// centered
                     seatStyle.speaking.top=seatWidthRatio*HDRatio*103 + navBarHeightRatio*100*HDRatio +'vw';
                     seatStyle.speaking.width= speakingWidthRatio*165+'vw';
                     introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
+                    conversationTopicStyle.left=seatStyle.speaking.left;
                      
                     seatStyle.nextUp.top= speakingWidthRatio * HDRatio * width*0.8 - (nextUpWidthRatio * HDRatio * width ) - verticalSeatSpace;
                     seatStyle.nextUp.width=nextUpWidthRatio*100+'vw';
@@ -1072,12 +1092,13 @@ class RASPUndebate extends React.Component {
                     const navBarHeightRatio=0.08;
 
                     const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height,3*fontSize);
-                    const horizontalSeatSpace=Math.max(horizontalSeatSpaceRatio * width, fontSize);
+                    const horizontalSeatSpace=fontSize; //Math.max(horizontalSeatSpaceRatio * width, fontSize);
 
                     seatStyle.speaking.left= horizontalSeatSpace;
                     seatStyle.speaking.top= seatWidthRatio*HDRatio*120 + navBarHeightRatio*100 +'vw';  //TopMargin;
                     seatStyle.speaking.width= speakingWidthRatio*100+'vw';
                     introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
+                    conversationTopicStyle.left=seatStyle.speaking.left;
 
                     seatStyle.nextUp.left=horizontalSeatSpace; //(2.5 /100) * width;
                     seatStyle.nextUp.top= height*navBarHeightRatio;
@@ -1231,7 +1252,7 @@ class RASPUndebate extends React.Component {
                 introSeatStyle.introRight.right="-50vw";
 
             }
-            this.setState({left: -x + 'px', seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle}, /*()=>{if(!this.state.stylesSet) setTimeout(()=>this.setState({stylesSet: true}))}*/);
+            this.setState({left: -x + 'px', seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, conversationTopicStyle}, /*()=>{if(!this.state.stylesSet) setTimeout(()=>this.setState({stylesSet: true}))}*/);
         }
     }
 
@@ -2191,7 +2212,7 @@ class RASPUndebate extends React.Component {
     
     render() {
         const { className, classes, opening={}, closing={thanks: "Thank You"} } = this.props;
-        const { round, finishUp, done, begin, requestPermission, talkative, moderatorReadyToStart, intro, seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, stylesSet } = this.state;
+        const { round, finishUp, done, begin, requestPermission, talkative, moderatorReadyToStart, intro, seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, stylesSet, conversationTopicStyle } = this.state;
 
         const getIntroStyle=(name)=>Object.assign({}, stylesSet && {transition: IntroTransition}, introStyle[name], intro && introSeatStyle[name] )
         const innerWidth=typeof window!== 'undefined' ? window.innerWidth : 1920;
@@ -2383,10 +2404,12 @@ class RASPUndebate extends React.Component {
                     <div className={classes['innerAgenda']}>
                         {this.props.participants.moderator.agenda[round] &&
                             <>
-                                <ul className={classes['agendaItem']}>
+                                <div className={classes['agendaItem']}>
                                     <div className={classes['agendaTitle']}>Agenda</div>
-                                    {this.props.participants.moderator.agenda[round] && this.props.participants.moderator.agenda[round].map((item, i) => <li className={classes['item']} key={item + i}>{item}</li>)}
-                                </ul>
+                                    <ul className={classes['agendaList']}>
+                                        {this.props.participants.moderator.agenda[round] && this.props.participants.moderator.agenda[round].map((item, i) => <li className={classes['item']} key={item + i}>{item}</li>)}
+                                    </ul>
+                                </div>
                             </>
                         }
                     </div>
@@ -2434,7 +2457,7 @@ class RASPUndebate extends React.Component {
 
         var main=()=>!done && (
                 <>
-                    {conversationTopic()}
+                    {conversationTopic(conversationTopicStyle)}
                     <div className={classes['outerBox']}>
                         {Object.keys(this.props.participants).map((participant,i)=>videoBox(participant,i,seatStyle))}
                         {agenda(agendaStyle)}

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/server/start.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "svgr": "svgr --icon --filename-case kebab assets/svg --out-dir app/svgr",
+    "svgr": "svgr --icon --filename-case kebab assets/svg --out-dir app/svgr && rm app/svgr/index.js",
     "transpile": "babel app --ignore app/test --out-dir dist --source-maps",
     "hot-transpile": "babel --watch app --ignore app/test --out-dir dist/ --source-maps",
     "hot-server": "nodemon --inspect dist/server/start.js",
