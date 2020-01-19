@@ -25,6 +25,16 @@ const ShadowBox=10;
 
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
+import IconPrevSpeaker from '../../svgr/icon-prev-speaker'
+import IconPrevSection from '../../svgr/icon-prev-session'
+import IconPlay from '../../svgr/icon-play'
+import IconPause from '../../svgr/icon-pause'
+import IconSkipSpeaker from '../../svgr/icon-skip-speaker'
+import IconNextSection from '../../svgr/icon-skip-session'
+import IconRedo from '../../svgr/icon-redo'
+import IconFinishRecording from '../../svgr/icon-finish-recording'
+import IconRecording from '../../svgr/icon-recording'
+
 function promiseSleep(time){
     return new Promise((ok,ko)=>setTimeout(ok,time))
 }
@@ -1002,7 +1012,6 @@ class RASPUndebate extends React.Component {
             var introStyle=cloneDeep(this.state.introStyle);
             var conversationTopicStyle=cloneDeep(this.state.conversationTopicStyle);
             const fontSize=this.calcFontSize();
-
             if(width / height > 0.8 ){ // landscape mode
                 if((width/height) > (1.8)){ // it's very long and short like a note 8
 
@@ -1379,7 +1388,7 @@ class RASPUndebate extends React.Component {
             if(this.recordedBlobs.length)
                 logger.trace('Recorded Blobs: ', this.recordedBlobs.length && this.recordedBlobs[0].type, this.recordedBlobs.length, this.recordedBlobs.reduce((acc,blob)=>acc+blob.size||0,0));
             else
-                logger.warn('no recorded blobs'); // apple safari will not have anything at this point
+                logger.trace('no recorded blobs yet'); // apple safari will not have anything at this point
         }
     }
 
@@ -1662,50 +1671,13 @@ class RASPUndebate extends React.Component {
         return seating[(seatOffset + i) % this.numParticipants]
     }
 
-    previousSectionIcon= <svg width="60%" height="60%" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="27.5" cy="27.5" r="27.5" fill="black"/>
-                            <path d="M39.6667 41.3334L23 28L39.6667 14.6667V41.3334Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M16.333 39.6666V16.3333" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>; 
-
-    previousSpeakerIcon= <svg width="60%" height="60%" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="27.5" cy="27.5" r="27.5" fill="black"/>
-                            <path d="M19 36L10.6667 29.3333L19 22.6667V36Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M45.3333 40V37.3333C45.3333 35.9188 44.7714 34.5623 43.7712 33.5621C42.771 32.5619 41.4145 32 40 32H29.3333C27.9188 32 26.5623 32.5619 25.5621 33.5621C24.5619 34.5623 24 35.9188 24 37.3333V40" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M34.6667 16C31.7211 16 29.3333 18.3878 29.3333 21.3334C29.3333 24.2789 31.7211 26.6667 34.6667 26.6667C37.6122 26.6667 40 24.2789 40 21.3334C40 18.3878 37.6122 16 34.6667 16Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>;
-
-    nextSectionIcon= <svg width="60%" height="60%" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="27.5" cy="27.5" r="27.5" fill="black"/>
-                        <path d="M16.333 14.6667L32.9997 28L16.333 41.3334V14.6667Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M39.667 16.3333V39.6666" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>;  
-                    
-    nextSpeakerIcon= <svg width="60%" height="60%" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="27.5" cy="27.5" r="27.5" fill="black"/>
-                        <path d="M36 21.3333L44.3333 28L36 34.6666V21.3333Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M32.0003 40V37.3333C32.0003 35.9188 31.4384 34.5623 30.4382 33.5621C29.438 32.5619 28.0815 32 26.667 32H16.0003C14.5858 32 13.2293 32.5619 12.2291 33.5621C11.2289 34.5623 10.667 35.9188 10.667 37.3333V40" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M21.3333 26.6667C24.2789 26.6667 26.6667 24.2789 26.6667 21.3333C26.6667 18.3878 24.2789 16 21.3333 16C18.3878 16 16 18.3878 16 21.3333C16 24.2789 18.3878 26.6667 21.3333 26.6667Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>;  
-         
-    playIcon= <svg width="75%" height="75%" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="32.5" cy="32.5" r="32.5" fill="black"/>
-                <path d="M24 13L52.3017 33L24 52.9999V13Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>;
-            
-    pauseIcon= <svg width="75%" height="75%" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="32.5" cy="32.5" r="32.5" fill="black"/>
-                <path d="M28.75 17.5H21.25V47.5H28.75V17.5Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M43.75 17.5H36.25V47.5H43.75V17.5Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>;        
-
-    buttons=[
-        {name: ()=>this.previousSectionIcon , func: this.prevSection},
-        {name: ()=>this.previousSpeakerIcon, func: this.prevSpeaker},
-        {name: ()=>this.state.allPaused ? this.playIcon : this.pauseIcon, func: this.allPause},
-        {name: ()=>this.nextSpeakerIcon, func: this.nextSpeaker},
-        {name: ()=>this.nextSectionIcon, func: this.nextSection, disabled: ()=>this.participants.human && !this.participants.human.speakingObjectURLs[this.state.round] },
-    ]
+buttons=[
+    {name: ()=><IconPrevSection width="60%" height="60%"/> , func: this.prevSection},
+    {name: ()=><IconPrevSpeaker width="60%" height="60%" />, func: this.prevSpeaker},
+    {name: ()=>this.state.allPaused ? <IconPlay width="75%" height="75%" /> : <IconPause width="75%" height="75%" />, func: this.allPause},
+    {name: ()=><IconSkipSpeaker width="60%" height="60%" />, func: this.nextSpeaker},
+    {name: ()=><IconNextSection width="60%" height="60%" />, func: this.nextSection, disabled: ()=>this.participants.human && !this.participants.human.speakingObjectURLs[this.state.round] },
+]
 
     recorderButtons=[
         {name: ()=>"Redo", func: this.rerecordButton},
@@ -1716,7 +1688,9 @@ class RASPUndebate extends React.Component {
     ]
 
     allPause(){
-        if(!this.state.allPaused) {
+        if(!this.state.begin){
+            this.beginButton()
+        } else if(!this.state.allPaused) {
             Object.keys(this.participants).forEach(participant=>{
                 if(this[participant] && this[participant].current) this[participant].current.pause();
             })
@@ -1967,8 +1941,8 @@ class RASPUndebate extends React.Component {
                 logger.error("upload video failed", name)
             }
             if(this.participant.speaking.length===this.props.participants.audience1.speaking.length && this.participant.listening){
-                logger.trace("creat participant", this.participant)
-                window.socket.emit('create participant', {
+                logger.trace("creat participant", this.participant);
+                var pIota={ //participant iota
                     parentId: this.props.parentId, 
                     subject: 'Participant:' + this.props.subject, 
                     description: 'A participant in the following discussion:' + this.props.description,
@@ -1976,7 +1950,12 @@ class RASPUndebate extends React.Component {
                         component: 'MergeParticipants',
                         participant: this.participant
                     },
-                }, (result)=>{logger.trace("participant created", result)})
+                }
+                if(this.props.bp_info) {// don't cause the property to exist in the Iota if there is none. 
+                    pIota.component.participant.bp_info=this.props.bp_info;
+                    if(this.props.bp_info.candidate_name) pIota.component.participant.name=this.props.bp_info.candidate_name;
+                }   
+                window.socket.emit('create participant', pIota , (result)=>{logger.trace("participant created", result)})
             }
         }
 
@@ -2222,6 +2201,9 @@ class RASPUndebate extends React.Component {
                                 || (done && this.state.hungUp && closing.iframe && this.participants.human)
                                 );
 
+        const bot=this.props.browserConfig.type==='bot';
+        const noOverlay=true;
+
         if(this.canNotRecordOnSafari){
             return (
                 <div className={cx(classes['outerBox'],classes['beginBox'])}>
@@ -2246,42 +2228,14 @@ class RASPUndebate extends React.Component {
             (closing.link && (!this.participants.human || (this.participants.human && (this.state.uploadComplete || this.state.hungUp))) && <div className={classes['thanks-link']}><a href={closing.link.url} target={closing.link.target || "_self"} >{closing.link.name}</a></div>)
         )
             
-        const beginOverlay=()=>(
-            !begin && !done &&
-                <div className={cx(classes['outerBox'],classes['beginBox'])}>
-                    <img style={getIntroStyle('introRight')} src="/assets/images/female_hands_mug.png"/>
-                    <img style={getIntroStyle('introLeft')} src='/assets/images/male_hands_mug.png'/>
-                    <img style={getIntroStyle('introTopLeft')} src='/assets/images/left_flowers.png'/>
-                    <img style={getIntroStyle('introTopRight')} src='/assets/images/right_flowers.png'/>
-                    <div className={cx(className, classes['introPane'], stylesSet && !begin && classes['begin'], intro && classes['intro'])} key='begin-banner'>
-                        <div className={cx(className, classes['introTitle'])}>
-                            <h1>Candidate Conversations</h1>
-                            <p style={{textAlign: 'center', marginTop: "1em", marginBottom: 0}}><img src="https://ballotpedia.org/wiki/skins/Ballotpedia/images/bp-logo.svg" style={{width: "auto", height: "4vh"}}/></p>
-                            <p style={{textAlign: 'center', margin: 0}}><img src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png" style={{width: "auto", height: "5vh"}}/></p>
-                        </div>
-                        <div className={cx(className, classes['introBox'])}>
-                            <div className={cx(className, classes['introInner'])}>
-                                <div style={{ textAlign: 'center' }}>
-                                    <div>
-                                        <span className={classes['opening']}>
-                                            <p>{ReactHtmlParser(opening.line1)}</p>
-                                            <p style={{color: 'darkviolet', fontSize: '90%'}}>{ReactHtmlParser(opening.line2)}</p>
-                                            <p>{ReactHtmlParser(opening.line3)}</p>
-                                            <p style={{color: 'darkviolet', fontSize: '90%'}}>{ReactHtmlParser(opening.line4)}</p>
-                                            <p style={{fontSize: '150%'}}>{ReactHtmlParser(opening.bigLine)}</p>
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <span className={classes['subOpening']}>{ReactHtmlParser(opening.subLine)}</span>
-                                    </div>
-                                    <div>
-                                        <button className={classes['beginButton']} onClick={this.beginButton}>Begin</button>
-                                    </div>
-                                </div>
-                            </div>
+        const beginOverlay=()=>(!begin && !done &&
+            <div className={cx(classes['outerBox'],classes['beginBox'])}>
+                    <div style={{ width: '100%', height: '100%', display: 'table' }} >
+                        <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }} >
+                        <button className={classes['beginButton']} onClick={this.beginButton}>Begin</button>
                         </div>
                     </div>
-                </div>
+            </div>
         )
 
         const waitingOnModeratorOverlay=()=>(
@@ -2311,15 +2265,14 @@ class RASPUndebate extends React.Component {
         const ending = () => done && !this.state.hungUp && (
             <React.Fragment>
                 <div className={cx(classes['outerBox'],scrollableIframe&&classes['scrollableIframe'])} key="ending">
-                    <
-                    div style={{ width: '100%', height: '100%', display: 'table' }} >
+                    <div style={{ width: '100%', height: '100%', display: 'table' }} >
                         <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }} >
                             <span className={cx(classes['thanks'],scrollableIframe&&classes['scrollableIframe'])}>{closing.thanks}</span>
                             {surveyForm()}
                             {this.participants.human && !this.state.uploadComplete &&
                                 <>
                                     <div style={{ textAlign: 'center' }}>
-                                        <div><label>Name<Input className={this.props.classes['name']} block medium required placeholder="Name" ref="name" name="name" onChange={(e) => this.setState({ name: e.value })} /></label><span>This will be shown with your video</span></div>
+                                    {!this.props.bp_info || !this.props.bp_info.candidate_name ? <div><label>Name<Input className={this.props.classes['name']} block medium required placeholder="Name" ref="name" name="name" onChange={(e) => this.setState({ name: e.value })} /></label><span>This will be shown with your video</span></div>:null}
                                         {!this.newUser || this.state.newUserId ? 
                                             <div><button className={classes['beginButton']} onClick={this.onUserUpload.bind(this)}>Post</button></div> 
                                         :
@@ -2356,49 +2309,57 @@ class RASPUndebate extends React.Component {
             let chair = this.seat(i);
             if (participant === 'human' && this.seat(i) === 'speaking')
                 humanSpeaking = true;
-            const style= intro ? seatStyle[chair] : Object.assign({},seatStyle[chair],introSeatStyle[chair]) 
+                const style= noOverlay || bot || intro ? seatStyle[chair] : Object.assign({},seatStyle[chair],introSeatStyle[chair]) 
+                let participant_name;
+                if(participant==='human'&&this.props.bp_info&&this.props.bp_info.candidate_name)
+                    participant_name=this.props.bp_info.candidate_name
+                else
+                    participant_name=this.props.participants[participant].name;
             /*src={"https://www.youtube.com/embed/"+getYouTubeID(this.participants[participant].listeningObjectURL)+"?enablejsapi=1&autoplay=1&loop=1&controls=0&disablekb=1&fs=0&modestbranding=1&rel=0"}*/
             return (
                 <div style={style} className={cx(className, classes['box'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])} key={participant}>
                     <div style={{width: seatStyle[this.seat(i)].width, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio + 'vw' }}
                         className={cx(className, classes['participantBackground'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])}
                     >
-                        <img style={{'transition': `all ${TransitionTime}ms linear`, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio + 'vw' }} height={parseFloat(seatStyle['speaking'].width) *  HDRatio * innerWidth / 100 } width="auto" src={this.participants[participant] && this.participants[participant].placeholderUrl} ></img>
+                                                <img style={{'transition': `all ${TransitionTime}ms linear`, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio + 'vw' }} height={parseFloat(seatStyle['speaking'].width) *  HDRatio * innerWidth / 100 } width="auto" src={this.participants[participant] && this.participants[participant].placeholderUrl || undefined} ></img>
                     </div>
-                    {participant!=='human' && this.participants[participant].youtube ? 
-                        <div className={cx(className, classes['participant'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])}
-                            style={{fontSize: '8px', width: parseFloat(seatStyle[this.seat(i)].width) * innerWidth / 100, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio * innerWidth / 100}}
-                        >
-                            <div id={'youtube-'+participant} style={{fontSize: "8px"}}></div>
-                        </div>
+                    {bot ? null :
+                        participant!=='human' && this.participants[participant].youtube ? 
+                            <div className={cx(className, classes['participant'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])}
+                                style={{fontSize: '8px', width: parseFloat(seatStyle[this.seat(i)].width) * innerWidth / 100, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio * innerWidth / 100}}
+                            >
+                                <div id={'youtube-'+participant} style={{fontSize: "8px"}}></div>
+                            </div>
                          :
+                        <>
                         <video className={cx(className, classes['participant'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])}
                             ref={this[participant]}
                             playsInline
-                            autoPlay
+                            autoPlay={!bot}
                             controls={false}
                             onEnded={this.autoNextSpeaker.bind(this)}
                             onError={this.videoError.bind(this,participant)}
                             style={{width: seatStyle[this.seat(i)].width, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio + 'vw'}}
                             key={participant + '-video'}>
-                            </video>
-                    }
-                    <div className={cx(classes['videoFoot'], finishUp && classes['finishUp'])}><span>{!finishUp && (seatToName[this.seat(i)]+': ')}</span><span>{this.props.participants[participant].name}</span></div>
-                    <div className={cx(classes['stalledOverlay'],this.state.stalled===participant && classes['stalledNow'])} 
-                        style={{width: parseFloat(seatStyle[this.seat(i)].width) * innerWidth / 100, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio * innerWidth / 100}}
-                    >
-                        <div className={classes['stalledBox']}>
-                            <p>Hmmmm... the Internet is slow here</p>
-                            <p>{`${this.props.participants[participant].name} will be with us shortly`}</p>
-                            <p>{`${this.state.waitingPercent}% complete`}</p>
+                        </video>
+                        <div className={cx(classes['stalledOverlay'],this.state.stalled===participant && classes['stalledNow'])} 
+                            style={{width: parseFloat(seatStyle[this.seat(i)].width) * innerWidth / 100, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio * innerWidth / 100}}
+                        >
+                            <div className={classes['stalledBox']}>
+                                <p>Hmmmm... the Internet is slow here</p>
+                                <p>{`${this.props.participants[participant].name} will be with us shortly`}</p>
+                                <p>{`${this.state.waitingPercent}% complete`}</p>
+                            </div>
                         </div>
-                    </div>
+                    </>
+            }
+                    <div className={cx(classes['videoFoot'], finishUp && classes['finishUp'])}><span>{!finishUp && (seatToName[this.seat(i)]+': ')}</span><span>{participant_name}</span></div>
                 </div>
             )
         }
 
         var agenda = (agendaStyle) => {
-            const style= finishUp ? {} :  intro ? agendaStyle : Object.assign({},agendaStyle,introSeatStyle['agenda']);
+            const style= finishUp ? {} :  noOverlay || bot || intro ? agendaStyle : Object.assign({},agendaStyle,introSeatStyle['agenda']);
             return (
                 <div style={style} className={cx(classes['agenda'], stylesSet && classes['stylesSet'], finishUp && classes['finishUp'], !begin && classes['begin'], !intro && classes['intro'])} key={'agenda' + round + agendaStyle.left}>
                     <div className={classes['innerAgenda']}>
@@ -2417,7 +2378,7 @@ class RASPUndebate extends React.Component {
             )
         };
 
-        const buttonBar=(buttonBarStyle)=>(begin && intro && !finishUp && !done &&
+        const buttonBar=(buttonBarStyle)=>(( bot || ((noOverlay || (begin && intro)) && !finishUp && !done)) &&
             <div style={buttonBarStyle} className={classes['buttonBar']} key="buttonBar">
                 {this.buttons.map(button=>
                     <div style={{width: 100/this.buttons.length+'%', display: "inline-block", height: "100%"}} key={button.name}>
@@ -2474,10 +2435,10 @@ class RASPUndebate extends React.Component {
                 <section id="syn-ask-webrtc" key='began' className={cx(classes['innerWrapper'],scrollableIframe&&classes["scrollableIframe"])} style={{left: this.state.left}} ref={this.calculatePositionAndStyle}>
                     <audio ref={this.audio} playsInline controls={false} onEnded={this.audioEnd} key="audio"></audio>
                     {main()}
-                    {(this.participants.human && this.state.preambleAgreed || !this.participants.human) && beginOverlay()}
-                    {this.participants.human && !intro && !begin && !done && <Preamble agreed={this.state.preambleAgreed} onClick={()=>{logger.info("Undebate preambleAgreed true"); this.setState({preambleAgreed: true})}} /> }
+                    {(this.participants.human && this.state.preambleAgreed || !this.participants.human) && !bot && beginOverlay()}
+                    {this.participants.human && !intro && !begin && !done && <Preamble agreed={this.state.preambleAgreed} onClick={()=>{logger.info("Undebate preambleAgreed true"); this.setState({preambleAgreed: true}); noOverlay && this.beginButton()}} /> }
                     {ending()}
-                    {buttonBar(buttonBarStyle)}                        
+                    {(this.participants.human && this.state.preambleAgreed || !this.participants.human) && buttonBar(buttonBarStyle)} 
                     {recorderButtonBar(recorderButtonBarStyle)}
                     {permissionOverlay()}
                     {waitingOnModeratorOverlay()}
