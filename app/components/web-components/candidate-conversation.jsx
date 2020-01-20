@@ -677,7 +677,7 @@ class RASPUndebate extends React.Component {
         else{ // we need to calculate the position of everything if rendered on the server, based on some size.
             let width, height;
             if(this.props.browserConfig.type==='bot') {// running on a bot
-                width=1920;
+                width=1200; //Facebook image post size: 1200 x 900
                 height=900;
                 let fontSize=this.estimateFontSize(width,height)
                 let calculatedStyles=this.calculateStyles(width,height,height,fontSize);
@@ -1972,7 +1972,7 @@ buttons=[
                     component: {
                         component: 'MergeParticipants',
                         participant: this.participant
-                    },
+                    }
                 }
                 if(this.props.bp_info) {// don't cause the property to exist in the Iota if there is none. 
                     pIota.component.participant.bp_info=this.props.bp_info;
