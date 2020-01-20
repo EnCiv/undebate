@@ -50,7 +50,7 @@ const styles = {
         top: '0',
         left: '0',
         marginTop: '0px',
-        'transition': "all 5s ease"
+//        'transition': "all 5s ease"
     },
     conversationTopicContent:{
         marginTop: '5px',
@@ -261,13 +261,15 @@ const styles = {
         'color': 'white',
         'font-weight': '600',
         'font-size': '100%',
-        'transition': 'all .5s linear',
         'background-color': 'black',
         'overflow': 'hidden',
         'text-overflow': 'ellipsis',
         'white-space': 'nowrap',
         '&$finishUp': {
             'font-size': '1%'
+        },
+        '&$stylesSet': {
+            'transition': `all ${TransitionTime}ms linear`,
         }
     },
     'agenda': { 
@@ -672,6 +674,16 @@ class RASPUndebate extends React.Component {
         }
         if(typeof window!== 'undefined')
             this.calcFontSize();
+        else{ // we need to calculate the position of everything if rendered on the server, based on some size.
+            let width, height;
+            if(this.props.browserConfig.type==='bot') {// running on a bot
+                width=1920;
+                height=900;
+                let fontSize=this.estimateFontSize(width,height)
+                let calculatedStyles=this.calculateStyles(width,height,height,fontSize);
+                Object.assign(this.state,calculatedStyles,{fontSize});
+            }
+        }
     }
 
     state = {
@@ -977,16 +989,22 @@ class RASPUndebate extends React.Component {
             const fontSize=parseFloat(getComputedStyle(body).fontSize);
             let width=window.innerWidth;
             let height=window.innerHeight;
-            if(width/height>1){
-                newFontSize=height/42; //lines vertically - determined experimentally
-                logger.trace("Undebate FontSize:", key, width, height, fontSize, newFontSize);
-                
-            }else{
-                newFontSize=height/64; // lines vertically - determined experimentally
-                logger.trace("Undebate FontSize:", key, width, height, fontSize, newFontSize);
-            }
+            newFontSize=this.estimateFontSize(width,height)
         }
         body.style.fontSize=newFontSize+'px';
+        return newFontSize;
+    }
+
+    estimateFontSize(width,height){
+        let newFontSize;
+        if(width/height>1){
+            newFontSize=height/42; //lines vertically - determined experimentally
+            logger.trace("Undebate FontSize:", width, height, newFontSize);
+            
+        }else{
+            newFontSize=height/64; // lines vertically - determined experimentally
+            logger.trace("Undebate FontSize:", width, height, newFontSize);
+        }
         return newFontSize;
     }
 
@@ -1002,225 +1020,58 @@ class RASPUndebate extends React.Component {
             let {x}=this.topRef.getBoundingClientRect();
             let height=window.innerHeight; // on iOS the height of bounding Rect is larger than what's shown because of the address bar
             let width=window.innerWidth;
-            let maxerHeight=Math.max(height,window.screen.height);
-            let maxerWidth=Math.max(width,window.screen.width);
-            var seatStyle=cloneDeep(this.state.seatStyle);
-            var agendaStyle=cloneDeep(this.state.agendaStyle);
-            var buttonBarStyle=cloneDeep(this.state.buttonBarStyle);
-            var recorderButtonBarStyle=cloneDeep(this.state.recorderButtonBarStyle);
-            var introSeatStyle=cloneDeep(this.state.introSeatStyle);
-            var introStyle=cloneDeep(this.state.introStyle);
-            var conversationTopicStyle=cloneDeep(this.state.conversationTopicStyle);
+            let maxerHeight=Math.max(height,window.screen.height); // this looks at the screen heigh which is different than the window/viewport - especially on desktop, and sometimes on smartphone
             const fontSize=this.calcFontSize();
-            if(width / height > 0.8 ){ // landscape mode
-                if((width/height) > (1.8)){ // it's very long and short like a note 8
+            let calculatedStyles=this.calculateStyles(width,height,maxerHeight,fontSize);
+            this.setState({left: -x + 'px',fontSize, ...calculatedStyles});
+        }
+    }
 
-                    const speakingWidthRatio= (height * 0.4 / HDRatio / width) ;
-                    const nextUpWidthRatio= speakingWidthRatio * .5;
-                    const seatWidthRatio= speakingWidthRatio * .5;
-                    const verticalSeatSpaceRatio=0.025;
-                    const horizontalSeatSpaceRatio=0.025;
-                    const navBarHeightRatio=0.08;
+    calculateStyles(width,height,maxerHeight,fontSize){
+        var seatStyle=cloneDeep(this.state.seatStyle);
+        var agendaStyle=cloneDeep(this.state.agendaStyle);
+        var buttonBarStyle=cloneDeep(this.state.buttonBarStyle);
+        var recorderButtonBarStyle=cloneDeep(this.state.recorderButtonBarStyle);
+        var introSeatStyle=cloneDeep(this.state.introSeatStyle);
+        var introStyle=cloneDeep(this.state.introStyle);
+        var conversationTopicStyle=cloneDeep(this.state.conversationTopicStyle);
+        if(width / height > 0.8 ){ // landscape mode
+            if((width/height) > (1.8)){ // it's very long and short like a note 8
 
-                    const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height, 2.5*fontSize);
-                    const horizontalSeatSpace=fontSize;
-
-
-                    seatStyle.speaking.left= horizontalSeatSpace; //((1-speakingWidthRatio) * width)/4; /// centered
-                    seatStyle.speaking.top=seatWidthRatio*HDRatio*103 + navBarHeightRatio*100*HDRatio +'vw';
-                    seatStyle.speaking.width= speakingWidthRatio*165+'vw';
-                    introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
-                    conversationTopicStyle.left=seatStyle.speaking.left;
-                     
-                    seatStyle.nextUp.top= speakingWidthRatio * HDRatio * width*0.8 - (nextUpWidthRatio * HDRatio * width ) - verticalSeatSpace;
-                    seatStyle.nextUp.width=nextUpWidthRatio*100+'vw';
-                    seatStyle.nextUp.left= seatStyle.speaking.left; // depends on width
-                    introSeatStyle.nextUp={left: -(seatStyle.nextUp.left + nextUpWidthRatio * width + ShadowBox)}
-
-                    let seat=2;
-
-                    let seatTop=seatStyle.nextUp.top + nextUpWidthRatio * HDRatio * width  + verticalSeatSpace;
-                    let seatVerticalPitch= seatWidthRatio * HDRatio * width + verticalSeatSpace;
-                    let seatLeft= seatStyle.nextUp.left;//Math.min(seatStyle.nextUp.left, horizontalSeatSpace);   
-
-                    seatTop=speakingWidthRatio * HDRatio * width*0.8 - (nextUpWidthRatio * HDRatio * width ) - verticalSeatSpace;
-                    //height - seatWidthRatio * HDRatio * width - verticalSeatSpace;
-                    seatLeft+= seatWidthRatio * width + horizontalSeatSpace;
-                    let seatHorizontalPitch=seatWidthRatio * width + horizontalSeatSpace;
-                    // across the bottom
-                    let i=0;  // for calcula`ting the intro
-                    while(seat<=7){ // some will go off the screen
-                        seatStyle['seat'+seat].top=seatTop;
-                        seatStyle['seat'+seat].left=seatLeft;
-                        seatStyle['seat'+seat].width= seatWidthRatio*100+'vw';
-                        introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + verticalSeatSpace)} // along the bottom, each seat is further away as you move to the right
-                        seatLeft+=seatHorizontalPitch;
-                        seat++;
-                        i++;
-                    }
-
-                    seatStyle.finishUp.left= 0.5*width;
-                    seatStyle.finishUp.top=  0.5*height;
-                    seatStyle.finishUp.width='1vw';
-
-                    agendaStyle.top=seatWidthRatio*HDRatio*103 + navBarHeightRatio*100*HDRatio +'vw';  //speakingWidthRatio * HDRatio * width * 0.10;
-                    agendaStyle.left=speakingWidthRatio*174+'vw';
-                    agendaStyle.height=speakingWidthRatio*165*HDRatio +'vw';//seatStyle.speaking.width*HDRatio;
-                    
-                    agendaStyle.width= 100 - speakingWidthRatio*180 +'vw';//Math.max(speakingWidthRatio * HDRatio * width * 0.8,20 * fontSize);
-                 //   if(agendaStyle.left + agendaStyle.width > width) agendaStyle.width=width-agendaStyle.left - 2*horizontalSeatSpace; 
-
-                    // introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
-
-                    buttonBarStyle.left=speakingWidthRatio*89 - nextUpWidthRatio*50 +'vw';
-                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 2.2; 
-                    buttonBarStyle.width= seatStyle.nextUp.width;
-                    buttonBarStyle.height= Math.max(0.05*height, 4*fontSize);
-
-                    recorderButtonBarStyle.left=buttonBarStyle.left;
-                    recorderButtonBarStyle.top= buttonBarStyle.top + (buttonBarStyle.height * 1.25)
-                    recorderButtonBarStyle.width= buttonBarStyle.width;
-                    recorderButtonBarStyle.height= buttonBarStyle.height;
-
-                    introStyle.introLeft.width="auto";
-                    introStyle.introLeft.height="25vh";
-                    introStyle.introLeft.top=(100-25)/2+'vh' // center vertically
-                    introSeatStyle.introLeft.left="-50vw";
-
-                    introStyle.introRight.width="auto";
-                    introStyle.introRight.height="25vh";
-                    introSeatStyle.introRight.right="-50vw";
-                    introStyle.introRight.top=(100-25)/2+'vh' // center vertically
-
-                } else {
-                    const speakingWidthRatio=0.65;
-                    const nextUpWidthRatio= 0.20;
-                    const seatWidthRatio= 0.20;
-                    const verticalSeatSpaceRatio=0.05;
-                    const horizontalSeatSpaceRatio=0.0125;
-                    const navBarHeightRatio=0.08;
-
-                    const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height,3*fontSize);
-                    const horizontalSeatSpace=fontSize; //Math.max(horizontalSeatSpaceRatio * width, fontSize);
-
-                    seatStyle.speaking.left= horizontalSeatSpace;
-                    seatStyle.speaking.top= seatWidthRatio*HDRatio*120 + navBarHeightRatio*100 +'vw';  //TopMargin;
-                    seatStyle.speaking.width= speakingWidthRatio*100+'vw';
-                    introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
-                    conversationTopicStyle.left=seatStyle.speaking.left;
-
-                    seatStyle.nextUp.left=horizontalSeatSpace; //(2.5 /100) * width;
-                    seatStyle.nextUp.top= height*navBarHeightRatio;
-                    seatStyle.nextUp.width= nextUpWidthRatio * 100 + 'vw';
-                    introSeatStyle.nextUp={left: -(seatStyle.nextUp.left + nextUpWidthRatio * width + ShadowBox)}
-
-                    let seat=2;
-                    let seatTop=seatStyle.nextUp.top + nextUpWidthRatio * HDRatio * width + verticalSeatSpace;
-                    let seatLeft=horizontalSeatSpace;
-                    let seatHorizontalPitch=seatWidthRatio * width + horizontalSeatSpace;
-                    let seatVerticalPitch= seatWidthRatio * HDRatio * width + verticalSeatSpace;
-
-                    seatTop= height*navBarHeightRatio; //height - seatWidthRatio * HDRatio * width - verticalSeatSpace;
-                    seatLeft+= seatHorizontalPitch;
-        
-                    // across the bottom
-                    let i=0;  // for calculating the intro
-                    while(seat<=7){ // some will go off the screen
-                        seatStyle['seat'+seat].top=seatTop;
-                        seatStyle['seat'+seat].left=seatLeft;
-                        seatStyle['seat'+seat].width= seatWidthRatio*100+'vw';
-                        introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + verticalSeatSpace)} // along the bottom, each seat is further away as you move to the right
-                        seatLeft+=seatHorizontalPitch;
-                        seat++;
-                        i++;
-                    }
-                    
-                    seatStyle.finishUp.left= 0.5*width;
-                    seatStyle.finishUp.top=  ((0.5 + 0.15)*width * HDRatio + (0.05 + 0.015)*height + TopMargin)/2;
-                    seatStyle.finishUp.width="1vw"
-
-                    agendaStyle.top= seatWidthRatio*HDRatio*120 + navBarHeightRatio*100 +'vw';
-                    agendaStyle.left= seatStyle.speaking.left + speakingWidthRatio * width + horizontalSeatSpace;
-                    agendaStyle.width=  100 - speakingWidthRatio*108 +'vw';
-                    agendaStyle.height=speakingWidthRatio*100*HDRatio +'vw'
-                    // if(agendaStyle.left + agendaStyle.width > width) agendaStyle.width=width-agendaStyle.left - 2*horizontalSeatSpace; 
-                    // agendaStyle.height= Math.max(.175*width,20 * fontSize);
-                    // introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
-                    
-            
-                    buttonBarStyle.width= speakingWidthRatio*40+'vw';
-                    buttonBarStyle.left= seatStyle.speaking.left + speakingWidthRatio*width*0.32;
-                    // buttonBarStyle.top= speakingWidthRatio * HDRatio * width;
-                    if (width / height < 0.87) {
-                        buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.34;
-                    } else if (width / height < 1) {
-                        buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.38;
-                    } else if (width / height < 1.2) {
-                        buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.4;
-                    } else if (width / height < 1.4) {
-                        buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.4;
-                    } else if (width / height < 1.6) {
-                        buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.4;
-                    } else {
-                        buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.4;
-                    }
-                    buttonBarStyle.height= Math.max(0.035*height, 4*fontSize);
-                    
-                    recorderButtonBarStyle.left=buttonBarStyle.left;
-                    recorderButtonBarStyle.top= buttonBarStyle.top + (buttonBarStyle.height * 1.25)
-                    recorderButtonBarStyle.width= buttonBarStyle.width;
-                    recorderButtonBarStyle.height= buttonBarStyle.height;
-
-                    introStyle.introLeft.width="auto";
-                    introStyle.introLeft.height="50vh";
-                    introSeatStyle.introLeft.left="-50vw";
-    
-                    introStyle.introRight.width="auto";
-                    introStyle.introRight.height="50vh";
-                    introSeatStyle.introRight.right="-50vw";
-                }
-            } else { // portrait mode
-                const speakingWidthRatio=0.95;
-                const nextUpWidthRatio= 0.25;
-                const seatWidthRatio= 0.25;
-                const verticalSeatSpaceRatio=0.05;
+                const speakingWidthRatio= (height * 0.4 / HDRatio / width) ;
+                const nextUpWidthRatio= speakingWidthRatio * .5;
+                const seatWidthRatio= speakingWidthRatio * .5;
+                const verticalSeatSpaceRatio=0.025;
                 const horizontalSeatSpaceRatio=0.025;
-                const navBarHeightRatio=0.11;
+                const navBarHeightRatio=0.08;
 
-                const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height,3*fontSize);
-                const horizontalSeatSpace=Math.max(horizontalSeatSpaceRatio * width, fontSize);
+                const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height, 2.5*fontSize);
+                const horizontalSeatSpace=fontSize;
 
-                seatStyle.speaking.left= ((1-speakingWidthRatio) * width)/2; /// centered
-                seatStyle.speaking.top=navBarHeightRatio*height;//TopMargin;
-                seatStyle.speaking.width= speakingWidthRatio*100+'vw';
+
+                seatStyle.speaking.left= horizontalSeatSpace; //((1-speakingWidthRatio) * width)/4; /// centered
+                seatStyle.speaking.top=seatWidthRatio*HDRatio*103 + navBarHeightRatio*100*HDRatio +'vw';
+                seatStyle.speaking.width= speakingWidthRatio*165+'vw';
                 introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
-
-
-                seatStyle.nextUp.left= horizontalSeatSpace;
-                seatStyle.nextUp.top= speakingWidthRatio * HDRatio * width + verticalSeatSpace + navBarHeightRatio*height;
+                conversationTopicStyle.left=seatStyle.speaking.left;
+                    
+                seatStyle.nextUp.top= speakingWidthRatio * HDRatio * width*0.8 - (nextUpWidthRatio * HDRatio * width ) - verticalSeatSpace;
                 seatStyle.nextUp.width=nextUpWidthRatio*100+'vw';
-                introSeatStyle.nextUp={left: -(nextUpWidthRatio * width + horizontalSeatSpace + ShadowBox)}
+                seatStyle.nextUp.left= seatStyle.speaking.left; // depends on width
+                introSeatStyle.nextUp={left: -(seatStyle.nextUp.left + nextUpWidthRatio * width + ShadowBox)}
 
                 let seat=2;
 
                 let seatTop=seatStyle.nextUp.top + nextUpWidthRatio * HDRatio * width  + verticalSeatSpace;
                 let seatVerticalPitch= seatWidthRatio * HDRatio * width + verticalSeatSpace;
+                let seatLeft= seatStyle.nextUp.left;//Math.min(seatStyle.nextUp.left, horizontalSeatSpace);   
 
-                // down the left side
-                while((seatTop+seatVerticalPitch < height) && (seat<=7) ){
-                    seatStyle['seat'+seat].top=seatTop;
-                    seatStyle['seat'+seat].left=horizontalSeatSpace;
-                    seatStyle['seat'+seat].width= seatWidthRatio*100+'vw';
-                    introSeatStyle['seat'+seat]={left: -(seatWidthRatio * width + horizontalSeatSpace + ShadowBox)}
-                    seatTop+=seatVerticalPitch
-                    seat++;
-                }
-
-                seatTop=height - seatWidthRatio * HDRatio * width - verticalSeatSpace;
-                let seatLeft= horizontalSeatSpace + seatWidthRatio * width + horizontalSeatSpace;
+                seatTop=speakingWidthRatio * HDRatio * width*0.8 - (nextUpWidthRatio * HDRatio * width ) - verticalSeatSpace;
+                //height - seatWidthRatio * HDRatio * width - verticalSeatSpace;
+                seatLeft+= seatWidthRatio * width + horizontalSeatSpace;
                 let seatHorizontalPitch=seatWidthRatio * width + horizontalSeatSpace;
                 // across the bottom
-                let i=0;  // for calculating the intro
+                let i=0;  // for calcula`ting the intro
                 while(seat<=7){ // some will go off the screen
                     seatStyle['seat'+seat].top=seatTop;
                     seatStyle['seat'+seat].left=seatLeft;
@@ -1233,37 +1084,209 @@ class RASPUndebate extends React.Component {
 
                 seatStyle.finishUp.left= 0.5*width;
                 seatStyle.finishUp.top=  0.5*height;
-                seatStyle.finishUp.width="1vw";
+                seatStyle.finishUp.width='1vw';
 
-                agendaStyle.top=seatStyle.nextUp.top;
-                agendaStyle.left=horizontalSeatSpace + nextUpWidthRatio * width + 2 * horizontalSeatSpace;
-                agendaStyle.width= ((agendaStyle.left+ fontSize * 20 + 2* horizontalSeatSpace) <= width) ? fontSize * 20 : width - agendaStyle.left - 2*horizontalSeatSpace; // don't go too wide
-                agendaStyle.height=agendaStyle.width; //fontSize * 20;
-                introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
+                agendaStyle.top=seatWidthRatio*HDRatio*103 + navBarHeightRatio*100*HDRatio +'vw';  //speakingWidthRatio * HDRatio * width * 0.10;
+                agendaStyle.left=speakingWidthRatio*174+'vw';
+                agendaStyle.height=speakingWidthRatio*165*HDRatio +'vw';//seatStyle.speaking.width*HDRatio;
+                
+                agendaStyle.width= 100 - speakingWidthRatio*180 +'vw';//Math.max(speakingWidthRatio * HDRatio * width * 0.8,20 * fontSize);
+                //   if(agendaStyle.left + agendaStyle.width > width) agendaStyle.width=width-agendaStyle.left - 2*horizontalSeatSpace; 
 
-                buttonBarStyle.left=seatStyle.speaking.left + speakingWidthRatio*width*0.25;
-                buttonBarStyle.top=speakingWidthRatio * HDRatio * width + verticalSeatSpace*1.2; //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
-                buttonBarStyle.width=speakingWidthRatio*50 + 'vw';
-                buttonBarStyle.height="5vh"
+                // introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
+
+                buttonBarStyle.left=speakingWidthRatio*89 - nextUpWidthRatio*50 +'vw';
+                buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 2.2; 
+                buttonBarStyle.width= seatStyle.nextUp.width;
+                buttonBarStyle.height= Math.max(0.05*height, 4*fontSize);
 
                 recorderButtonBarStyle.left=buttonBarStyle.left;
                 recorderButtonBarStyle.top= buttonBarStyle.top + (buttonBarStyle.height * 1.25)
                 recorderButtonBarStyle.width= buttonBarStyle.width;
                 recorderButtonBarStyle.height= buttonBarStyle.height;
 
-
-                introStyle.introLeft.width="25vw";
-                introStyle.introLeft.height="auto";
+                introStyle.introLeft.width="auto";
+                introStyle.introLeft.height="25vh";
+                introStyle.introLeft.top=(100-25)/2+'vh' // center vertically
                 introSeatStyle.introLeft.left="-50vw";
 
-                introStyle.introRight.width="25vw";
-                introStyle.introRight.height="auto";
+                introStyle.introRight.width="auto";
+                introStyle.introRight.height="25vh";
                 introSeatStyle.introRight.right="-50vw";
+                introStyle.introRight.top=(100-25)/2+'vh' // center vertically
 
+            } else {
+                const speakingWidthRatio=0.65;
+                const nextUpWidthRatio= 0.20;
+                const seatWidthRatio= 0.20;
+                const verticalSeatSpaceRatio=0.05;
+                const horizontalSeatSpaceRatio=0.0125;
+                const navBarHeightRatio=0.08;
+
+                const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height,3*fontSize);
+                const horizontalSeatSpace=fontSize; //Math.max(horizontalSeatSpaceRatio * width, fontSize);
+
+                seatStyle.speaking.left= horizontalSeatSpace;
+                seatStyle.speaking.top= seatWidthRatio*HDRatio*120 + navBarHeightRatio*100 +'vw';  //TopMargin;
+                seatStyle.speaking.width= speakingWidthRatio*100+'vw';
+                introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
+                conversationTopicStyle.left=seatStyle.speaking.left;
+
+                seatStyle.nextUp.left=horizontalSeatSpace; //(2.5 /100) * width;
+                seatStyle.nextUp.top= height*navBarHeightRatio;
+                seatStyle.nextUp.width= nextUpWidthRatio * 100 + 'vw';
+                introSeatStyle.nextUp={left: -(seatStyle.nextUp.left + nextUpWidthRatio * width + ShadowBox)}
+
+                let seat=2;
+                let seatTop=seatStyle.nextUp.top + nextUpWidthRatio * HDRatio * width + verticalSeatSpace;
+                let seatLeft=horizontalSeatSpace;
+                let seatHorizontalPitch=seatWidthRatio * width + horizontalSeatSpace;
+                let seatVerticalPitch= seatWidthRatio * HDRatio * width + verticalSeatSpace;
+
+                seatTop= height*navBarHeightRatio; //height - seatWidthRatio * HDRatio * width - verticalSeatSpace;
+                seatLeft+= seatHorizontalPitch;
+    
+                // across the bottom
+                let i=0;  // for calculating the intro
+                while(seat<=7){ // some will go off the screen
+                    seatStyle['seat'+seat].top=seatTop;
+                    seatStyle['seat'+seat].left=seatLeft;
+                    seatStyle['seat'+seat].width= seatWidthRatio*100+'vw';
+                    introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + verticalSeatSpace)} // along the bottom, each seat is further away as you move to the right
+                    seatLeft+=seatHorizontalPitch;
+                    seat++;
+                    i++;
+                }
+                
+                seatStyle.finishUp.left= 0.5*width;
+                seatStyle.finishUp.top=  ((0.5 + 0.15)*width * HDRatio + (0.05 + 0.015)*height + TopMargin)/2;
+                seatStyle.finishUp.width="1vw"
+
+                agendaStyle.top= seatWidthRatio*HDRatio*120 + navBarHeightRatio*100 +'vw';
+                agendaStyle.left= seatStyle.speaking.left + speakingWidthRatio * width + horizontalSeatSpace;
+                agendaStyle.width=  100 - speakingWidthRatio*108 +'vw';
+                agendaStyle.height=speakingWidthRatio*100*HDRatio +'vw'
+                // if(agendaStyle.left + agendaStyle.width > width) agendaStyle.width=width-agendaStyle.left - 2*horizontalSeatSpace; 
+                // agendaStyle.height= Math.max(.175*width,20 * fontSize);
+                // introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
+                
+        
+                buttonBarStyle.width= speakingWidthRatio*40+'vw';
+                buttonBarStyle.left= seatStyle.speaking.left + speakingWidthRatio*width*0.32;
+                // buttonBarStyle.top= speakingWidthRatio * HDRatio * width;
+                if (width / height < 0.87) {
+                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.34;
+                } else if (width / height < 1) {
+                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.38;
+                } else if (width / height < 1.2) {
+                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.4;
+                } else if (width / height < 1.4) {
+                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.4;
+                } else if (width / height < 1.6) {
+                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.4;
+                } else {
+                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.4;
+                }
+                buttonBarStyle.height= Math.max(0.035*height, 4*fontSize);
+                
+                recorderButtonBarStyle.left=buttonBarStyle.left;
+                recorderButtonBarStyle.top= buttonBarStyle.top + (buttonBarStyle.height * 1.25)
+                recorderButtonBarStyle.width= buttonBarStyle.width;
+                recorderButtonBarStyle.height= buttonBarStyle.height;
+
+                introStyle.introLeft.width="auto";
+                introStyle.introLeft.height="50vh";
+                introSeatStyle.introLeft.left="-50vw";
+
+                introStyle.introRight.width="auto";
+                introStyle.introRight.height="50vh";
+                introSeatStyle.introRight.right="-50vw";
             }
-            this.setState({left: -x + 'px', seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, conversationTopicStyle}, /*()=>{if(!this.state.stylesSet) setTimeout(()=>this.setState({stylesSet: true}))}*/);
+        } else { // portrait mode
+            const speakingWidthRatio=0.95;
+            const nextUpWidthRatio= 0.25;
+            const seatWidthRatio= 0.25;
+            const verticalSeatSpaceRatio=0.05;
+            const horizontalSeatSpaceRatio=0.025;
+            const navBarHeightRatio=0.11;
+
+            const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height,3*fontSize);
+            const horizontalSeatSpace=Math.max(horizontalSeatSpaceRatio * width, fontSize);
+
+            seatStyle.speaking.left= ((1-speakingWidthRatio) * width)/2; /// centered
+            seatStyle.speaking.top=navBarHeightRatio*height;//TopMargin;
+            seatStyle.speaking.width= speakingWidthRatio*100+'vw';
+            introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
+
+
+            seatStyle.nextUp.left= horizontalSeatSpace;
+            seatStyle.nextUp.top= speakingWidthRatio * HDRatio * width + verticalSeatSpace + navBarHeightRatio*height;
+            seatStyle.nextUp.width=nextUpWidthRatio*100+'vw';
+            introSeatStyle.nextUp={left: -(nextUpWidthRatio * width + horizontalSeatSpace + ShadowBox)}
+
+            let seat=2;
+
+            let seatTop=seatStyle.nextUp.top + nextUpWidthRatio * HDRatio * width  + verticalSeatSpace;
+            let seatVerticalPitch= seatWidthRatio * HDRatio * width + verticalSeatSpace;
+
+            // down the left side
+            while((seatTop+seatVerticalPitch < height) && (seat<=7) ){
+                seatStyle['seat'+seat].top=seatTop;
+                seatStyle['seat'+seat].left=horizontalSeatSpace;
+                seatStyle['seat'+seat].width= seatWidthRatio*100+'vw';
+                introSeatStyle['seat'+seat]={left: -(seatWidthRatio * width + horizontalSeatSpace + ShadowBox)}
+                seatTop+=seatVerticalPitch
+                seat++;
+            }
+
+            seatTop=height - seatWidthRatio * HDRatio * width - verticalSeatSpace;
+            let seatLeft= horizontalSeatSpace + seatWidthRatio * width + horizontalSeatSpace;
+            let seatHorizontalPitch=seatWidthRatio * width + horizontalSeatSpace;
+            // across the bottom
+            let i=0;  // for calculating the intro
+            while(seat<=7){ // some will go off the screen
+                seatStyle['seat'+seat].top=seatTop;
+                seatStyle['seat'+seat].left=seatLeft;
+                seatStyle['seat'+seat].width= seatWidthRatio*100+'vw';
+                introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + verticalSeatSpace)} // along the bottom, each seat is further away as you move to the right
+                seatLeft+=seatHorizontalPitch;
+                seat++;
+                i++;
+            }
+
+            seatStyle.finishUp.left= 0.5*width;
+            seatStyle.finishUp.top=  0.5*height;
+            seatStyle.finishUp.width="1vw";
+
+            agendaStyle.top=seatStyle.nextUp.top;
+            agendaStyle.left=horizontalSeatSpace + nextUpWidthRatio * width + 2 * horizontalSeatSpace;
+            agendaStyle.width= ((agendaStyle.left+ fontSize * 20 + 2* horizontalSeatSpace) <= width) ? fontSize * 20 : width - agendaStyle.left - 2*horizontalSeatSpace; // don't go too wide
+            agendaStyle.height=agendaStyle.width; //fontSize * 20;
+            introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
+
+            buttonBarStyle.left=seatStyle.speaking.left + speakingWidthRatio*width*0.25;
+            buttonBarStyle.top=speakingWidthRatio * HDRatio * width + verticalSeatSpace*1.2; //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
+            buttonBarStyle.width=speakingWidthRatio*50 + 'vw';
+            buttonBarStyle.height="5vh"
+
+            recorderButtonBarStyle.left=buttonBarStyle.left;
+            recorderButtonBarStyle.top= buttonBarStyle.top + (buttonBarStyle.height * 1.25)
+            recorderButtonBarStyle.width= buttonBarStyle.width;
+            recorderButtonBarStyle.height= buttonBarStyle.height;
+
+
+            introStyle.introLeft.width="25vw";
+            introStyle.introLeft.height="auto";
+            introSeatStyle.introLeft.left="-50vw";
+
+            introStyle.introRight.width="25vw";
+            introStyle.introRight.height="auto";
+            introSeatStyle.introRight.right="-50vw";
+
         }
+        return({seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, conversationTopicStyle})
     }
+    
 
     releaseCamera() {
         if (this.cameraStream && this.cameraStream.getTracks) {
@@ -1381,7 +1404,7 @@ class RASPUndebate extends React.Component {
     }
 
     stopRecording() {
-        logger.trace("Undebate.stopRecording", this.mediaRecorder.state)
+        logger.trace("Undebate.stopRecording", this.mediaRecorder && this.mediaRecorder.state)
         if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
             this.startRecorderState={state: "BLOCK"};  // need to block startRecording calls until the onStop even is received.
             this.mediaRecorder.stop()
@@ -2321,7 +2344,7 @@ buttons=[
                     <div style={{width: seatStyle[this.seat(i)].width, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio + 'vw' }}
                         className={cx(className, classes['participantBackground'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])}
                     >
-                                                <img style={{'transition': `all ${TransitionTime}ms linear`, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio + 'vw' }} height={parseFloat(seatStyle['speaking'].width) *  HDRatio * innerWidth / 100 } width="auto" src={this.participants[participant] && this.participants[participant].placeholderUrl || undefined} ></img>
+                        <img style={{'transition': `all ${TransitionTime}ms linear`, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio + 'vw' }} height={parseFloat(seatStyle['speaking'].width) *  HDRatio * innerWidth / 100 } width="auto" src={this.participants[participant] && this.participants[participant].placeholderUrl || undefined} ></img>
                     </div>
                     {bot ? null :
                         participant!=='human' && this.participants[participant].youtube ? 
@@ -2353,7 +2376,7 @@ buttons=[
                         </div>
                     </>
             }
-                    <div className={cx(classes['videoFoot'], finishUp && classes['finishUp'])}><span>{!finishUp && (seatToName[this.seat(i)]+': ')}</span><span>{participant_name}</span></div>
+                    <div className={cx(classes['videoFoot'], stylesSet&&classes['stylesSet'],finishUp && classes['finishUp'])}><span>{!finishUp && (seatToName[this.seat(i)]+': ')}</span><span>{participant_name}</span></div>
                 </div>
             )
         }
@@ -2361,7 +2384,7 @@ buttons=[
         var agenda = (agendaStyle) => {
             const style= finishUp ? {} :  noOverlay || bot || intro ? agendaStyle : Object.assign({},agendaStyle,introSeatStyle['agenda']);
             return (
-                <div style={style} className={cx(classes['agenda'], stylesSet && classes['stylesSet'], finishUp && classes['finishUp'], !begin && classes['begin'], !intro && classes['intro'])} key={'agenda' + round + agendaStyle.left}>
+                <div style={style} className={cx(classes['agenda'], stylesSet && classes['stylesSet'], finishUp && classes['finishUp'], begin && classes['begin'], !intro && classes['intro'])} key={'agenda' + round + agendaStyle.left}>
                     <div className={classes['innerAgenda']}>
                         {this.props.participants.moderator.agenda[round] &&
                             <>
@@ -2404,11 +2427,9 @@ buttons=[
                     </div>)
 
         const conversationTopic= (topicStyle) => {
-            const style= intro ? topicStyle : Object.assign({},topicStyle,introSeatStyle['conversationTopic']);
-
             return(
             <>
-            <div style={style} className={classes['conversationTopic']}>
+            <div style={topicStyle} className={classes['conversationTopic']}>
                 <p className={classes['conversationTopicContent']}>{this.props.subject}</p> 
             </div>
             <a target="#" href="https://ballotpedia.org/Candidate_Conversations"><img className={classes['logo']} src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png" /></a>   
@@ -2431,7 +2452,7 @@ buttons=[
             )
 
         return (
-            <div className={cx(classes['wrapper'],scrollableIframe && classes["scrollableIframe"])} >
+            <div style={{fontSize: this.state.fontSize }} className={cx(classes['wrapper'],scrollableIframe && classes["scrollableIframe"])} >
                 <section id="syn-ask-webrtc" key='began' className={cx(classes['innerWrapper'],scrollableIframe&&classes["scrollableIframe"])} style={{left: this.state.left}} ref={this.calculatePositionAndStyle}>
                     <audio ref={this.audio} playsInline controls={false} onEnded={this.audioEnd} key="audio"></audio>
                     {main()}
