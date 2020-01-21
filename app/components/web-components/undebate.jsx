@@ -12,7 +12,7 @@ import ErrorBoundary from '../error-boundary';
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep';
 import getYouTubeID from 'get-youtube-id';
-import Preamble from '../preamble';
+import CandidatePreamble from '../candidate-preamble';
 import Config from '../../../public.json'
 
 const ResolutionToFontSizeTable=require('../../../resolution-to-font-size-table').default;
@@ -1968,10 +1968,12 @@ class RASPUndebate extends React.Component {
                     }
                 }
                 if(this.props.bp_info) {// don't cause the property to exist in the Iota if there is none. 
-                pIota.component.participant.bp_info=this.props.bp_info;
-                if(this.props.bp_info.candidate_name) pIota.component.participant.name=this.props.bp_info.candidate_name;
-            }   
-            window.socket.emit('create participant', pIota , (result)=>{logger.trace("participant created", result)})
+                    pIota.component.participant.bp_info=Object.assign({},this.props.bp_info);  // make a copy cause we are going to delete stuff
+                    delete pIota.component.participant.bp_info.campaign_email;
+                    delete pIota.component.participant.bp_info.personal_email;
+                    if(this.props.bp_info.candidate_name) pIota.component.participant.name=this.props.bp_info.candidate_name;
+                }   
+                window.socket.emit('create participant', pIota , (result)=>{logger.trace("participant created", result)})
             }
         }
 
@@ -2485,7 +2487,7 @@ class RASPUndebate extends React.Component {
                     <audio ref={this.audio} playsInline controls={false} onEnded={this.audioEnd} key="audio"></audio>
                     {main()}
                     {(this.participants.human && this.state.preambleAgreed || !this.participants.human) && !bot && beginOverlay()}
-                    {this.participants.human && !intro && !begin && !done && <Preamble agreed={this.state.preambleAgreed} onClick={()=>{logger.info("Undebate preambleAgreed true"); this.setState({preambleAgreed: true}); noOverlay && this.beginButton()}} /> }
+                    {this.participants.human && !intro && !begin && !done && <CandidatePreamble bp_info={this.props.bp_info} agreed={this.state.preambleAgreed} onClick={()=>{logger.info("Undebate preambleAgreed true"); this.setState({preambleAgreed: true}); noOverlay && this.beginButton()}} /> }
                     {ending()}
                     {(this.participants.human && this.state.preambleAgreed || !this.participants.human) && buttonBar(buttonBarStyle)}                        
                     {recorderButtonBar(recorderButtonBarStyle)}
