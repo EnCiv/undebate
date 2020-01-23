@@ -47,8 +47,7 @@ const styles = {
         fontSize: '150%',
         fontWeight: 'bold',
         position: 'absolute',
-        top: '6vh',
-        left: '0',
+        left: '5px',
         marginTop: '0px',
 //        'transition': "all 5s ease"
     },
@@ -56,7 +55,7 @@ const styles = {
         marginTop: '5px',
         marginLeft: 0,
         'marginBottom': '10px',
-        'paddingLeft': '2px',
+        'paddingLeft': '5px',
         'paddingRight': '10px',
         'borderLeft': `0.2em solid ${BLUE}`,
         'borderRight': `0.2em solid ${YELLOW}`
@@ -779,6 +778,16 @@ class RASPUndebate extends React.Component {
             left: '1.4vw'
         },
 
+        conversationTopic: {
+            fontSize: '150%',
+            fontWeight: 'bold',
+            position: 'absolute',
+            top: '6vh',
+            left: '0px',
+            marginTop: '0px'
+//            'transition': "all 5s ease"
+        },
+
         agendaStyle: {
             top: '8vh',
             width: '17.5vw',
@@ -793,7 +802,8 @@ class RASPUndebate extends React.Component {
             'width': '100px',       
             'display': 'flex',
             'justify-content': 'space-between',
-            'font-size': '40px'
+            'font-size': '40px',
+            'cursor': 'pointer'
         },
 
         buttonBarStyle: {
@@ -843,9 +853,7 @@ class RASPUndebate extends React.Component {
                 top: '190vw'
             },
             'finishUp': {},
-            conversationTopic: {
-                top: '-32vw'
-            },
+    
             agenda: {
                 top: `calc( -1 * 25vw *  ${HDRatio} -${TopMargin})`,
                 left: '100vw'
@@ -1076,7 +1084,8 @@ class RASPUndebate extends React.Component {
         var introSeatStyle=cloneDeep(this.state.introSeatStyle);
         var introStyle=cloneDeep(this.state.introStyle);
         var conversationTopicStyle=cloneDeep(this.state.conversationTopicStyle);
-        var agendaButtonBar=cloneDeep(this.state.agendaButtonBar);
+        var agendaButtonBar=cloneDeep(this.state.agendaButtonBar); 
+        var conversationTopic=cloneDeep(this.state.conversationTopic);
         if(width / height > 0.8 ){ // landscape mode
             if((width/height) > (1.8)){ // it's very long and short like a note 8
 
@@ -1090,6 +1099,8 @@ class RASPUndebate extends React.Component {
                 const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height, 2.5*fontSize);
                 const horizontalSeatSpace=fontSize;
 
+                conversationTopic.top = 0 + 'vh';
+                conversationTopic.left =horizontalSeatSpace;
 
                 seatStyle.speaking.left= horizontalSeatSpace; //((1-speakingWidthRatio) * width)/4; /// centered
                 seatStyle.speaking.top=seatWidthRatio*HDRatio*103 + navBarHeightRatio*100*HDRatio +'vw';
@@ -1135,8 +1146,9 @@ class RASPUndebate extends React.Component {
                 agendaStyle.width= 100 - speakingWidthRatio*180 +'vw';//Math.max(speakingWidthRatio * HDRatio * width * 0.8,20 * fontSize);
                 //   if(agendaStyle.left + agendaStyle.width > width) agendaStyle.width=width-agendaStyle.left - 2*horizontalSeatSpace; 
 
-                agendaButtonBar.width = 100 - speakingWidthRatio*180 +'vw';
-
+                agendaButtonBar.width = 100 - speakingWidthRatio*185 +'vw';
+                agendaButtonBar.left=speakingWidthRatio*176+'vw';
+                agendaButtonBar.top=seatWidthRatio*HDRatio*105 + navBarHeightRatio*100*HDRatio +'vw';
                 // introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
 
                 buttonBarStyle.left=speakingWidthRatio*89 - nextUpWidthRatio*50 +'vw';
@@ -1214,6 +1226,10 @@ class RASPUndebate extends React.Component {
                 // agendaStyle.height= Math.max(.175*width,20 * fontSize);
                 // introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
                 
+
+                agendaButtonBar.width = 100 - speakingWidthRatio*108 +'vw';
+                agendaButtonBar.left=seatStyle.speaking.left + speakingWidthRatio * width + horizontalSeatSpace;
+                agendaButtonBar.top=seatWidthRatio*HDRatio*120 + navBarHeightRatio*100 +'vw';
         
                 buttonBarStyle.width= speakingWidthRatio*40+'vw';
                 buttonBarStyle.left= seatStyle.speaking.left + speakingWidthRatio*width*0.32;
@@ -1256,6 +1272,9 @@ class RASPUndebate extends React.Component {
 
             const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height,3*fontSize);
             const horizontalSeatSpace=Math.max(horizontalSeatSpaceRatio * width, fontSize);
+
+            conversationTopic.left =((1-speakingWidthRatio) * width)/2;
+            conversationTopic.right =((1-speakingWidthRatio) * width)/2;
 
             seatStyle.speaking.left= ((1-speakingWidthRatio) * width)/2; /// centered
             seatStyle.speaking.top= (2*navBarHeightRatio + horizontalSeatSpaceRatio)*height + seatWidthRatio*width*HDRatio;//navBarHeightRatio*height;//TopMargin;
@@ -1308,6 +1327,12 @@ class RASPUndebate extends React.Component {
             agendaStyle.height= fontSize * 20;//agendaStyle.width; //fontSize * 20;
             introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
 
+
+            agendaButtonBar.width = speakingWidthRatio*95+'vw';
+            agendaButtonBar.left = ((1-speakingWidthRatio) * width)/2;
+            agendaButtonBar.top=(1.8*navBarHeightRatio + 2*horizontalSeatSpaceRatio)*height + (seatWidthRatio*HDRatio + speakingWidthRatio*HDRatio)*width;
+        
+
             buttonBarStyle.left=seatStyle.speaking.left + speakingWidthRatio*width*0.25;
             buttonBarStyle.top=(navBarHeightRatio + horizontalSeatSpaceRatio)*height + (seatWidthRatio*HDRatio + speakingWidthRatio*HDRatio)*width; //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
             buttonBarStyle.width=speakingWidthRatio*50 + 'vw';
@@ -1328,7 +1353,7 @@ class RASPUndebate extends React.Component {
             introSeatStyle.introRight.right="-50vw";
 
         }
-        return({seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, conversationTopicStyle, agendaButtonBar})
+        return({seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, conversationTopicStyle, agendaButtonBar, conversationTopic})
     }
     
 
@@ -2481,10 +2506,10 @@ buttons=[
                         <button className={classes['hangUpButton']} onClick={this.hangup} key='hangup'>Hang Up</button>
                     </div>)
 
-        const conversationTopic= (topicStyle) => {
+        const conversationTopic= (conversationTopic) => {
             return(
             <>
-            <div style={topicStyle} className={classes['conversationTopic']}>
+            <div style={conversationTopic} >
                 <p className={classes['conversationTopicContent']}>{this.props.subject}</p> 
             </div>
             <a target="#" href="https://ballotpedia.org/Candidate_Conversations"><img className={classes['logo']} src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png" /></a>   
@@ -2494,7 +2519,7 @@ buttons=[
 
         var main=()=>!done && (
                 <>
-                    {conversationTopic(conversationTopicStyle)}
+                    {conversationTopic(this.state.conversationTopic)}
                     <div className={classes['outerBox']}>
                         {Object.keys(this.props.participants).map((participant,i)=>videoBox(participant,i,seatStyle))}
                         {agenda(agendaStyle)}
