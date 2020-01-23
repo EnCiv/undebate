@@ -28,7 +28,7 @@ async function notifyOfNewParticipant(iota) {
         from: Config.sendEmailFrom,
         to: process.env.NOTIFY_OF_NEW_PARTICIPANT_TO || "davidfridley@enciv.org",
         subject: "New Participant Recording",
-        text: `New recording from ${iota.component.participant.name} running for ${iota.subject}. View it at https://${os.hostname()}${viewer.path}\nbp_info=${JSON.stringify(iota.component.participant.bp_info)}`
+        text: `New recording from ${iota.component.participant.name} running for ${iota.subject}. View it at https://${process.env.HOSTNAME}${viewer.path}\n\nbp_info=${JSON.stringify(iota.component.participant.bp_info, null, '\t')}`
     }
 
     logger.info("notifyOfNewParticipant", request);
