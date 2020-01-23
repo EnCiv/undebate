@@ -82,7 +82,7 @@ class CandidatePreamble extends React.Component {
             <li>Then, hitting the <b>Post</b> button will upload the recorded video and make it public.</li>
             <li>Or, hitting the <b>Hang Up</b> button or closing this window any time before hitting the <b>Post</b> button will cause any recordings to be discarded.</li>
             </ul>
-            <CandidateJoin classes={classes} userInfo={{email: bp_info.candidate_email || bp_info.person_email, name: bp_info.candidate_name}} onChange={onClick}/>
+            <CandidateJoin classes={classes} userInfo={{email: (bp_info.candidate_email && bp_info.candidate_email[0]) || (bp_info.person_email && bp_info.person_email[0]), name: bp_info.candidate_name}} onChange={onClick}/>
         </div>)
     }
 }
