@@ -53,14 +53,12 @@ if(process.env.NODEMAILER_SERVICE)
 function sendEmail(options = {}) {
 	console.log('Sending email', options);
 	return new Promise(async (pass, fail) => {
+		if(!process.env.NODEMAILER_SERVICE)
+			return fail(new Error('NODEMAILER_SERVICE environment variable not configured'));
 		if (!options.to)
 			return fail(new Error('Missing email recipient'));
 		if (!options.subject)
 			return fail(new Error('Missing email subject'));
-		/*if (process.env.NODE_ENV !== 'production') {
-			console.log('Not sending emails when not in production', process.env.NODE_ENV);
-			return pass();
-		}*/
 		let results = await transporter.sendMail(options)
 		if (parseInt(results.response) === 250) //'250 Message received' from Zoho but gmail is like '250 2.0.0 OK  1573250273 a21sm6579793pjq.1 - gsmtp'
 			pass();
