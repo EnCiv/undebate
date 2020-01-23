@@ -326,6 +326,36 @@ const styles = {
         'list-style-type': "none",
         'paddingLeft': '0',
     },
+    'agendaButtonBar':{
+        position: 'absolute',
+        'top': '0px',
+        'left': '0px',
+        'width': '100px',       
+        'display': 'flex',
+        'justify-content': 'space-between',
+        'font-size': '40px'
+    },
+    'agendaButtonLeft':{
+        'color': 'black'
+        // '&:before': {
+        //     'content': "fffff",
+        //     //'position': 'absolute',
+        //     'font-weight': 'normal'
+        //     //'top': '15px',
+        //     //'right': '10px'
+        // }            
+    },
+    'agendaButtonRight':{
+        'color': 'black',
+        '&:after': {
+            'content': '>',
+            //'position': 'absolute',
+            'font-weight': 'normal',
+            'color': 'blue'
+            //'top': '15px',
+            //'right': '10px'
+        }  
+    },
     'item': {
         fontFamily: 'Roboto',
         fontSize: '125%',
@@ -756,6 +786,16 @@ class RASPUndebate extends React.Component {
             left: 'calc(2.5vw + 20vw + 2.5vw + 50vw + 2.5vw)',
         },
 
+        agendaButtonBar: {
+            position: 'absolute',
+            'top': '0px',
+            'left': '0px',
+            'width': '100px',       
+            'display': 'flex',
+            'justify-content': 'space-between',
+            'font-size': '40px'
+        },
+
         buttonBarStyle: {
             width: "50vw",
             left: "25vw",
@@ -1036,6 +1076,7 @@ class RASPUndebate extends React.Component {
         var introSeatStyle=cloneDeep(this.state.introSeatStyle);
         var introStyle=cloneDeep(this.state.introStyle);
         var conversationTopicStyle=cloneDeep(this.state.conversationTopicStyle);
+        var agendaButtonBar=cloneDeep(this.state.agendaButtonBar);
         if(width / height > 0.8 ){ // landscape mode
             if((width/height) > (1.8)){ // it's very long and short like a note 8
 
@@ -1093,6 +1134,8 @@ class RASPUndebate extends React.Component {
                 
                 agendaStyle.width= 100 - speakingWidthRatio*180 +'vw';//Math.max(speakingWidthRatio * HDRatio * width * 0.8,20 * fontSize);
                 //   if(agendaStyle.left + agendaStyle.width > width) agendaStyle.width=width-agendaStyle.left - 2*horizontalSeatSpace; 
+
+                agendaButtonBar.width = 100 - speakingWidthRatio*180 +'vw';
 
                 // introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
 
@@ -1285,7 +1328,7 @@ class RASPUndebate extends React.Component {
             introSeatStyle.introRight.right="-50vw";
 
         }
-        return({seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, conversationTopicStyle})
+        return({seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, conversationTopicStyle, agendaButtonBar})
     }
     
 
@@ -2412,6 +2455,17 @@ buttons=[
             </div>
         )
 
+        const agendaButtons=(agendaButtonBar)=>(( bot || ((noOverlay || (begin && intro)) && !finishUp && !done)) && 
+            //<div style={{width: 100/this.buttons.length+'%', display: "inline-block", height: "100%"}}>
+              //      <div  onClick={this.buttons[0].func.bind(this)}>{this.buttons[0].name()}</div>
+            //</div>
+
+            <div style={agendaButtonBar} className={classes['agendaButtonBar']}>
+                <div className={classes['agendaButtonLeft']} onClick={this.buttons[0].func.bind(this)}>{"<"}</div>
+                <div className={classes['agendaButtonRight']} onClick={this.buttons[4].func.bind(this)}>{">"}</div>
+            </div>
+        )
+
         const recorderButtonBar=(recorderButtonBarStyle)=>(this.participants.human && begin && intro && !finishUp && !done &&
             <div style={recorderButtonBarStyle} className={classes['recorderButtonBar']} key="recorderButtonBar">
                 {this.recorderButtons.map(button=>
@@ -2457,6 +2511,7 @@ buttons=[
                 <section id="syn-ask-webrtc" key='began' className={cx(classes['innerWrapper'],scrollableIframe&&classes["scrollableIframe"])} style={{left: this.state.left}} ref={this.calculatePositionAndStyle}>
                     <audio ref={this.audio} playsInline controls={false} onEnded={this.audioEnd} key="audio"></audio>
                     {main()}
+                    {agendaButtons(this.state.agendaButtonBar)}
                     {(this.participants.human && this.state.preambleAgreed || !this.participants.human) && !bot && beginOverlay()}
                     {this.participants.human && !intro && !begin && !done && <Preamble agreed={this.state.preambleAgreed} onClick={()=>{logger.info("Undebate preambleAgreed true"); this.setState({preambleAgreed: true}); noOverlay && this.beginButton()}} /> }
                     {ending()}
