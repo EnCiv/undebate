@@ -373,17 +373,6 @@ const styles = {
     'name': {
         'fontSize': '1.25em'
     },
-    'subOpening': {
-        //'font-size': "0.84rem",
-        'font-weight': '100',
-        'lineHeight': "150%",
-        'margin-bottom': '1rem'
-    },
-    'opening': {
-        //'font-size': "1.5rem",
-        //'font-weight': '600',
-        'lineHeight': "150%"
-    },
     'counting': {},
     'countdown': {
         display: 'none',
@@ -2101,7 +2090,7 @@ buttons=[
     }
     
     render() {
-        const { className, classes, opening={}, closing={thanks: "Thank You"} } = this.props;
+        const { className, classes, closing={thanks: "Thank You"} } = this.props;
         const { round, finishUp, done, begin, requestPermission, talkative, moderatorReadyToStart, intro, seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, stylesSet, titleHeight } = this.state;
 
         const getIntroStyle=(name)=>Object.assign({}, stylesSet && {transition: IntroTransition}, introStyle[name], intro && introSeatStyle[name] )
