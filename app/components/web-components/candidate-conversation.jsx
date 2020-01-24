@@ -35,36 +35,25 @@ import IconRedo from '../../svgr/icon-redo'
 import IconFinishRecording from '../../svgr/icon-finish-recording'
 import IconRecording from '../../svgr/icon-recording'
 
+import ConversationHeader from '../conversation-header'
+
 function promiseSleep(time){
     return new Promise((ok,ko)=>setTimeout(ok,time))
+}
+
+const months=['zero','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+function xxxx_xx_xxTommmdd_yyyy(str){
+    if(!str)return '';
+    let parts=str.split('-');
+    let year=parts[0];
+    let month=months[parseInt(parts[1])];
+    let day=parts[2];
+    return `${month} ${day}, ${year}`
 }
 // this is where we should use a theme but for now
 const BLUE='#1B47A7'
 const YELLOW='#E5A650'
 const styles = {
-
-    conversationTopic: {
-        fontSize: '150%',
-        fontWeight: 'bold',
-        position: 'absolute',
-        left: '5px',
-        marginTop: '0px',
-//        'transition': "all 5s ease"
-    },
-    conversationTopicContent:{
-        marginTop: '5px',
-        marginLeft: 0,
-        'marginBottom': '10px',
-        'paddingLeft': '5px',
-        'paddingRight': '10px',
-        'borderLeft': `0.2em solid ${BLUE}`,
-        'borderRight': `0.2em solid ${YELLOW}`
-    },
-    logo:{
-        marginRight: '4px',
-        height: '6vh',
-        float: 'right'
-    },
     'scrollableIframe': {},
     'wrapper': {
         width: "100vw",
@@ -77,7 +66,7 @@ const styles = {
         position: 'relative', 
         width: '100vw', 
         height: '100vh', 
-        backgroundColor: "#F2F2F1", 
+        backgroundColor: 'white',//"#F2F2F1", 
         backgroundSize: "cover", 
         overflow: 'hidden', 
         fontFamily: "'Libre Franklin','Montserrat', sans-serif",
@@ -121,7 +110,7 @@ const styles = {
         'display': 'block',
         position: 'relative',
         textAlign: 'center',
-        backgroundColor: '#dbdfe0',  // this color is taken to match the the background image if you change the image, you should re-evaluate this color
+        backgroundColor: 'white',//'#dbdfe0',  // this color is taken to match the the background image if you change the image, you should re-evaluate this color
         '&$stylesSet': {
             'transition': `all ${TransitionTime}ms linear`,
         },
@@ -775,17 +764,12 @@ class RASPUndebate extends React.Component {
         },
 
         conversationTopicStyle: {
-            left: '1.4vw'
+            left: '1.4vw',
         },
 
         conversationTopic: {
-            fontSize: '150%',
-            fontWeight: 'bold',
             position: 'absolute',
-            top: '6vh',
-            left: '0px',
-            marginTop: '0px'
-//            'transition': "all 5s ease"
+            left: '1.4vw',
         },
 
         agendaStyle: {
@@ -1099,7 +1083,6 @@ class RASPUndebate extends React.Component {
                 const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height, 2.5*fontSize);
                 const horizontalSeatSpace=fontSize;
 
-                conversationTopic.top = 0 + 'vh';
                 conversationTopic.left =horizontalSeatSpace;
 
                 seatStyle.speaking.left= horizontalSeatSpace; //((1-speakingWidthRatio) * width)/4; /// centered
@@ -2506,20 +2489,9 @@ buttons=[
                         <button className={classes['hangUpButton']} onClick={this.hangup} key='hangup'>Hang Up</button>
                     </div>)
 
-        const conversationTopic= (conversationTopic) => {
-            return(
-            <>
-            <div style={conversationTopic} >
-                <p className={classes['conversationTopicContent']}>{this.props.subject}</p> 
-            </div>
-            <a target="#" href="https://ballotpedia.org/Candidate_Conversations"><img className={classes['logo']} src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png" /></a>   
-            </>
-            )
-        }
-
         var main=()=>!done && (
                 <>
-                    {conversationTopic(this.state.conversationTopic)}
+                    <ConversationHeader  subject={this.props.subject} bp_info={this.props.bp_info} style={this.state.conversationTopic}/>
                     <div className={classes['outerBox']}>
                         {Object.keys(this.props.participants).map((participant,i)=>videoBox(participant,i,seatStyle))}
                         {agenda(agendaStyle)}
