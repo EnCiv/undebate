@@ -6,6 +6,7 @@ import cx from 'classnames'
 import Join from '../join'
 import through2 from 'through2'
 import Input from '../lib/input'
+import Icon from '../lib/icon';
 
 import ErrorBoundary from '../error-boundary';
 
@@ -20,7 +21,7 @@ const ResolutionToFontSizeTable=require('../../../resolution-to-font-size-table'
 const TransitionTime=500;
 const TopMargin=0
 const IntroTransition= "all 5s ease"
-const HDRatio=0.5625
+const HDRatio=1080/1920; //0.5625
 const ShadowBox=10;
 
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
@@ -41,15 +42,6 @@ function promiseSleep(time){
     return new Promise((ok,ko)=>setTimeout(ok,time))
 }
 
-const months=['zero','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-function xxxx_xx_xxTommmdd_yyyy(str){
-    if(!str)return '';
-    let parts=str.split('-');
-    let year=parts[0];
-    let month=months[parseInt(parts[1])];
-    let day=parts[2];
-    return `${month} ${day}, ${year}`
-}
 // this is where we should use a theme but for now
 const BLUE='#1B47A7'
 const YELLOW='#E5A650'
@@ -244,11 +236,13 @@ const styles = {
     'talkative': {
         background: 'yellow'
     },
-    'videoFoot': {
+    'title': {
         'text-align': 'center',
         'color': 'white',
         'font-weight': '600',
-        'font-size': '100%',
+        'font-size': '2rem',
+        'padding-top': '0.25rem',
+        'padding-bottom': '0.25rem',
         'background-color': 'black',
         'overflow': 'hidden',
         'text-overflow': 'ellipsis',
@@ -314,35 +308,23 @@ const styles = {
         'list-style-type': "none",
         'paddingLeft': '0',
     },
-    'agendaButtonBar':{
-        position: 'absolute',
-        'top': '0px',
-        'left': '0px',
-        'width': '100px',       
-        'display': 'flex',
-        'justify-content': 'space-between',
-        'font-size': '40px'
+    'agenda-icon-left':{
+        border: 'none',
+        backgroundColor: 'transparent',
+        marginLeft: "0.5rem",
+        display: "inline-block",
+        float: "left",
+        cursor: "pointer",
+        fontSize: "100%"
     },
-    'agendaButtonLeft':{
-        'color': 'black'
-        // '&:before': {
-        //     'content': "fffff",
-        //     //'position': 'absolute',
-        //     'font-weight': 'normal'
-        //     //'top': '15px',
-        //     //'right': '10px'
-        // }            
-    },
-    'agendaButtonRight':{
-        'color': 'black',
-        '&:after': {
-            'content': '>',
-            //'position': 'absolute',
-            'font-weight': 'normal',
-            'color': 'blue'
-            //'top': '15px',
-            //'right': '10px'
-        }  
+    'agenda-icon-right': {
+        border: 'none',
+        backgroundColor: 'transparent',
+        marginRight: "0.5rem",
+        display: "inline-block",
+        float: "right",
+        cursor: "pointer",
+        fontSize:"100%"
     },
     'item': {
         fontFamily: 'Roboto',
@@ -691,18 +673,23 @@ class RASPUndebate extends React.Component {
                 RASPUndebate.onYouTubeIframeAPIReadyList.push(this.onYouTubeIframeAPIReady.bind(this));
             }
         }
-        if(typeof window!== 'undefined')
-            this.calcFontSize();
-        else{ // we need to calculate the position of everything if rendered on the server, based on some size.
-            let width, height;
-            if(this.props.browserConfig.type==='bot') {// running on a bot
-                width=1200; //Facebook image post size: 1200 x 900
-                height=900;
-                let fontSize=this.estimateFontSize(width,height)
-                let calculatedStyles=this.calculateStyles(width,height,height,fontSize);
-                Object.assign(this.state,calculatedStyles,{fontSize});
-            }
+        let fontSize,width,height;
+
+        if(this.props.browserConfig.type==='bot') {// running on a bot
+            width=1200; //Facebook image post size: 1200 x 900
+            height=900;
+        } else {
+            width=1920;
+            height=1080;
         }
+        if(typeof window!== 'undefined')
+            fontSize=this.calcFontSize();
+        else 
+            fontSize=this.estimateFontSize(width,height)
+        
+        // we need to calculate the position of everything if/or as if rendered on the server. Then in componentDidMount we can calculate based on the real size.  This is because react.hydrate needs to be able to match the serverside and the browser side
+        let calculatedStyles=this.calculateStyles(width,height,height,fontSize);
+        Object.assign(this.state,calculatedStyles,{fontSize});
     }
 
     state = {
@@ -763,15 +750,6 @@ class RASPUndebate extends React.Component {
             },
         },
 
-        conversationTopicStyle: {
-            left: '1.4vw',
-        },
-
-        conversationTopic: {
-            position: 'absolute',
-            left: '1.4vw',
-        },
-
         agendaStyle: {
             top: '8vh',
             width: '17.5vw',
@@ -779,22 +757,11 @@ class RASPUndebate extends React.Component {
             left: 'calc(2.5vw + 20vw + 2.5vw + 50vw + 2.5vw)',
         },
 
-        agendaButtonBar: {
-            position: 'absolute',
-            'top': '0px',
-            'left': '0px',
-            'width': '100px',       
-            'display': 'flex',
-            'justify-content': 'space-between',
-            'font-size': '40px',
-            'cursor': 'pointer'
-        },
-
         buttonBarStyle: {
             width: "50vw",
             left: "25vw",
             top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
-            height: "3.5vh",
+            height: "auto",
             position: "absolute",
             overflow: "hidden",
             "textOverflow": "clip",
@@ -938,8 +905,8 @@ class RASPUndebate extends React.Component {
                 logger.trace("Undebate.onYouTubeIframeAPIReady new player for:", participant, videoId)
                 try {
                     this.youtubePlayers[participant] = new YT.Player('youtube-'+participant, {
-                        width: parseFloat(seatStyle[this.seat(i)].width) * innerWidth / 100,
-                        height: parseFloat(seatStyle[this.seat(i)].width) * HDRatio * innerWidth / 100,
+                        width: pxSeatStyleWidth(this.seat(i)),
+                        height: pxSeatStyleWidth(this.seat(i)) * HDRatio,
                         style: {fontSize: '8px'},
                         videoId,
                         playerVars: {
@@ -1060,138 +1027,55 @@ class RASPUndebate extends React.Component {
         }
     }
 
-    calculateStyles(width,height,maxerHeight,fontSize){
+    calculateStyles(width,height,maxerHeight,fontSizeIn){
+        const fontSize=typeof window !== 'undefined' ? parseFloat(getComputedStyle(document.getElementsByTagName("body")[0]).fontSize) : fontSizeIn; // this fontSize is getting rounded or trimmed so don't use the calculated one.
         var seatStyle=cloneDeep(this.state.seatStyle);
         var agendaStyle=cloneDeep(this.state.agendaStyle);
         var buttonBarStyle=cloneDeep(this.state.buttonBarStyle);
         var recorderButtonBarStyle=cloneDeep(this.state.recorderButtonBarStyle);
         var introSeatStyle=cloneDeep(this.state.introSeatStyle);
         var introStyle=cloneDeep(this.state.introStyle);
-        var conversationTopicStyle=cloneDeep(this.state.conversationTopicStyle);
-        var agendaButtonBar=cloneDeep(this.state.agendaButtonBar); 
-        var conversationTopic=cloneDeep(this.state.conversationTopic);
-        if(width / height > 0.8 ){ // landscape mode
-            if((width/height) > (1.8)){ // it's very long and short like a note 8
+        const titleHeight=1.7*fontSize;
+        if(width / height > 1 ){ 
+                let speakingWidthRatio=0.65;
+                let seatWidthRatio= 0.20;
+                const navBarHeight=.06*height;
+                const agendaMaxWidth=32*fontSize;
+                const vGap=0.5*fontSize; 
+                const hGap=0.5*fontSize;
 
-                const speakingWidthRatio= (height * 0.4 / HDRatio / width) ;
-                const nextUpWidthRatio= speakingWidthRatio * .5;
-                const seatWidthRatio= speakingWidthRatio * .5;
-                const verticalSeatSpaceRatio=0.025;
-                const horizontalSeatSpaceRatio=0.025;
-                const navBarHeightRatio=0.08;
-
-                const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height, 2.5*fontSize);
-                const horizontalSeatSpace=fontSize;
-
-                conversationTopic.left =horizontalSeatSpace;
-
-                seatStyle.speaking.left= horizontalSeatSpace; //((1-speakingWidthRatio) * width)/4; /// centered
-                seatStyle.speaking.top=seatWidthRatio*HDRatio*103 + navBarHeightRatio*100*HDRatio +'vw';
-                seatStyle.speaking.width= speakingWidthRatio*165+'vw';
-                introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
-                conversationTopicStyle.left=seatStyle.speaking.left;
-                    
-                seatStyle.nextUp.top= speakingWidthRatio * HDRatio * width*0.8 - (nextUpWidthRatio * HDRatio * width ) - verticalSeatSpace;
-                seatStyle.nextUp.width=nextUpWidthRatio*100+'vw';
-                seatStyle.nextUp.left= seatStyle.speaking.left; // depends on width
-                introSeatStyle.nextUp={left: -(seatStyle.nextUp.left + nextUpWidthRatio * width + ShadowBox)}
-
-                let seat=2;
-
-                let seatTop=seatStyle.nextUp.top + nextUpWidthRatio * HDRatio * width  + verticalSeatSpace;
-                let seatVerticalPitch= seatWidthRatio * HDRatio * width + verticalSeatSpace;
-                let seatLeft= seatStyle.nextUp.left;//Math.min(seatStyle.nextUp.left, horizontalSeatSpace);   
-
-                seatTop=speakingWidthRatio * HDRatio * width*0.8 - (nextUpWidthRatio * HDRatio * width ) - verticalSeatSpace;
-                //height - seatWidthRatio * HDRatio * width - verticalSeatSpace;
-                seatLeft+= seatWidthRatio * width + horizontalSeatSpace;
-                let seatHorizontalPitch=seatWidthRatio * width + horizontalSeatSpace;
-                // across the bottom
-                let i=0;  // for calcula`ting the intro
-                while(seat<=7){ // some will go off the screen
-                    seatStyle['seat'+seat].top=seatTop;
-                    seatStyle['seat'+seat].left=seatLeft;
-                    seatStyle['seat'+seat].width= seatWidthRatio*100+'vw';
-                    introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + verticalSeatSpace)} // along the bottom, each seat is further away as you move to the right
-                    seatLeft+=seatHorizontalPitch;
-                    seat++;
-                    i++;
+                let calcHeight=navBarHeight+vGap+width*seatWidthRatio*HDRatio+titleHeight+vGap+width*speakingWidthRatio*HDRatio+titleHeight+vGap;
+                if(calcHeight>height){ // if the window is really wide - squish the video height so it still fits
+                    let heightForVideo=height-navBarHeight-vGap-titleHeight-vGap-titleHeight-vGap;
+                    let calcHeightForVideo=width*seatWidthRatio*HDRatio+width*speakingWidthRatio*HDRatio;
+                    seatWidthRatio=seatWidthRatio*heightForVideo/calcHeightForVideo;
+                    speakingWidthRatio=speakingWidthRatio*heightForVideo/calcHeightForVideo;
                 }
 
-                seatStyle.finishUp.left= 0.5*width;
-                seatStyle.finishUp.top=  0.5*height;
-                seatStyle.finishUp.width='1vw';
+                seatStyle.speaking.left= hGap;
+                seatStyle.speaking.width= speakingWidthRatio*width;
+                seatStyle.speaking.top= navBarHeight+vGap+width*seatWidthRatio*HDRatio+vGap+titleHeight; 
+                introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + vGap + ShadowBox)}
 
-                agendaStyle.top=seatWidthRatio*HDRatio*103 + navBarHeightRatio*100*HDRatio +'vw';  //speakingWidthRatio * HDRatio * width * 0.10;
-                agendaStyle.left=speakingWidthRatio*174+'vw';
-                agendaStyle.height=speakingWidthRatio*165*HDRatio +'vw';//seatStyle.speaking.width*HDRatio;
-                
-                agendaStyle.width= 100 - speakingWidthRatio*180 +'vw';//Math.max(speakingWidthRatio * HDRatio * width * 0.8,20 * fontSize);
-                //   if(agendaStyle.left + agendaStyle.width > width) agendaStyle.width=width-agendaStyle.left - 2*horizontalSeatSpace; 
-
-                agendaButtonBar.width = 100 - speakingWidthRatio*185 +'vw';
-                agendaButtonBar.left=speakingWidthRatio*176+'vw';
-                agendaButtonBar.top=seatWidthRatio*HDRatio*105 + navBarHeightRatio*100*HDRatio +'vw';
-                // introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
-
-                buttonBarStyle.left=speakingWidthRatio*89 - nextUpWidthRatio*50 +'vw';
-                buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 2.2; 
-                buttonBarStyle.width= seatStyle.nextUp.width;
-                buttonBarStyle.height= Math.max(0.05*height, 4*fontSize);
-
-                recorderButtonBarStyle.left=buttonBarStyle.left;
-                recorderButtonBarStyle.top= buttonBarStyle.top + (buttonBarStyle.height * 1.25)
-                recorderButtonBarStyle.width= buttonBarStyle.width;
-                recorderButtonBarStyle.height= buttonBarStyle.height;
-
-                introStyle.introLeft.width="auto";
-                introStyle.introLeft.height="25vh";
-                introStyle.introLeft.top=(100-25)/2+'vh' // center vertically
-                introSeatStyle.introLeft.left="-50vw";
-
-                introStyle.introRight.width="auto";
-                introStyle.introRight.height="25vh";
-                introSeatStyle.introRight.right="-50vw";
-                introStyle.introRight.top=(100-25)/2+'vh' // center vertically
-
-            } else {
-                const speakingWidthRatio=0.65;
-                const nextUpWidthRatio= 0.20;
-                const seatWidthRatio= 0.20;
-                const verticalSeatSpaceRatio=0.05;
-                const horizontalSeatSpaceRatio=0.0125;
-                const navBarHeightRatio=0.08;
-
-                const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height,3*fontSize);
-                const horizontalSeatSpace=fontSize; //Math.max(horizontalSeatSpaceRatio * width, fontSize);
-
-                seatStyle.speaking.left= horizontalSeatSpace;
-                seatStyle.speaking.top= seatWidthRatio*HDRatio*120 + navBarHeightRatio*100 +'vw';  //TopMargin;
-                seatStyle.speaking.width= speakingWidthRatio*100+'vw';
-                introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
-                conversationTopicStyle.left=seatStyle.speaking.left;
-
-                seatStyle.nextUp.left=horizontalSeatSpace; //(2.5 /100) * width;
-                seatStyle.nextUp.top= height*navBarHeightRatio;
-                seatStyle.nextUp.width= nextUpWidthRatio * 100 + 'vw';
-                introSeatStyle.nextUp={left: -(seatStyle.nextUp.left + nextUpWidthRatio * width + ShadowBox)}
+                seatStyle.nextUp.left=hGap;
+                seatStyle.nextUp.top= navBarHeight+vGap; 
+                seatStyle.nextUp.width= seatWidthRatio * width;
+                introSeatStyle.nextUp={left: -(seatStyle.nextUp.left + seatWidthRatio * width + ShadowBox)}
 
                 let seat=2;
-                let seatTop=seatStyle.nextUp.top + nextUpWidthRatio * HDRatio * width + verticalSeatSpace;
-                let seatLeft=horizontalSeatSpace;
-                let seatHorizontalPitch=seatWidthRatio * width + horizontalSeatSpace;
-                let seatVerticalPitch= seatWidthRatio * HDRatio * width + verticalSeatSpace;
+                let seatTop=seatStyle.nextUp.top;
+                let seatLeft=hGap;
+                let seatHorizontalPitch=seatWidthRatio * width + hGap;
 
-                seatTop= height*navBarHeightRatio; //height - seatWidthRatio * HDRatio * width - verticalSeatSpace;
-                seatLeft+= seatHorizontalPitch;
+                seatLeft+= seatHorizontalPitch; // skip over the nextUp
     
                 // across the bottom
                 let i=0;  // for calculating the intro
                 while(seat<=7){ // some will go off the screen
                     seatStyle['seat'+seat].top=seatTop;
                     seatStyle['seat'+seat].left=seatLeft;
-                    seatStyle['seat'+seat].width= seatWidthRatio*100+'vw';
-                    introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + verticalSeatSpace)} // along the bottom, each seat is further away as you move to the right
+                    seatStyle['seat'+seat].width= seatWidthRatio*width;
+                    introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap)} // along the bottom, each seat is further away as you move to the right
                     seatLeft+=seatHorizontalPitch;
                     seat++;
                     i++;
@@ -1199,42 +1083,20 @@ class RASPUndebate extends React.Component {
                 
                 seatStyle.finishUp.left= 0.5*width;
                 seatStyle.finishUp.top=  ((0.5 + 0.15)*width * HDRatio + (0.05 + 0.015)*height + TopMargin)/2;
-                seatStyle.finishUp.width="1vw"
+                seatStyle.finishUp.width=0.1*width;
 
-                agendaStyle.top= seatWidthRatio*HDRatio*120 + navBarHeightRatio*100 +'vw';
-                agendaStyle.left= seatStyle.speaking.left + speakingWidthRatio * width + horizontalSeatSpace;
-                agendaStyle.width=  100 - speakingWidthRatio*108 +'vw';
-                agendaStyle.height=speakingWidthRatio*100*HDRatio +'vw'
-                // if(agendaStyle.left + agendaStyle.width > width) agendaStyle.width=width-agendaStyle.left - 2*horizontalSeatSpace; 
-                // agendaStyle.height= Math.max(.175*width,20 * fontSize);
-                // introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
-                
-
-                agendaButtonBar.width = 100 - speakingWidthRatio*108 +'vw';
-                agendaButtonBar.left=seatStyle.speaking.left + speakingWidthRatio * width + horizontalSeatSpace;
-                agendaButtonBar.top=seatWidthRatio*HDRatio*120 + navBarHeightRatio*100 +'vw';
+                agendaStyle.top= seatStyle.speaking.top;
+                agendaStyle.left= seatStyle.speaking.left + seatStyle.speaking.width + hGap;
+                agendaStyle.width=  Math.min(width - agendaStyle.left - hGap, agendaMaxWidth);
+                agendaStyle.height=seatStyle.speaking.width*HDRatio+titleHeight;
         
-                buttonBarStyle.width= speakingWidthRatio*40+'vw';
-                buttonBarStyle.left= seatStyle.speaking.left + speakingWidthRatio*width*0.32;
-                // buttonBarStyle.top= speakingWidthRatio * HDRatio * width;
-                if (width / height < 0.87) {
-                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.34;
-                } else if (width / height < 1) {
-                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.38;
-                } else if (width / height < 1.2) {
-                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.4;
-                } else if (width / height < 1.4) {
-                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.4;
-                } else if (width / height < 1.6) {
-                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.4;
-                } else {
-                    buttonBarStyle.top= speakingWidthRatio * HDRatio * width * 1.4;
-                }
-                buttonBarStyle.height= Math.max(0.035*height, 4*fontSize);
+                buttonBarStyle.width= seatStyle.speaking.width*0.6;
+                buttonBarStyle.left= seatStyle.speaking.left + seatStyle.speaking.width*0.2;// center it
+                buttonBarStyle.top=seatStyle.speaking.top+seatStyle.speaking.width*HDRatio-(buttonBarStyle.width/this.buttons.length*0.75)-vGap; // there are 5 buttons and they are essentially square
                 
-                recorderButtonBarStyle.left=buttonBarStyle.left;
-                recorderButtonBarStyle.top= buttonBarStyle.top + (buttonBarStyle.height * 1.25)
-                recorderButtonBarStyle.width= buttonBarStyle.width;
+                recorderButtonBarStyle.left=seatStyle.speaking.left;
+                recorderButtonBarStyle.top= seatStyle.speaking.top+seatStyle.speaking.width*HDRatio+vGap;
+                recorderButtonBarStyle.width=seatStyle.speaking.width;
                 recorderButtonBarStyle.height= buttonBarStyle.height;
 
                 introStyle.introLeft.width="auto";
@@ -1244,88 +1106,62 @@ class RASPUndebate extends React.Component {
                 introStyle.introRight.width="auto";
                 introStyle.introRight.height="50vh";
                 introSeatStyle.introRight.right="-50vw";
-            }
         } else { // portrait mode
-            const speakingWidthRatio=0.95;
-            const nextUpWidthRatio= 0.47;
-            const seatWidthRatio= 0.47;
-            const verticalSeatSpaceRatio=0.05;
-            const horizontalSeatSpaceRatio=0.025;
-            const navBarHeightRatio=0.065;
+            let speakingWidthRatio=0.65;
+            let seatWidthRatio= 0.4;
+            const navBarHeight=.06*height+3*fontSize;
+            const agendaMaxWidth=32*fontSize;
+            const vGap=0.5*fontSize; 
+            const hGap=0.5*fontSize;
+            const maxAgendaHeight=fontSize*20;
 
-            const verticalSeatSpace=Math.max(verticalSeatSpaceRatio*height,3*fontSize);
-            const horizontalSeatSpace=Math.max(horizontalSeatSpaceRatio * width, fontSize);
-
-            conversationTopic.left =((1-speakingWidthRatio) * width)/2;
-            conversationTopic.right =((1-speakingWidthRatio) * width)/2;
-
-            seatStyle.speaking.left= ((1-speakingWidthRatio) * width)/2; /// centered
-            seatStyle.speaking.top= (2*navBarHeightRatio + horizontalSeatSpaceRatio)*height + seatWidthRatio*width*HDRatio;//navBarHeightRatio*height;//TopMargin;
-            seatStyle.speaking.width= speakingWidthRatio*100+'vw';
-            introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox)}
-
-
-            seatStyle.nextUp.left= horizontalSeatSpace;
-            seatStyle.nextUp.top= 2*navBarHeightRatio*height;//speakingWidthRatio * HDRatio * width + verticalSeatSpace + navBarHeightRatio*height;
-            seatStyle.nextUp.width=nextUpWidthRatio*100+'vw';
-            introSeatStyle.nextUp={left: -(nextUpWidthRatio * width + horizontalSeatSpace + ShadowBox)}
+            seatStyle.nextUp.left=hGap;
+            seatStyle.nextUp.top= navBarHeight+vGap; 
+            seatStyle.nextUp.width= seatWidthRatio * width;
+            introSeatStyle.nextUp={left: -(seatStyle.nextUp.left + seatWidthRatio * width + ShadowBox)}
 
             let seat=2;
+            let seatTop=seatStyle.nextUp.top;
+            let seatLeft=hGap;
+            let seatHorizontalPitch=seatWidthRatio * width + hGap;
 
-            let seatTop=seatStyle.nextUp.top + nextUpWidthRatio * HDRatio * width  + verticalSeatSpace;
-            let seatVerticalPitch= seatWidthRatio * HDRatio * width + verticalSeatSpace;
+            seatLeft+= seatHorizontalPitch; // skip over the nextUp
 
-            // down the left side
-            // while((seatTop+seatVerticalPitch < height) && (seat<=7) ){
-            //     seatStyle['seat'+seat].top=seatTop;
-            //     seatStyle['seat'+seat].left=horizontalSeatSpace;
-            //     seatStyle['seat'+seat].width= seatWidthRatio*100+'vw';
-            //     introSeatStyle['seat'+seat]={left: -(seatWidthRatio * width + horizontalSeatSpace + ShadowBox)}
-            //     seatTop+=seatVerticalPitch
-            //     seat++;
-            // }
-
-            seatTop= 2*navBarHeightRatio*height;//height - seatWidthRatio * HDRatio * width - verticalSeatSpace;
-            let seatLeft= horizontalSeatSpace + seatWidthRatio * width + horizontalSeatSpace;
-            let seatHorizontalPitch=seatWidthRatio * width + horizontalSeatSpace;
             // across the bottom
             let i=0;  // for calculating the intro
             while(seat<=7){ // some will go off the screen
                 seatStyle['seat'+seat].top=seatTop;
                 seatStyle['seat'+seat].left=seatLeft;
-                seatStyle['seat'+seat].width= seatWidthRatio*100+'vw';
-                introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + verticalSeatSpace)} // along the bottom, each seat is further away as you move to the right
+                seatStyle['seat'+seat].width= seatWidthRatio*width;
+                introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap)} // along the bottom, each seat is further away as you move to the right
                 seatLeft+=seatHorizontalPitch;
                 seat++;
                 i++;
             }
 
+            seatStyle.speaking.left= hGap;
+            seatStyle.speaking.top= navBarHeight+vGap+ seatWidthRatio*width*HDRatio +titleHeight + vGap;
+            seatStyle.speaking.width= width - 2*hGap;
+            introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + vGap + ShadowBox)}
+
             seatStyle.finishUp.left= 0.5*width;
             seatStyle.finishUp.top=  0.5*height;
-            seatStyle.finishUp.width="1vw";
+            seatStyle.finishUp.width=0.01*width;
 
-            agendaStyle.top= (2*navBarHeightRatio + 2*horizontalSeatSpaceRatio)*height + (seatWidthRatio*HDRatio + speakingWidthRatio*HDRatio)*width;//seatStyle.nextUp.top;
-            agendaStyle.left=((1-speakingWidthRatio) * width)/2;//horizontalSeatSpace + nextUpWidthRatio * width + 2 * horizontalSeatSpace;
-            agendaStyle.width= speakingWidthRatio*100+'vw';//((agendaStyle.left+ fontSize * 20 + 2* horizontalSeatSpace) <= width) ? fontSize * 20 : width - agendaStyle.left - 2*horizontalSeatSpace; // don't go too wide
-            agendaStyle.height= fontSize * 20;//agendaStyle.width; //fontSize * 20;
+            agendaStyle.top=seatStyle.speaking.top+seatStyle.speaking.width*HDRatio+titleHeight+vGap;
+            agendaStyle.left=seatStyle.speaking.left;
+            agendaStyle.width=seatStyle.speaking.width;
+            agendaStyle.height= Math.min(maxAgendaHeight,height-agendaStyle.top-vGap);
             introSeatStyle['agenda']={top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width}
 
-
-            agendaButtonBar.width = speakingWidthRatio*95+'vw';
-            agendaButtonBar.left = ((1-speakingWidthRatio) * width)/2;
-            agendaButtonBar.top=(1.8*navBarHeightRatio + 2*horizontalSeatSpaceRatio)*height + (seatWidthRatio*HDRatio + speakingWidthRatio*HDRatio)*width;
-        
-
-            buttonBarStyle.left=seatStyle.speaking.left + speakingWidthRatio*width*0.25;
-            buttonBarStyle.top=(navBarHeightRatio + horizontalSeatSpaceRatio)*height + (seatWidthRatio*HDRatio + speakingWidthRatio*HDRatio)*width; //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
-            buttonBarStyle.width=speakingWidthRatio*50 + 'vw';
-            buttonBarStyle.height="5vh"
-
-            recorderButtonBarStyle.left=buttonBarStyle.left;
-            recorderButtonBarStyle.top= buttonBarStyle.top + (buttonBarStyle.height * 1.25)
-            recorderButtonBarStyle.width= buttonBarStyle.width;
+            buttonBarStyle.width= seatStyle.speaking.width*0.6;
+            buttonBarStyle.left= seatStyle.speaking.left + seatStyle.speaking.width*0.2;// center it
+            buttonBarStyle.top=seatStyle.speaking.top+seatStyle.speaking.width*HDRatio-(buttonBarStyle.width/this.buttons.length*0.75)-vGap; // there are 5 buttons and they are essentially square
+            
+            recorderButtonBarStyle.left=seatStyle.speaking.left;
+            recorderButtonBarStyle.top= seatStyle.speaking.top+seatStyle.speaking.width*HDRatio+vGap;
+            recorderButtonBarStyle.width=seatStyle.speaking.width;
             recorderButtonBarStyle.height= buttonBarStyle.height;
-
 
             introStyle.introLeft.width="25vw";
             introStyle.introLeft.height="auto";
@@ -1336,7 +1172,7 @@ class RASPUndebate extends React.Component {
             introSeatStyle.introRight.right="-50vw";
 
         }
-        return({seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, conversationTopicStyle, agendaButtonBar, conversationTopic})
+        return({seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, titleHeight})
     }
     
 
@@ -1747,11 +1583,11 @@ class RASPUndebate extends React.Component {
     }
 
 buttons=[
-    {name: ()=><IconPrevSection width="60%" height="60%"/> , func: this.prevSection},
-    {name: ()=><IconPrevSpeaker width="60%" height="60%" />, func: this.prevSpeaker},
-    {name: ()=>this.state.allPaused ? <IconPlay width="75%" height="75%" /> : <IconPause width="75%" height="75%" />, func: this.allPause},
-    {name: ()=><IconSkipSpeaker width="60%" height="60%" />, func: this.nextSpeaker},
-    {name: ()=><IconNextSection width="60%" height="60%" />, func: this.nextSection, disabled: ()=>this.participants.human && !this.participants.human.speakingObjectURLs[this.state.round] },
+    {name: ()=><IconPrevSection width="60%" height="auto"/> , func: this.prevSection},
+    {name: ()=><IconPrevSpeaker width="60%" height="auto" />, func: this.prevSpeaker},
+    {name: ()=>this.state.allPaused ? <IconPlay width="75%" height="auto" /> : <IconPause width="75%" height="75%" />, func: this.allPause},
+    {name: ()=><IconSkipSpeaker width="60%" height="auto" />, func: this.nextSpeaker},
+    {name: ()=><IconNextSection width="60%" height="auto" />, func: this.nextSection, disabled: ()=>this.participants.human && !this.participants.human.speakingObjectURLs[this.state.round] },
 ]
 
     recorderButtons=[
@@ -2266,7 +2102,7 @@ buttons=[
     
     render() {
         const { className, classes, opening={}, closing={thanks: "Thank You"} } = this.props;
-        const { round, finishUp, done, begin, requestPermission, talkative, moderatorReadyToStart, intro, seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, stylesSet, conversationTopicStyle } = this.state;
+        const { round, finishUp, done, begin, requestPermission, talkative, moderatorReadyToStart, intro, seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, stylesSet, titleHeight } = this.state;
 
         const getIntroStyle=(name)=>Object.assign({}, stylesSet && {transition: IntroTransition}, introStyle[name], intro && introSeatStyle[name] )
         const innerWidth=typeof window!== 'undefined' ? window.innerWidth : 1920;
@@ -2278,6 +2114,8 @@ buttons=[
 
         const bot=this.props.browserConfig.type==='bot';
         const noOverlay=true;
+
+        if((seatStyle.speaking.width*HDRatio+titleHeight) !== agendaStyle.height) console.error("speaking height was",seatStyle.speaking.width*HDRatio+titleHeight,"!=","agenda height",agendaStyle.height);
 
         if(this.canNotRecordOnSafari){
             return (
@@ -2379,9 +2217,18 @@ buttons=[
 
         let humanSpeaking = false;
 
+        function pxSeatStyleWidth(seat){
+            let width=seatStyle[seat].width;
+            if(typeof width==='number')return width;
+            if(width.endsWith('vw')) return parseFloat(width)*innerWidth/100;
+            return parseFloat(width);
+        }
+
         var videoBox = (participant, i, seatStyle) => {
             if(!this[participant]) return null; // we don't have room for this participant
             let chair = this.seat(i);
+            let videoWidth=pxSeatStyleWidth(this.seat(i));
+            let videoHeight=pxSeatStyleWidth(this.seat(i)) * HDRatio;
             if (participant === 'human' && this.seat(i) === 'speaking')
                 humanSpeaking = true;
                 const style= noOverlay || bot || intro ? seatStyle[chair] : Object.assign({},seatStyle[chair],introSeatStyle[chair]) 
@@ -2393,42 +2240,42 @@ buttons=[
             /*src={"https://www.youtube.com/embed/"+getYouTubeID(this.participants[participant].listeningObjectURL)+"?enablejsapi=1&autoplay=1&loop=1&controls=0&disablekb=1&fs=0&modestbranding=1&rel=0"}*/
             return (
                 <div style={style} className={cx(className, classes['box'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])} key={participant}>
-                    <div style={{width: seatStyle[this.seat(i)].width, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio + 'vw' }}
+                    <div style={{width: videoWidth, height: videoHeight}}
                         className={cx(className, classes['participantBackground'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])}
                     >
-                        <img style={{'transition': `all ${TransitionTime}ms linear`, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio + 'vw' }} height={parseFloat(seatStyle['speaking'].width) *  HDRatio * innerWidth / 100 } width="auto" src={this.participants[participant] && this.participants[participant].placeholderUrl || undefined} ></img>
+                        <img style={{'transition': `all ${TransitionTime}ms linear`, height:videoHeight }} height={pxSeatStyleWidth('speaking') *  HDRatio } width="auto" src={this.participants[participant] && this.participants[participant].placeholderUrl || undefined} ></img>
                     </div>
                     {bot ? null :
                         participant!=='human' && this.participants[participant].youtube ? 
                             <div className={cx(className, classes['participant'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])}
-                                style={{fontSize: '8px', width: parseFloat(seatStyle[this.seat(i)].width) * innerWidth / 100, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio * innerWidth / 100}}
+                                style={{fontSize: '8px', width: videoWidth, height: videoHeight}}
                             >
                                 <div id={'youtube-'+participant} style={{fontSize: "8px"}}></div>
                             </div>
                          :
                         <>
-                        <video className={cx(className, classes['participant'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])}
-                            ref={this[participant]}
-                            playsInline
-                            autoPlay={!bot}
-                            controls={false}
-                            onEnded={this.autoNextSpeaker.bind(this)}
-                            onError={this.videoError.bind(this,participant)}
-                            style={{width: seatStyle[this.seat(i)].width, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio + 'vw'}}
-                            key={participant + '-video'}>
-                        </video>
-                        <div className={cx(classes['stalledOverlay'],this.state.stalled===participant && classes['stalledNow'])} 
-                            style={{width: parseFloat(seatStyle[this.seat(i)].width) * innerWidth / 100, height: parseFloat(seatStyle[this.seat(i)].width) *  HDRatio * innerWidth / 100}}
-                        >
-                            <div className={classes['stalledBox']}>
-                                <p>Hmmmm... the Internet is slow here</p>
-                                <p>{`${this.props.participants[participant].name} will be with us shortly`}</p>
-                                <p>{`${this.state.waitingPercent}% complete`}</p>
+                            <video className={cx(className, classes['participant'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])}
+                                ref={this[participant]}
+                                playsInline
+                                autoPlay={!bot}
+                                controls={false}
+                                onEnded={this.autoNextSpeaker.bind(this)}
+                                onError={this.videoError.bind(this,participant)}
+                                style={{width: videoWidth, height: videoHeight}}
+                                key={participant + '-video'}>
+                            </video>
+                            <div className={cx(classes['stalledOverlay'],this.state.stalled===participant && classes['stalledNow'])} 
+                                style={{width: videoWidth, height: videoHeight}}
+                            >
+                                <div className={classes['stalledBox']}>
+                                    <p>Hmmmm... the Internet is slow here</p>
+                                    <p>{`${this.props.participants[participant].name} will be with us shortly`}</p>
+                                    <p>{`${this.state.waitingPercent}% complete`}</p>
+                                </div>
                             </div>
-                        </div>
-                    </>
-            }
-                    <div className={cx(classes['videoFoot'], stylesSet&&classes['stylesSet'],finishUp && classes['finishUp'])}><span>{!finishUp && (seatToName[this.seat(i)]+': ')}</span><span>{participant_name}</span></div>
+                        </>
+                    }
+                    <div className={cx(classes['title'], stylesSet&&classes['stylesSet'],finishUp && classes['finishUp'])}><span>{participant_name}</span></div>
                 </div>
             )
         }
@@ -2441,7 +2288,11 @@ buttons=[
                         {this.props.participants.moderator.agenda[round] &&
                             <>
                                 <div className={classes['agendaItem']}>
-                                    <div className={classes['agendaTitle']}>Agenda</div>
+                                    <div className={classes['agendaTitle']}>
+                                        <button className={classes['agenda-icon-left']} onClick={this.prevSection.bind(this)}><Icon  icon="chevron-left" size="1.5"  name="previous-section" /></button>
+                                        Agenda
+                                        <button className={classes['agenda-icon-right']} onClick={this.nextSection.bind(this)}><Icon  icon="chevron-right" size="1.5" name="previous-section" /></button>
+                                    </div>
                                     <ul className={classes['agendaList']}>
                                         {this.props.participants.moderator.agenda[round] && this.props.participants.moderator.agenda[round].map((item, i) => <li className={classes['item']} key={item + i}>{item}</li>)}
                                     </ul>
@@ -2456,21 +2307,10 @@ buttons=[
         const buttonBar=(buttonBarStyle)=>(( bot || ((noOverlay || (begin && intro)) && !finishUp && !done)) &&
             <div style={buttonBarStyle} className={classes['buttonBar']} key="buttonBar">
                 {this.buttons.map(button=>
-                    <div style={{width: 100/this.buttons.length+'%', display: "inline-block", height: "100%"}} key={button.name}>
+                    <div style={{width: 100/this.buttons.length+'%', display: "inline-block", height: "auto"}} key={button.name}>
                             <div disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>{button.name()}</div>
                     </div>
                 )}
-            </div>
-        )
-
-        const agendaButtons=(agendaButtonBar)=>(( bot || ((noOverlay || (begin && intro)) && !finishUp && !done)) && 
-            //<div style={{width: 100/this.buttons.length+'%', display: "inline-block", height: "100%"}}>
-              //      <div  onClick={this.buttons[0].func.bind(this)}>{this.buttons[0].name()}</div>
-            //</div>
-
-            <div style={agendaButtonBar} className={classes['agendaButtonBar']}>
-                <div className={classes['agendaButtonLeft']} onClick={this.buttons[0].func.bind(this)}>{"<"}</div>
-                <div className={classes['agendaButtonRight']} onClick={this.buttons[4].func.bind(this)}>{">"}</div>
             </div>
         )
 
@@ -2491,7 +2331,7 @@ buttons=[
 
         var main=()=>!done && (
                 <>
-                    <ConversationHeader  subject={this.props.subject} bp_info={this.props.bp_info} style={this.state.conversationTopic}/>
+                    <ConversationHeader  subject={this.props.subject} bp_info={this.props.bp_info}/>
                     <div className={classes['outerBox']}>
                         {Object.keys(this.props.participants).map((participant,i)=>videoBox(participant,i,seatStyle))}
                         {agenda(agendaStyle)}
@@ -2508,7 +2348,6 @@ buttons=[
                 <section id="syn-ask-webrtc" key='began' className={cx(classes['innerWrapper'],scrollableIframe&&classes["scrollableIframe"])} style={{left: this.state.left}} ref={this.calculatePositionAndStyle}>
                     <audio ref={this.audio} playsInline controls={false} onEnded={this.audioEnd} key="audio"></audio>
                     {main()}
-                    {agendaButtons(this.state.agendaButtonBar)}
                     {(this.participants.human && this.state.preambleAgreed || !this.participants.human) && !bot && beginOverlay()}
                     {this.participants.human && !intro && !begin && !done && <Preamble agreed={this.state.preambleAgreed} onClick={()=>{logger.info("Undebate preambleAgreed true"); this.setState({preambleAgreed: true}); noOverlay && this.beginButton()}} /> }
                     {ending()}

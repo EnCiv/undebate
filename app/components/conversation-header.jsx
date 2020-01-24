@@ -97,15 +97,15 @@ class ConversationHeader extends React.Component {
                         <a target="#" href="https://www.EnCiv.org"><img className={cx(classes['portrait'],classes['enciv-logo'])} src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png"/></a>   
                         <a target="#" href="https://ballotpedia.org/Candidate_Conversations"><img className={cx(classes['portrait'],classes['logo'])} src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png" /></a>
                     </div>
-                    <div style={{marginLeft: "1.4vh"}} className={cx(classes['portrait'],classes['conversationTopicContent'])} key="portrait-2">{subject}</div>
-                    <div style={{marginLeft: "1.4vh"}} className={cx(classes['portrait'],classes['conversationElectionDate'])} key="portrait-3">{xxxx_xx_xxTommmdd_yyyy(bp_info&&bp_info.election_date)}</div> 
+                    <div style={{marginLeft: "1rem"}} className={cx(classes['portrait'],classes['conversationTopicContent'])} key="portrait-2">{subject}</div>
+                    <div style={{marginLeft: "1rem"}} className={cx(classes['portrait'],classes['conversationElectionDate'])} key="portrait-3">{xxxx_xx_xxTommmdd_yyyy(bp_info&&bp_info.election_date)}</div> 
                 </div>
             );
         else
             return(
                 <div className={classes['conversation-header-wrapper']} key="landscape">
                     <div className={classes['conversationHeader']} key="landscape-1">
-                        <div style={style} key="landscape-2" >
+                        <div style={{position: 'absolute', left: "1rem"}} key="landscape-2" >
                             <span className={classes['conversationTopicContent']}>{subject}</span><span className={classes['conversationElectionDate']}>{xxxx_xx_xxTommmdd_yyyy(bp_info&&bp_info.election_date)}</span> 
                         </div>
                         <a target="#" href="https://www.EnCiv.org"><img className={classes['enciv-logo']} src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png"/></a>   
