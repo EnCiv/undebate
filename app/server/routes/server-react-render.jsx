@@ -62,7 +62,7 @@ function serverReactRender(req, res, next) {
 
                     <script>window.reactProps=${JSON.stringify(props)+''}</script>
                     <script>window.env="${props.env}"</script>
-                    <script src="https://kit.fontawesome.com/7258b64f3b.js" crossorigin="anonymous"></script>
+                    <script src="https://kit.fontawesome.com/7258b64f3b.js" crossorigin="anonymous" async></script>
 
                 </head>
                 <body style="margin: 0; padding: 0">

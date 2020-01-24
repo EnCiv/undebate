@@ -9,7 +9,7 @@ function tempId (req, res, next) {
     let { password, ..._body } = req.body; // don't let the password show up in the logs
     let { email}=req.body;
 
-    logger.info({signUp: _body});
+    logger.info({tempId: _body});
 
 
       User
@@ -17,11 +17,12 @@ function tempId (req, res, next) {
         .then(
           user => {
             try {
-              req.user = user();
+              req.user = user;
+              delete user.password;
               if(!user.email) {
                 req.tempid=password; // in temp login, the password is a key that will be stored in the browsers cookie.  
-                return next();
               }
+              return next();
             }
             catch ( error ) {
               next(error);

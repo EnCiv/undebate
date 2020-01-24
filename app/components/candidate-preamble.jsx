@@ -1,9 +1,10 @@
 'use strict';
-
+import Join from './join'
 import React from 'react';
 import injectSheet from 'react-jss'
 import Button from './button'
 import cx from 'classnames'
+import Icon from './lib/icon';
 
 const styles = {
     Preamble: {
@@ -37,8 +38,33 @@ const styles = {
     }
 }
 
+class CandidateJoin extends Join {
+    onChangeActive(){} // don't do anything - there's not need to check email and password comfirmation in this case
+    render() {
+		const {classes, className, onClick} = this.props;
+		const { info, successMessage, validationError } = this.state;
+		return (
+			<React.Fragment>
+				{!successMessage && 
+					<React.Fragment>
+						<a className={className} href="#" onClick={this.agree.bind(this)}>
+							<Icon className={className} icon="square-o" size="2" ref="agree" name="agree" />
+						</a>
+						<span className={className}>I agree to the </span>
+						<a className={className} href="https://enciv.org/terms/" target="_blank">Terms of Service</a>
+						{info && <span className={className}>{info}</span>}
+						{validationError && <span className={className} style={{ color: 'red' }}>{validationError}</span>}
+					</React.Fragment>
+				}
+                <div className={classes['center']}><Button  onClick={this.skip.bind(this)}>Next</Button></div>
+				{successMessage && <span className={className}>{successMessage}</span>}
+			</React.Fragment>
+		);
+	}
+}
 
-class Preamble extends React.Component {
+
+class CandidatePreamble extends React.Component {
     render(){
         const {classes, onClick, agreed, bp_info}=this.props;
         return (
@@ -56,11 +82,12 @@ class Preamble extends React.Component {
             <li>Then, hitting the <b>Post</b> button will upload the recorded video and make it public.</li>
             <li>Or, hitting the <b>Hang Up</b> button or closing this window any time before hitting the <b>Post</b> button will cause any recordings to be discarded.</li>
             </ul>
+            {/*<CandidateJoin classes={classes} userInfo={{email: (bp_info.candidate_email && bp_info.candidate_email[0]) || (bp_info.person_email && bp_info.person_email[0]), name: bp_info.candidate_name}} onChange={onClick}/>*/}
             <div className={classes['center']}><Button  onClick={onClick}>Next</Button></div>
         </div>)
     }
 }
 
-export default injectSheet(styles)(Preamble);
+export default injectSheet(styles)(CandidatePreamble);
 
 /*<p>When you are ready, click <b>Next</b>. After you do, you many need to authorize this app with your browser to use your camera and video.</p>*/

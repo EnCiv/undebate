@@ -9,6 +9,7 @@
 const  WebComponents={
         'TestJoin': require('./test-join'),
         'Undebate': require('./undebate'),
+        'CandidateConversation': require('./candidate-conversation'),
         'UndebateLine': require('./undebate-line')
 }
 
