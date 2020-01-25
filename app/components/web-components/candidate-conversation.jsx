@@ -182,9 +182,9 @@ const styles = {
         'border-radius': '7px',
         'border-width': '2px',
         'border-color': 'white',
-        'font-size': '1.25em',
-        'padding': '1em',
-        'margin-top': '1em'
+        'font-size': '2rem',
+        'padding': '2rem',
+        'margin-top': '2rem'
     },
     hangUpButton: {
         width: '12vw',
@@ -291,7 +291,8 @@ const styles = {
     'agendaTitle': {
         fontFamily: 'Libre Franklin',
         'textAlign': 'center',
-        'font-size': "2rem",
+        'font-size': "3rem",
+        'lineHeight': "3rem",
         'backgroundColor': `${YELLOW}`,
         'paddingTop': '1rem',
         'paddingBottom': '1rem',
@@ -676,11 +677,8 @@ class RASPUndebate extends React.Component {
             width=1920;
             height=1080;
         }
-        if(typeof window!== 'undefined')
-            fontSize=this.calcFontSize();
-        else 
-            fontSize=this.estimateFontSize(width,height)
-        
+
+        fontSize=this.calcFontSize(width,height);
         // we need to calculate the position of everything if/or as if rendered on the server. Then in componentDidMount we can calculate based on the real size.  This is because react.hydrate needs to be able to match the serverside and the browser side
         let calculatedStyles=this.calculateStyles(width,height,height,fontSize);
         Object.assign(this.state,calculatedStyles,{fontSize});
@@ -969,42 +967,15 @@ class RASPUndebate extends React.Component {
     }
 
     // take control of the damn font size - set it in the body
-    calcFontSize(){
-        /*
-        let body=document.getElementsByTagName("body")[0];
-        let key=Math.max(window.screen.width,window.screen.height)+'x'+Math.min(window.screen.width,window.screen.height)+'x'+window.devicePixelRatio;
-        let newFontSize=0;
-        if(typeof ResolutionToFontSizeTable[key] === 'number'){
-            newFontSize=ResolutionToFontSizeTable[key];
-        } else {
-            logger.error("Undebate.calcFontSize not found",this.props.browserConfig.type,key, navigator.userAgent)
-        }
-
-        if(!newFontSize){
-            const fontSize=parseFloat(getComputedStyle(body).fontSize);
-            let width=window.innerWidth;
-            let height=window.innerHeight;
-            newFontSize=this.estimateFontSize(width,height)
-        }
-        //body.style.fontSize=newFontSize+'px';*/
-        //return newFontSize
-        return Math.max(window.innerHeight,window.innerWidth)*0.01;
+    calcFontSize(width,height){
+        if(typeof window!=='undefined')
+            return parseFloat(getComputedStyle(document.getElementsByTagName("html")[0]).fontSize);
+        else
+            return this.estimateFontSize(width,height);
     }
 
     estimateFontSize(width,height){
-        /*
-        let newFontSize;
-        if(width/height>1){
-            newFontSize=height/42; //lines vertically - determined experimentally
-            logger.trace("Undebate FontSize:", width, height, newFontSize);
-            
-        }else{
-            newFontSize=height/64; // lines vertically - determined experimentally
-            logger.trace("Undebate FontSize:", width, height, newFontSize);
-        }
-        return newFontSize;
-        */
-       return Math.max(width,height)*0.1;
+       return Math.max(width,height)*0.01;
     }
 
     // unlike traditional HTML, we calculate based on screen/viewport size so that everything fits on screen - like on a TV screen
@@ -1020,28 +991,27 @@ class RASPUndebate extends React.Component {
             let height=window.innerHeight; // on iOS the height of bounding Rect is larger than what's shown because of the address bar
             let width=window.innerWidth;
             let maxerHeight=Math.max(height,window.screen.height); // this looks at the screen heigh which is different than the window/viewport - especially on desktop, and sometimes on smartphone
-            const fontSize=this.calcFontSize();
+            const fontSize=this.calcFontSize(width,height);
             let calculatedStyles=this.calculateStyles(width,height,maxerHeight,fontSize);
             this.setState({left: -x + 'px',fontSize, ...calculatedStyles});
         }
     }
 
-    calculateStyles(width,height,maxerHeight,fontSizeIn){
-        const fontSize=Math.max(width,height)*0.01;//typeof window !== 'undefined' ? parseFloat(getComputedStyle(document.getElementsByTagName("body")[0]).fontSize) : fontSizeIn; // this fontSize is getting rounded or trimmed so don't use the calculated one.
+    calculateStyles(width,height,maxerHeight,fontSize){
         var seatStyle=cloneDeep(this.state.seatStyle);
         var agendaStyle=cloneDeep(this.state.agendaStyle);
         var buttonBarStyle=cloneDeep(this.state.buttonBarStyle);
         var recorderButtonBarStyle=cloneDeep(this.state.recorderButtonBarStyle);
         var introSeatStyle=cloneDeep(this.state.introSeatStyle);
         var introStyle=cloneDeep(this.state.introStyle);
-        const titleHeight=parseFloat(styles.title.lineHeight)*fontSize; // this is define in the title class;
+        const titleHeight=3.5*fontSize; // this is define in the title class;
         if(width / height > 1 ){ 
                 let speakingWidthRatio=0.65;
                 let seatWidthRatio= 0.20;
                 const navBarHeight=.06*height;
                 const agendaMaxWidth=32*fontSize;
-                const vGap=0.5*fontSize; 
-                const hGap=0.5*fontSize;
+                const vGap=fontSize; 
+                const hGap=fontSize;
 
                 let calcHeight=navBarHeight+vGap+width*seatWidthRatio*HDRatio+titleHeight+vGap+width*speakingWidthRatio*HDRatio+titleHeight+vGap;
                 if(calcHeight>height){ // if the window is really wide - squish the video height so it still fits
@@ -1108,10 +1078,10 @@ class RASPUndebate extends React.Component {
         } else { // portrait mode
             let speakingWidthRatio=0.65;
             let seatWidthRatio= 0.4;
-            const navBarHeight=.06*height+3*fontSize;
+            const navBarHeight=.06*height+2.8*fontSize+1.9*fontSize;
             const agendaMaxWidth=32*fontSize;
-            const vGap=0.5*fontSize; 
-            const hGap=0.5*fontSize;
+            const vGap=fontSize; 
+            const hGap=fontSize;
             const maxAgendaHeight=fontSize*20;
 
             seatStyle.nextUp.left=hGap;
@@ -2230,7 +2200,7 @@ buttons=[
             let videoHeight=pxSeatStyleWidth(this.seat(i)) * HDRatio;
             if (participant === 'human' && this.seat(i) === 'speaking')
                 humanSpeaking = true;
-                const style= noOverlay || bot || intro ? seatStyle[chair] : Object.assign({},seatStyle[chair],introSeatStyle[chair]) 
+                const style= seatStyle[chair]; //noOverlay || bot || intro ? seatStyle[chair] : Object.assign({},seatStyle[chair],introSeatStyle[chair]) 
                 let participant_name;
                 if(participant==='human'&&this.props.bp_info&&this.props.bp_info.candidate_name)
                     participant_name=this.props.bp_info.candidate_name
@@ -2280,7 +2250,7 @@ buttons=[
         }
 
         var agenda = (agendaStyle) => {
-            const style= finishUp ? {} :  noOverlay || bot || intro ? agendaStyle : Object.assign({},agendaStyle,introSeatStyle['agenda']);
+            const style=  agendaStyle; //finishUp ? {} :  noOverlay || bot || intro ? agendaStyle : Object.assign({},agendaStyle,introSeatStyle['agenda']);
             return (
                 <div style={style} className={cx(classes['agenda'], stylesSet && classes['stylesSet'], finishUp && classes['finishUp'], begin && classes['begin'], !intro && classes['intro'])} key={'agenda' + round + agendaStyle.left}>
                     <div className={classes['innerAgenda']}>
@@ -2329,7 +2299,7 @@ buttons=[
                     </div>)
 
         var main=()=>!done && (
-                <>
+                <div>
                     <ConversationHeader  subject={this.props.subject} bp_info={this.props.bp_info}/>
                     <div className={classes['outerBox']}>
                         {Object.keys(this.props.participants).map((participant,i)=>videoBox(participant,i,seatStyle))}
@@ -2339,7 +2309,7 @@ buttons=[
                     <div style={{whiteSpace: 'pre-wrap'}}>
                         <span>{this.state.errorMsg}</span>
                     </div>
-                </>
+                </div>
             )
 
         return (
