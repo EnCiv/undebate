@@ -677,8 +677,8 @@ class RASPUndebate extends React.Component {
             width=1920;
             height=1080;
         }
-
-        fontSize=this.calcFontSize(width,height);
+        // this is what we would do on the server, and it's what we need to do on the browser the first time
+        fontSize=this.estimateFontSize(width,height);
         // we need to calculate the position of everything if/or as if rendered on the server. Then in componentDidMount we can calculate based on the real size.  This is because react.hydrate needs to be able to match the serverside and the browser side
         let calculatedStyles=this.calculateStyles(width,height,height,fontSize);
         Object.assign(this.state,calculatedStyles,{fontSize});
@@ -1078,7 +1078,7 @@ class RASPUndebate extends React.Component {
         } else { // portrait mode
             let speakingWidthRatio=0.65;
             let seatWidthRatio= 0.4;
-            const navBarHeight=.06*height+2.8*fontSize+1.9*fontSize;
+            const navBarHeight=.06*height+3*fontSize+2*fontSize;
             const agendaMaxWidth=32*fontSize;
             const vGap=fontSize; 
             const hGap=fontSize;
