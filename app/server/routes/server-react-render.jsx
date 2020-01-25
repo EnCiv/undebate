@@ -42,7 +42,7 @@ function serverReactRender(req, res, next) {
             <html>
                 <head>
                     <meta charSet="UTF-8"/>
-                    <title>Undebate</title>
+                    <title>Candidate Conversation</title>
                     <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
                     <meta name='viewport' content='width=device-width, maximum-scale=1.0, initial-scale=1.0' />
 
@@ -63,6 +63,7 @@ function serverReactRender(req, res, next) {
                     <script>window.reactProps=${JSON.stringify(props)+''}</script>
                     <script>window.env="${props.env}"</script>
                     <script src="https://kit.fontawesome.com/7258b64f3b.js" crossorigin="anonymous" async></script>
+                    <script>document.getElementsByTagName("html")[0].style.fontSize='1vh'</script>
 
                 </head>
                 <body style="margin: 0; padding: 0">

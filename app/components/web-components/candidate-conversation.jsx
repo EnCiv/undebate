@@ -247,6 +247,11 @@ const styles = {
         'overflow': 'hidden',
         'text-overflow': 'ellipsis',
         'white-space': 'nowrap',
+        'lineHeight': '3vh',
+        '&span': {
+            verticalAlign: "middle"
+
+        },
         '&$finishUp': {
             'font-size': '1%'
         },
@@ -1024,7 +1029,7 @@ class RASPUndebate extends React.Component {
         var recorderButtonBarStyle=cloneDeep(this.state.recorderButtonBarStyle);
         var introSeatStyle=cloneDeep(this.state.introSeatStyle);
         var introStyle=cloneDeep(this.state.introStyle);
-        const titleHeight=1.7*fontSize;
+        const titleHeight=parseFloat(styles.title.lineHeight)*height/100; // this is define in the title class;
         if(width / height > 1 ){ 
                 let speakingWidthRatio=0.65;
                 let seatWidthRatio= 0.20;
@@ -2337,11 +2342,11 @@ buttons=[
                 <section id="syn-ask-webrtc" key='began' className={cx(classes['innerWrapper'],scrollableIframe&&classes["scrollableIframe"])} style={{left: this.state.left}} ref={this.calculatePositionAndStyle}>
                     <audio ref={this.audio} playsInline controls={false} onEnded={this.audioEnd} key="audio"></audio>
                     {main()}
-                    {(this.participants.human && this.state.preambleAgreed || !this.participants.human) && !bot && beginOverlay()}
                     {this.participants.human && !intro && !begin && !done && <Preamble agreed={this.state.preambleAgreed} onClick={()=>{logger.info("Undebate preambleAgreed true"); this.setState({preambleAgreed: true}); noOverlay && this.beginButton()}} /> }
                     {ending()}
                     {(this.participants.human && this.state.preambleAgreed || !this.participants.human) && buttonBar(buttonBarStyle)} 
                     {recorderButtonBar(recorderButtonBarStyle)}
+                    {(this.participants.human && this.state.preambleAgreed || !this.participants.human) && !bot && beginOverlay()}
                     {permissionOverlay()}
                     {waitingOnModeratorOverlay()}
                     {hangupButton()}
