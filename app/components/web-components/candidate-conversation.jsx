@@ -247,7 +247,7 @@ const styles = {
         'overflow': 'hidden',
         'text-overflow': 'ellipsis',
         'white-space': 'nowrap',
-        'lineHeight': '3vh',
+        'lineHeight': '3rem',
         '&span': {
             verticalAlign: "middle"
 
@@ -291,10 +291,10 @@ const styles = {
     'agendaTitle': {
         fontFamily: 'Libre Franklin',
         'textAlign': 'center',
-        'font-size': "200%",
+        'font-size': "2rem",
         'backgroundColor': `${YELLOW}`,
-        'paddingTop': '0.5em',
-        'paddingBottom': '0.5em',
+        'paddingTop': '1rem',
+        'paddingBottom': '1rem',
         'font-weight': 'bold'
     },
     'agendaList': {
@@ -308,7 +308,7 @@ const styles = {
     'agendaItem': {
         'margin-block-start': '0',
         'textAlign': 'left',
-        'lineHeight': '2em',
+        'lineHeight': '2rem',
         'font-weight': '200',
         'list-style-type': "none",
         'paddingLeft': '0',
@@ -333,13 +333,13 @@ const styles = {
     },
     'item': {
         fontFamily: 'Roboto',
-        fontSize: '125%',
+        fontSize: '2rem',
         fontWeight: 'normal',
         'backgroundColor': 'white',
-        'padding': '1em',
+        'padding': '1rem',
         'border-bottom': '1px solid lightGray',
-        'padding-top': '0.5em',
-        'padding-bottom': '0.25em'
+        'padding-top': '0.5rem',
+        'padding-bottom': '0.25rem'
     },
     'thanks': {
         'font-size': "200%",
@@ -970,6 +970,7 @@ class RASPUndebate extends React.Component {
 
     // take control of the damn font size - set it in the body
     calcFontSize(){
+        /*
         let body=document.getElementsByTagName("body")[0];
         let key=Math.max(window.screen.width,window.screen.height)+'x'+Math.min(window.screen.width,window.screen.height)+'x'+window.devicePixelRatio;
         let newFontSize=0;
@@ -985,11 +986,13 @@ class RASPUndebate extends React.Component {
             let height=window.innerHeight;
             newFontSize=this.estimateFontSize(width,height)
         }
-        body.style.fontSize=newFontSize+'px';
-        return newFontSize;
+        //body.style.fontSize=newFontSize+'px';*/
+        //return newFontSize
+        return Math.max(window.innerHeight,window.innerWidth)*0.01;
     }
 
     estimateFontSize(width,height){
+        /*
         let newFontSize;
         if(width/height>1){
             newFontSize=height/42; //lines vertically - determined experimentally
@@ -1000,6 +1003,8 @@ class RASPUndebate extends React.Component {
             logger.trace("Undebate FontSize:", width, height, newFontSize);
         }
         return newFontSize;
+        */
+       return Math.max(width,height)*0.1;
     }
 
     // unlike traditional HTML, we calculate based on screen/viewport size so that everything fits on screen - like on a TV screen
@@ -1022,14 +1027,14 @@ class RASPUndebate extends React.Component {
     }
 
     calculateStyles(width,height,maxerHeight,fontSizeIn){
-        const fontSize=typeof window !== 'undefined' ? parseFloat(getComputedStyle(document.getElementsByTagName("body")[0]).fontSize) : fontSizeIn; // this fontSize is getting rounded or trimmed so don't use the calculated one.
+        const fontSize=Math.max(width,height)*0.01;//typeof window !== 'undefined' ? parseFloat(getComputedStyle(document.getElementsByTagName("body")[0]).fontSize) : fontSizeIn; // this fontSize is getting rounded or trimmed so don't use the calculated one.
         var seatStyle=cloneDeep(this.state.seatStyle);
         var agendaStyle=cloneDeep(this.state.agendaStyle);
         var buttonBarStyle=cloneDeep(this.state.buttonBarStyle);
         var recorderButtonBarStyle=cloneDeep(this.state.recorderButtonBarStyle);
         var introSeatStyle=cloneDeep(this.state.introSeatStyle);
         var introStyle=cloneDeep(this.state.introStyle);
-        const titleHeight=parseFloat(styles.title.lineHeight)*height/100; // this is define in the title class;
+        const titleHeight=parseFloat(styles.title.lineHeight)*fontSize; // this is define in the title class;
         if(width / height > 1 ){ 
                 let speakingWidthRatio=0.65;
                 let seatWidthRatio= 0.20;
@@ -2338,7 +2343,7 @@ buttons=[
             )
 
         return (
-            <div style={{fontSize: this.state.fontSize }} className={cx(classes['wrapper'],scrollableIframe && classes["scrollableIframe"])} >
+            <div className={cx(classes['wrapper'],scrollableIframe && classes["scrollableIframe"])} >
                 <section id="syn-ask-webrtc" key='began' className={cx(classes['innerWrapper'],scrollableIframe&&classes["scrollableIframe"])} style={{left: this.state.left}} ref={this.calculatePositionAndStyle}>
                     <audio ref={this.audio} playsInline controls={false} onEnded={this.audioEnd} key="audio"></audio>
                     {main()}

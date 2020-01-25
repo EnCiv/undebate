@@ -63,7 +63,7 @@ function serverReactRender(req, res, next) {
                     <script>window.reactProps=${JSON.stringify(props)+''}</script>
                     <script>window.env="${props.env}"</script>
                     <script src="https://kit.fontawesome.com/7258b64f3b.js" crossorigin="anonymous" async></script>
-                    <script>document.getElementsByTagName("html")[0].style.fontSize='1vh'</script>
+                    <script>document.getElementsByTagName("html")[0].style.fontSize=Math.max(window.innerWidth,window.innerHeight)/100+'px'</script>
 
                 </head>
                 <body style="margin: 0; padding: 0">
