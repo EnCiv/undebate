@@ -2084,8 +2084,6 @@ buttons=[
         const bot=this.props.browserConfig.type==='bot';
         const noOverlay=true;
 
-        if((seatStyle.speaking.width*HDRatio+titleHeight) !== agendaStyle.height) console.error("speaking height was",seatStyle.speaking.width*HDRatio+titleHeight,"!=","agenda height",agendaStyle.height);
-
         if(this.canNotRecordOnSafari){
             return (
                 <div className={cx(classes['outerBox'],classes['beginBox'])}>
