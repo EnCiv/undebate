@@ -241,7 +241,7 @@ const styles = {
     'title': {
         'text-align': 'center',
         'color': 'white',
-        'font-weight': '600',
+        'font-weight': 'normal',
         'font-size': '2rem',
         'padding-top': '0.25rem',
         'padding-bottom': '0.25rem',
