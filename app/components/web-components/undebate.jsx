@@ -205,13 +205,37 @@ const styles = {
         position: 'absolute',
         left: '85vw',
         bottom: '5vh',
-        color: 'white',
-        background: 'linear-gradient(to bottom, #ff6745 0%,#ff5745 51%,#ff4745 100%)',
-        'border-radius': '7px',
-        'border-width': '2px',
-        'border-color': 'white',
-        'font-size': '1.25em',
-        'padding': '1em'
+        '& button': {
+            height: '5.5rem',
+            color: 'white',
+            background: 'linear-gradient(to bottom, #ff6745 0%,#ff5745 51%,#ff4745 100%)',
+            'border-radius': '7px',
+            'border-width': '2px',
+            'border-color': 'white',
+            'font-size': '1.25em',
+            'padding': '1em'
+        }
+    },
+    hangUpButtonReally: {
+        display: 'inline-block',
+        position: 'absolute',
+        left: 0,
+        height: '100%',
+        bottom: '12vh',
+        backgroundColor: 'white',
+        color: 'red',
+        borderRadius: '7px',
+        borderWidth: '2px',
+        borderColor: 'black',
+        borderStyle: 'solid',
+        padding: '0.5rem',
+    },
+    hangUpButtonReallyClose: {
+        top:0, 
+        right:0, 
+        position: 'absolute', 
+        marginRight: '0.2rem',
+        cursor: 'pointer'
     },
     'finishButton': {
         width: '12vw',
@@ -581,6 +605,7 @@ class RASPUndebate extends React.Component {
         this.beginButton=this.beginButton.bind(this);
         this.keyHandler=this.keyHandler.bind(this);
         this.hangup=this.hangup.bind(this);
+        this.reallyHangup=this.reallyHangup.bind(this);
         if(typeof window !== 'undefined')
             window.onresize=this.onResize.bind(this);
         this.participants={};
@@ -1926,7 +1951,23 @@ class RASPUndebate extends React.Component {
     }
 
     hangup() {
-        logger.info("Undebate.hangup");
+        if(!this.state.totalSize_before_hangup) {
+            let totalSize=0;
+            for(let round=0; round<this.participants.human.speakingBlobs.length; round++){
+                totalSize+=this.participants.human.speakingBlobs[round].size;
+            }
+            if(this.participants.human.listeningBlob){
+                totalSize+=this.participants.human.listeningBlob.size;
+            }
+            if(totalSize>0){
+                return this.setState({totalSize_before_hangup: totalSize})
+            }
+        }
+        this.reallyHangup();
+    }
+
+    reallyHangup(){
+        logger.info("Undebate.reallyHangup");
         this.releaseCamera();
         this.allStop();
         delete this.uploadQueue;
@@ -2452,8 +2493,13 @@ class RASPUndebate extends React.Component {
         )
 
         const hangupButton=()=>(!this.state.hungUp && this.participants.human &&
-                    <div style={{height: '5.5rem'}}>
-                        <button className={classes['hangUpButton']} onClick={this.hangup} key='hangup'>Hang Up</button>
+                    <div className={classes['hangUpButton']}>
+                        <button  onClick={this.hangup} key='hangup'>Hang Up</button>
+                        {this.state.totalSize_before_hangup?
+                            <div className={classes['hangUpButtonReally']}>
+                                You have recorded video, did you really want to hang up?
+                                <div className={classes['hangUpButtonReallyClose']} onClick={()=>this.setState({totalSize_before_hangup: 0})}>x</div>
+                            </div>:null}
                     </div>)
 
         const conversationTopic= (topicStyle) => {
