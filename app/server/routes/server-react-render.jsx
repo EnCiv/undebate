@@ -55,6 +55,7 @@ function serverReactRender(req, res, next) {
 
 
                     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+                    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:400,800&display=swap" rel="stylesheet">
 
                     <style type="text/css">
                         ${sheets.toString()}

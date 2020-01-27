@@ -8,6 +8,7 @@ const YELLOW='#E5A650'
 
 const styles = {
     'conversation-header-wrapper': {
+        'font-family': "Libre Franklin",
         position: 'absolute',
         left: 0,
         top: 0
@@ -21,7 +22,7 @@ const styles = {
         height: '6vh',
         lineHeight: '6vh',
         'box-shadow': '0px .1vh .1vh rgba(0, 0, 0, 0.25)',
-        fontFamily: "Libra Franklin",
+        fontFamily: "Libre Franklin",
         '&$portrait': {
             position: 'relative'
         }
@@ -30,7 +31,7 @@ const styles = {
 
     conversationTopicContent:{
         fontSize: '2.5rem',
-        fontWeight: 'bold',
+        fontWeight: 'bolder',
         'paddingLeft': '.2em',
         'paddingRight': '.2em',
         'borderLeft': `0.2em solid ${BLUE}`,
