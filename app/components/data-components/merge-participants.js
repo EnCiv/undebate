@@ -157,7 +157,15 @@ export default class MergeParticipants {
                     {$limit: 7},
                     {$replaceRoot: {newRoot: "$latest"}}
                 ]);
-                if(undebate.webComponent.shuffle) shuffle(newParticipantDocs);
+                if(undebate.webComponent.shuffle===true) shuffle(newParticipantDocs);
+                else if(undebate.webComponent.shuffle==='bp_info_alphabetize'){
+                    newParticipantDocs.sort((a,b)=>{
+                        // sort by name
+                        const nameA = a && a.component && a.component.participant && a.component.participant.bp_info && a.component.participant.bp_info.last_name && a.component.participant.bp_info.last_name.toUpperCase() || ''; // ignore upper and lowercase
+                        const nameB = b && b.component && b.component.participant && b.component.participant.bp_info && b.component.participant.bp_info.last_name &&  b.component.participant.bp_info.last_name.toUpperCase() || ''; // ignore upper and lowercase
+                        return (nameA < nameB ? -1 : (nameA > nameB ? 1 : 0))
+                    });
+                }
                 newParticipantDocs.forEach(participantDoc=>{
                     undebate.webComponent.participants[audience+nextIndex++]=participantDoc.component.participant;
                 })

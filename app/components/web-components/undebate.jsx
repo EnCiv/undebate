@@ -1986,12 +1986,13 @@ class RASPUndebate extends React.Component {
         // socketIo-streams does not seem to be passing call backs (undefined is received)
         // so we are using a socket io event to send the response back
         const responseUrl=(url)=>{
+            // responses don't necessarily come in order
             if(url){
                 logger.trace("url", url);
                 if(seat==='speaking') {
                     // what if the come out of order -- to be determined
-                    this.participant.speaking.push(url);
-            } else 
+                    this.participant.speaking[round]=url; // specify the round because the order is not assures - don't use push
+                } else 
                     this.participant.listening=url;
 
             }else {
