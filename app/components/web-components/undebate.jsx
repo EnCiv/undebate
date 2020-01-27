@@ -34,6 +34,7 @@ import IconNextSection from '../../svgr/icon-skip-session'
 import IconRedo from '../../svgr/icon-redo'
 import IconFinishRecording from '../../svgr/icon-finish-recording'
 import IconRecording from '../../svgr/icon-recording'
+import ConversationHeader from '../conversation-header'
 
 function promiseSleep(time){
     return new Promise((ok,ko)=>setTimeout(ok,time))
@@ -213,14 +214,16 @@ const styles = {
             'border-width': '2px',
             'border-color': 'white',
             'font-size': '1.25em',
-            'padding': '1em'
+            'padding': '1em',
+            'height': '100%',
+            'whiteSpace': 'no-wrap'
         }
     },
     hangUpButtonReally: {
         display: 'inline-block',
         position: 'absolute',
         left: 0,
-        height: '100%',
+        height: 'auto',
         bottom: '12vh',
         backgroundColor: 'white',
         color: 'red',
@@ -1127,8 +1130,8 @@ class RASPUndebate extends React.Component {
 
                 } else {
                     const speakingWidthRatio=0.5;
-                    const nextUpWidthRatio= 0.15;
-                    const seatWidthRatio= 0.15;
+                    const nextUpWidthRatio= 0.20;
+                    const seatWidthRatio= 0.20;
                     const verticalSeatSpaceRatio=0.05;
                     const horizontalSeatSpaceRatio=0.0125;
                     const navBarHeightRatio=0.08;
@@ -2534,7 +2537,7 @@ class RASPUndebate extends React.Component {
                     <audio ref={this.audio} playsInline controls={false} onEnded={this.audioEnd} key="audio"></audio>
                     {main()}
                     {(this.participants.human && this.state.preambleAgreed || !this.participants.human) && !bot && beginOverlay()}
-                    {this.participants.human && !intro && !begin && !done && <CandidatePreamble bp_info={this.props.bp_info} agreed={this.state.preambleAgreed} onClick={()=>{logger.info("Undebate preambleAgreed true"); this.setState({preambleAgreed: true}); noOverlay && this.beginButton()}} /> }
+                    {this.participants.human && !intro && !begin && !done && <CandidatePreamble subject={this.props.subject} bp_info={this.props.bp_info} agreed={this.state.preambleAgreed} onClick={()=>{logger.info("Undebate preambleAgreed true"); this.setState({preambleAgreed: true}); noOverlay && this.beginButton()}} /> }
                     {ending()}
                     {(this.participants.human && this.state.preambleAgreed || !this.participants.human) && buttonBar(buttonBarStyle)}                        
                     {recorderButtonBar(recorderButtonBarStyle)}

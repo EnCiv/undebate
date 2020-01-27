@@ -197,7 +197,9 @@ const styles = {
         'border-width': '2px',
         'border-color': 'white',
         'font-size': '1.25em',
-        'padding': '1em'
+        'padding': '1em',
+        'height': '100%',
+        'whiteSpace': 'no-wrap'
     },
     'finishButton': {
         width: '12vw',
