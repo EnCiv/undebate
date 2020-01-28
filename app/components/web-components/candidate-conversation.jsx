@@ -218,6 +218,32 @@ const styles = {
             'background': 'lightgray'
         }
     },
+    donateButton: {
+        width: '12vw',
+        '& button': {
+            height: '5.5rem',
+            color: 'white',
+            background: 'linear-gradient(to bottom, #ff6745 0%,#ff5745 51%,#ff4745 100%)',
+            'border-radius': '7px',
+            'border-width': '2px',
+            'border-color': 'white',
+            'font-size': '1.25rem',
+            'padding': '1rem',
+            'height': '100%',
+            'whiteSpace': 'no-wrap'
+        }
+    },
+    donateCallToAction: {
+        fontSize: "1rem",
+        display: "inline-block",
+        maxWidth: "32em",
+        verticalAlign: "middle",
+        fontWeight: "normal",
+        marginTop: ".5rem",
+        textAlign: "justify",
+        paddingLeft: "1rem",
+        paddingRight: "1rem"
+    },
     'rerecordButton': {
         width: '12vw',
         position: 'absolute',
@@ -2149,7 +2175,10 @@ buttons=[
                 <div className={cx(classes['outerBox'],scrollableIframe&&classes['scrollableIframe'])} key="ending">
                     <div style={{ width: '100%', height: '100%', display: 'table' }} >
                         <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }} >
-                            <span className={cx(classes['thanks'],scrollableIframe&&classes['scrollableIframe'])}>{closing.thanks}</span>
+                            <span className={cx(classes['thanks'],scrollableIframe&&classes['scrollableIframe'])}>
+                                <p>{closing.thanks}</p>
+                                <p><span className={classes['donateButton']}><button onClick={()=>{let win = window.open('https://ballotpedia.org/Donate:_Candidate_Conversations', '_blank');win.focus()}}>Donate</button></span><span><div className={classes['donateCallToAction']}>EnCiv is a 501(c)3 nonprofit working to bring free and fare candidate conversations to elections across the country. Donations will help us keep this going.</div></span></p>
+                            </span>
                             {surveyForm()}
                             {this.participants.human && !this.state.uploadComplete &&
                                 <>
