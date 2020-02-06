@@ -2,6 +2,31 @@
 import React from "react"
 import supportsVideoType from "./lib/supports-video-type"
 
+/***
+ * 
+ * Allows you to grab the camera, direct video to a stream, and record the video into a blob.  
+ * It handles the case where you stop one recording andd start another one right away - while come provessing may still be taking place on the previous recording.
+ * It does work on Safari 13.0.5+ as well as chrome and firefox
+ * 
+ * Usage:
+ * 
+ * <ReactCameraRecorder ref={(ref)=>ref && this.camera=ref} />
+ * 
+ * await this.camera.getCameraStream(constraints)  // constraints as defined by https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+ * 
+ * element.srcObject=this.camera.cameraStream; //assign the camera stream to a video element for playback
+ * 
+ * this.camera.startRecording((blob)=>{ after recording, save the blobs somewhere }); // start recording
+ * 
+ * this.camera.stopRecording(); // stop recording and cause the call back passed to startRecording to be called
+ * 
+ * this.this.camera.canNotRecordHere // if true you can't record video and things won't do anything
+ * 
+ * this.camera.releaseCamera(); // when you are done using the camera, let it go
+ * 
+ * 
+ */
+
 const  WebRTCMediaRecordPeriod=100;
 
 export default class ReactCameraRecorder extends React.Component {
