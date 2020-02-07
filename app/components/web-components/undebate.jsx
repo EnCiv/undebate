@@ -856,24 +856,20 @@ class RASPUndebate extends React.Component {
                 this.setState({slowInternet: true})
         } 
 
-        // the camera won't be installed in render() if !this.props.participants.human, if it is installed it will be installed by this point because child components are mounted first
-        if(this.camera && !this.camera.canNotRecordHere){
-            // first load the moderator's speaking part and the listening part for all the participants;
+        // first load the moderator's speaking part and the listening part for all the participants;
+        Object.keys(this.props.participants).forEach(participant=>{
+            if(participant==='human') return; 
+            this.preFetchObjectURL(participant,participant==='moderator',0); 
+        })
+        this.preFetchObjectURL('moderator',false,0); // then load the moderator's listening parts 
+        if(this.props.audio) this.preFetchAudio(this.props.audio);
+        for(let i=0;i<this.props.participants.moderator.speaking.length;i++){ // then load the rest of the speaking parts
             Object.keys(this.props.participants).forEach(participant=>{
+                if(participant==='moderator'&&i===0) return; // moderator's first speaking part was loaded first
                 if(participant==='human') return; 
-                this.preFetchObjectURL(participant,participant==='moderator',0); 
+                if(this.props.participants[participant].speaking[i])
+                this.preFetchObjectURL(participant,true,i);
             })
-            this.preFetchObjectURL('moderator',false,0); // then load the moderator's listening parts 
-            if(this.props.audio) this.preFetchAudio(this.props.audio);
-            let i;
-            for(i=0;i<this.props.participants.moderator.speaking.length;i++){ // then load the rest of the speaking parts
-                Object.keys(this.props.participants).forEach(participant=>{
-                    if(participant==='moderator'&&i===0) return; // moderator's first speaking part was loaded first
-                    if(participant==='human') return; 
-                    if(this.props.participants[participant].speaking[i])
-                    this.preFetchObjectURL(participant,true,i);
-                })
-            }
         }
     }
 
