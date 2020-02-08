@@ -13,23 +13,15 @@ export default class ErrorBoundary extends React.Component {
       // Display fallback UI
       this.setState({ hasError: true, error: error, info: info });
       // You can also log the error to an error reporting service
-      //logger.error(error, info);
+      logger.error("ErrorBoundary caught error:",error, info, this.props.browserConfig, window.href);
     }
   
     render() {
       if (this.state.hasError) {
         // You can render any custom fallback UI
         return (
-            <div>
+            <div style={{height: "100vh", width: "100vw"}}>
                 <h1>Something went wrong.</h1>
-                <div style={{whiteSpace: 'pre-wrap'}}>
-                <label>Info</label>
-                {JSON.stringify(this.state.info)}
-                </div>
-                <div style={{whiteSpace: 'pre-wrap'}}>
-                <label>Error</label>
-                {JSON.stringify(this.state.error)}
-                </div>
             </div>
         );
       }
