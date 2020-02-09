@@ -1626,6 +1626,19 @@ class RASPUndebate extends React.Component {
             }
         })
     }
+    
+    /** this really helps with round and seatOffset, example of  4 participants.  time increases as you go down. 
+     *  round  seatOffset
+     *     0      0
+     *     0      3
+     *     0      2
+     *     0      1
+     *     1      0
+     *     1      3
+     *     1      2
+     *     1      1
+     *     2      0
+     */
 
     prevSection(){
         var { seatOffset, round } = this.state;
@@ -1636,30 +1649,26 @@ class RASPUndebate extends React.Component {
         this.newOrder(seatOffset, round)
     }
 
-    prevSpeaker() {
+    prevSpeaker(){
         var { seatOffset, round } = this.state;
         logger.info("Undebate.prevSpeaker",seatOffset, round);
         if(this.numParticipants===1){
             round-=1;
             if(round<0) round=0;
         }else{
-            if(seatOffset===0){ //we were listening to the moderator
-                if(round > 0) {
-                    round--;
-                    seatOffset=1; // one because if we were going to the next seat, we would be subtracting on, and then going to 
-                }else{
-                    round=0;
+            if(seatOffset===0){ // if it is the moderator speaking
+                if(round===0)
+                    ; // can't go before the moderator on the first round
+                else { // go to the last position of the previous round
+                    seatOffset=1;
+                    round-=1;
                 }
-            } else {
+            } else if(seatOffset>=(this.numParticipants-1)){ // if the FIRST participant is speaking
+                seatOffset=0;
+            } else 
                 seatOffset+=1;
-                if(seatOffset >= this.numParticipants){
-                    round -=1;
-                    seatOffset=0;
-                }
-                if(round<0)round=0;
-            }
         }
-        this.newOrder(seatOffset, round)
+        this.newOrder(seatOffset, round)        
     }
 
     nextSection(){
