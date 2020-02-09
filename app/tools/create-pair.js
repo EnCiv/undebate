@@ -88,13 +88,13 @@ const recorder={
                 "moderator": {
                     "name": "Krystina",
                     "speaking": [
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto,so_4,eo_79/v1581062197/5e3d18093ebd3a0017d9621b-0-speaking20200207T075617766Z.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto,so_0/l_video:v1581107486:5e3d18093ebd3a0017d9621b-0-speaking20200207T075617766Z_ajcca3,q_auto,fl_splice,so_0/v1581062198/5e3d18093ebd3a0017d9621b-1-speaking20200207T075637213Z.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581063515/5e3d18093ebd3a0017d9621b-2-speaking20200207T081832445Z.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581063516/5e3d18093ebd3a0017d9621b-3-speaking20200207T081835275Z.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581063517/5e3d18093ebd3a0017d9621b-4-speaking20200207T081836283Z.mp4"
+                        "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581230733/5e3d18093ebd3a0017d9621b-0-speaking20200209T064526036Z.mp4",
+                        "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581230737/5e3d18093ebd3a0017d9621b-1-speaking20200209T064533455Z.mp4",
+                        "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581230738/5e3d18093ebd3a0017d9621b-2-speaking20200209T064537850Z.mp4",
+                        "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581230741/5e3d18093ebd3a0017d9621b-3-speaking20200209T064538858Z.mp4",
+                        "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581230743/5e3d18093ebd3a0017d9621b-4-speaking20200209T064541202Z.mp4"
                     ],
-                    "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581062208/5e3d18093ebd3a0017d9621b-5-speaking20200207T075645245Z.mp4",
+                    "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581230746/5e3d18093ebd3a0017d9621b-5-speaking20200209T064543798Z.mp4",
                     "agenda": [
                         [
                             "Introductions",
@@ -110,7 +110,8 @@ const recorder={
                             "What do you hope a volunteer will be able to do by joining the CfA Brigade Network that they can’t do anywhere else?"
                         ],
                         [
-                            "What is the one thing you want us to know about your candidacy that was not covered by the candidate questions provided?"
+                            "1- What is the one thing you want us to know about your candidacy that was not covered by the candidate questions provided?",
+                            "2- Look into the camera while listening to the example speaker as your placeholder video is recorded"
                         ],
                         [
                             "Thank you!"
