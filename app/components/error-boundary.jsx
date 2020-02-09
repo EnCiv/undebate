@@ -11,9 +11,9 @@ export default class ErrorBoundary extends React.Component {
   
     componentDidCatch(error, info) {
       // Display fallback UI
-      this.setState({ hasError: true, error: error, info: info });
+      this.setState({ hasError: true, error: error.message, info: info });
       // You can also log the error to an error reporting service
-      logger.error("ErrorBoundary caught error:",error, info, this.props.browserConfig, location.href);
+      logger.error("ErrorBoundary caught error:",error.message,error.stack,info, this.props.browserConfig, location.href);
     }
   
     render() {
@@ -22,6 +22,7 @@ export default class ErrorBoundary extends React.Component {
         return (
             <div style={{height: "100vh", width: "100vw"}}>
                 <h1>Something went wrong.</h1>
+                <p>{this.state.error}</p>
             </div>
         );
       } else 
