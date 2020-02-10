@@ -2,7 +2,7 @@
 
 import Iota from '../models/iota'
 import cloneDeep from 'lodash/cloneDeep';
-import S from 'string';
+import S from 'underscore.string';
 import MongoModels from 'mongo-models'
 
 import log4js from 'log4js';
@@ -213,7 +213,7 @@ async function newPair(title){
 
     var newViewer=cloneDeep(viewer);
     var newRecorder=cloneDeep(recorder);
-    newViewer.path='/'+S(title).slugify().s;
+    newViewer.path='/'+S(title).slugify().value();
     newViewer.subject=title;
     newViewer.description="A Candidate Conversation for: "+title;
     newViewer.webComponent.opening.bigLine=title;

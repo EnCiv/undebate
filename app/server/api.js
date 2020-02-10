@@ -4,7 +4,7 @@ import { EventEmitter } from 'events';
 import fs from 'fs';
 import path from 'path';
 import SocketIO from 'socket.io';
-import S from 'string';
+import S from 'underscore.string';
 import cookieParser from 'cookie-parser';
 import ss from 'socket.io-stream';
 import cloudinary from 'cloudinary';
@@ -75,9 +75,9 @@ class API extends EventEmitter {
 						} else {
 							const name = S(file.replace(/\.js$/, ''))
 								.humanize()
-								.s
+								.value()
 								.toLowerCase();
-		
+									
 							const handler = require('../api/' + file).default;
 		
 							if (typeof handler !== 'function') {
