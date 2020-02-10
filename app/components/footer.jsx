@@ -29,7 +29,7 @@ class Footer extends React.Component {
     }
     render(){
         const {classes}=this.props;
-        return <div className={classes['footer']}><a style={{padding: "0 0 0 2px"}}  href="https://enciv.org"><img  style={{width: "auto", height: "2em"}} src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png"/></a><a href="https://enciv.org/terms" target="_blank">Terms</a></div>
+        return <div className={classes['footer']}><a href="https://enciv.org/terms" target="_blank">Terms</a></div>
     }
 }
 

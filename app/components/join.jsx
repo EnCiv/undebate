@@ -263,9 +263,9 @@ class Join extends React.Component {
 			<React.Fragment>
 				{!successMessage && 
 					<React.Fragment>
+						<button className={className} onClick={this.login.bind(this)} disabled={!this.state.loginActive}>Login</button>
 						<Input className={className} type="email" block autoFocus medium required placeholder="Email" ref="email" name="email" onChange={this.onChangeActive.bind(this)} onBlur={this.onBlurEmail.bind(this)} />
 						<Input className={className} type="password" required placeholder="Password" ref="password" medium name="password" onChange={this.onChangeActive.bind(this)} onBlur={this.onPasswordBlur.bind(this)} />
-						<button className={className} onClick={this.login.bind(this)} disabled={!this.state.loginActive}>Login</button>
 						<Input className={className} type="password" required placeholder="Confirm password" ref="confirm" medium name="confirm" onChange={this.onChangeActive.bind(this)} onBlur={this.onPasswordBlur.bind(this)} />
 						<a className={className} href="#" onClick={this.agree.bind(this)}>
 							<Icon className={className} icon="square-o" size="2" ref="agree" name="agree" />

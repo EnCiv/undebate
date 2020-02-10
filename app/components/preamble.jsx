@@ -19,6 +19,7 @@ const styles = {
         textOverflow: 'clip',
         boxSizing: 'border-box',
         transition: 'all 0.5s linear',
+        backgroundColor: '#F4F4F4',
         '&$agreed':{
             left: '-100vw'
         },
@@ -39,14 +40,14 @@ const styles = {
 
 class Preamble extends React.Component {
     render(){
-        const {classes, onClick, agreed}=this.props;
+        const {classes, onClick, agreed, bp_info}=this.props;
         return (
         <div className={cx(classes['Preamble'],agreed && classes['agreed'])}>
             <div style={{display: "table", width: "100%"}}>
                 <div style={{display: "table-cell", width: "50%", textAlign: "center"}}><img src="https://ballotpedia.org/wiki/skins/Ballotpedia/images/bp-logo.svg" style={{width: "auto", height: "5vh"}}/></div>
                 <div style={{display: "table-cell", width: "50%", textAlign: "center"}}><img src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png" style={{width: "auto", height: "5vh"}}/></div>
             </div>
-            <p>Welcome</p>
+            <p>Welcome {bp_info && bp_info.candidate_name ?<span style={{fontSize: '150%', fontWeight: 'bold'}}>{bp_info.candidate_name}</span>:''}</p>
             <p>Ballotpedia and EnCiv are teaming up to create a better way for candidates to be heard, and voters to learn about their candidates.</p>
             <p>You are invited to engage in an application that will include you, as part of a publicly available online video conversation.</p>
             <ul>
