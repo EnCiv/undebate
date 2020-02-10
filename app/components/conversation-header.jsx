@@ -28,10 +28,11 @@ const styles = {
         }
 
     },
-
     leftBox: {
-        backgroundColor: ${BLUE},
-        width: '2vh'
+        backgroundColor: BLUE,
+        width: '0.52vw',
+        height: '3.24vh',
+        display: 'inline-block'
         
     },
     conversationTopicContent:{
@@ -48,7 +49,10 @@ const styles = {
         }
     },
     rightBox: {
-        backgroundColor: ${YELLOW}
+        backgroundColor: YELLOW,
+        width: '0.52vw',
+        height: '3.24vh',
+        display: 'inline-block'
     },
     conversationElectionDate:{
         'paddingLeft': '.2em',
