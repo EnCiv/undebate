@@ -39,6 +39,8 @@ import ConversationHeader from '../conversation-header'
 import ReactCameraRecorder from "../react-camera-recorder"
 import supportsVideoType from "../lib/supports-video-type"
 
+import {auto_quality, placeholder_image} from "../lib/cloudinary-urls"
+
 function promiseSleep(time){
     return new Promise((ok,ko)=>setTimeout(ok,time))
 }
@@ -625,7 +627,7 @@ class RASPUndebate extends React.Component {
                     speakingImmediate: [],
                     listeningObjectURL: null,
                     listeningImmediate: false,
-                    placeholderUrl: participant!=='human' && this.props.participants[participant].listening.split('/').reduce((acc,part)=>acc + (acc ? '/' : '') + part + (part==='upload' ? '/so_0' : ''),'').split('.').reduce((acc,part)=>part==='webm'||part==='mp4'?acc+'.png':acc+(acc?'.':'')+part,''),
+                    placeholderUrl: participant!=='human' && placeholder_image(this.props.participants[participant].listening),
                     youtube
                 }
                 if(participant==='human') {
@@ -1627,6 +1629,19 @@ class RASPUndebate extends React.Component {
         })
     }
 
+    /** this really helps explain round and seatOffset, example of  4 participants.  time increases as you go down. 
+     *  round  seatOffset 
+     *     0      0  Moderator is speaking
+     *     0      3  First participant is speaking
+     *     0      2  Second participant is speaking
+     *     0      1  Third participant is speaking
+     *     1      0  Moderator is speaking
+     *     1      3  First participant is speaking
+     *     1      2  Second participant is speaking
+     *     1      1  Third participant is speaking
+     *     2      0  Moderator is speaking
+     */
+
     prevSection(){
         var { seatOffset, round } = this.state;
         logger.info("Undebate.prevSection",seatOffset, round);
@@ -1636,30 +1651,26 @@ class RASPUndebate extends React.Component {
         this.newOrder(seatOffset, round)
     }
 
-    prevSpeaker() {
+    prevSpeaker(){
         var { seatOffset, round } = this.state;
         logger.info("Undebate.prevSpeaker",seatOffset, round);
         if(this.numParticipants===1){
             round-=1;
             if(round<0) round=0;
         }else{
-            if(seatOffset===0){ //we were listening to the moderator
-                if(round > 0) {
-                    round--;
-                    seatOffset=1; // one because if we were going to the next seat, we would be subtracting on, and then going to 
-                }else{
-                    round=0;
+            if(seatOffset===0){ // if it is the moderator speaking
+                if(round===0)
+                    ; // can't go before the moderator on the first round
+                else { // go to the last position of the previous round
+                    seatOffset=1;
+                    round-=1;
                 }
-            } else {
+            } else if(seatOffset>=(this.numParticipants-1)){ // if the FIRST participant is speaking
+                seatOffset=0;
+            } else 
                 seatOffset+=1;
-                if(seatOffset >= this.numParticipants){
-                    round -=1;
-                    seatOffset=0;
-                }
-                if(round<0)round=0;
-            }
         }
-        this.newOrder(seatOffset, round)
+        this.newOrder(seatOffset, round)        
     }
 
     nextSection(){
@@ -1837,6 +1848,7 @@ class RASPUndebate extends React.Component {
             // responses don't necessarily come in order
             if(url){
                 logger.trace("url", url);
+                url=auto_quality(url);
                 if(seat==='speaking') {
                     // what if the come out of order -- to be determined
                     this.participant.speaking[round]=url; // specify the round because the order is not assures - don't use push

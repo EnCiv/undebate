@@ -163,8 +163,15 @@ export default class ReactCameraRecorder extends React.Component {
                 this.startRecorderState={state: "READY"}
         };
         mediaRecorder.ondataavailable = handleDataAvailable;
-        mediaRecorder.start(WebRTCMediaRecordPeriod); // collect data for a period of time  but it's not guaranteed to be that short and in some cases is only called at the end
-        logger.trace('MediaRecorder started', this.mediaRecorder);
+        try{
+            mediaRecorder.start(WebRTCMediaRecordPeriod); // collect data for a period of time  but it's not guaranteed to be that short and in some cases is only called at the end
+            logger.trace('MediaRecorder started', this.mediaRecorder);
+        }
+        catch(err){
+            logger.error("mediaRecorder.start caught error:",err);
+            this.canNotRecordHere=true;
+            throw new Error("mediaRecorder.start caught error: "+err.message+'\nThis browser does not support recording video');
+        }
     }
 
     componentDidMount() {
