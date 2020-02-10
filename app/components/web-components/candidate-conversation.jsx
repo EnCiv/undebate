@@ -41,6 +41,8 @@ import ConversationHeader from '../conversation-header'
 import ReactCameraRecorder from "../react-camera-recorder"
 import supportsVideoType from "../lib/supports-video-type"
 
+import {auto_quality, placeholder_image} from "../lib/cloudinary-urls"
+
 function promiseSleep(time){
     return new Promise((ok,ko)=>setTimeout(ok,time))
 }
@@ -648,7 +650,7 @@ class RASPUndebate extends React.Component {
                     speakingImmediate: [],
                     listeningObjectURL: null,
                     listeningImmediate: false,
-                    placeholderUrl: participant!=='human' && this.props.participants[participant].listening.split('/').reduce((acc,part)=>acc + (acc ? '/' : '') + part + (part==='upload' ? '/so_0' : ''),'').split('.').reduce((acc,part)=>part==='webm'||part==='mp4'?acc+'.png':acc+(acc?'.':'')+part,''),
+                    placeholderUrl: participant!=='human' && placeholder_image(this.props.participants[participant].listening),
                     youtube
                 }
                 if(participant==='human') {
@@ -1693,6 +1695,7 @@ buttons=[
         const responseUrl=(url)=>{
             if(url){
                 logger.trace("url", url);
+                url=auto_quality(url);
                 if(seat==='speaking') {
                     // what if the come out of order -- to be determined
                     this.participant.speaking.push(url);

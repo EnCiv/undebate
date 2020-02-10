@@ -39,6 +39,8 @@ import ConversationHeader from '../conversation-header'
 import ReactCameraRecorder from "../react-camera-recorder"
 import supportsVideoType from "../lib/supports-video-type"
 
+import {auto_quality, placeholder_image} from "../lib/cloudinary-urls"
+
 function promiseSleep(time){
     return new Promise((ok,ko)=>setTimeout(ok,time))
 }
@@ -625,7 +627,7 @@ class RASPUndebate extends React.Component {
                     speakingImmediate: [],
                     listeningObjectURL: null,
                     listeningImmediate: false,
-                    placeholderUrl: participant!=='human' && this.props.participants[participant].listening.split('/').reduce((acc,part)=>acc + (acc ? '/' : '') + part + (part==='upload' ? '/so_0' : ''),'').split('.').reduce((acc,part)=>part==='webm'||part==='mp4'?acc+'.png':acc+(acc?'.':'')+part,''),
+                    placeholderUrl: participant!=='human' && placeholder_image(this.props.participants[participant].listening),
                     youtube
                 }
                 if(participant==='human') {
@@ -1626,18 +1628,18 @@ class RASPUndebate extends React.Component {
             }
         })
     }
-    
-    /** this really helps with round and seatOffset, example of  4 participants.  time increases as you go down. 
-     *  round  seatOffset
-     *     0      0
-     *     0      3
-     *     0      2
-     *     0      1
-     *     1      0
-     *     1      3
-     *     1      2
-     *     1      1
-     *     2      0
+
+    /** this really helps explain round and seatOffset, example of  4 participants.  time increases as you go down. 
+     *  round  seatOffset 
+     *     0      0  Moderator is speaking
+     *     0      3  First participant is speaking
+     *     0      2  Second participant is speaking
+     *     0      1  Third participant is speaking
+     *     1      0  Moderator is speaking
+     *     1      3  First participant is speaking
+     *     1      2  Second participant is speaking
+     *     1      1  Third participant is speaking
+     *     2      0  Moderator is speaking
      */
 
     prevSection(){
@@ -1846,6 +1848,7 @@ class RASPUndebate extends React.Component {
             // responses don't necessarily come in order
             if(url){
                 logger.trace("url", url);
+                url=auto_quality(url);
                 if(seat==='speaking') {
                     // what if the come out of order -- to be determined
                     this.participant.speaking[round]=url; // specify the round because the order is not assures - don't use push
