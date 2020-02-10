@@ -29,8 +29,10 @@ const styles = {
 
     },
 
-    left-box{
-
+    leftBox: {
+        backgroundColor: ${BLUE},
+        width: '2vh'
+        
     },
     conversationTopicContent:{
         fontSize: '2.5rem',
@@ -45,8 +47,8 @@ const styles = {
             marginBottom: ".2em"
         }
     },
-    right-box{
-
+    rightBox: {
+        backgroundColor: ${YELLOW}
     },
     conversationElectionDate:{
         'paddingLeft': '.2em',
@@ -113,10 +115,10 @@ class ConversationHeader extends React.Component {
                 <div className={classes['conversation-header-wrapper']} key="landscape">
                     <div className={classes['conversationHeader']} key="landscape-1">
                         <div style={{position: 'absolute', left: "1rem"}} key="landscape-2" >
-                            <div className={classes['left-box']}></div>
+                            <div className={classes['leftBox']}></div>
                             <span className={classes['conversationTopicContent']}>{subject}</span>
                             <span className={classes['conversationElectionDate']}>{xxxx_xx_xxTommmdd_yyyy(bp_info&&bp_info.election_date)}</span> 
-                            <div className={classes['right-box']}></div>
+                            <div className={classes['rightBox']}></div>
                         </div>
                         <a target="#" href="https://www.EnCiv.org"><img className={classes['enciv-logo']} src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png"/></a>   
                         <a target="#" href="https://ballotpedia.org/Candidate_Conversations"><img className={classes['logo']} src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png" /></a>
