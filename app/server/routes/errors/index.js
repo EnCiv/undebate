@@ -1,5 +1,5 @@
-'use strict';
+'use strict'
 
-import express from 'express';
+import express from 'express'
 
-const app = express();
+const app = express()
