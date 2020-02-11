@@ -125,7 +125,7 @@ const styles = {
         fontSize: IconWidth/2+'em' // width of the center
     },
     base: {
-        color: "#e3e7eab0", // derived from the background image, made transparend so you can see video behind
+        color: "rgba(255,255,255,0.25)", // edge can't accept "#e3e7eab0", // derived from the background image, made transparend so you can see video behind
         fontSize: IconWidth+"em"
     },
     border: {
