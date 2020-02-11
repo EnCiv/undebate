@@ -10,7 +10,7 @@
             "component": "MergeParticipants"
         },
         "webComponent": {
-            "webComponent": "Undebate",
+            "webComponent": "CandidateConversation",
             "opening": {
                 "line1": "You are about to experience a new kind of conversation",
                 "line2": "This is how voters can learn about candidates in a more human way",
