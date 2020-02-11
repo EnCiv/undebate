@@ -13,7 +13,9 @@
     "hot-client": "webpack-dev-server --config webpack-dev.config.js --devtool source-map --host 0.0.0.0",
     "postinstall": "bash postinstall.sh",
     "packbuild": "webpack --config webpack-prod.config.js",
-    "dev": "echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 10 && npm run hot-server\" \"sleep 15 && npm run hot-client\""
+    "dev": "echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 10 && npm run hot-server\" \"sleep 15 && npm run hot-client\"",
+    "pretty:all": "prettier --write app/**/*.js",
+    "pretty:check": "prettier --check app/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -32,7 +34,10 @@
     "@babel/preset-react": "^7.0.0",
     "@svgr/cli": "^5.0.1",
     "concurrently": "^4.1.2",
-    "nodemon": "^1.19.2"
+    "husky": "^4.2.1",
+    "nodemon": "^1.19.2",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1"
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",
@@ -86,5 +91,10 @@
   "engines": {
     "node": "~10.16.2",
     "npm": "6.9.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
