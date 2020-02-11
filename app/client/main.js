@@ -8,7 +8,8 @@ import ReactDOM			  from 'react-dom';
 import App                from '../components/app';
 import bconsole  from './bconsole';
 import socketlogger from './socketlogger'
-
+import {Provider} from 'react-redux'
+import { store } from '../store/store'
 
 window.socket = io();
 window.reactSetPath = (path)=>{
@@ -57,7 +58,7 @@ function render (props) {
     window.reactContainer=document.getElementById('synapp');
     if(!window.Synapp) window.Synapp={};
     window.Synapp.fontSize=parseFloat(window.getComputedStyle(window.reactContainer, null).getPropertyValue('font-size'));
-    ReactDOM.render(<App { ...props } />, window.reactContainer );
+    ReactDOM.render(<Provider store={store}><App { ...props } /></Provider>, window.reactContainer );
   }
   catch(error){
     document.getElementsByTagName('body')[0].style.backgroundColor='red';
