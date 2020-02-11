@@ -1,6 +1,6 @@
-'use strict';
-import Iota from "../../models/iota"
-import shuffle from "shuffle-array"
+'use strict'
+import Iota from '../../models/iota'
+import shuffle from 'shuffle-array'
 
 /* Example input document
 the input document example
@@ -135,38 +135,59 @@ What we are trying to create:
 
 */
 
-const audience='audience';
+const audience = 'audience'
 
 export default class MergeParticipants {
-    static fetch(undebate){
-        return new Promise(async (ok,ko)=>{
-            let nextIndex=1;
-            // find the first unused participants.audience<index>
-            Object.keys(undebate.webComponent.participants).forEach(participant=>{
-                if(participant.indexOf(audience)===0){
-                    let val=Number.parseInt(participant.slice(audience.length));
-                    if(Number.isNaN(val)) return;
-                    if(val>=nextIndex) nextIndex=val+1;
-                }
-            })
-            try {
-                var newParticipantDocs=await Iota.aggregate([
-                    {$match: {parentId: undebate._id.toString(), "component.component": "MergeParticipants" }},
-                    {$sort: {_id: -1}},
-                    {$group: {_id: "$userId", latest: {$first: "$$ROOT"}}},
-                    {$limit: 7},
-                    {$replaceRoot: {newRoot: "$latest"}}
-                ]);
-                if(undebate.webComponent.shuffle) shuffle(newParticipantDocs);
-                newParticipantDocs.forEach(participantDoc=>{
-                    undebate.webComponent.participants[audience+nextIndex++]=participantDoc.component.participant;
-                })
-                ok(undebate);
-            }
-            catch(err){
-                logger.error("MergeParticipants caught error", err, "undebate", undebate)
-                ok(); 
-            }
+  static fetch(undebate) {
+    return new Promise(async (ok, ko) => {
+      let nextIndex = 1
+      // find the first unused participants.audience<index>
+      Object.keys(undebate.webComponent.participants).forEach(participant => {
+        if (participant.indexOf(audience) === 0) {
+          let val = Number.parseInt(participant.slice(audience.length))
+          if (Number.isNaN(val)) return
+          if (val >= nextIndex) nextIndex = val + 1
+        }
+      })
+      try {
+        var newParticipantDocs = await Iota.aggregate([
+          { $match: { parentId: undebate._id.toString(), 'component.component': 'MergeParticipants' } },
+          { $sort: { _id: -1 } },
+          { $group: { _id: '$userId', latest: { $first: '$$ROOT' } } },
+          { $limit: 7 },
+          { $replaceRoot: { newRoot: '$latest' } },
+        ])
+        if (undebate.webComponent.shuffle === true) shuffle(newParticipantDocs)
+        else if (undebate.webComponent.shuffle === 'bp_info_alphabetize') {
+          newParticipantDocs.sort((a, b) => {
+            // sort by name
+            const nameA =
+              (a &&
+                a.component &&
+                a.component.participant &&
+                a.component.participant.bp_info &&
+                a.component.participant.bp_info.last_name &&
+                a.component.participant.bp_info.last_name.toUpperCase()) ||
+              '' // ignore upper and lowercase
+            const nameB =
+              (b &&
+                b.component &&
+                b.component.participant &&
+                b.component.participant.bp_info &&
+                b.component.participant.bp_info.last_name &&
+                b.component.participant.bp_info.last_name.toUpperCase()) ||
+              '' // ignore upper and lowercase
+            return nameA < nameB ? -1 : nameA > nameB ? 1 : 0
+          })
+        }
+        newParticipantDocs.forEach(participantDoc => {
+          undebate.webComponent.participants[audience + nextIndex++] = participantDoc.component.participant
         })
-    }
+        ok(undebate)
+      } catch (err) {
+        logger.error('MergeParticipants caught error', err, 'undebate', undebate)
+        ok()
+      }
+    })
+  }
 }
