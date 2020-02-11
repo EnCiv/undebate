@@ -25,71 +25,50 @@ const viewer={
         "component": "MergeParticipants"
     },
     "webComponent": {
-        "webComponent": "Undebate",
-        "opening": {
-            "line1": "You are about to experience a <strong>new<\/strong> kind of conversation",
-            "line2": "Learn about your candidates in a more human way",
-            "line3": "Fostering personal connection and understanding between candidates and voters",
-            "line4": "The topic of this Candidate Conversation is:",
-            "bigLine": "",
-            "subLine": ""
-        },
+        "webComponent": "CandidateConversation",
         "closing": {
             "thanks": "Thank You.",
             "iframe": {
                 "src": "https://docs.google.com/forms/d/e/1FAIpQLSeh7kAVWpyjnSYmHhjfpjfalgznfDA_AF2xmrFB8ZzQj75Vyw/viewform?embedded=true",
                 "width": "640",
                 "height": "1111"
-            },
-            "link": {
-                "name": "Your feedback would help us make this even better",
-                "url": "https://docs.google.com/forms/d/e/1FAIpQLSeh7kAVWpyjnSYmHhjfpjfalgznfDA_AF2xmrFB8ZzQj75Vyw/viewform"
             }
         },
-        "audio": {
-            "intro": {
-                "url": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1567095028/Generic_Light_Intro_7_sec_yp3lxk.wav",
-                "volume": 0.8
-            },
-            "ending": {
-                "url": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1567096104/Heart_Soul_Entire_Duet_2_min_45_sec_1_j5sbpj.wav",
-                "volume": 0.2
-            }
-        },
+        "shuffle": true,
         "participants": {
             "moderator": {
-                "name": "David Fridley",
+                "name": "Krystina",
                 "speaking": [
-                    "https://res.cloudinary.com/hf6mryjpf/video/upload/v1571285574/nov2019-viewer-m-0_rywttp.mp4",
-                    "https://res.cloudinary.com/hf6mryjpf/video/upload/v1571285568/nov2019-viewer-m-1_b9ubsw.mp4",
-                    "https://res.cloudinary.com/hf6mryjpf/video/upload/v1571285570/nov2019-viewer-m-2_imtgfr.mp4",
-                    "https://res.cloudinary.com/hf6mryjpf/video/upload/v1571285569/nov2019-viewer-m-3_jjnhhi.mp4",
-                    "https://res.cloudinary.com/hf6mryjpf/video/upload/v1571285575/nov2019-viewer-m-4_g0wpjq.mp4"
+                    "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581063510/5e3d18093ebd3a0017d9621b-0-speaking20200207T081823130Z.mp4",
+                    "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581063512/5e3d18093ebd3a0017d9621b-1-speaking20200207T081830137Z.mp4",
+                    "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581063515/5e3d18093ebd3a0017d9621b-2-speaking20200207T081832445Z.mp4",
+                    "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581063516/5e3d18093ebd3a0017d9621b-3-speaking20200207T081835275Z.mp4",
+                    "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581063517/5e3d18093ebd3a0017d9621b-4-speaking20200207T081836283Z.mp4"
                 ],
-                "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1571285562/nov2019-m-l_xxqzma.mp4",
+                "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581062208/5e3d18093ebd3a0017d9621b-5-speaking20200207T075645245Z.mp4",
                 "agenda": [
                     [
                         "Introductions",
                         "1- Name",
                         "2- City and State",
                         "3- One word to describe yourself",
-                        "4- What office are you running for?"
+                        "4- What role you are running for?"
                     ],
                     [
-                        "What was your first job?"
+                        "How did you get started with your brigade?"
                     ],
                     [
-                        "What do you love most about where you live?"
+                        "What do you hope a volunteer will be able to do by joining the CfA Brigade Network that they can’t do anywhere else?"
                     ],
                     [
-                        "Why are you running for office; what inspired you?"
+                        "What is the one thing you want us to know about your candidacy that was not covered by the candidate questions provided?"
                     ],
                     [
                         "Thank you!"
                     ]
                 ],
                 "timeLimits": [
-                    10,
+                    15,
                     60,
                     60,
                     60
@@ -107,38 +86,39 @@ const recorder={
             "component": "UndebateCreator",
             "participants": {
                 "moderator": {
-                    "name": "David Fridley",
+                    "name": "Krystina",
                     "speaking": [
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1571285595/nov2019-recorder-m-0_vmozhn.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1571285559/nov2019-recorder-m-1_j0imtt.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1571285568/nov2019-recorder-m-2_rv4jmm.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1571285549/nov2019-recorder-m-3_wlqxbu.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1571285557/nov2019-recorder-m-4_dqk9hv.mp4"
+                        "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581230733/5e3d18093ebd3a0017d9621b-0-speaking20200209T064526036Z.mp4",
+                        "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581230737/5e3d18093ebd3a0017d9621b-1-speaking20200209T064533455Z.mp4",
+                        "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581230738/5e3d18093ebd3a0017d9621b-2-speaking20200209T064537850Z.mp4",
+                        "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581230741/5e3d18093ebd3a0017d9621b-3-speaking20200209T064538858Z.mp4",
+                        "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581230743/5e3d18093ebd3a0017d9621b-4-speaking20200209T064541202Z.mp4"
                     ],
-                    "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1571285562/nov2019-m-l_xxqzma.mp4",
+                    "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581230746/5e3d18093ebd3a0017d9621b-5-speaking20200209T064543798Z.mp4",
                     "agenda": [
                         [
                             "Introductions",
                             "1- Name",
                             "2- City and State",
                             "3- One word to describe yourself",
-                            "4- What office are you running for?"
+                            "4- What role you are running for?"
                         ],
                         [
-                            "What was your first job?"
+                            "How did you get started with your brigade?"
                         ],
                         [
-                            "What do you love most about where you live?"
+                            "What do you hope a volunteer will be able to do by joining the CfA Brigade Network that they can’t do anywhere else?"
                         ],
                         [
-                            "Why are you running for office; what inspired you?"
+                            "1- What is the one thing you want us to know about your candidacy that was not covered by the candidate questions provided?",
+                            "2- Look into the camera while listening to the example speaker as your placeholder video is recorded"
                         ],
                         [
                             "Thank you!"
                         ]
                     ],
                     "timeLimits": [
-                        10,
+                        15,
                         60,
                         60,
                         60
@@ -146,17 +126,17 @@ const recorder={
                 },
                 "audience1": {
                     "speaking": [
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1570631736/5d9d3d70b558b4001722b9fc-1-speaking20191009T143533241Z.webm",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1570631741/5d9d3d70b558b4001722b9fc-2-speaking20191009T143536132Z.webm",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1570631753/5d9d3d70b558b4001722b9fc-3-speaking20191009T143549533Z.webm",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1570631758/5d9d3d70b558b4001722b9fc-4-speaking20191009T143553523Z.webm"
+                        "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1581113918/5e28efbf14af500017ddf308-0-speaking20200207T221838206Z.webm",
+                        "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1581113919/5e28efbf14af500017ddf308-1-speaking20200207T221839188Z.webm",
+                        "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1581113921/5e28efbf14af500017ddf308-2-speaking20200207T221840554Z.webm",
+                        "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1581113921/5e28efbf14af500017ddf308-3-speaking20200207T221842137Z.webm"
                     ],
-                    "name": "Adolf Gundersen",
-                    "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1570631749/5d9d3d70b558b4001722b9fc-2-nextUp20191009T143541489Z.webm"
+                    "name": "David Fridley",
+                    "listening": "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1581110091/5e28efbf14af500017ddf308-0-listening20200207T211451089Z.webm"
                 },
                 "human": {
                     "listening": {
-                        "round": 2,
+                        "round": 3,
                         "seat": "nextUp"
                     }
                 }
@@ -164,25 +144,7 @@ const recorder={
         },
         "webComponent": {
             "webComponent": "Undebate",
-            "audio": {
-                "intro": {
-                    "url": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1567095028/Generic_Light_Intro_7_sec_yp3lxk.wav",
-                    "volume": 0.8
-                },
-                "ending": {
-                    "url": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1567096104/Heart_Soul_Entire_Duet_2_min_45_sec_1_j5sbpj.wav",
-                    "volume": 0.2
-                }
-            },
             "participants": {},
-            "opening": {
-                "line1": "Thank you for taking the lead in this <strong>new<\/strong> way to engage with voters",
-                "line2": "We want voters to learn about candidates in a more personal way, and candidates to have an easy way to reach voters",
-                "line3": "And we want to host Candidate Conversations for every election, every election season",
-                "line4": "So, we invite you to speak in this Candidate Conversation about:",
-                "bigLine": "",
-                "subLine": "After you hit Begin, your browser may ask you to authorize the camera and mic for use by this application."
-            },
             "closing": {
                 "thanks": "Thank You.",
                 "link": {
@@ -216,13 +178,13 @@ async function newPair(title){
     newViewer.path='/'+S(title).slugify().s;
     newViewer.subject=title;
     newViewer.description="A Candidate Conversation for: "+title;
-    newViewer.webComponent.opening.bigLine=title;
+    if(newViewer.webComponent.opening) newViewer.webComponent.opening.bigLine=title;
 
 
     newRecorder.path=newViewer.path+'-candidate-recorder';
     newRecorder.subject=title+"-Candidate Recorder";
     newRecorder.description="A Candidate Recorder for the Conversation: "+ title;
-    newRecorder.webComponent.opening.bigLine=title;
+    if(newRecorder.webComponent.opening) newRecorder.webComponent.opening.bigLine=title;
 
     try {
         var viewerObj=await Iota.create(newViewer);
