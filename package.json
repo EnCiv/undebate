@@ -14,8 +14,8 @@
     "postinstall": "bash postinstall.sh",
     "packbuild": "webpack --config webpack-prod.config.js",
     "dev": "echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 10 && npm run hot-server\" \"sleep 15 && npm run hot-client\"",
-    "pretty:all": "prettier --write app/**/*.js",
-    "pretty:check": "prettier --check app/**/*.js"
+    "pretty:all": "prettier --write app/**/*.js*",
+    "pretty:check": "prettier --check app/**/*.js*"
   },
   "repository": {
     "type": "git",
