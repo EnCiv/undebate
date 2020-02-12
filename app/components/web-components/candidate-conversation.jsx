@@ -1023,7 +1023,7 @@ class RASPUndebate extends React.Component {
                     speakingWidthRatio=speakingWidthRatio*heightForVideo/calcHeightForVideo;
                 }
 
-                seatStyle.speaking.left= hGap;
+                seatStyle.speaking.left= (width - speakingWidthRatio*width - agendaMaxWidth - hGap) / 2;
                 seatStyle.speaking.width= speakingWidthRatio*width;
                 seatStyle.speaking.top= navBarHeight+vGap+width*seatWidthRatio*HDRatio+vGap+titleHeight; 
                 introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + vGap + ShadowBox)}
