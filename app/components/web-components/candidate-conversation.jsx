@@ -1418,7 +1418,7 @@ class RASPUndebate extends React.Component {
         while (element = this.requestPermissionElements.shift()){
             playFunc(element);
         }
-        this.setState({ requestPermission: false, stalled: 0 });
+        this.setState({ requestPermission: false, stalled: false });
     }
 
     seat(i, seatOffset) {
