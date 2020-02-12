@@ -280,6 +280,7 @@ const styles = {
         'overflow': 'hidden',
         'text-overflow': 'ellipsis',
         'white-space': 'nowrap',
+        'opacity': '0.5',
         'lineHeight': '3rem',
         '&span': {
             verticalAlign: "middle"
@@ -2126,6 +2127,7 @@ buttons=[
             /*src={"https://www.youtube.com/embed/"+getYouTubeID(this.participants[participant].listeningObjectURL)+"?enablejsapi=1&autoplay=1&loop=1&controls=0&disablekb=1&fs=0&modestbranding=1&rel=0"}*/
             return (
                 <div style={style} className={cx(className, classes['box'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])} key={participant}>
+                    <div className={cx(classes['title'], stylesSet&&classes['stylesSet'],finishUp && classes['finishUp'])}><span>{participant_name}</span></div>
                     <div style={{width: videoWidth, height: videoHeight}}
                         className={cx(className, classes['participantBackground'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])}
                     >
@@ -2161,7 +2163,6 @@ buttons=[
                             </div>
                         </>
                     }
-                    <div className={cx(classes['title'], stylesSet&&classes['stylesSet'],finishUp && classes['finishUp'])}><span>{participant_name}</span></div>
                 </div>
             )
         }
