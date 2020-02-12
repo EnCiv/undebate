@@ -36,6 +36,11 @@ import IconFinishRecording from '../../svgr/icon-finish-recording'
 import IconRecording from '../../svgr/icon-recording'
 import ConversationHeader from '../conversation-header'
 
+import ReactCameraRecorder from "../react-camera-recorder"
+import supportsVideoType from "../lib/supports-video-type"
+
+import {auto_quality, placeholder_image} from "../lib/cloudinary-urls"
+
 function promiseSleep(time){
     return new Promise((ok,ko)=>setTimeout(ok,time))
 }
@@ -544,25 +549,6 @@ class Undebate extends React.Component {
     }
 }
 
-function supportsVideoType(type) {
-    let video;
-  
-    // Allow user to create shortcuts, i.e. just "webm"
-    let formats = {
-      ogg: 'video/ogg; codecs="theora"',
-      mp4: 'video/mp4; codecs="avc1.42E01E"',
-      webm: 'video/webm; codecs="vp8, vorbis"',
-      vp9: 'video/webm; codecs="vp9"',
-      hls: 'application/x-mpegURL; codecs="avc1.42E01E"'
-    };
-  
-    if(!video) {
-      video = document.createElement('video')
-    }
-  
-    return video.canPlayType(formats[type] || type);
-  }
-
   function onYouTubeIframeAPIReady() {  // this is called by the https://www.youtube.com/iframe_api script, if and after it is loaded
       logger.trace("onYouTubeIframeAPIReady", RASPUndebate.youTubeIFameAPIReady, RASPUndebate.onYouTubeIframeAPIReadyList.length);
       RASPUndebate.youTubeIFameAPIReady;
@@ -602,6 +588,7 @@ class RASPUndebate extends React.Component {
         this.audience6 = React.createRef();
         this.audience7 = React.createRef();
         this.audio=React.createRef();
+        this.getCamera=this.getCamera.bind(this);
         this.audioEnd=this.audioEnd.bind(this);
         this.calculatePositionAndStyle=this.calculatePositionAndStyle.bind(this);
         this.requestPermission=this.requestPermission.bind(this);
@@ -612,13 +599,6 @@ class RASPUndebate extends React.Component {
         if(typeof window !== 'undefined')
             window.onresize=this.onResize.bind(this);
         this.participants={};
-        /*
-        if(props.browserConfig && props.browserConfig.browser.name==='safari'){
-            if(props.participants.human && typeof MediaRecorder === 'undefined'){
-                this.canNotRecordOnSafari=true; // Safari does not support the recorder
-            } else 
-                this.forceMP4=true;  // safari says it supportsVideoType webm but it DOES NOT for video playback - it says it does for WebRTC
-        }*/
         if(typeof window !== 'undefined'){
             if(!supportsVideoType('webm')){
                 if(supportsVideoType('mp4'))
@@ -647,7 +627,7 @@ class RASPUndebate extends React.Component {
                     speakingImmediate: [],
                     listeningObjectURL: null,
                     listeningImmediate: false,
-                    placeholderUrl: participant!=='human' && this.props.participants[participant].listening.split('/').reduce((acc,part)=>acc + (acc ? '/' : '') + part + (part==='upload' ? '/so_0' : ''),'').split('.').reduce((acc,part)=>part==='webm'||part==='mp4'?acc+'.png':acc+(acc?'.':'')+part,''),
+                    placeholderUrl: participant!=='human' && placeholder_image(this.props.participants[participant].listening),
                     youtube
                 }
                 if(participant==='human') {
@@ -658,7 +638,6 @@ class RASPUndebate extends React.Component {
             this.participants={};
         }
         this.numParticipants=Object.keys(this.props.participants).length;
-        this.startRecorderState={state: "READY"}; //"BLOCK", "QUEUED"
         this.audioSets={}
         this.newUser= !this.props.user;  // if there is no user at the beginning, then this is a new user - which should be precistant throughout the existence of this component
         if(typeof window !== 'undefined' && window.screen && window.screen.lockOrientation ) window.screen.lockOrientation('landscape');
@@ -866,6 +845,11 @@ class RASPUndebate extends React.Component {
         }
     }
 
+    getCamera(ref){
+        if(ref) // in olden days ref might be null
+            this.camera=ref;
+    }
+
     componentDidMount() {
         if(this.startTime) {
             this.loadTime=Date.now() -this.startTime;
@@ -874,28 +858,20 @@ class RASPUndebate extends React.Component {
                 this.setState({slowInternet: true})
         } 
 
-        if(!this.canNotRecordOnSafari){
-            if(window.MediaSource && this.props.participants.human){
-                this.mediaSource = new MediaSource();
-                this.mediaSource.addEventListener('sourceopen', this.getCamera.bind(this), false);
-            }
-
-            // first load the moderator's speaking part and the listening part for all the participants;
+        // first load the moderator's speaking part and the listening part for all the participants;
+        Object.keys(this.props.participants).forEach(participant=>{
+            if(participant==='human') return; 
+            this.preFetchObjectURL(participant,participant==='moderator',0); 
+        })
+        this.preFetchObjectURL('moderator',false,0); // then load the moderator's listening parts 
+        if(this.props.audio) this.preFetchAudio(this.props.audio);
+        for(let i=0;i<this.props.participants.moderator.speaking.length;i++){ // then load the rest of the speaking parts
             Object.keys(this.props.participants).forEach(participant=>{
+                if(participant==='moderator'&&i===0) return; // moderator's first speaking part was loaded first
                 if(participant==='human') return; 
-                this.preFetchObjectURL(participant,participant==='moderator',0); 
+                if(this.props.participants[participant].speaking[i])
+                this.preFetchObjectURL(participant,true,i);
             })
-            this.preFetchObjectURL('moderator',false,0); // then load the moderator's listening parts 
-            if(this.props.audio) this.preFetchAudio(this.props.audio);
-            let i;
-            for(i=0;i<this.props.participants.moderator.speaking.length;i++){ // then load the rest of the speaking parts
-                Object.keys(this.props.participants).forEach(participant=>{
-                    if(participant==='moderator'&&i===0) return; // moderator's first speaking part was loaded first
-                    if(participant==='human') return; 
-                    if(this.props.participants[participant].speaking[i])
-                    this.preFetchObjectURL(participant,true,i);
-                })
-            }
         }
     }
 
@@ -969,8 +945,6 @@ class RASPUndebate extends React.Component {
 
     componentWillUnmount() {
         if(this.keyEventListener) window.removeEventListener('keydown',this.keyHandler)
-        this.stopRecording();
-        this.releaseCamera();
     }
 
     onResize(){
@@ -1309,138 +1283,11 @@ class RASPUndebate extends React.Component {
     }
 
 
-    releaseCamera() {
-        if (this.cameraStream && this.cameraStream.getTracks) {
-            var tracks = this.cameraStream.getTracks();
-            tracks.forEach(track => track.stop())
-        }
-    }
-
-    getCamera(event) {
-        logger.trace('MediaSource opened');
-        this.sourceBuffer = this.mediaSource.addSourceBuffer('video/webm; codecs="vp8"');
-        logger.trace('Source buffer: ', sourceBuffer);
-    }
-
-    async getCameraMedia() {
-        if(this.props.participants.human) // if we have a human in this debate
-        {
-            const constraints = {
-                audio: {
-                    echoCancellation: { exact: true }
-                },
-                video: {
-                    //width: 1280, height: 720
-                    width: 640, height: 360
-                }
-            };
-            logger.trace('Using media constraints:', constraints);
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                const listeningRound=this.props.participants.human.listening && this.props.participants.human.listening.round || Infinity;
-                const listeningSeat=this.props.participants.human.listening && this.props.participants.human.listening.seat || 'seat2';
-                logger.trace('getUserMedia() got stream:', stream);
-                this.cameraStream = stream;
-                //it will be set by nextMediaState this.human.current.src = stream; 
-                Object.keys(this.props.participants).forEach(part => this.nextMediaState(part));
-                // special case where human is in seat2 initially - because seat2 is where we record their silence
-                if(listeningRound===0 && this.seat(Object.keys(this.props.participants).indexOf('human')) === listeningSeat)
-                    this.startRecording(false,0); // listening is not speaking
-            } catch (e) {
-                logger.error('navigator.getUserMedia error:', e.name, e.message);
-            }
-        } else { // if we don't have a human - kick off the players
-            Object.keys(this.props.participants).forEach(part => this.nextMediaState(part));
-        }
-    }
-
-    startRecording(speaking,round) {
-        logger.trace(`startRecording`, speaking, round);
-        if(this.startRecorderState.state!=="READY") {
-            if(this.startRecorderState.state==="QUEUED") logger.error("Undebate.startRecording queueing", {speaking, round}, "but", this.startRecorderState, "already queued");
-            this.startRecorderState={state: "QUEUED", speaking, round};
-            logger.trace("startRecording BLOCKED. Waiting for stop"); 
-            return
-        }
-        this.recordedBlobs = [];
-        // It's necessary to create a new mediaRecorder every time for Safari - safari won't stop and start again.  Chrome stops and starts just fine.
-        if(typeof MediaRecorder === 'undefined'){
-            logger.error(`MediaRecorder not supported`);
-            this.setState({noMediaRecorder: true})
-            return;
-        }
-        let options = { mimeType: 'video/webm;codecs=vp9' };
-        try{
-            if(!MediaRecorder.isTypeSupported){ // Safari doesn't have this yet
-                options = { mimeType: 'video/mp4' }; //safari only supports mp4
-                logger.warn("Undebate.startRecording MediaRecorder.isTypeSupported not suppored (by safari), using:", options);
-            } else {
-                if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-                    logger.trace("startRecording", options.mimeType, "is not Supported, trying vp8");
-                    options = { mimeType: 'video/webm;codecs=vp8' };
-                    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-                        logger.trace("startRecording", options.mimeType, "is not Supported, trying webm");
-                        options = { mimeType: 'video/webm' };
-                        if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-                            logger.error("startRecording", options.mimeType, "is not Supported, no video supported");
-                            options = { mimeType: '' };
-                        }
-                    }
-                }
-            }
-        }
-        catch(err){
-            logger.error(`MediaRecorder.isTypeSupported`, options.mimeType, `caught error`)
-        }
-        try {
-            this.mediaRecorder = new MediaRecorder(this.cameraStream, options);
-            logger.trace("Undebate.startRecording succeeded MediaRecorder.mimeType", this.mediaRecorder.mimeType)
-        } catch (e) {
-            logger.error('Exception while creating MediaRecorder:', e.name, e.message);
-            return;
-        }
-        logger.trace('Created MediaRecorder', this.mediaRecorder, 'with options', options);
-        if(this.mediaRecorder.state!=='inactive'){
-            logger.error("mediaRecorder.state not inactive before start", this.mediaRecorder.state);
-        }
-        this.mediaRecorder.onstop = (event) => {  // replace the onstop handler each time, because the saveRecording parameters change
-            logger.trace('Recorder stopped: ', event, this.mediaRecorder.state);
-            this.saveRecordingToParticipants(speaking,round);
-            if(this.startRecorderState.state==="QUEUED"){
-                const {speaking, round}=this.startRecorderState;
-                this.startRecorderState={state: "READY"};
-                this.startRecording(speaking, round);  
-            }else if(this.startRecorderState.state==="BLOCK")
-                this.startRecorderState={state: "READY"}
-        };
-        this.mediaRecorder.ondataavailable = this.handleDataAvailable.bind(this);
-        this.mediaRecorder.start(Config.webRTCMediaRecorderPeriod); // collect 10ms of data
-        logger.trace('MediaRecorder started', this.mediaRecorder);
-    }
-
-    handleDataAvailable(event) {
-        if (event.data && event.data.size > 0) {
-            this.recordedBlobs.push(event.data);
-        }
-    }
-
-    stopRecording() {
-        logger.trace("Undebate.stopRecording", this.mediaRecorder && this.mediaRecorder.state)
-        if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
-            this.startRecorderState={state: "BLOCK"};  // need to block startRecording calls until the onStop even is received.
-            this.mediaRecorder.stop()
-            if(this.recordedBlobs.length)
-                logger.trace('Recorded Blobs: ', this.recordedBlobs.length && this.recordedBlobs[0].type, this.recordedBlobs.length, this.recordedBlobs.reduce((acc,blob)=>acc+blob.size||0,0));
-            else
-                logger.trace('no recorded blobs yet'); // apple safari will not have anything at this point
-        }
-    }
-
-    saveRecordingToParticipants(speaking,round) {
-        logger.trace("saveRecordingToParticipants (locally)", speaking, round, this.mediaRecorder.state)
-        if(!this.recordedBlobs.length) return logger.error("saveRecordingToParticipants found no blobs", this.mediaRecorder.state);
-        logger.trace('save Recorded Blobs: ', this.recordedBlobs.length, this.recordedBlobs.length && this.recordedBlobs[0].type, this.recordedBlobs.reduce((acc,blob)=>acc+blob.size||0,0));
-        const  blob = new Blob(this.recordedBlobs, { type: this.recordedBlobs[0].type }); // use the type from the blob because it might be different than the type we asked for - eg safari gives your video/mp4 no matter what
+    saveRecordingToParticipants(speaking,round,blobs) {
+        logger.trace("saveRecordingToParticipants (locally)", speaking, round)
+        if(!blobs.length) return logger.error("saveRecordingToParticipants found no blobs",blobs);
+        logger.trace('save Recorded Blobs: ', blobs.length, blobs.length && blobs[0].type, blobs.reduce((acc,blob)=>acc+blob.size||0,0));
+        const  blob = new Blob(blobs, { type: blobs[0].type }); // use the type from the blob because it might be different than the type we asked for - eg safari gives your video/mp4 no matter what
         if(!speaking){
             this.participants.human.listeningBlob=blob;
             this.participants.human.listeningObjectURL=URL.createObjectURL(blob);
@@ -1465,7 +1312,7 @@ class RASPUndebate extends React.Component {
                 if(this.participants.human && this.participants.human.speakingObjectURLs[round] && !this.rerecord){
                     objectURL=this.participants.human.speakingObjectURLs[round];
                 }else {
-                    objectURL="cameraStream"; // set it to something - but this.cameraStream should really be used
+                    objectURL="cameraStream"; // set it to something - but this.camera.cameraStream should really be used
                 }
             } else if (!(objectURL = this.participants[part].speakingObjectURLs[round])){
                 this.participants[part].speakingImmediate[round]=true;
@@ -1473,7 +1320,7 @@ class RASPUndebate extends React.Component {
                 logger.error("Undebate.nextMediaState need to do something about stallWatch with preFetch")
             }
         } else {
-            if(part==='human') objectURL="cameraStream"; //set it to something - but this.cameraStream should really be used
+            if(part==='human') objectURL="cameraStream"; //set it to something - but this.camera.cameraStream should really be used
             else if (!(objectURL = this.participants[part].listeningObjectURL))
                 this.participants[part].listeningImmediate=true;
         }
@@ -1605,7 +1452,7 @@ class RASPUndebate extends React.Component {
             }
             //element.src=null;
             if(part==='human' && !speaking){ // human is not speaking
-                if(element.srcObject === this.cameraStream){
+                if(element.srcObject === this.camera.cameraStream){
                     if(element.muted && element.loop) return;
                     element.muted=true;
                     element.loop=true;
@@ -1613,12 +1460,12 @@ class RASPUndebate extends React.Component {
                     element.src=""
                     element.muted=true;
                     element.loop=true;
-                    element.srcObject=this.cameraStream; // objectURL should be camera - this.cameraStream
+                    element.srcObject=this.camera.cameraStream; // objectURL should be camera 
                 }
                 return; // not need to play - source is a stream
             }else if(part==='human' && speaking && (!this.participants.human.speakingObjectURLs[this.state.round] || this.rerecord) ){ // human is speaking (not playing back what was spoken)
                 element.src="";
-                element.srcObject=this.cameraStream; // objectURL should be camera - this.cameraStream
+                element.srcObject=this.camera.cameraStream; // objectURL should be camera
                 element.muted=true;
                 element.loop=false
                 return; // no need to play source is a stream
@@ -1782,6 +1629,19 @@ class RASPUndebate extends React.Component {
         })
     }
 
+    /** this really helps explain round and seatOffset, example of  4 participants.  time increases as you go down. 
+     *  round  seatOffset 
+     *     0      0  Moderator is speaking
+     *     0      3  First participant is speaking
+     *     0      2  Second participant is speaking
+     *     0      1  Third participant is speaking
+     *     1      0  Moderator is speaking
+     *     1      3  First participant is speaking
+     *     1      2  Second participant is speaking
+     *     1      1  Third participant is speaking
+     *     2      0  Moderator is speaking
+     */
+
     prevSection(){
         var { seatOffset, round } = this.state;
         logger.info("Undebate.prevSection",seatOffset, round);
@@ -1791,30 +1651,26 @@ class RASPUndebate extends React.Component {
         this.newOrder(seatOffset, round)
     }
 
-    prevSpeaker() {
+    prevSpeaker(){
         var { seatOffset, round } = this.state;
         logger.info("Undebate.prevSpeaker",seatOffset, round);
         if(this.numParticipants===1){
             round-=1;
             if(round<0) round=0;
         }else{
-            if(seatOffset===0){ //we were listening to the moderator
-                if(round > 0) {
-                    round--;
-                    seatOffset=1; // one because if we were going to the next seat, we would be subtracting on, and then going to 
-                }else{
-                    round=0;
+            if(seatOffset===0){ // if it is the moderator speaking
+                if(round===0)
+                    ; // can't go before the moderator on the first round
+                else { // go to the last position of the previous round
+                    seatOffset=1;
+                    round-=1;
                 }
-            } else {
+            } else if(seatOffset>=(this.numParticipants-1)){ // if the FIRST participant is speaking
+                seatOffset=0;
+            } else 
                 seatOffset+=1;
-                if(seatOffset >= this.numParticipants){
-                    round -=1;
-                    seatOffset=0;
-                }
-                if(round<0)round=0;
-            }
         }
-        this.newOrder(seatOffset, round)
+        this.newOrder(seatOffset, round)        
     }
 
     nextSection(){
@@ -1881,7 +1737,7 @@ class RASPUndebate extends React.Component {
 
     rerecordButton(){
         logger.info("Undebate.rerecordButton");
-        this.stopRecording();  // it might be recording when the user hit's rerecord
+        this.camera && this.camera.stopRecording(); // it might be recording when the user hit's rerecord
         this.rerecord=true;
         const {seatOffset, round}=this.state;
         this.newOrder(seatOffset,round)
@@ -1907,15 +1763,15 @@ class RASPUndebate extends React.Component {
                     ;
                 } else if(oldChair==='speaking' && (!this.participants.human.speakingObjectURLs[this.state.round] || this.rerecord) ){ // the oldChair and the old round
                     this.rerecord=false;
-                    this.stopRecording();
+                    this.camera && this.camera.stopRecording();
                 }else if(oldChair===listeningSeat && this.state.round===listeningRound){ // the oldChair and the old round
-                    this.stopRecording();
+                    this.camera && this.camera.stopRecording();
                 }
                 // then see if it needs to be turned on - both might happen at the same transition
                 if (newChair === listeningSeat && round === listeningRound) {
                         followup.push(()=>{
                             this.nextMediaState(participant)
-                            this.startRecording(false,round);
+                            this.camera.startRecording((blobs)=>this.saveRecordingToParticipants(false,round,blobs))
                         })
                 } else if (newChair === 'speaking') {
                     if(this.participants.human.speakingObjectURLs[round] && !this.rerecord){
@@ -1926,7 +1782,7 @@ class RASPUndebate extends React.Component {
                             this.startCountDown(limit,()=>this.autoNextSpeaker())
                             this.talkativeTimeout = setTimeout(() => this.setState({ talkative: true }), limit * 0.75 * 1000)
                             this.nextMediaState(participant);
-                            this.startRecording(true,round);
+                            this.camera.startRecording((blobs)=>this.saveRecordingToParticipants(true,round,blobs))
                         })
                     }
                 } else { // human just watching
@@ -1947,7 +1803,7 @@ class RASPUndebate extends React.Component {
         logger.info("Undebate.finished");
         this.audioSets && this.audioSets.ending && this.playAudioObject('audio',this.audioSets.ending)
         setTimeout(() => {
-            this.releaseCamera();
+            this.camera && this.camera.releaseCamera();
             this.setState({ done: true });
         }, 1.5* TransitionTime);
         return this.setState({ finishUp: true });
@@ -1971,7 +1827,7 @@ class RASPUndebate extends React.Component {
 
     reallyHangup(){
         logger.info("Undebate.reallyHangup");
-        this.releaseCamera();
+        this.camera && this.camera.releaseCamera();
         this.allStop();
         delete this.uploadQueue;
         return this.setState({ hungUp: true, done: true });
@@ -1992,6 +1848,7 @@ class RASPUndebate extends React.Component {
             // responses don't necessarily come in order
             if(url){
                 logger.trace("url", url);
+                url=auto_quality(url);
                 if(seat==='speaking') {
                     // what if the come out of order -- to be determined
                     this.participant.speaking[round]=url; // specify the round because the order is not assures - don't use push
@@ -2106,6 +1963,37 @@ class RASPUndebate extends React.Component {
     onIntroEnd(){
         this.audio.current.onended=undefined;
         this.setState({begin: true},()=>{this.getCameraMedia();})
+    }
+
+    async getCameraMedia() {
+        if(this.props.participants.human) // if we have a human in this debate
+        {
+            const constraints = {
+                audio: {
+                    echoCancellation: { exact: true }
+                },
+                video: {
+                    width: 640, height: 360
+                }
+            };
+            logger.trace('Using media constraints:', constraints);
+            
+            try {
+                await this.camera.getCameraStream(constraints);
+                const listeningRound=this.props.participants.human.listening && this.props.participants.human.listening.round || Infinity;
+                const listeningSeat=this.props.participants.human.listening && this.props.participants.human.listening.seat || 'seat2';
+                logger.trace('getUserMedia() got stream:', this.camera.cameraStream);
+                //it will be set by nextMediaState this.human.current.src = stream; 
+                Object.keys(this.props.participants).forEach(part => this.nextMediaState(part));
+                // special case where human is in seat2 initially - because seat2 is where we record their silence
+                if(listeningRound===0 && this.seat(Object.keys(this.props.participants).indexOf('human')) === listeningSeat)
+                    this.camera.startRecording((blobs)=>this.saveRecordingToParticipants(false,0,blobs)); // listening is not speaking
+            } catch (e) {
+                logger.error('getCameraMedia', e.name, e.message);
+            }
+        } else { // if we don't have a human - kick off the players
+            Object.keys(this.props.participants).forEach(part => this.nextMediaState(part));
+        }
     }
 
     videoError(participant,e){
@@ -2267,7 +2155,7 @@ class RASPUndebate extends React.Component {
         const bot=this.props.browserConfig.type==='bot';
         const noOverlay=this.noOverlay;
 
-        if(this.canNotRecordOnSafari){
+        if(this.canNotRecordOnSafari || (this.camera && this.camera.canNotRecordHere )){
             return (
                 <div className={cx(classes['outerBox'],classes['beginBox'])}>
                     <img style={getIntroStyle('introRight')} src="/assets/images/female_hands_mug.png"/>
@@ -2533,6 +2421,7 @@ class RASPUndebate extends React.Component {
 
         return (
             <div style={{fontSize: this.state.fontSize }} className={cx(classes['wrapper'],scrollableIframe && classes["scrollableIframe"])} >
+                { this.props.participants.human && <ReactCameraRecorder ref={this.getCamera} />}
                 <section id="syn-ask-webrtc" key='began' className={cx(classes['innerWrapper'],scrollableIframe&&classes["scrollableIframe"])} style={{left: this.state.left}} ref={this.calculatePositionAndStyle}>
                     <audio ref={this.audio} playsInline controls={false} onEnded={this.audioEnd} key="audio"></audio>
                     {main()}
@@ -2550,8 +2439,6 @@ class RASPUndebate extends React.Component {
         );
     }
 }
-
-/*                     <div className={cx(intro&&classes['intro'],classes['innerImageOverlay'])}></div> */
 
 export default injectSheet(styles)(Undebate);
 

@@ -244,7 +244,7 @@ class API extends EventEmitter {
 			ss(socket).on('upload video', (stream, data, cb) => {
 				const public_id=data.name.split('.')[0];
 
-				var cloudStream=cloudinary.v2.uploader.upload_stream({resource_type: 'video', public_id}, (err, result)=>{ // you can't set the timeout:120000 option in the first paramater - it gets an error 504
+				var cloudStream=cloudinary.v2.uploader.upload_stream({resource_type: 'video', public_id, eager_async: true, eager: [{quality: 'auto:good', format: "mp4"},{start_offset: 0, format: 'png'}]}, (err, result)=>{ // you can't set the timeout:120000 option in the first paramater - it gets an error 504
 					if(err) {
 						logger.error('upload video cloudinary.uploader.upload_stream error:', err, data);
 						cb();
