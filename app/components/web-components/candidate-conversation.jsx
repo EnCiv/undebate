@@ -1009,7 +1009,7 @@ class RASPUndebate extends React.Component {
         const titleHeight=3.5*fontSize; // this is define in the title class;
         if(width / height > 1 ){ 
                 let speakingWidthRatio=0.65;
-                let seatWidthRatio= 0.20;
+                let seatWidthRatio= 0.3;
                 const navBarHeight=.06*height;
                 const agendaMaxWidth=32*fontSize;
                 const vGap=fontSize; 
@@ -1110,7 +1110,7 @@ class RASPUndebate extends React.Component {
                 i++;
             }
 
-            seatStyle.speaking.left= hGap;
+            seatStyle.speaking.left= (width - speakingWidthRatio*width - agendaMaxWidth - hGap) / 2;
             seatStyle.speaking.top= navBarHeight+vGap+ seatWidthRatio*width*HDRatio +titleHeight + vGap;
             seatStyle.speaking.width= width - 2*hGap;
             introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + vGap + ShadowBox)}
