@@ -280,7 +280,6 @@ const styles = {
         'overflow': 'hidden',
         'text-overflow': 'ellipsis',
         'white-space': 'nowrap',
-        'opacity': '0.5',
         'lineHeight': '3rem',
         '&span': {
             verticalAlign: "middle"
@@ -1064,7 +1063,7 @@ class RASPUndebate extends React.Component {
         
                 buttonBarStyle.width= seatStyle.speaking.width*0.6;
                 buttonBarStyle.left= seatStyle.speaking.left + seatStyle.speaking.width*0.2;// center it
-                buttonBarStyle.top=seatStyle.speaking.top+seatStyle.speaking.width*HDRatio-(buttonBarStyle.width/this.buttons.length*0.75)-vGap; // there are 5 buttons and they are essentially square
+                buttonBarStyle.top= 2*fontSize + seatStyle.speaking.top+seatStyle.speaking.width*HDRatio-(buttonBarStyle.width/this.buttons.length*0.75)-vGap; // there are 5 buttons and they are essentially square
                 
                 recorderButtonBarStyle.left=seatStyle.speaking.left;
                 recorderButtonBarStyle.top= seatStyle.speaking.top+seatStyle.speaking.width*HDRatio+vGap;
