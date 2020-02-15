@@ -1494,17 +1494,17 @@ buttons=[
         })
     }
 
-    /** this really helps with round and seatOffset, example of  4 participants.  time increases as you go down. 
-     *  round  seatOffset
-     *     0      0
-     *     0      3
-     *     0      2
-     *     0      1
-     *     1      0
-     *     1      3
-     *     1      2
-     *     1      1
-     *     2      0
+    /** this really helps explain round and seatOffset, example of  4 participants.  time increases as you go down. 
+     *  round  seatOffset 
+     *     0      0  Moderator is speaking
+     *     0      3  First participant is speaking
+     *     0      2  Second participant is speaking
+     *     0      1  Third participant is speaking
+     *     1      0  Moderator is speaking
+     *     1      3  First participant is speaking
+     *     1      2  Second participant is speaking
+     *     1      1  Third participant is speaking
+     *     2      0  Moderator is speaking
      */
 
     prevSection(){
