@@ -7,7 +7,7 @@
 
 import Iota from '../models/iota'
 import cloneDeep from 'lodash/cloneDeep';
-import S from 'string';
+import S from 'underscore.string';
 import MongoModels from 'mongo-models'
 const csv=require('csvtojson')
 const ObjectsToCsv = require('objects-to-csv');
@@ -223,7 +223,7 @@ function mergeWithVerbose(dst,src){
 
 function updateOrCreatePair(raceObj){
     function viewerPath(){
-        return '/'+S(raceObj.Race).slugify().s+'-2019Nov16';
+        return '/'+S(raceObj.Race).slugify().value()+'-2019Nov16';
     }
     function recorderPath(){
         return viewerPath()+'-candidate-recorder';

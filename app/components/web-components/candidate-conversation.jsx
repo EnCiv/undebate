@@ -627,15 +627,15 @@ class RASPUndebate extends React.Component {
                 if(supportsVideoType('mp4'))
                     this.forceMP4=true;
                 else
-                    this.canNotRecordOnSafari=true;
+                    this.canNotRecordHere=true;
             }
             if(props.participants.human){
                 if(typeof MediaRecorder === 'undefined')
-                    this.canNotRecordOnSafari=true;
+                    this.canNotRecordHere=true;
             }
         }
         var loadYoutube=false;
-        if(!this.canNotRecordOnSafari){
+        if(!this.canNotRecordHere){
             Object.keys(this.props.participants).forEach(participant=>{
                 let youtube=false;
                 if(participant !== 'human' && this.props.participants[participant].listening.match(/youtu\.be|youtube\.com/)){  // the whole participant is marked youtube if listening is youtube
@@ -876,6 +876,7 @@ class RASPUndebate extends React.Component {
         }
 
         // first load the moderator's speaking part and the listening part for all the participants;
+        if(this.canNotRecordHere) return;  // no reason to go further
         Object.keys(this.props.participants).forEach(participant=>{
             if(participant==='human') return; 
             this.preFetchObjectURL(participant,participant==='moderator',0); 
@@ -1417,7 +1418,7 @@ class RASPUndebate extends React.Component {
         while (element = this.requestPermissionElements.shift()){
             playFunc(element);
         }
-        this.setState({ requestPermission: false });
+        this.setState({ requestPermission: false, stalled: false });
     }
 
     seat(i, seatOffset) {
@@ -2000,7 +2001,7 @@ buttons=[
         const bot=this.props.browserConfig.type==='bot';
         const noOverlay=true;
 
-        if(this.canNotRecordOnSafari || (this.camera && this.camera.canNotRecordHere )){
+        if(this.canNotRecordHere || (this.camera && this.camera.canNotRecordHere )){
             return (
                 <div className={cx(classes['outerBox'],classes['beginBox'])}>
                     <img style={getIntroStyle('introRight')} src="/assets/images/female_hands_mug.png"/>

@@ -604,15 +604,15 @@ class RASPUndebate extends React.Component {
                 if(supportsVideoType('mp4'))
                     this.forceMP4=true;
                 else
-                    this.canNotRecordOnSafari=true;
+                    this.canNotRecordHere=true;
             }
             if(props.participants.human){
                 if(typeof MediaRecorder === 'undefined')
-                    this.canNotRecordOnSafari=true;
+                    this.canNotRecordHere=true;
             }
         }
         var loadYoutube=false;
-        if(!this.canNotRecordOnSafari){
+        if(!this.canNotRecordHere){
             Object.keys(this.props.participants).forEach(participant=>{
                 let youtube=false;
                 if(participant !== 'human' && this.props.participants[participant].listening.match(/youtu\.be|youtube\.com/)){  // the whole participant is marked youtube if listening is youtube
@@ -857,7 +857,7 @@ class RASPUndebate extends React.Component {
             if(this.loadTime>1000)
                 this.setState({slowInternet: true})
         } 
-
+        if(this.canNotRecordHere) return;  // no reason to go further
         // first load the moderator's speaking part and the listening part for all the participants;
         Object.keys(this.props.participants).forEach(participant=>{
             if(participant==='human') return; 
@@ -2155,7 +2155,7 @@ class RASPUndebate extends React.Component {
         const bot=this.props.browserConfig.type==='bot';
         const noOverlay=this.noOverlay;
 
-        if(this.canNotRecordOnSafari || (this.camera && this.camera.canNotRecordHere )){
+        if(this.canNotRecordHere || (this.camera && this.camera.canNotRecordHere )){
             return (
                 <div className={cx(classes['outerBox'],classes['beginBox'])}>
                     <img style={getIntroStyle('introRight')} src="/assets/images/female_hands_mug.png"/>
@@ -2166,7 +2166,7 @@ class RASPUndebate extends React.Component {
                         <div style={{ width: '100%', height: '100%', display: 'table' }} >
                             <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }} >
                                 <p style={{fontSize: '150%'}}>We're still building this.</p>
-                                <p>Recording on Safari is not supported yet.  Please use Chrome for now.</p>
+                                <p>Recording is not supported by this browser yet.  Please try Chrome for now.</p>
                             </div>
                         </div>
                     </div>
