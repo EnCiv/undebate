@@ -433,6 +433,7 @@ const styles = {
     },
     "buttonBar": {
         //display: "table",
+        'opacity': '0.6',
         'textAlign': "center",
         position: "absolute",
         width: "50vw",
@@ -1036,12 +1037,15 @@ class RASPUndebate extends React.Component {
 
                 let seat=2;
                 let seatTop=seatStyle.nextUp.top;
-                let seatLeft= 0;//hGap;
+                let seatLeft= hGap;
                 let seatHorizontalPitch=seatWidthRatio * width + hGap;
 
                 seatLeft+= seatHorizontalPitch; // skip over the nextUp
-                seatLeft+= (width - 5*(seatWidthRatio*width) - (4)*hGap)/2;    
-                seatStyle.nextUp.left= (width - 5*(seatWidthRatio*width) - (4)*hGap)/2
+                
+                //if(this.participants < 7){    
+                    seatLeft+= (width - 5*(seatWidthRatio*width) - (3)*hGap)/2;    
+                    seatStyle.nextUp.left= (width - 5*(seatWidthRatio*width) - (4)*hGap)/2
+                //}
                 
                 // across the bottom
                 let i=0;  // for calculating the intro
