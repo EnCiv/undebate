@@ -1010,7 +1010,7 @@ class RASPUndebate extends React.Component {
         const titleHeight=3.5*fontSize; // this is define in the title class;
         if(width / height > 1 ){ 
                 let speakingWidthRatio=0.65;
-                let seatWidthRatio= 0.3;
+                let seatWidthRatio= 0.25;
                 const navBarHeight=.06*height;
                 const agendaMaxWidth=32*fontSize;
                 const vGap=fontSize; 
@@ -1036,11 +1036,13 @@ class RASPUndebate extends React.Component {
 
                 let seat=2;
                 let seatTop=seatStyle.nextUp.top;
-                let seatLeft=hGap;
+                let seatLeft= 0;//hGap;
                 let seatHorizontalPitch=seatWidthRatio * width + hGap;
 
                 seatLeft+= seatHorizontalPitch; // skip over the nextUp
-    
+                seatLeft+= (width - 5*(seatWidthRatio*width) - (4)*hGap)/2;    
+                seatStyle.nextUp.left= (width - 5*(seatWidthRatio*width) - (4)*hGap)/2
+                
                 // across the bottom
                 let i=0;  // for calculating the intro
                 while(seat<=7){ // some will go off the screen
@@ -1052,7 +1054,7 @@ class RASPUndebate extends React.Component {
                     seat++;
                     i++;
                 }
-                
+
                 seatStyle.finishUp.left= 0.5*width;
                 seatStyle.finishUp.top=  ((0.5 + 0.15)*width * HDRatio + (0.05 + 0.015)*height + TopMargin)/2;
                 seatStyle.finishUp.width=0.1*width;
