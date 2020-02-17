@@ -1016,6 +1016,7 @@ class RASPUndebate extends React.Component {
                 const agendaMaxWidth=32*fontSize;
                 const vGap=fontSize; 
                 const hGap=fontSize;
+                const numOfParticipants = Object.keys(this.props.participants).length - 1; // without the speaker
 
                 let calcHeight=navBarHeight+vGap+width*seatWidthRatio*HDRatio+titleHeight+vGap+width*speakingWidthRatio*HDRatio+titleHeight+vGap;
                 if(calcHeight>height){ // if the window is really wide - squish the video height so it still fits
@@ -1042,10 +1043,11 @@ class RASPUndebate extends React.Component {
 
                 seatLeft+= seatHorizontalPitch; // skip over the nextUp
                 
-                //if(this.participants < 7){    
-                    seatLeft+= (width - 5*(seatWidthRatio*width) - (3)*hGap)/2;    
-                    seatStyle.nextUp.left= (width - 5*(seatWidthRatio*width) - (4)*hGap)/2
-                //}
+
+                if((numOfParticipants*(seatWidthRatio*width) + numOfParticipants*hGap) < width){    
+                    seatLeft+= (width - numOfParticipants*(seatWidthRatio*width) - (numOfParticipants - 1)*hGap)/2 - hGap;  // centers all the eats without the nextUp speaker  
+                    seatStyle.nextUp.left= (width - numOfParticipants*(seatWidthRatio*width) - (numOfParticipants - 1)*hGap)/2; // offsets the nextUp from the left
+                }
                 
                 // across the bottom
                 let i=0;  // for calculating the intro
@@ -1428,7 +1430,7 @@ class RASPUndebate extends React.Component {
     }
 
     seat(i, seatOffset) {
-        if (this.state.finishUp) return 'finishUp';
+        if (this.state.finishUp) return 'finishUp'; 
         if (typeof seatOffset === 'undefined') seatOffset = this.state.seatOffset;
         return seating[(seatOffset + i) % this.numParticipants]
     }
