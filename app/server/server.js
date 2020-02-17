@@ -216,7 +216,9 @@ class HttpServer extends EventEmitter {
   getIota() {
     this.app.get("/*",this.setUserCookie, async (req,res,next)=>{
       try {
-        const iota = await Iota.findOne({path: '/'+req.params[0]}).catch(err=>{console.error("getIota.findOne caught error",err,"skipping"); next()});
+        let path=req.params[0];
+        if(path.startsWith("country:us") && path[path.length-1]==='!') path=path.substring(0,path.length-1);  // 2020Feb17: The Ballotpedia emails had a ! at the end of the link. This is a correction for that.  This should be removed after Nov 2020 elections - if not before
+        const iota = await Iota.findOne({path: '/'+path}).catch(err=>{console.error("getIota.findOne caught error",err,"skipping"); next()});
         if(!iota || iota==='null') return next('route');
         if(req.reactProps) req.reactProps.iota=iota;
         else req.reactProps={iota};
