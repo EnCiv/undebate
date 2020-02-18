@@ -183,7 +183,8 @@ const styles = {
     },
     beginButton: {
         color: 'white',
-        background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
+        opacity: '0.8',
+        //background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
         'border-radius': '7px',
         'border-width': '2px',
         'border-color': 'white',
@@ -2036,10 +2037,15 @@ buttons=[
         const beginOverlay=()=>(!begin && !done &&
             <div className={cx(classes['outerBox'],classes['beginBox'])}>
                     <div style={{ width: '100%', height: '100%', display: 'table' }} >
+                        <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
+                            <IconPlay width="40%" height="40%" className={classes['beginButton']} onClick={this.beginButton} />
+                        </div>
+                    </div>
+                    {/*<div style={{ width: '100%', height: '100%', display: 'table' }} >
                         <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }} >
                         <button className={classes['beginButton']} onClick={this.beginButton}>Begin</button>
                         </div>
-                    </div>
+                    </div>*/}
             </div>
         )
 
