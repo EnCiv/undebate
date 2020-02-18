@@ -1096,6 +1096,7 @@ class RASPUndebate extends React.Component {
             const vGap=fontSize; 
             const hGap=fontSize;
             const maxAgendaHeight=fontSize*20;
+            const numOfParticipants = Object.keys(this.props.participants).length - 1; // without the speaker
 
             seatStyle.nextUp.left=hGap;
             seatStyle.nextUp.top= navBarHeight+vGap; 
@@ -1111,18 +1112,46 @@ class RASPUndebate extends React.Component {
 
             // across the bottom
             let i=0;  // for calculating the intro
-            while(seat<=7){ // some will go off the screen
-                seatStyle['seat'+seat].top=seatTop;
-                seatStyle['seat'+seat].left=seatLeft;
-                seatStyle['seat'+seat].width= seatWidthRatio*width;
-                introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap)} // along the bottom, each seat is further away as you move to the right
-                seatLeft+=seatHorizontalPitch;
-                seat++;
-                i++;
+            
+            if(numOfParticipants < 4){
+                while(seat<=7){ // some will go off the screen
+                    seatStyle['seat'+seat].top=seatTop;
+                    seatStyle['seat'+seat].left=seatLeft;
+                    seatStyle['seat'+seat].width= seatWidthRatio*width;
+                    introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap)} // along the bottom, each seat is further away as you move to the right
+                    seatLeft+=seatHorizontalPitch;
+                    seat++;
+                    i++;
+                }
+            } else {
+                if(numOfParticipants%2 !== 0) {
+                    while(seat <= 3){ // some will go off the screen
+                    seatStyle['seat'+seat].top= seatTop;
+                    seatStyle['seat'+seat].left=seatLeft;
+                    seatStyle['seat'+seat].width= seatWidthRatio*width;
+                    introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap)} // along the bottom, each seat is further away as you move to the right
+                    seatLeft+=seatHorizontalPitch;
+                    seat++;
+                    i++;
+                    }
+
+                    seatLeft = hGap;
+
+                    while(seat <= numOfParticipants){ // some will go off the screen
+                    seatStyle['seat'+seat].top=seatTop + seatWidthRatio*width*HDRatio + titleHeight + hGap;
+                    seatStyle['seat'+seat].left=seatLeft;
+                    seatStyle['seat'+seat].width= seatWidthRatio*width;
+                    introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap)} // along the bottom, each seat is further away as you move to the right
+                    seatLeft+=seatHorizontalPitch;
+                    seat++;
+                    i++;
+                    }
+                }
+
             }
 
             seatStyle.speaking.left= hGap;//(width - speakingWidthRatio*width - agendaMaxWidth - hGap) / 2;
-            seatStyle.speaking.top= navBarHeight+vGap+ seatWidthRatio*width*HDRatio +titleHeight + vGap;
+            seatStyle.speaking.top= navBarHeight+vGap+ 2*seatWidthRatio*width*HDRatio + 2*titleHeight + 2*vGap;
             seatStyle.speaking.width= width - 2*hGap;
             introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + vGap + ShadowBox)}
 
