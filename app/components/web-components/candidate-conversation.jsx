@@ -297,6 +297,7 @@ const styles = {
         'textAlign': 'center',
         'backgroundColor': 'white',
         position: 'absolute',
+        //border: '1px solid black',
         'box-shadow': '0px 4px 4px rgba(0,0,0,0.25)',
         'box-sizing': 'border-box',
         'font-weight': '600',
@@ -1069,7 +1070,7 @@ class RASPUndebate extends React.Component {
                 agendaStyle.top= seatStyle.speaking.top;
                 agendaStyle.left= seatStyle.speaking.left + seatStyle.speaking.width + hGap;
                 agendaStyle.width=  Math.min(width - agendaStyle.left - hGap, agendaMaxWidth);
-                agendaStyle.height=seatStyle.speaking.width*HDRatio+titleHeight;
+                agendaStyle.height=seatStyle.speaking.width*HDRatio + titleHeight;
         
                 buttonBarStyle.width= seatStyle.speaking.width*0.6;
                 buttonBarStyle.left= seatStyle.speaking.left + seatStyle.speaking.width*0.2;// center it
