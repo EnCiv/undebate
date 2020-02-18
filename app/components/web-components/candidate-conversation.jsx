@@ -1113,7 +1113,7 @@ class RASPUndebate extends React.Component {
             // across the bottom
             let i=0;  // for calculating the intro
             
-            if(numOfParticipants < 4){
+            if(numOfParticipants < 4){ //if less than 4 participants display seats in one row
                 while(seat<=7){ // some will go off the screen
                     seatStyle['seat'+seat].top=seatTop;
                     seatStyle['seat'+seat].left=seatLeft;
@@ -1123,28 +1123,52 @@ class RASPUndebate extends React.Component {
                     seat++;
                     i++;
                 }
-            } else {
-                if(numOfParticipants%2 !== 0) {
-                    while(seat <= 3){ // some will go off the screen
-                    seatStyle['seat'+seat].top= seatTop;
-                    seatStyle['seat'+seat].left=seatLeft;
-                    seatStyle['seat'+seat].width= seatWidthRatio*width;
-                    introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap)} // along the bottom, each seat is further away as you move to the right
-                    seatLeft+=seatHorizontalPitch;
-                    seat++;
-                    i++;
+            } else { //if 4 or more participants display seats in two rows
+                if(numOfParticipants%2 !== 0) { // if odd number of seats
+                    
+                    while(seat <= (numOfParticipants/2 + 1)){ // some will go off the screen
+                        seatStyle['seat'+seat].top= seatTop;
+                        seatStyle['seat'+seat].left=seatLeft;
+                        seatStyle['seat'+seat].width= seatWidthRatio*width;
+                        introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap)} // along the bottom, each seat is further away as you move to the right
+                        seatLeft+=seatHorizontalPitch;
+                        seat++;
+                        i++;
                     }
 
                     seatLeft = hGap;
 
                     while(seat <= numOfParticipants){ // some will go off the screen
-                    seatStyle['seat'+seat].top=seatTop + seatWidthRatio*width*HDRatio + titleHeight + hGap;
-                    seatStyle['seat'+seat].left=seatLeft;
-                    seatStyle['seat'+seat].width= seatWidthRatio*width;
-                    introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap)} // along the bottom, each seat is further away as you move to the right
-                    seatLeft+=seatHorizontalPitch;
-                    seat++;
-                    i++;
+                        seatStyle['seat'+seat].top=seatTop + seatWidthRatio*width*HDRatio + titleHeight + hGap;
+                        seatStyle['seat'+seat].left=seatLeft;
+                        seatStyle['seat'+seat].width= seatWidthRatio*width;
+                        introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap)} // along the bottom, each seat is further away as you move to the right
+                        seatLeft+=seatHorizontalPitch;
+                        seat++;
+                        i++;
+                    }
+                } else { //if even number of seats
+
+                    while(seat <= (numOfParticipants/2)){ // some will go off the screen
+                        seatStyle['seat'+seat].top= seatTop;
+                        seatStyle['seat'+seat].left=seatLeft;
+                        seatStyle['seat'+seat].width= seatWidthRatio*width;
+                        introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap)} // along the bottom, each seat is further away as you move to the right
+                        seatLeft+=seatHorizontalPitch;
+                        seat++;
+                        i++;
+                    }
+
+                    seatLeft = hGap;
+
+                    while(seat <= numOfParticipants){ // some will go off the screen
+                        seatStyle['seat'+seat].top=seatTop + seatWidthRatio*width*HDRatio + titleHeight + hGap;
+                        seatStyle['seat'+seat].left=seatLeft;
+                        seatStyle['seat'+seat].width= seatWidthRatio*width;
+                        introSeatStyle['seat'+seat]={top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap)} // along the bottom, each seat is further away as you move to the right
+                        seatLeft+=seatHorizontalPitch;
+                        seat++;
+                        i++;
                     }
                 }
 
