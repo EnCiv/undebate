@@ -1074,7 +1074,7 @@ class RASPUndebate extends React.Component {
         
                 buttonBarStyle.width= seatStyle.speaking.width*0.6;
                 buttonBarStyle.left= seatStyle.speaking.left + seatStyle.speaking.width*0.2;// center it
-                buttonBarStyle.top= 2*fontSize + seatStyle.speaking.top+seatStyle.speaking.width*HDRatio-(buttonBarStyle.width/this.buttons.length*0.75)-vGap; // there are 5 buttons and they are essentially square
+                buttonBarStyle.top= fontSize + seatStyle.speaking.top+seatStyle.speaking.width*HDRatio-(buttonBarStyle.width/this.buttons.length*0.75)-vGap; // there are 5 buttons and they are essentially square
                 
                 recorderButtonBarStyle.left=seatStyle.speaking.left;
                 recorderButtonBarStyle.top= seatStyle.speaking.top+seatStyle.speaking.width*HDRatio+vGap;
@@ -2092,7 +2092,7 @@ buttons=[
             <div className={cx(classes['outerBox'],classes['beginBox'])}>
                     <div style={{ width: '100%', height: '100%', display: 'table' }} >
                         <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-                            <IconPlay width="40%" height="40%" className={classes['beginButton']} onClick={this.beginButton} />
+                            <IconPlay width="25%" height="25%" className={classes['beginButton']} onClick={this.beginButton} />
                         </div>
                     </div>
                     {/*<div style={{ width: '100%', height: '100%', display: 'table' }} >
@@ -2195,7 +2195,6 @@ buttons=[
             /*src={"https://www.youtube.com/embed/"+getYouTubeID(this.participants[participant].listeningObjectURL)+"?enablejsapi=1&autoplay=1&loop=1&controls=0&disablekb=1&fs=0&modestbranding=1&rel=0"}*/
             return (
                 <div style={style} className={cx(className, classes['box'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])} key={participant}>
-                    <div className={cx(classes['title'], stylesSet&&classes['stylesSet'],finishUp && classes['finishUp'])}><span>{participant_name}</span></div>
                     <div style={{width: videoWidth, height: videoHeight}}
                         className={cx(className, classes['participantBackground'], stylesSet && classes['stylesSet'], stylesSet && !intro && classes['intro'], stylesSet && !begin && classes['begin'])}
                     >
@@ -2229,6 +2228,7 @@ buttons=[
                                     <p>{`${this.state.waitingPercent}% complete`}</p>
                                 </div>
                             </div>
+                            <div className={cx(classes['title'], stylesSet&&classes['stylesSet'],finishUp && classes['finishUp'])}><span>{participant_name}</span></div>
                         </>
                     }
                 </div>
