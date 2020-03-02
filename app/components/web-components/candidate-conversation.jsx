@@ -1098,13 +1098,21 @@ class RASPUndebate extends React.Component {
             const maxAgendaHeight=fontSize*20;
             const numOfParticipants = Object.keys(this.props.participants).length - 1; // without the speaker
 
-            seatStyle.nextUp.left=hGap;
-            seatStyle.nextUp.top= navBarHeight+vGap; 
+            // let calcHeight=navBarHeight+vGap+width*seatWidthRatio*HDRatio+titleHeight+vGap+titleHeight+vGap+2*(width - 2*hGap)*HDRatio;
+            // if(calcHeight>height){ // if the window is really wide - squish the video height so it still fits
+            //     let heightForVideo=height-navBarHeight-vGap-titleHeight-vGap-titleHeight-vGap;
+            //     let calcHeightForVideo=width*seatWidthRatio*HDRatio+width*speakingWidthRatio*HDRatio;
+            //     seatWidthRatio=seatWidthRatio*heightForVideo/calcHeightForVideo;
+            //     speakingWidthRatio=speakingWidthRatio*heightForVideo/calcHeightForVideo;
+            // }
+
+            seatStyle.nextUp.left=hGap;  //seatWidthRatio*width*HDRatio + titleHeight + hGap
+            seatStyle.nextUp.top= navBarHeight+vGap +seatWidthRatio*width*HDRatio + titleHeight + hGap; 
             seatStyle.nextUp.width= seatWidthRatio * width;
             introSeatStyle.nextUp={left: -(seatStyle.nextUp.left + seatWidthRatio * width + ShadowBox)}
 
             let seat=2;
-            let seatTop=seatStyle.nextUp.top;
+            let seatTop=navBarHeight+vGap;
             let seatLeft=hGap;
             let seatHorizontalPitch=seatWidthRatio * width + hGap;
 
@@ -1125,7 +1133,7 @@ class RASPUndebate extends React.Component {
                 }
             } else { //if 4 or more participants display seats in two rows
                 if(numOfParticipants%2 !== 0) { // if odd number of seats
-                    
+                                            
                     while(seat <= (numOfParticipants/2 + 1)){ // some will go off the screen
                         seatStyle['seat'+seat].top= seatTop;
                         seatStyle['seat'+seat].left=seatLeft;
@@ -1148,8 +1156,8 @@ class RASPUndebate extends React.Component {
                         i++;
                     }
                 } else { //if even number of seats
-
-                    while(seat <= (numOfParticipants/2)){ // some will go off the screen
+                    seatLeft = hGap;
+                    while(seat <= (numOfParticipants/2 + 1)){ // some will go off the screen
                         seatStyle['seat'+seat].top= seatTop;
                         seatStyle['seat'+seat].left=seatLeft;
                         seatStyle['seat'+seat].width= seatWidthRatio*width;
@@ -1159,7 +1167,7 @@ class RASPUndebate extends React.Component {
                         i++;
                     }
 
-                    seatLeft = hGap;
+                    seatLeft = seatHorizontalPitch + hGap;
 
                     while(seat <= numOfParticipants){ // some will go off the screen
                         seatStyle['seat'+seat].top=seatTop + seatWidthRatio*width*HDRatio + titleHeight + hGap;
