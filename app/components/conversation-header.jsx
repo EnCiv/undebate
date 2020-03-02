@@ -28,6 +28,9 @@ const styles = {
         }
 
     },
+    leftBoxContainer: {
+        display: 'inline-block'
+    },
     leftBox: {
         backgroundColor: BLUE,
         width: '0.52vw',
@@ -47,6 +50,9 @@ const styles = {
             marginTop: ".2em",
             marginBottom: ".2em"
         }
+    },
+    rightBoxContainer: {
+        display: 'inline-block'
     },
     rightBox: {
         backgroundColor: YELLOW,
@@ -119,10 +125,14 @@ class ConversationHeader extends React.Component {
                 <div className={classes['conversation-header-wrapper']} key="landscape">
                     <div className={classes['conversationHeader']} key="landscape-1">
                         <div style={{position: 'absolute', left: "1rem"}} key="landscape-2" >
-                            <div className={classes['leftBox']}></div>
-                            <span className={classes['conversationTopicContent']}>{subject}</span>
-                            <span className={classes['conversationElectionDate']}>{xxxx_xx_xxTommmdd_yyyy(bp_info&&bp_info.election_date)}</span> 
-                            <div className={classes['rightBox']}></div>
+                            <div className={classes['leftBoxContainer']}>
+                                <div className={classes['leftBox']}></div>
+                                <span className={classes['conversationTopicContent']}>{subject}</span>
+                            </div>
+                            <div className={classes['rightBoxContainer']}>
+                                <div className={classes['rightBox']}></div>
+                                <span className={classes['conversationElectionDate']}>{xxxx_xx_xxTommmdd_yyyy(bp_info&&bp_info.election_date)}</span> 
+                            </div>
                         </div>
                         <a target="#" href="https://www.EnCiv.org"><img className={classes['enciv-logo']} src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png"/></a>   
                         <a target="#" href="https://ballotpedia.org/Candidate_Conversations"><img className={classes['logo']} src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png" /></a>
