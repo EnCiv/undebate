@@ -116,8 +116,14 @@ class ConversationHeader extends React.Component {
                         <a target="#" href="https://www.EnCiv.org"><img className={cx(classes['portrait'],classes['enciv-logo'])} src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png"/></a>   
                         <a target="#" href="https://ballotpedia.org/Candidate_Conversations"><img className={cx(classes['portrait'],classes['logo'])} src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png" /></a>
                     </div>
-                    <div style={{marginLeft: "1rem"}} className={cx(classes['portrait'],classes['conversationTopicContent'])} key="portrait-2">{subject}</div>
-                    <div style={{marginLeft: "1rem"}} className={cx(classes['portrait'],classes['conversationElectionDate'])} key="portrait-3">{xxxx_xx_xxTommmdd_yyyy(bp_info&&bp_info.election_date)}</div> 
+                    <div className={classes['leftBoxContainer']}>
+                        <div className={classes['leftBox']}></div>
+                        <span className={classes['conversationTopicContent']}>{subject}</span>
+                    </div>
+                    <div className={classes['rightBoxContainer']}>
+                        <div className={classes['rightBox']}></div>
+                        <span className={classes['conversationElectionDate']}>{xxxx_xx_xxTommmdd_yyyy(bp_info&&bp_info.election_date)}</span> 
+                    </div> 
                 </div>
             );
         else
