@@ -1089,25 +1089,26 @@ class RASPUndebate extends React.Component {
                 introStyle.introRight.height="50vh";
                 introSeatStyle.introRight.right="-50vw";
         } else { // portrait mode
-            let speakingWidthRatio=0.65;
+            const hGap=fontSize;
+            const vGap=fontSize; 
+            let speakingWidthRatio=(width - 2*hGap)/width;
             let seatWidthRatio= 0.4;
             const navBarHeight=.06*height+3*fontSize+2*fontSize;
             const agendaMaxWidth=32*fontSize;
-            const vGap=fontSize; 
-            const hGap=fontSize;
+            let speakingWidth= width - 2*hGap
             const maxAgendaHeight=fontSize*20;
             const numOfParticipants = Object.keys(this.props.participants).length - 1; // without the speaker
 
-            // let calcHeight=navBarHeight+vGap+width*seatWidthRatio*HDRatio+titleHeight+vGap+titleHeight+vGap+2*(width - 2*hGap)*HDRatio;
-            // if(calcHeight>height){ // if the window is really wide - squish the video height so it still fits
-            //     let heightForVideo=height-navBarHeight-vGap-titleHeight-vGap-titleHeight-vGap;
-            //     let calcHeightForVideo=width*seatWidthRatio*HDRatio+width*speakingWidthRatio*HDRatio;
-            //     seatWidthRatio=seatWidthRatio*heightForVideo/calcHeightForVideo;
-            //     speakingWidthRatio=speakingWidthRatio*heightForVideo/calcHeightForVideo;
-            // }
+            let calcHeight=navBarHeight+maxAgendaHeight+width*seatWidthRatio*HDRatio+2*titleHeight+3*vGap+2*(width - 2*hGap)*HDRatio;
+            if(calcHeight>height){ // if the window is really wide - squish the video height so it still fits
+                let heightForVideo=height-navBarHeight-vGap-titleHeight-vGap-titleHeight-vGap-maxAgendaHeight;
+                let calcHeightForVideo=width*seatWidthRatio*HDRatio+speakingWidth;
+                seatWidthRatio=seatWidthRatio*heightForVideo/(calcHeightForVideo);
+                speakingWidthRatio=speakingWidthRatio*heightForVideo/calcHeightForVideo;
+            }
 
             seatStyle.nextUp.left=hGap;  //seatWidthRatio*width*HDRatio + titleHeight + hGap
-            seatStyle.nextUp.top= navBarHeight+vGap +seatWidthRatio*width*HDRatio + titleHeight + hGap; 
+            seatStyle.nextUp.top= navBarHeight + vGap + seatWidthRatio * width * HDRatio + titleHeight + hGap; 
             seatStyle.nextUp.width= seatWidthRatio * width;
             introSeatStyle.nextUp={left: -(seatStyle.nextUp.left + seatWidthRatio * width + ShadowBox)}
 
@@ -1181,10 +1182,14 @@ class RASPUndebate extends React.Component {
                 }
 
             }
-
-            seatStyle.speaking.left= hGap;//(width - speakingWidthRatio*width - agendaMaxWidth - hGap) / 2;
+            if(calcHeight>height){
+                seatStyle.speaking.left= (width - speakingWidthRatio*width)/2;
+            } else {
+                seatStyle.speaking.left= hGap;    
+            }
+            // seatStyle.speaking.left= hGap;
             seatStyle.speaking.top= navBarHeight+vGap+ 2*seatWidthRatio*width*HDRatio + 2*titleHeight + 2*vGap;
-            seatStyle.speaking.width= width - 2*hGap;
+            seatStyle.speaking.width= speakingWidthRatio*width;
             introSeatStyle.speaking={top: -(speakingWidthRatio * HDRatio * width + vGap + ShadowBox)}
 
             seatStyle.finishUp.left= 0.5*width;
