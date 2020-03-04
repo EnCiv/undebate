@@ -1047,7 +1047,7 @@ class RASPUndebate extends React.Component {
                 
 
                 if((numOfParticipants*(seatWidthRatio*width) + numOfParticipants*hGap) < width){    
-                    seatLeft+= (width - numOfParticipants*(seatWidthRatio*width) - (numOfParticipants - 1)*hGap)/2 - hGap;  // centers all the eats without the nextUp speaker  
+                    seatLeft+= (width - numOfParticipants*(seatWidthRatio*width) - (numOfParticipants - 1)*hGap)/2 - hGap;  // centers all the seats without the nextUp speaker  
                     seatStyle.nextUp.left= (width - numOfParticipants*(seatWidthRatio*width) - (numOfParticipants - 1)*hGap)/2; // offsets the nextUp from the left
                 }
                 
@@ -1094,15 +1094,15 @@ class RASPUndebate extends React.Component {
             let speakingWidthRatio=(width - 2*hGap)/width;
             let seatWidthRatio= 0.4;
             const navBarHeight=.06*height+3*fontSize+2*fontSize;
-            const agendaMaxWidth=32*fontSize;
+            const agendaMaxWidth=32*fontSize;   
             let speakingWidth= width - 2*hGap
             const maxAgendaHeight=fontSize*20;
             const numOfParticipants = Object.keys(this.props.participants).length - 1; // without the speaker
 
-            let calcHeight=navBarHeight+maxAgendaHeight+width*seatWidthRatio*HDRatio+2*titleHeight+3*vGap+2*(width - 2*hGap)*HDRatio;
+            let calcHeight=navBarHeight+Math.min(maxAgendaHeight,height-agendaStyle.top-vGap)+2*width*seatWidthRatio*HDRatio+3*titleHeight+4*vGap+speakingWidth*HDRatio;
             if(calcHeight>height){ // if the window is really wide - squish the video height so it still fits
-                let heightForVideo=height-navBarHeight-vGap-titleHeight-vGap-titleHeight-vGap-maxAgendaHeight;
-                let calcHeightForVideo=width*seatWidthRatio*HDRatio+speakingWidth;
+                let heightForVideo=height-navBarHeight-6*vGap-3*titleHeight- Math.min(maxAgendaHeight,height-agendaStyle.top-vGap);
+                let calcHeightForVideo=2*width*seatWidthRatio*HDRatio+speakingWidth*HDRatio;
                 seatWidthRatio=seatWidthRatio*heightForVideo/(calcHeightForVideo);
                 speakingWidthRatio=speakingWidthRatio*heightForVideo/calcHeightForVideo;
             }
