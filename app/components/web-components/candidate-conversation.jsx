@@ -4,7 +4,6 @@ import React from 'react';
 import injectSheet from 'react-jss'
 import cx from 'classnames'
 import Join from '../join'
-import through2 from 'through2'
 import Input from '../lib/input'
 import Icon from '../lib/icon';
 
@@ -42,7 +41,7 @@ import ReactCameraRecorder from "../react-camera-recorder"
 import supportsVideoType from "../lib/supports-video-type"
 
 import {auto_quality, placeholder_image} from "../lib/cloudinary-urls"
-
+import createParticipant from '../lib/create-participant';
 function promiseSleep(time){
     return new Promise((ok,ko)=>setTimeout(ok,time))
 }
@@ -196,6 +195,8 @@ const styles = {
         position: 'absolute',
         left: '85vw',
         bottom: '5vh',
+        '& button': {
+            height: '5.5rem',
         color: 'white',
         background: 'linear-gradient(to bottom, #ff6745 0%,#ff5745 51%,#ff4745 100%)',
         'border-radius': '7px',
@@ -205,8 +206,30 @@ const styles = {
         'padding': '1em',
         'height': '100%',
         'whiteSpace': 'no-wrap'
+        }
     },
-    'finishButton': {
+    hangUpButtonReally: {
+        display: 'inline-block',
+        position: 'absolute',
+        left: 0,
+        height: 'auto',
+        bottom: '12vh',
+        backgroundColor: 'white',
+        color: 'red',
+        borderRadius: '7px',
+        borderWidth: '2px',
+        borderColor: 'black',
+        borderStyle: 'solid',
+        padding: '0.5rem',
+    },
+    hangUpButtonReallyClose: {
+        top:0, 
+        right:0, 
+        position: 'absolute', 
+        marginRight: '0.2rem',
+        cursor: 'pointer'
+    },
+        'finishButton': {
         width: '12vw',
         position: 'absolute',
         right: '25vw',
@@ -587,7 +610,6 @@ class RASPUndebate extends React.Component {
     static onYouTubeIframeAPIReadyList=[];
     retries={};
     requestPermissionElements = [];
-    uploadQueue=[];
     preFetchList=[];
     youtubePlayers=[];
     rerecord=false;
@@ -619,6 +641,7 @@ class RASPUndebate extends React.Component {
         this.beginButton=this.beginButton.bind(this);
         this.keyHandler=this.keyHandler.bind(this);
         this.hangup=this.hangup.bind(this);
+        this.reallyHangup=this.reallyHangup.bind(this);
         if(typeof window !== 'undefined')
             window.onresize=this.onResize.bind(this);
         this.participants={};
@@ -1675,86 +1698,31 @@ buttons=[
     }
 
     hangup() {
-        logger.info("Undebate.hangup");
-        this.camera && this.camera.releaseCamera();
-        this.allStop();
-        delete this.uploadQueue;
-        return this.setState({ hungUp: true, done: true });
-    }
-
-    updateProgress(chunk){
-        this.transferred+=chunk.length;
-        var percentComplete= Math.round((this.transferred/this.totalSize)*100)+'%';
-        this.setState({progress: percentComplete})
-    }
-
-    upload(blob,seat,round,userId) {
-        var name = userId + '-' + round + '-' + seat + new Date().toISOString().replace(/[^A-Z0-9]/ig, "") + '.mp4'; // mp4 was put here to get around something with Apple - check in future 
-
-        // socketIo-streams does not seem to be passing call backs (undefined is received)
-        // so we are using a socket io event to send the response back
-        const responseUrl=(url)=>{
-            if(url){
-                logger.trace("url", url);
-                url=auto_quality(url);
-                if(seat==='speaking') {
-                    // what if the come out of order -- to be determined
-                    this.participant.speaking.push(url);
-            } else 
-                    this.participant.listening=url;
-
-            }else {
-                logger.error("upload video failed", name)
+        if(!this.state.totalSize_before_hangup) {
+            let totalSize=0;
+            for(let round=0; round<this.participants.human.speakingBlobs.length; round++){
+                totalSize+=this.participants.human.speakingBlobs[round].size;
             }
-            if(this.participant.speaking.length===this.props.participants.audience1.speaking.length && this.participant.listening){
-                logger.trace("creat participant", this.participant);
-                var pIota={ //participant iota
-                    parentId: this.props.parentId, 
-                    subject: 'Participant:' + this.props.subject, 
-                    description: 'A participant in the following discussion:' + this.props.description,
-                    component: {
-                        component: 'MergeParticipants',
-                        participant: this.participant
-                    }
-                }
-                if(this.props.bp_info) {// don't cause the property to exist in the Iota if there is none. 
-                    pIota.component.participant.bp_info=this.props.bp_info;
-                    if(this.props.bp_info.candidate_name) pIota.component.participant.name=this.props.bp_info.candidate_name;
-                }   
-                window.socket.emit('create participant', pIota , (result)=>{logger.trace("participant created", result)})
+            if(this.participants.human.listeningBlob){
+                totalSize+=this.participants.human.listeningBlob.size;
+            }
+            if(totalSize>0){
+                return this.setState({totalSize_before_hangup: totalSize})
             }
         }
+        this.reallyHangup();
+    }
 
-        var stream = ss.createStream();
-        stream.on('error',(err)=>{
-            logger.error("AskWebRTC.upload socket stream error:",err)
-        })
-
-        ss(window.socket).emit('upload video', stream, { name, size: blob.size }, responseUrl);
-
-        var bstream=ss.createBlobReadStream(blob, {highWaterMark: 1024 * 200}).pipe(through2((chunk, enc, cb) =>{
-            this.updateProgress(chunk)
-            cb(null,chunk)  // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
-           })).pipe(stream); // high hiwWaterMark to increase upload speed
-
-        bstream.on('error',(err)=>{
-            logger.error("AskWebRTC.upload blob stream error:",err)
-        })
-        stream.on('end',()=>{
-            var uploadArgs;
-            if(uploadArgs=this.uploadQueue.shift()){
-                return this.upload(...uploadArgs)
-            } else {
-                this.setState({progress: 'complete.', uploadComplete: true})
-                logger.trace("upload after login complete");
-            }
-        })
+    reallyHangup(){
+        logger.info("CandidateConversation.reallyHangup");
+        this.camera && this.camera.releaseCamera();
+        this.allStop();
+        return this.setState({ hungUp: true, done: true });
     }
 
     onUserLogin(info){
         logger.info("Undebate.onUserLogin");
         logger.trace("onUserLogin",info);
-        this.participant={speaking: [], name: this.state.name}
         const {userId}=info;
         this.setState({newUserId: userId});
     }
@@ -1762,25 +1730,8 @@ buttons=[
     onUserUpload(){
         logger.info("Undebate.onUserUpload");
         logger.trace("onUserUpload",this.props);
-        this.participant={speaking: [], name: this.state.name}
         const userId=this.props.user && this.props.user.id || this.state.newUserId;
-        this.totalSize=0;
-        this.transferred=0;
-
-        for(let round=0; round<this.participants.human.speakingBlobs.length; round++){
-            this.totalSize+=this.participants.human.speakingBlobs[round].size;
-            this.uploadQueue.push([this.participants.human.speakingBlobs[round],"speaking",round,userId]);
-        }
-        if(this.participants.human.listeningBlob){
-            this.uploadQueue.push([this.participants.human.listeningBlob,"listening",0,userId]);
-            this.totalSize+=this.participants.human.listeningBlob.size;
-        }
-        
-        let uploadArgs;
-        if(uploadArgs=this.uploadQueue.shift()){
-            this.upload(...uploadArgs)
-        }
-        this.setState({progress: `${this.totalSize} to upload`})
+        createParticipant(this.props, this.participants.human, userId, this.state.name, progressObj=>this.setState(progressObj));
     }
 
     startCountDown(seconds,finishFunc){
@@ -2212,9 +2163,14 @@ buttons=[
         )
 
         const hangupButton=()=>(!this.state.hungUp && this.participants.human &&
-                    <div style={{height: '5.5rem'}}>
-                        <button className={classes['hangUpButton']} onClick={this.hangup} key='hangup'>Hang Up</button>
-                    </div>)
+            <div className={classes['hangUpButton']}>
+            <button  onClick={this.hangup} key='hangup'>Hang Up</button>
+            {this.state.totalSize_before_hangup?
+                <div className={classes['hangUpButtonReally']}>
+                    You have recorded video, did you really want to hang up?
+                    <div className={classes['hangUpButtonReallyClose']} onClick={()=>this.setState({totalSize_before_hangup: 0})}>x</div>
+                </div>:null}
+        </div>)
 
         var main=()=>!done && (
                 <div>
