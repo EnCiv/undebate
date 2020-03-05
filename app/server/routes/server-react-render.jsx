@@ -1,44 +1,47 @@
-'use strict';
+'use strict'
 
-import React from 'react'; // needed by render to string
-import {renderToString} from 'react-dom/server';
-import App from '../../components/app';
+import React from 'react' // needed by render to string
+import { renderToString } from 'react-dom/server'
+import App from '../../components/app'
 import { JssProvider, SheetsRegistry } from 'react-jss'
-import publicConfig from '../../../public.json';
-import cloneDeep from 'lodash/cloneDeep';
+import publicConfig from '../../../public.json'
+import cloneDeep from 'lodash/cloneDeep'
 
 function serverReactRender(req, res, next) {
-    try {
-        const dev=process.env.NODE_ENV || 'development';
+  try {
+    const dev = process.env.NODE_ENV || 'development'
 
-        let isIn = null;
+    let isIn = null
 
-        if (req.cookies && req.cookies.synuser) {
-            isIn = req.cookies.synuser;
+    if (req.cookies && req.cookies.synuser) {
+      isIn = req.cookies.synuser
 
-            if (typeof isIn === 'string') {
-                isIn = JSON.parse(isIn);
-            }
-        }
+      if (typeof isIn === 'string') {
+        isIn = JSON.parse(isIn)
+      }
+    }
 
-        const props = Object.assign({
-            env: dev,
-            path: req.path,
-            user: isIn,
-            notFound: req.notFound,
-            error: res.locals.error,
-        },cloneDeep(req.reactProps));
+    const props = Object.assign(
+      {
+        env: dev,
+        path: req.path,
+        user: isIn,
+        notFound: req.notFound,
+        error: res.locals.error,
+      },
+      cloneDeep(req.reactProps)
+    )
 
-        const sheets= new SheetsRegistry()
+    const sheets = new SheetsRegistry()
 
-        const body = renderToString(
-                <JssProvider registry={sheets}>
-                    <App {...props}/>
-                </JssProvider>
-        )
+    const body = renderToString(
+      <JssProvider registry={sheets}>
+        <App {...props} />
+      </JssProvider>
+    )
 
-        return res.send(
-            `<!doctype html>
+    return res.send(
+      `<!doctype html>
             <html>
                 <head>
                     <meta charSet="UTF-8"/>
@@ -61,7 +64,7 @@ function serverReactRender(req, res, next) {
                         ${sheets.toString()}
                     </style>
 
-                    <script>window.reactProps=${JSON.stringify(props)+''}</script>
+                    <script>window.reactProps=${JSON.stringify(props) + ''}</script>
                     <script>window.env="${props.env}"</script>
                     <script src="https://kit.fontawesome.com/7258b64f3b.js" crossorigin="anonymous" async></script>
                     <script>function setFontSize(){document.getElementsByTagName("html")[0].style.fontSize=Math.round(Math.max(window.innerWidth,window.innerHeight))/100+'px'}; window.onresize=setFontSize; setFontSize();</script>
@@ -69,30 +72,34 @@ function serverReactRender(req, res, next) {
                 </head>
                 <body style="margin: 0; padding: 0">
                     <div id="synapp">${body}</div>
-                    ${ ( ( props.browserConfig ) && 
-                        (
-                            ( props.browserConfig.browser.name=="chrome" && props.browserConfig.browser.version[0] >= 54)
-                        || ( props.browserConfig.browser.name=="safari" && props.browserConfig.browser.version[0] >= 11)
-                        || ( props.browserConfig.browser.name=="opera" && props.browserConfig.browser.version[0] >= 41)
-                        || ( props.browserConfig.browser.name=="firefox" && props.browserConfig.browser.version[0] >= 50)
-                        || ( props.browserConfig.browser.name=="edge" && props.browserConfig.browser.version[0] >= 15)
-                        )
-                    ) ? (logger.info("index browser supports ES6"),"")
-                        : (logger.info("index browser does not support ES6"),"")
+                    ${
+                      props.browserConfig &&
+                      ((props.browserConfig.browser.name == 'chrome' && props.browserConfig.browser.version[0] >= 54) ||
+                        (props.browserConfig.browser.name == 'safari' &&
+                          props.browserConfig.browser.version[0] >= 11) ||
+                        (props.browserConfig.browser.name == 'opera' && props.browserConfig.browser.version[0] >= 41) ||
+                        (props.browserConfig.browser.name == 'firefox' &&
+                          props.browserConfig.browser.version[0] >= 50) ||
+                        (props.browserConfig.browser.name == 'edge' && props.browserConfig.browser.version[0] >= 15))
+                        ? (logger.info('index browser supports ES6'), '')
+                        : (logger.info('index browser does not support ES6'), '')
                     }
                     <script src='/socket.io/socket.io.js' ></script>
                     <script src='/assets/webpack/main.js' ></script>
                     <script src='/assets/js/socket.io-stream.js'></script>
-                    ${dev==='production' ? `<script>{(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', "${publicConfig['google analytics'].key}", 'auto'); ga('send', 'pageview');}</script>`:''}
+                    ${
+                      dev === 'production'
+                        ? `<script>{(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', "${publicConfig['google analytics'].key}", 'auto'); ga('send', 'pageview');}</script>`
+                        : ''
+                    }
                     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
                 </body>
             </html>`
-        );
-    }
-    catch (error) {
-        logger.info("server-react-render failed", req.path);
-        next(error);
-    }
+    )
+  } catch (error) {
+    logger.info('server-react-render failed', req.path)
+    next(error)
+  }
 }
 
-export default serverReactRender;
+export default serverReactRender

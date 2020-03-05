@@ -34,8 +34,11 @@
     "@babel/preset-react": "^7.8.3",
     "@svgr/cli": "^5.0.1",
     "concurrently": "^4.1.2",
+    "husky": "^4.2.3",
     "jest": "^25.1.0",
-    "nodemon": "^1.19.2"
+    "nodemon": "^1.19.2",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1"
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.8.3",
@@ -89,5 +92,10 @@
   "engines": {
     "node": "~10.16.2",
     "npm": "6.9.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }

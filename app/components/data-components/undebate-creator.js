@@ -1,5 +1,5 @@
-'use strict';
-import Iota from "../../models/iota"
+'use strict'
+import Iota from '../../models/iota'
 
 /* Example input document
 the input document example
@@ -132,28 +132,30 @@ What we are trying to create:
 */
 
 export default class UndebateCreator {
-    static fetch(undebateCreator){
-        return new Promise(async (ok,ko)=>{
-            try {
-                var undebateDocs=await Iota.find({_id: Iota.ObjectID(undebateCreator.parentId), "webComponent.webComponent": 'Undebate'});
-                // get the participants from the parent Undebate first
-                undebateDocs.forEach(undebateDoc=>{
-                    Object.keys(undebateDoc.webComponent.participants).forEach(participant=>{
-                        undebateCreator.webComponent.participants[participant]=undebateDoc.webComponent.participants[participant];
-                    })
-                })
-                // then get the participants in this document's participants.
-                // order matters
-                Object.keys(undebateCreator.component.participants).forEach(participant=>{
-                    undebateCreator.webComponent.participants[participant]=undebateCreator.component.participants[participant];
-                    delete undebateCreator.component.participants[participant]; // don't let object be in two places
-                })
-                ok(undebateCreator);
-            }
-            catch(err){
-                logger.error("UndebateCreator caught error", err, "undebate", undebateCreator)
-                ok(); 
-            }
+  static fetch(undebateCreator) {
+    return new Promise(async (ok, ko) => {
+      try {
+        var undebateDocs = await Iota.find({
+          _id: Iota.ObjectID(undebateCreator.parentId),
+          'webComponent.webComponent': 'Undebate',
         })
-    }
+        // get the participants from the parent Undebate first
+        undebateDocs.forEach(undebateDoc => {
+          Object.keys(undebateDoc.webComponent.participants).forEach(participant => {
+            undebateCreator.webComponent.participants[participant] = undebateDoc.webComponent.participants[participant]
+          })
+        })
+        // then get the participants in this document's participants.
+        // order matters
+        Object.keys(undebateCreator.component.participants).forEach(participant => {
+          undebateCreator.webComponent.participants[participant] = undebateCreator.component.participants[participant]
+          delete undebateCreator.component.participants[participant] // don't let object be in two places
+        })
+        ok(undebateCreator)
+      } catch (err) {
+        logger.error('UndebateCreator caught error', err, 'undebate', undebateCreator)
+        ok()
+      }
+    })
+  }
 }
