@@ -5,7 +5,9 @@
   "main": "dist/server/start.js",
   "scripts": {
     "start": "node dist/server/start.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --config ./jest.config.json",
+    "test:coverage": "npm test -- --coverage",
+    "test:watch": "npm test -- --watch",
     "svgr": "svgr --icon --filename-case kebab assets/svg --out-dir app/svgr && rm app/svgr/index.js",
     "transpile": "babel app --ignore app/test --out-dir dist --source-maps",
     "hot-transpile": "babel --watch app --ignore app/test --out-dir dist/ --source-maps",
@@ -32,6 +34,7 @@
     "@babel/preset-react": "^7.8.3",
     "@svgr/cli": "^5.0.1",
     "concurrently": "^4.1.2",
+    "jest": "^25.1.0",
     "nodemon": "^1.19.2"
   },
   "dependencies": {
