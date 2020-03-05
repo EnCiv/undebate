@@ -4,7 +4,6 @@ import React from 'react';
 import injectSheet from 'react-jss'
 import cx from 'classnames'
 import Join from '../join'
-import through2 from 'through2'
 import Input from '../lib/input'
 
 import ErrorBoundary from '../error-boundary';
@@ -40,6 +39,7 @@ import ReactCameraRecorder from "../react-camera-recorder"
 import supportsVideoType from "../lib/supports-video-type"
 
 import {auto_quality, placeholder_image} from "../lib/cloudinary-urls"
+import createParticipant from '../lib/create-participant';
 
 function promiseSleep(time){
     return new Promise((ok,ko)=>setTimeout(ok,time))
@@ -563,7 +563,6 @@ class RASPUndebate extends React.Component {
     static onYouTubeIframeAPIReadyList=[];
     retries={};
     requestPermissionElements = [];
-    uploadQueue=[];
     preFetchList=[];
     youtubePlayers=[];
     rerecord=false;
@@ -1829,86 +1828,12 @@ class RASPUndebate extends React.Component {
         logger.info("Undebate.reallyHangup");
         this.camera && this.camera.releaseCamera();
         this.allStop();
-        delete this.uploadQueue;
         return this.setState({ hungUp: true, done: true });
-    }
-
-    updateProgress(chunk){
-        this.transferred+=chunk.length;
-        var percentComplete= Math.round((this.transferred/this.totalSize)*100)+'%';
-        this.setState({progress: percentComplete})
-    }
-
-    upload(blob,seat,round,userId) {
-        var name = userId + '-' + round + '-' + seat + new Date().toISOString().replace(/[^A-Z0-9]/ig, "") + '.mp4'; // mp4 was put here to get around something with Apple - check in future 
-
-        // socketIo-streams does not seem to be passing call backs (undefined is received)
-        // so we are using a socket io event to send the response back
-        const responseUrl=(url)=>{
-            // responses don't necessarily come in order
-            if(url){
-                logger.trace("url", url);
-                url=auto_quality(url);
-                if(seat==='speaking') {
-                    // what if the come out of order -- to be determined
-                    this.participant.speaking[round]=url; // specify the round because the order is not assures - don't use push
-                } else 
-                    this.participant.listening=url;
-
-            }else {
-                logger.error("upload video failed", name)
-            }
-            if(this.participant.speaking.length===this.props.participants.audience1.speaking.length && this.participant.listening){
-                logger.trace("creat participant", this.participant);
-                var pIota={ //participant iota
-                    parentId: this.props.parentId, 
-                    subject: 'Participant:' + this.props.subject, 
-                    description: 'A participant in the following discussion:' + this.props.description,
-                    component: {
-                        component: 'MergeParticipants',
-                        participant: this.participant
-                    }
-                }
-                if(this.props.bp_info) {// don't cause the property to exist in the Iota if there is none. 
-                    pIota.component.participant.bp_info=Object.assign({},this.props.bp_info);  // make a copy cause we are going to delete stuff
-                    delete pIota.component.participant.bp_info.campaign_email;
-                    delete pIota.component.participant.bp_info.personal_email;
-                    if(this.props.bp_info.candidate_name) pIota.component.participant.name=this.props.bp_info.candidate_name;
-                }   
-                window.socket.emit('create participant', pIota , (result)=>{logger.trace("participant created", result)})
-            }
-        }
-
-        var stream = ss.createStream();
-        stream.on('error',(err)=>{
-            logger.error("AskWebRTC.upload socket stream error:",err)
-        })
-
-        ss(window.socket).emit('upload video', stream, { name, size: blob.size }, responseUrl);
-
-        var bstream=ss.createBlobReadStream(blob, {highWaterMark: 1024 * 200}).pipe(through2((chunk, enc, cb) =>{
-            this.updateProgress(chunk)
-            cb(null,chunk)  // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
-           })).pipe(stream); // high hiwWaterMark to increase upload speed
-
-        bstream.on('error',(err)=>{
-            logger.error("AskWebRTC.upload blob stream error:",err)
-        })
-        stream.on('end',()=>{
-            var uploadArgs;
-            if(uploadArgs=this.uploadQueue.shift()){
-                return this.upload(...uploadArgs)
-            } else {
-                this.setState({progress: 'complete.', uploadComplete: true})
-                logger.trace("upload after login complete");
-            }
-        })
     }
 
     onUserLogin(info){
         logger.info("Undebate.onUserLogin");
         logger.trace("onUserLogin",info);
-        this.participant={speaking: [], name: this.state.name}
         const {userId}=info;
         this.setState({newUserId: userId});
     }
@@ -1916,25 +1841,8 @@ class RASPUndebate extends React.Component {
     onUserUpload(){
         logger.info("Undebate.onUserUpload");
         logger.trace("onUserUpload",this.props);
-        this.participant={speaking: [], name: this.state.name}
         const userId=this.props.user && this.props.user.id || this.state.newUserId;
-        this.totalSize=0;
-        this.transferred=0;
-
-        for(let round=0; round<this.participants.human.speakingBlobs.length; round++){
-            this.totalSize+=this.participants.human.speakingBlobs[round].size;
-            this.uploadQueue.push([this.participants.human.speakingBlobs[round],"speaking",round,userId]);
-        }
-        if(this.participants.human.listeningBlob){
-            this.uploadQueue.push([this.participants.human.listeningBlob,"listening",0,userId]);
-            this.totalSize+=this.participants.human.listeningBlob.size;
-        }
-        
-        let uploadArgs;
-        if(uploadArgs=this.uploadQueue.shift()){
-            this.upload(...uploadArgs)
-        }
-        this.setState({progress: `${this.totalSize} to upload`})
+        createParticipant(this.props, this.participants.human, userId, this.state.name, progressObj=>this.setState(progressObj));
     }
 
     startCountDown(seconds,finishFunc){
