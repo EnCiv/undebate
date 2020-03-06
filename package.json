@@ -5,7 +5,9 @@
   "main": "dist/server/start.js",
   "scripts": {
     "start": "node dist/server/start.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --config ./jest.config.json",
+    "test:coverage": "npm test -- --coverage",
+    "test:watch": "npm test -- --watch",
     "svgr": "svgr --icon --filename-case kebab assets/svg --out-dir app/svgr && rm app/svgr/index.js",
     "transpile": "babel app --ignore app/test --out-dir dist --source-maps",
     "hot-transpile": "babel --watch app --ignore app/test --out-dir dist/ --source-maps",
@@ -26,20 +28,24 @@
   },
   "homepage": "https://github.com/Synaccord/undebate#readme",
   "devDependencies": {
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/preset-react": "^7.0.0",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-react": "^7.8.3",
     "@svgr/cli": "^5.0.1",
     "concurrently": "^4.1.2",
-    "nodemon": "^1.19.2"
+    "husky": "^4.2.3",
+    "jest": "^25.1.0",
+    "nodemon": "^1.19.2",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1"
   },
   "dependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
-    "@babel/plugin-transform-regenerator": "^7.4.5",
-    "@babel/plugin-transform-runtime": "^7.5.5",
-    "@babel/runtime": "^7.5.5",
+    "@babel/plugin-transform-regenerator": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/runtime": "^7.8.4",
     "@hapi/joi": "^15.1.0",
     "babel-loader": "^8.0.6",
     "bcrypt": "^3.0.6",
@@ -86,5 +92,10 @@
   "engines": {
     "node": "~10.16.2",
     "npm": "6.9.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }

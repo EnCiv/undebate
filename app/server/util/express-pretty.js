@@ -1,92 +1,77 @@
-'use strict';
+'use strict'
 
-function printRequest (req, res) {
-
+function printRequest(req, res) {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  const d = new Date();
+  const d = new Date()
 
-  let
-    hours   =   d.getHours(),
-    minutes =   d.getMinutes(),
-    seconds =   d.getSeconds();
+  let hours = d.getHours(),
+    minutes = d.getMinutes(),
+    seconds = d.getSeconds()
 
   const time = [hours, minutes, seconds]
     .map(t => {
-      if ( t < 10 ) {
-        t = `0${t}`;
+      if (t < 10) {
+        t = `0${t}`
       }
-      return t;
+      return t
     })
-    .map(t => t.toString());
+    .map(t => t.toString())
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   let userName = 'visitor',
-    userColor = 'magenta';
+    userColor = 'magenta'
 
-  if ( req.cookies && req.cookies.synuser ) {
-    let isIn = req.cookies.synuser;
+  if (req.cookies && req.cookies.synuser) {
+    let isIn = req.cookies.synuser
 
-    if ( typeof isIn === 'string' ) {
-      isIn = JSON.parse(isIn);
+    if (typeof isIn === 'string') {
+      isIn = JSON.parse(isIn)
     }
 
-    userName = isIn.email;
-    userColor = 'blue';
+    userName = isIn.email
+    userColor = 'blue'
   }
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   let status = '...',
-    color = 'grey';
+    color = 'grey'
 
-  if ( res ) {
+  if (res) {
+    status = res.statusCode.toString()
 
-    status = res.statusCode.toString();
-
-    if ( status.substr(0, 1) === '2' ) {
-      color = 'green';
-    }
-
-    else if ( status.substr(0, 1) === '3' ) {
-      color = 'cyan';
-    }
-
-    else if ( status.substr(0, 1) === '4' ) {
-      color = 'yellow';
-    }
-
-    else if ( status.substr(0, 1) === '5' ) {
-      color = 'red';
+    if (status.substr(0, 1) === '2') {
+      color = 'green'
+    } else if (status.substr(0, 1) === '3') {
+      color = 'cyan'
+    } else if (status.substr(0, 1) === '4') {
+      color = 'yellow'
+    } else if (status.substr(0, 1) === '5') {
+      color = 'red'
     }
   }
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  const { method, url } = req;
+  const { method, url } = req
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  const pretty = [
-    time.join(':').cyan,
-    userName[userColor],
-    status[color],
-    method[color],
-    url[color]
-  ];
+  const pretty = [time.join(':').cyan, userName[userColor], status[color], method[color], url[color]]
 
-  console.log(...pretty);
+  console.log(...pretty)
 
   return {
     time,
-    user : { name : userName, color : userColor },
+    user: { name: userName, color: userColor },
     status,
     method,
     url,
     color,
-    pretty
-  };
+    pretty,
+  }
 }
 
-export default printRequest;
+export default printRequest
