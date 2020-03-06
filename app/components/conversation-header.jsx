@@ -27,13 +27,21 @@ const styles = {
       position: 'relative',
     },
   },
-
+  leftBoxContainer: {
+    display: 'inline-block',
+  },
+  leftBox: {
+    backgroundColor: BLUE,
+    width: '0.52vw',
+    height: '3.24vh',
+    display: 'inline-block',
+  },
   conversationTopicContent: {
     fontSize: '2.5rem',
     fontWeight: 'bolder',
     paddingLeft: '.2em',
     paddingRight: '.2em',
-    borderLeft: `0.2em solid ${BLUE}`,
+    // 'borderLeft': `0.2em solid ${BLUE}`,
     '&$portrait': {
       fontSize: '2rem',
       whiteSpace: 'nowrap',
@@ -41,9 +49,18 @@ const styles = {
       marginBottom: '.2em',
     },
   },
+  rightBoxContainer: {
+    display: 'inline-block',
+  },
+  rightBox: {
+    backgroundColor: YELLOW,
+    width: '0.52vw',
+    height: '3.24vh',
+    display: 'inline-block',
+  },
   conversationElectionDate: {
     paddingLeft: '.2em',
-    borderLeft: `0.2em solid ${YELLOW}`,
+    // 'borderLeft': `0.2em solid ${YELLOW}`,
     fontSize: '2rem',
     fontWeight: 'normal',
     paddingLeft: '.2em',
@@ -107,19 +124,15 @@ class ConversationHeader extends React.Component {
               />
             </a>
           </div>
-          <div
-            style={{ marginLeft: '1rem' }}
-            className={cx(classes['portrait'], classes['conversationTopicContent'])}
-            key="portrait-2"
-          >
-            {subject}
+          <div className={classes['leftBoxContainer']}>
+            <div className={classes['leftBox']}></div>
+            <span className={classes['conversationTopicContent']}>{subject}</span>
           </div>
-          <div
-            style={{ marginLeft: '1rem' }}
-            className={cx(classes['portrait'], classes['conversationElectionDate'])}
-            key="portrait-3"
-          >
-            {xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)}
+          <div className={classes['rightBoxContainer']}>
+            <div className={classes['rightBox']}></div>
+            <span className={classes['conversationElectionDate']}>
+              {xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)}
+            </span>
           </div>
         </div>
       )
@@ -128,10 +141,16 @@ class ConversationHeader extends React.Component {
         <div className={classes['conversation-header-wrapper']} key="landscape">
           <div className={classes['conversationHeader']} key="landscape-1">
             <div style={{ position: 'absolute', left: '1rem' }} key="landscape-2">
-              <span className={classes['conversationTopicContent']}>{subject}</span>
-              <span className={classes['conversationElectionDate']}>
-                {xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)}
-              </span>
+              <div className={classes['leftBoxContainer']}>
+                <div className={classes['leftBox']}></div>
+                <span className={classes['conversationTopicContent']}>{subject}</span>
+              </div>
+              <div className={classes['rightBoxContainer']}>
+                <div className={classes['rightBox']}></div>
+                <span className={classes['conversationElectionDate']}>
+                  {xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)}
+                </span>
+              </div>
             </div>
             <a target="#" href="https://www.EnCiv.org">
               <img
