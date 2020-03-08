@@ -5,7 +5,7 @@ import injectSheet from 'react-jss'
 import cx from 'classnames'
 import Join from '../join'
 import Input from '../lib/input'
-
+import { SocialShareBtn } from '../lib/socialShareBtn'
 import ErrorBoundary from '../error-boundary'
 
 import TimeFormat from 'hh-mm-ss'
@@ -2207,7 +2207,7 @@ class RASPUndebate extends React.Component {
             </a>
           </div>
         ))
-
+    //! ===============================   beginOverlay   ===============================
     const beginOverlay = () =>
       !begin &&
       !done && (
@@ -2219,6 +2219,7 @@ class RASPUndebate extends React.Component {
                   Begin
                 </button>
               </div>
+              <SocialShareBtn subject={this.props} />
             </div>
           ) : (
             <>
