@@ -5,7 +5,7 @@ import injectSheet from 'react-jss'
 import cx from 'classnames'
 import Join from '../join'
 import Input from '../lib/input'
-import { SocialShareBtn } from '../lib/socialShareBtn'
+import SocialShareBtn from '../lib/socialShareBtn'
 import ErrorBoundary from '../error-boundary'
 
 import TimeFormat from 'hh-mm-ss'
@@ -2219,7 +2219,7 @@ class RASPUndebate extends React.Component {
                   Begin
                 </button>
               </div>
-              <SocialShareBtn subject={this.props} />
+              <SocialShareBtn metaData={{ path: this.props.path, subject: this.props.subject }} />
             </div>
           ) : (
             <>
