@@ -1873,7 +1873,8 @@ class RASPUndebate extends React.Component {
     if (!this.state.totalSize_before_hangup) {
       let totalSize = 0
       for (let round = 0; round < this.participants.human.speakingBlobs.length; round++) {
-        totalSize += this.participants.human.speakingBlobs[round].size
+        totalSize +=
+          (this.participants.human.speakingBlobs[round] && this.participants.human.speakingBlobs[round].size) || 0
       }
       if (this.participants.human.listeningBlob) {
         totalSize += this.participants.human.listeningBlob.size
