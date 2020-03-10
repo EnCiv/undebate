@@ -2671,7 +2671,8 @@ class RASPUndebate extends React.Component {
             />
           )}
           {ending()}
-          {((this.participants.human && this.state.preambleAgreed) || !this.participants.human) &&
+          {((this.participants.human && (this.state.preambleAgreed || opening.noPreamble)) ||
+            !this.participants.human) &&
             buttonBar(buttonBarStyle)}
           {recorderButtonBar(recorderButtonBarStyle)}
           {permissionOverlay()}
