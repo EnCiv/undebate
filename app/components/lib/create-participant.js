@@ -47,7 +47,7 @@ export default function createParticipant(props, human, userId, name, progressFu
         logger.trace('creat participant', participant)
         var pIota = {
           //participant iota
-          parentId: props.parentId,
+          parentId: props.parentId || (props._id && props._id.toString()), // a viewer with a human has no parentId, but a recorder has the viewer as it's parentId
           subject: 'Participant:' + props.subject,
           description: 'A participant in the following discussion:' + props.description,
           component: {
