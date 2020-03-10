@@ -2212,7 +2212,7 @@ class RASPUndebate extends React.Component {
       !begin &&
       !done && (
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
-          {noOverlay ? (
+          {noOverlay || opening.noPreamble ? (
             <div style={{ width: '100%', height: '100%', display: 'table' }}>
               <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
                 <button style={{ marginTop: '25vh' }} className={classes['beginButton']} onClick={this.beginButton}>
@@ -2654,10 +2654,11 @@ class RASPUndebate extends React.Component {
         >
           <audio ref={this.audio} playsInline controls={false} onEnded={this.audioEnd} key="audio"></audio>
           {main()}
-          {((this.participants.human && this.state.preambleAgreed) || !this.participants.human) &&
+          {((this.participants.human && (this.state.preambleAgreed || opening.noPreamble)) ||
+            !this.participants.human) &&
             !bot &&
             beginOverlay()}
-          {this.participants.human && !intro && !begin && !done && (
+          {this.participants.human && !opening.noPreamble && !intro && !begin && !done && (
             <CandidatePreamble
               subject={this.props.subject}
               bp_info={this.props.bp_info}
