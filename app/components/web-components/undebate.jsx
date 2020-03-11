@@ -1821,6 +1821,13 @@ class RASPUndebate extends React.Component {
         // then see if it needs to be turned on - both might happen at the same transition
         if (newChair === listeningSeat && round === listeningRound) {
           followup.push(() => {
+            if (listeningSeat === 'speaking') {
+              // recording the listening segment from the speakers seat
+              let limit =
+                (this.props.participants.moderator.timeLimits && this.props.participants.moderator.timeLimits[round]) ||
+                60
+              this.startCountDown(limit, () => this.autoNextSpeaker())
+            }
             this.nextMediaState(participant)
             this.camera.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
           })
