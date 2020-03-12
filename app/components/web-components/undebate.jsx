@@ -2002,9 +2002,12 @@ class RASPUndebate extends React.Component {
   }
 
   videoError(participant, e) {
-    if (e.target.error.code === 4 && /.*empty.*/i.test(e.target.error.message)) return // probably a participant with no listener, just ignore attempt to play empty src
+    if (e.target.error.code === e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED) return // probably a participant with no listener, just ignore attempt to play empty src
     logger.error('Undebate.videoError ' + e.target.error.code + '; details: ' + e.target.error.message, participant)
-    if (e.target.error.code === 3 && e.target.error.message.startsWith('PIPELINE_ERROR_DECODE')) {
+    if (
+      e.target.error.code === e.target.error.MEDIA_ERR_DECODE &&
+      e.target.error.message.startsWith('PIPELINE_ERROR_DECODE')
+    ) {
       // there is something wrong with the video we are trying to play
       if (this.seat(Object.keys(this.props.participants).indexOf(participant)) === 'speaking') {
         this.autoNextSpeaker() // skip to the next speaker
@@ -2012,7 +2015,10 @@ class RASPUndebate extends React.Component {
       } else {
         logger.error('Undebate.videoError on listener, ignoring', e.target.error.message, this[participant].current.src)
       }
-    } else this.autoNextSpeaker() // skip to the next speaker
+    } else {
+      let chair = this.seat(Object.keys(this.props.participants).indexOf(participant))
+      if (chair === 'speaking') this.autoNextSpeaker() // if error is on who's speaking skip to next speaker, else ignore the error
+    }
   }
 
   // we have to check on the speaker's video periodically to see if it's stalled by checking if the currentTime is increasing
