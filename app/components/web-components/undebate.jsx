@@ -609,11 +609,15 @@ class RASPUndebate extends React.Component {
     if (!this.canNotRecordHere) {
       Object.keys(this.props.participants).forEach(participant => {
         let youtube = false
-        if (participant !== 'human' && this.props.participants[participant].listening.match(/youtu\.be|youtube\.com/)) {
+        if (
+          participant !== 'human' &&
+          this.props.participants[participant].listening &&
+          this.props.participants[participant].listening.match(/youtu\.be|youtube\.com/)
+        ) {
           // the whole participant is marked youtube if listening is youtube
           youtube = true
           loadYoutube = true
-        } else if (this.forceMP4 && participant !== 'human') {
+        } else if (this.forceMP4 && participant !== 'human' && this.props.participants[participant].listening) {
           this.props.participants[participant].listening = this.props.participants[participant].listening.replace(
             /\.webm$/gi,
             '.mp4'
@@ -627,7 +631,11 @@ class RASPUndebate extends React.Component {
           speakingImmediate: [],
           listeningObjectURL: null,
           listeningImmediate: false,
-          placeholderUrl: participant !== 'human' && placeholder_image(this.props.participants[participant].listening),
+          placeholderUrl:
+            participant !== 'human' &&
+            placeholder_image(
+              this.props.participants[participant].listening || this.props.participants[participant].speaking[0]
+            ),
           youtube,
         }
         if (participant === 'human') {
@@ -1344,7 +1352,13 @@ class RASPUndebate extends React.Component {
       if (part === 'human') objectURL = 'cameraStream'
       //set it to something - but this.camera.cameraStream should really be used
       else if (!(objectURL = this.participants[part].listeningObjectURL))
-        this.participants[part].listeningImmediate = true
+        if (this.props.participants[part].listening) {
+          // listeningObject hasn't loaded yet
+          this.participants[part].listeningImmediate = true
+        } else {
+          // there is no listening object
+          return this.playObjectURL(part, '', speaking) // part is listening, but theres no video, for stopping of the currently playing video so the placeholder image can take over
+        }
     }
     if (objectURL) this.playObjectURL(part, objectURL, speaking)
   }
@@ -1519,10 +1533,16 @@ class RASPUndebate extends React.Component {
         element.loop = false
       } else {
         if (element.src === objectURL && element.muted && element.loop) return
-        element.src = objectURL
-        element.muted = true
-        element.loop = true
+        if (!objectURL) {
+          if (!element.paused) element.pause()
+          element.src = objectURL
+        } else {
+          element.src = objectURL
+          element.muted = true
+          element.loop = true
+        }
       }
+      if (!objectURL) return // if nothing (no listening video) don't try to play it.
       try {
         // we have to stallWatch before we play because play might not return right away for lack of data
         let stallWatchPlayed
@@ -1982,6 +2002,7 @@ class RASPUndebate extends React.Component {
   }
 
   videoError(participant, e) {
+    if (e.target.error.code === 4 && /.*empty.*/i.test(e.target.error.message)) return // probably a participant with no listener, just ignore attempt to play empty src
     logger.error('Undebate.videoError ' + e.target.error.code + '; details: ' + e.target.error.message, participant)
     if (e.target.error.code === 3 && e.target.error.message.startsWith('PIPELINE_ERROR_DECODE')) {
       // there is something wrong with the video we are trying to play

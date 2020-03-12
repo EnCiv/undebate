@@ -42,7 +42,10 @@ export default function createParticipant(props, human, userId, name, progressFu
       } else {
         logger.error('upload video failed', file_name)
       }
-      if (participant.speaking.length === human.speakingBlobs.length && participant.listening) {
+      if (
+        participant.speaking.length === human.speakingBlobs.length &&
+        !!human.listeningBlob === !!participant.listening
+      ) {
         // have all of the pieces been uploaded
         logger.trace('creat participant', participant)
         var pIota = {
