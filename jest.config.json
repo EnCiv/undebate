@@ -1,4 +1,3 @@
 {
-  "testRegex": "((\\.|/*.)(test))\\.js?$"
   "setupFilesAfterEnv": ["<rootDir>/setupTests.js"]
 }
