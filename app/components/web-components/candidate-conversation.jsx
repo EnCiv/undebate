@@ -1420,7 +1420,7 @@ class RASPUndebate extends React.Component {
         if (element.src === objectURL && element.muted && element.loop) return
         if (!objectURL) {
           if (!element.paused) element.pause()
-          element.src = objectURL
+          element.removeAttribute('src') // can't set the src to "", but you can remove src which will set it to ""
         } else {
           element.src = objectURL
           element.muted = true
@@ -1887,7 +1887,6 @@ class RASPUndebate extends React.Component {
   }
 
   videoError(participant, e) {
-    if (e.target.error.code === e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED) return // probably a participant with no listener, just ignore attempt to play empty src
     logger.error(
       'CandidateConversation.videoError ' + e.target.error.code + '; details: ' + e.target.error.message,
       participant
