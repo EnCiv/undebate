@@ -5,7 +5,7 @@
   "main": "dist/server/start.js",
   "scripts": {
     "start": "node dist/server/start.js",
-    "test": "jest --config ./jest.config.json",
+    "test": "jest",
     "test:coverage": "npm test -- --coverage",
     "test:watch": "npm test -- --watch",
     "svgr": "svgr --icon --filename-case kebab assets/svg --out-dir app/svgr && rm app/svgr/index.js",

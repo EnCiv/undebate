@@ -1,3 +1,0 @@
-{
-  "setupFilesAfterEnv": ["<rootDir>/setupTests.js"]
-}
