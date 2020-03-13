@@ -3,10 +3,10 @@ import injectSheet from 'react-jss'
 import { TwitterSVG } from './socialShareTwitterSVG'
 import { FacebookSVG } from './socialShareFacebookSVG'
 import { SocialShareSVG } from './socialShareSVG'
-import useOnClickOutside from '../hooks/useOnClickOutside'
+import { useOnClickOutside } from '../hooks'
 const styles = {
   shareDropDown: {
-    backgroundColor: 'pink',
+    backgroundColor: '#dee2e3',
     width: '85px',
     height: '45px',
     display: 'flex',
@@ -14,6 +14,7 @@ const styles = {
     justifyContent: 'space-between',
     padding: '10px',
     fontSize: '12px',
+    marginRight: '4px',
   },
 
   socialSVG: {
@@ -23,7 +24,6 @@ const styles = {
 const SocialShareBtn = props => {
   const [isOpen, setIsOpen] = useState(false)
   const shareLayoverRef = useRef(null)
-
   const handleClick = () => {
     setIsOpen(!isOpen)
   }
@@ -33,8 +33,8 @@ const SocialShareBtn = props => {
   )
   const { classes, metaData } = props
   return (
-    <div>
-      <div onClick={handleClick}>
+    <div style={metaData.styles}>
+      <div style={{ marginRight: '9px', cursor: 'pointer' }} onClick={handleClick}>
         <SocialShareSVG />
       </div>
       {isOpen && (
@@ -44,12 +44,12 @@ const SocialShareBtn = props => {
             <a
               className={classes.socialSVG}
               target="_blank"
-              href={`https://twitter.com/intent/tweet?text=Hello%20world`}
+              href={`https://twitter.com/intent/tweet?text=Join%20the%20${metaData.subject}%20at&url=${window.location}`}
             >
               <TwitterSVG />
             </a>
             <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=https://www.luismartinez.dev/${metaData.path}&quote=Undebate`}
+              href={`https://www.facebook.com/sharer/sharer.php?u=${window.location}&quote=Undebate%20join%20the%20${metaData.subject}`}
               target="_blank"
             >
               <FacebookSVG />

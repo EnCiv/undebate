@@ -2219,7 +2219,6 @@ class RASPUndebate extends React.Component {
                   Begin
                 </button>
               </div>
-              <SocialShareBtn metaData={{ path: this.props.path, subject: this.props.subject }} />
             </div>
           ) : (
             <>
@@ -2420,6 +2419,23 @@ class RASPUndebate extends React.Component {
           )}
           key={participant}
         >
+          {this.seat(i) === 'speaking' ? (
+            <SocialShareBtn
+              metaData={{
+                path: this.props.path,
+                subject: this.props.subject,
+                styles: {
+                  position: 'absolute',
+                  zIndex: '100',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  width: '100%',
+                  margin: '4px 3px 0 0',
+                },
+              }}
+            />
+          ) : null}
           <div
             style={{
               width: seatStyle[this.seat(i)].width,
