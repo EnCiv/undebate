@@ -1563,7 +1563,8 @@ class RASPUndebate extends React.Component {
   allPlay() {
     Object.keys(this.participants).forEach(async participant => {
       if (this[participant]) {
-        if (this[participant].current.paused) {
+        if (this.participant.current.src && this[participant].current.paused) {
+          // if no src it's just a placeholder - don't play it
           try {
             await this[participant].current.play()
           } catch (err) {
