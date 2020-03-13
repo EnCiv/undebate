@@ -295,6 +295,7 @@ const styles = {
     background: 'yellow',
   },
   title: {
+    position: "relative",
     'text-align': 'center',
     color: 'white',
     'font-weight': 'normal',
@@ -779,6 +780,17 @@ class RASPUndebate extends React.Component {
       },
     },
 
+    titleSpeakerStyle: {
+      position: 'relative',
+      bottom: '10vh'
+    }, 
+
+    titleSeatStyle: {
+      left: 'calc(1.25vw + 15vw + 1.25vw + 15vw + 1.25vw)',
+      bottom: `10vh`,
+      width: '15vw'
+    }, 
+
     agendaStyle: {
       top: '8vh',
       width: '17.5vw',
@@ -1023,6 +1035,8 @@ class RASPUndebate extends React.Component {
 
   calculateStyles(width, height, maxerHeight, fontSize) {
     var seatStyle = cloneDeep(this.state.seatStyle)
+    var titleSpeakerStyle = cloneDeep(this.state.titleSpeakerStyle)
+    var titleSeatStyle = cloneDeep(this.state.titleSeatStyle)
     var agendaStyle = cloneDeep(this.state.agendaStyle)
     var buttonBarStyle = cloneDeep(this.state.buttonBarStyle)
     var recorderButtonBarStyle = cloneDeep(this.state.recorderButtonBarStyle)
@@ -1049,15 +1063,15 @@ class RASPUndebate extends React.Component {
         vGap
       if (calcHeight > height) {
         // if the window is really wide - squish the video height so it still fits
-        let heightForVideo = height - navBarHeight - vGap - titleHeight - vGap - titleHeight - vGap
+        let heightForVideo = height - navBarHeight - vGap - titleHeight - vGap - vGap
         let calcHeightForVideo = width * seatWidthRatio * HDRatio + width * speakingWidthRatio * HDRatio
         seatWidthRatio = (seatWidthRatio * heightForVideo) / calcHeightForVideo
         speakingWidthRatio = (speakingWidthRatio * heightForVideo) / calcHeightForVideo
       }
 
       seatStyle.speaking.left = (width - speakingWidthRatio * width - agendaMaxWidth - hGap) / 2
-      seatStyle.speaking.width = speakingWidthRatio * width
-      seatStyle.speaking.top = navBarHeight + vGap + width * seatWidthRatio * HDRatio + vGap + titleHeight
+      seatStyle.speaking.width = speakingWidthRatio * width + titleHeight*(1/HDRatio)
+      seatStyle.speaking.top = navBarHeight + vGap + width * seatWidthRatio * HDRatio + vGap
       introSeatStyle.speaking = { top: -(speakingWidthRatio * HDRatio * width + vGap + ShadowBox) }
 
       seatStyle.nextUp.left = hGap
@@ -1098,7 +1112,7 @@ class RASPUndebate extends React.Component {
       agendaStyle.top = seatStyle.speaking.top
       agendaStyle.left = seatStyle.speaking.left + seatStyle.speaking.width + hGap
       agendaStyle.width = Math.min(width - agendaStyle.left - hGap, agendaMaxWidth)
-      agendaStyle.height = seatStyle.speaking.width * HDRatio + titleHeight
+      agendaStyle.height = seatStyle.speaking.width * HDRatio
 
       buttonBarStyle.width = seatStyle.speaking.width * 0.6
       buttonBarStyle.left = seatStyle.speaking.left + seatStyle.speaking.width * 0.2 // center it
@@ -1277,7 +1291,7 @@ class RASPUndebate extends React.Component {
       introStyle.introRight.height = 'auto'
       introSeatStyle.introRight.right = '-50vw'
     }
-    return { seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, titleHeight }
+    return { titleSpeakerStyle, titleSeatStyle, seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, titleHeight }
   }
 
   saveRecordingToParticipants(speaking, round, blobs) {
@@ -2348,7 +2362,7 @@ class RASPUndebate extends React.Component {
       return parseFloat(width)
     }
 
-    var videoBox = (participant, i, seatStyle) => {
+    var videoBox = (participant, i, seatStyle, titleSeatStyle, titleSpeakerStyle) => {
       if (!this[participant]) return null // we don't have room for this participant
       let chair = this.seat(i)
       let videoWidth = pxSeatStyleWidth(this.seat(i))
@@ -2360,6 +2374,12 @@ class RASPUndebate extends React.Component {
         participant_name = this.props.bp_info.candidate_name
       else participant_name = this.props.participants[participant].name
       /*src={"https://www.youtube.com/embed/"+getYouTubeID(this.participants[participant].listeningObjectURL)+"?enablejsapi=1&autoplay=1&loop=1&controls=0&disablekb=1&fs=0&modestbranding=1&rel=0"}*/
+      // if (this.seat(i) === 'speaking') {
+        // const titleStyle = this.state.titleSpeakerStyle
+      // } else { 
+      const titleStyle = titleSeatStyle
+      // }
+
       return (
         <div
           style={style}
@@ -2431,9 +2451,11 @@ class RASPUndebate extends React.Component {
                   <p>{`${this.state.waitingPercent}% complete`}</p>
                 </div>
               </div>
-              <div className={cx(classes['title'], stylesSet && classes['stylesSet'], finishUp && classes['finishUp'])}>
+
+              <div style={titleStyle} className={cx(classes['title'], stylesSet && classes['stylesSet'], finishUp && classes['finishUp'])}>
                 <span>{participant_name}</span>
               </div>
+
             </>
           )}
         </div>
