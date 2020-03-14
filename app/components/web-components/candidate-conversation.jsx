@@ -1214,7 +1214,7 @@ class RASPUndebate extends React.Component {
         } else {
           //if even number of seats
           seatLeft = seatLeft = seatHorizontalPitch + hGap
-          while (seat <= numOfParticipants / 2 + 1) {
+          while (seat <= numOfParticipants / 2 ) {
             // some will go off the screen
             seatStyle['seat' + seat].top = seatTop + seatWidthRatio * width * HDRatio + titleHeight + hGap
             seatStyle['seat' + seat].left = seatLeft
