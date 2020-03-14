@@ -295,7 +295,9 @@ const styles = {
     background: 'yellow',
   },
   title: {
-    position: "relative",
+    position: "absolute",
+    width: '100%',
+    bottom: '0',
     'text-align': 'center',
     color: 'white',
     'font-weight': 'normal',
@@ -780,17 +782,6 @@ class RASPUndebate extends React.Component {
       },
     },
 
-    titleSpeakerStyle: {
-      position: 'relative',
-      bottom: '10vh'
-    }, 
-
-    titleSeatStyle: {
-      left: 'calc(1.25vw + 15vw + 1.25vw + 15vw + 1.25vw)',
-      bottom: `10vh`,
-      width: '15vw'
-    }, 
-
     agendaStyle: {
       top: '8vh',
       width: '17.5vw',
@@ -1035,8 +1026,6 @@ class RASPUndebate extends React.Component {
 
   calculateStyles(width, height, maxerHeight, fontSize) {
     var seatStyle = cloneDeep(this.state.seatStyle)
-    var titleSpeakerStyle = cloneDeep(this.state.titleSpeakerStyle)
-    var titleSeatStyle = cloneDeep(this.state.titleSeatStyle)
     var agendaStyle = cloneDeep(this.state.agendaStyle)
     var buttonBarStyle = cloneDeep(this.state.buttonBarStyle)
     var recorderButtonBarStyle = cloneDeep(this.state.recorderButtonBarStyle)
@@ -1169,13 +1158,13 @@ class RASPUndebate extends React.Component {
 
       seatStyle.nextUp.left = hGap //seatWidthRatio*width*HDRatio + titleHeight + hGap
       seatStyle.nextUp.top = navBarHeight + vGap + seatWidthRatio * width * HDRatio + titleHeight + hGap
-      seatStyle.nextUp.width = seatWidthRatio * width
+      seatStyle.nextUp.width = seatWidthRatio * width + titleHeight*(1/HDRatio)
       introSeatStyle.nextUp = { left: -(seatStyle.nextUp.left + seatWidthRatio * width + ShadowBox) }
 
       let seat = 2
       let seatTop = navBarHeight + vGap
       let seatLeft = hGap
-      let seatHorizontalPitch = seatWidthRatio * width + hGap
+      let seatHorizontalPitch = seatWidthRatio * width + titleHeight*(1/HDRatio) + hGap
 
       seatLeft += seatHorizontalPitch // skip over the nextUp
 
@@ -1188,7 +1177,7 @@ class RASPUndebate extends React.Component {
           // some will go off the screen
           seatStyle['seat' + seat].top = seatTop
           seatStyle['seat' + seat].left = seatLeft
-          seatStyle['seat' + seat].width = seatWidthRatio * width
+          seatStyle['seat' + seat].width = seatWidthRatio * width + titleHeight*(1/HDRatio)
           introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
           seatLeft += seatHorizontalPitch
           seat++
@@ -1203,7 +1192,7 @@ class RASPUndebate extends React.Component {
             // some will go off the screen
             seatStyle['seat' + seat].top = seatTop
             seatStyle['seat' + seat].left = seatLeft
-            seatStyle['seat' + seat].width = seatWidthRatio * width
+            seatStyle['seat' + seat].width = seatWidthRatio * width + titleHeight*(1/HDRatio)
             introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
             seatLeft += seatHorizontalPitch
             seat++
@@ -1216,7 +1205,7 @@ class RASPUndebate extends React.Component {
             // some will go off the screen
             seatStyle['seat' + seat].top = seatTop + seatWidthRatio * width * HDRatio + titleHeight + hGap
             seatStyle['seat' + seat].left = seatLeft
-            seatStyle['seat' + seat].width = seatWidthRatio * width
+            seatStyle['seat' + seat].width = seatWidthRatio * width + titleHeight*(1/HDRatio)
             introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
             seatLeft += seatHorizontalPitch
             seat++
@@ -1229,7 +1218,7 @@ class RASPUndebate extends React.Component {
             // some will go off the screen
             seatStyle['seat' + seat].top = seatTop
             seatStyle['seat' + seat].left = seatLeft
-            seatStyle['seat' + seat].width = seatWidthRatio * width
+            seatStyle['seat' + seat].width = seatWidthRatio * width + titleHeight*(1/HDRatio)
             introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
             seatLeft += seatHorizontalPitch
             seat++
@@ -1242,7 +1231,7 @@ class RASPUndebate extends React.Component {
             // some will go off the screen
             seatStyle['seat' + seat].top = seatTop + seatWidthRatio * width * HDRatio + titleHeight + hGap
             seatStyle['seat' + seat].left = seatLeft
-            seatStyle['seat' + seat].width = seatWidthRatio * width
+            seatStyle['seat' + seat].width = seatWidthRatio * width + titleHeight*(1/HDRatio)
             introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
             seatLeft += seatHorizontalPitch
             seat++
@@ -1250,24 +1239,25 @@ class RASPUndebate extends React.Component {
           }
         }
       }
-      if (calcHeight > height) {
-        seatStyle.speaking.left = (width - speakingWidthRatio * width) / 2
-      } else {
+      // if (calcHeight/ > height) {
+        // seatStyle.speaking.left = (width - speakingWidthRatio * width) / 2
+      // } else {
         seatStyle.speaking.left = hGap
-      }
+      // }
       // seatStyle.speaking.left= hGap;
       seatStyle.speaking.top = navBarHeight + vGap + 2 * seatWidthRatio * width * HDRatio + 2 * titleHeight + 2 * vGap
-      seatStyle.speaking.width = speakingWidthRatio * width
+      seatStyle.speaking.width = width - 2*hGap
       introSeatStyle.speaking = { top: -(speakingWidthRatio * HDRatio * width + vGap + ShadowBox) }
 
       seatStyle.finishUp.left = 0.5 * width
       seatStyle.finishUp.top = 0.5 * height
       seatStyle.finishUp.width = 0.01 * width
 
-      agendaStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + titleHeight + vGap
+      agendaStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
       agendaStyle.left = seatStyle.speaking.left
       agendaStyle.width = seatStyle.speaking.width
-      agendaStyle.height = Math.min(maxAgendaHeight, height - agendaStyle.top - vGap)
+      agendaStyle.height = Math.max(maxAgendaHeight, height - agendaStyle.top - vGap)
+      
       introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
       buttonBarStyle.width = seatStyle.speaking.width * 0.6
@@ -1276,7 +1266,7 @@ class RASPUndebate extends React.Component {
         seatStyle.speaking.top +
         seatStyle.speaking.width * HDRatio -
         (buttonBarStyle.width / this.buttons.length) * 0.75 -
-        vGap // there are 5 buttons and they are essentially square
+        vGap - titleHeight // there are 5 buttons and they are essentially square
 
       recorderButtonBarStyle.left = seatStyle.speaking.left
       recorderButtonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
@@ -1291,7 +1281,7 @@ class RASPUndebate extends React.Component {
       introStyle.introRight.height = 'auto'
       introSeatStyle.introRight.right = '-50vw'
     }
-    return { titleSpeakerStyle, titleSeatStyle, seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, titleHeight }
+    return { seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, titleHeight }
   }
 
   saveRecordingToParticipants(speaking, round, blobs) {
@@ -2362,7 +2352,7 @@ class RASPUndebate extends React.Component {
       return parseFloat(width)
     }
 
-    var videoBox = (participant, i, seatStyle, titleSeatStyle, titleSpeakerStyle) => {
+    var videoBox = (participant, i, seatStyle) => {
       if (!this[participant]) return null // we don't have room for this participant
       let chair = this.seat(i)
       let videoWidth = pxSeatStyleWidth(this.seat(i))
@@ -2377,7 +2367,6 @@ class RASPUndebate extends React.Component {
       // if (this.seat(i) === 'speaking') {
         // const titleStyle = this.state.titleSpeakerStyle
       // } else { 
-      const titleStyle = titleSeatStyle
       // }
 
       return (
@@ -2452,7 +2441,7 @@ class RASPUndebate extends React.Component {
                 </div>
               </div>
 
-              <div style={titleStyle} className={cx(classes['title'], stylesSet && classes['stylesSet'], finishUp && classes['finishUp'])}>
+              <div className={cx(classes['title'], stylesSet && classes['stylesSet'], finishUp && classes['finishUp'])}>
                 <span>{participant_name}</span>
               </div>
 
