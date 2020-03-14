@@ -304,7 +304,7 @@ const styles = {
     'font-size': '2rem',
     'padding-top': '0.25rem',
     'padding-bottom': '0.25rem',
-    'background-color': 'black',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
     overflow: 'hidden',
     'text-overflow': 'ellipsis',
     'white-space': 'nowrap',
@@ -1098,7 +1098,7 @@ class RASPUndebate extends React.Component {
       seatStyle.finishUp.top = ((0.5 + 0.15) * width * HDRatio + (0.05 + 0.015) * height + TopMargin) / 2
       seatStyle.finishUp.width = 0.1 * width
 
-      agendaStyle.top = seatStyle.speaking.top
+      agendaStyle.top = seatStyle.speaking.top 
       agendaStyle.left = seatStyle.speaking.left + seatStyle.speaking.width + hGap
       agendaStyle.width = Math.min(width - agendaStyle.left - hGap, agendaMaxWidth)
       agendaStyle.height = seatStyle.speaking.width * HDRatio
@@ -1110,7 +1110,7 @@ class RASPUndebate extends React.Component {
         seatStyle.speaking.top +
         seatStyle.speaking.width * HDRatio -
         (buttonBarStyle.width / this.buttons.length) * 0.75 -
-        vGap // there are 5 buttons and they are essentially square
+        vGap - titleHeight // there are 5 buttons and they are essentially square
 
       recorderButtonBarStyle.left = seatStyle.speaking.left
       recorderButtonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap

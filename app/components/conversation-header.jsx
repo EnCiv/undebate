@@ -14,6 +14,7 @@ const styles = {
     top: 0,
   },
   conversationHeader: {
+    'z-index': '10',
     position: 'absolute',
     margin: 0,
     padding: 0,
