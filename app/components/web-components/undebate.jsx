@@ -2616,12 +2616,16 @@ class RASPUndebate extends React.Component {
       !this.state.hungUp &&
       this.participants.human && (
         <div className={classes['hangUpButton']}>
-          <button onClick={this.hangup} key="hangup">
-            Hang Up
+          <button
+            onClick={this.hangup}
+            key="hangup"
+            title={'Stop recording and delete all video stored in the browser.'}
+          >
+            Exit
           </button>
           {this.state.totalSize_before_hangup ? (
             <div className={classes['hangUpButtonReally']}>
-              You have recorded video, did you really want to hang up?
+              You have recorded video, did you really want exit and delete it, rather than finish this and post it?
               <div
                 className={classes['hangUpButtonReallyClose']}
                 onClick={() => this.setState({ totalSize_before_hangup: 0 })}
