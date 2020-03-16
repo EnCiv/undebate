@@ -149,12 +149,13 @@ export default class MergeParticipants {
           if (val >= nextIndex) nextIndex = val + 1
         }
       })
+      let maxParticipants = undebate.webComponent.maxParticipants || 7
       try {
         var newParticipantDocs = await Iota.aggregate([
           { $match: { parentId: undebate._id.toString(), 'component.component': 'MergeParticipants' } },
           { $sort: { _id: -1 } },
           { $group: { _id: '$userId', latest: { $first: '$$ROOT' } } },
-          { $limit: 7 },
+          { $limit: maxParticipants },
           { $replaceRoot: { newRoot: '$latest' } },
         ])
         if (undebate.webComponent.shuffle === true) shuffle(newParticipantDocs)

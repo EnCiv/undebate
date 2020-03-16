@@ -571,18 +571,6 @@ const styles = {
   stalledBox: {},
 }
 
-const seating = ['speaking', 'nextUp', 'seat2', 'seat3', 'seat4', 'seat5', 'seat6', 'seat7']
-const seatToName = {
-  speaking: 'Speaking',
-  nextUp: 'Next Up',
-  seat2: 'Seat #2',
-  seat3: 'Seat #3',
-  seat4: 'Seat #4',
-  seat5: 'Seat #5',
-  seat6: 'Seat #6',
-  seat7: 'Seat #7',
-}
-
 class CandidateConversation extends React.Component {
   render() {
     return (
@@ -685,6 +673,7 @@ class RASPUndebate extends React.Component {
               this.props.participants[participant].listening || this.props.participants[participant].speaking[0]
             ),
           youtube,
+          element: React.createRef(),
         }
         if (participant === 'human') {
           this.participants.human.speakingBlobs = []
@@ -694,6 +683,8 @@ class RASPUndebate extends React.Component {
       this.participants = {}
     }
     this.numParticipants = Object.keys(this.props.participants).length
+    this.seating = ['speaking', 'nextUp']
+    for (let i = 2; i < this.numParticipants; i++) this.seating.push('seat' + i)
     this.audioSets = {}
     this.newUser = !this.props.user // if there is no user at the beginning, then this is a new user - which should be precistant throughout the existence of this component
     if (typeof window !== 'undefined' && window.screen && window.screen.lockOrientation)
@@ -737,60 +728,12 @@ class RASPUndebate extends React.Component {
     begin: false,
 
     seatStyle: {
-      speaking: {
-        left: 'calc(2.5vw + 20vw + 2.5vw)',
-        top: `${TopMargin}`,
-        width: '50vw',
-      },
-      nextUp: {
-        left: '2.5vw',
-        top: `calc( (50vw - 20vw) *  ${HDRatio} + ${TopMargin})`,
-        width: '20vw',
-      },
-      seat2: {
-        left: 'calc(1.25vw)',
-        top: `calc(50vw *  ${HDRatio} + 5vh + ${TopMargin})`,
-        width: '15vw',
-      },
-      seat3: {
-        left: 'calc(1.25vw + 15vw + 1.25vw)',
-        top: `calc(50vw *  ${HDRatio} + 5vh + 5.5vh + ${TopMargin})`,
-        width: '15vw',
-      },
-      seat4: {
-        left: 'calc(1.25vw + 15vw + 1.25vw + 15vw + 1.25vw)',
-        top: `calc(50vw *  ${HDRatio} + 5vh + 5.5vh + ${TopMargin})`,
-        width: '15vw',
-      },
-      seat5: {
-        left: 'calc(3 * (1.25vw + 15vw) + 1.25vw)',
-        top: `calc(50vw *  ${HDRatio} + 5vh + 5.5vh + ${TopMargin})`,
-        width: '15vw',
-      },
-      seat6: {
-        left: 'calc(4 * (1.25vw + 15vw) + 1.25vw)',
-        top: `calc(50vw *  ${HDRatio} + 5vh + 5.5vh + ${TopMargin})`,
-        width: '15vw',
-      },
-      seat7: {
-        left: 'calc(5 * (1.25vw + 15vw) + 1.25vw)',
-        top: `calc(50vw *  ${HDRatio} + 5vh + 5.5vh + ${TopMargin})`,
-        width: '15vw',
-      },
-      finishUp: {
-        left: 'calc(100vw / 2)',
-        top: `calc(((50vw + 15vw) *  ${HDRatio} + 5vh + 1.5vw + ${TopMargin}) / 2)`,
-        width: '1vw',
-      },
+      speaking: {},
+      nextUp: {},
+      finishUp: {},
     },
 
-    agendaStyle: {
-      top: '8vh',
-      width: '17.5vw',
-      height: '17.5vw',
-      left: 'calc(2.5vw + 20vw + 2.5vw + 50vw + 2.5vw)',
-    },
-
+    agendaStyle: {},
     buttonBarStyle: {
       width: '50vw',
       left: '25vw',
@@ -1078,8 +1021,10 @@ class RASPUndebate extends React.Component {
 
       // across the bottom
       let i = 0 // for calculating the intro
-      while (seat <= 7) {
+      while (seat <= this.numParticipants - 1) {
+        // -1 because one is speaking
         // some will go off the screen
+        if (!seatStyle['seat' + seat]) seatStyle['seat' + seat] = {}
         seatStyle['seat' + seat].top = seatTop
         seatStyle['seat' + seat].left = seatLeft
         seatStyle['seat' + seat].width = seatWidthRatio * width
@@ -1142,8 +1087,10 @@ class RASPUndebate extends React.Component {
 
       // across the bottom
       let i = 0 // for calculating the intro
-      while (seat <= 7) {
+      while (seat <= this.numParticipants - 1) {
+        // -1 because one is speaking
         // some will go off the screen
+        if (!seatStyle['seat' + seat]) seatStyle['seat' + seat] = {}
         seatStyle['seat' + seat].top = seatTop
         seatStyle['seat' + seat].left = seatLeft
         seatStyle['seat' + seat].width = seatWidthRatio * width
@@ -1368,7 +1315,7 @@ class RASPUndebate extends React.Component {
   }
 
   async playObjectURL(part, objectURL, speaking) {
-    if (!this[part]) return // we don't have a space for this participant
+    if (!this.participants[part].element.current) return // we don't have a space for this participant
     logger.trace('playObjectURL part:', part, 'objectURL:', objectURL)
     if (this.participants[part].youtube) {
       this.youtubePlayers[part].loadVideoById({ videoId: getYouTubeID(objectURL) })
@@ -1377,7 +1324,7 @@ class RASPUndebate extends React.Component {
       else this.youtubePlayers[part].unMute()
       if (this.youtubePlayers[part].getPlayerState() !== YT.PlayerState.PLAYING) this.youtubePlayers[part].playVideo()
     } else {
-      let element = this[part].current
+      let element = this.participants[part].element.current
       if (element.src === objectURL) {
         return // don't change it.
       }
@@ -1450,10 +1397,10 @@ class RASPUndebate extends React.Component {
   }
 
   async playAudioObject(part, obj, onended) {
-    if (!this[part]) return // we don't have a space for this participant
+    if (!this.participants[part].element.current) return // we don't have a space for this participant
     if (this.participants[part] && this.participants[part].youtube) return // don't use HTML5 operations on a YouTube player, part might be audio
     logger.trace('playAudioObject part:', part, 'obj:', obj)
-    let element = this[part].current
+    let element = this.participants[part].element.current
     element.src = null
     //element.srcObject = null;
     element.src = obj.objectURL
@@ -1506,7 +1453,7 @@ class RASPUndebate extends React.Component {
   seat(i, seatOffset) {
     if (this.state.finishUp) return 'finishUp'
     if (typeof seatOffset === 'undefined') seatOffset = this.state.seatOffset
-    return seating[(seatOffset + i) % this.numParticipants]
+    return this.seating[(seatOffset + i) % this.numParticipants]
   }
 
   buttons = [
@@ -1538,7 +1485,7 @@ class RASPUndebate extends React.Component {
       this.beginButton()
     } else if (!this.state.allPaused) {
       Object.keys(this.participants).forEach(participant => {
-        if (this[participant] && this[participant].current) this[participant].current.pause()
+        if (this.participants[participant].element.current) this.participants[participant].element.current.pause()
       })
       this.setState({ allPaused: true })
     } else {
@@ -1549,9 +1496,9 @@ class RASPUndebate extends React.Component {
 
   allStop() {
     Object.keys(this.participants).forEach(participant => {
-      if (this[participant] && this[participant].current) {
-        this[participant].current.pause()
-        this[participant].current.src = null
+      if (this.participants[participant].element.current) {
+        this.participants[participant].element.current.pause()
+        this.participants[participant].element.current.src = null
       }
     })
     if (this.audio && this.audio.current) {
@@ -1562,11 +1509,14 @@ class RASPUndebate extends React.Component {
 
   allPlay() {
     Object.keys(this.participants).forEach(async participant => {
-      if (this[participant]) {
-        if (this.participant.current.src && this[participant].current.paused) {
+      if (this.participants[participant].element.current) {
+        if (
+          this.participants[participant].element.current.src &&
+          this.participants[participant].element.current.paused
+        ) {
           // if no src it's just a placeholder - don't play it
           try {
-            await this[participant].current.play()
+            await this.participants[participant].element.current.play()
           } catch (err) {
             if (err.name === 'NotAllowedError') {
               this.requestPermissionElements.push(element)
@@ -1902,13 +1852,13 @@ class RASPUndebate extends React.Component {
         logger.error(
           'CandidateConversation.videoError on speaker, skipping',
           e.target.error.message,
-          this[participant].current.src
+          this.participants[participant].element.current.src
         )
       } else {
         logger.error(
           'CandidateConversation.videoError on listener, ignoring',
           e.target.error.message,
-          this[participant].current.src
+          this.participants[participant].element.current.src
         )
       }
     } else {
@@ -1930,7 +1880,7 @@ class RASPUndebate extends React.Component {
       logger.error('Undebate.stallWatch called but timeout already set', this.stallWatchTimeout)
     }
 
-    const element = this[speaker].current
+    const element = this.participants[speaker].element.current
     var lastTime = -1
     var tickCount = 0
 
@@ -2296,7 +2246,7 @@ class RASPUndebate extends React.Component {
     }
 
     var videoBox = (participant, i, seatStyle) => {
-      if (!this[participant]) return null // we don't have room for this participant
+      if (!this.participants[participant].element) return null // we don't have room for this participant
       let chair = this.seat(i)
       let videoWidth = pxSeatStyleWidth(this.seat(i))
       let videoHeight = pxSeatStyleWidth(this.seat(i)) * HDRatio
@@ -2359,7 +2309,7 @@ class RASPUndebate extends React.Component {
                   stylesSet && !intro && classes['intro'],
                   stylesSet && !begin && classes['begin']
                 )}
-                ref={this[participant]}
+                ref={this.participants[participant].element}
                 playsInline
                 autoPlay={!bot}
                 controls={false}
