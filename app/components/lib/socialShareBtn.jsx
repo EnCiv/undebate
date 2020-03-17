@@ -7,8 +7,8 @@ import { useOnClickOutside } from '../hooks'
 const styles = {
   shareDropDown: {
     backgroundColor: '#dee2e3',
-    width: '5vw',
-    height: '9vh',
+    width: '20%',
+    height: '9%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
