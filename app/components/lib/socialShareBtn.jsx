@@ -7,18 +7,18 @@ import { useOnClickOutside } from '../hooks'
 const styles = {
   shareDropDown: {
     backgroundColor: '#dee2e3',
-    width: '85px',
-    height: '45px',
+    width: '5vw',
+    height: '9vh',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    padding: '10px',
+    padding: '0.5rem',
     fontSize: '12px',
-    marginRight: '4px',
+    marginRight: '0.3rem',
   },
 
   socialSVG: {
-    marginRight: '15px',
+    marginRight: '0.8rem',
   },
 }
 const SocialShareBtn = props => {
@@ -34,7 +34,7 @@ const SocialShareBtn = props => {
   const { classes, metaData } = props
   return (
     <div style={metaData.styles}>
-      <div style={{ marginRight: '9px', cursor: 'pointer' }} onClick={handleClick}>
+      <div style={{ marginRight: '0.3rem', cursor: 'pointer' }} onClick={handleClick}>
         <SocialShareSVG />
       </div>
       {isOpen && (
@@ -49,7 +49,7 @@ const SocialShareBtn = props => {
               <TwitterSVG />
             </a>
             <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${window.location}&quote=Undebate%20join%20the%20${metaData.subject}`}
+              href={`https://www.facebook.com/sharer/sharer.php?u=https://cc.enciv.org/schoolboard-conversation-candidate-recorder&quote=Undebate%20join%20the%20${metaData.subject}`}
               target="_blank"
             >
               <FacebookSVG />
