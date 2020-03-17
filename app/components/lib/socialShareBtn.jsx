@@ -8,6 +8,7 @@ const styles = {
   shareDropDown: {
     backgroundColor: '#dee2e3',
     width: '20%',
+    maxWidth: '85px',
     height: '9%',
     display: 'flex',
     flexDirection: 'column',
