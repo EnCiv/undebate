@@ -49,7 +49,7 @@ const SocialShareBtn = props => {
               <TwitterSVG />
             </a>
             <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=https://cc.enciv.org/schoolboard-conversation-candidate-recorder&quote=Undebate%20join%20the%20${metaData.subject}`}
+              href={`https://www.facebook.com/sharer/sharer.php?u=${window.location}&quote=Undebate%20join%20the%20${metaData.subject}`}
               target="_blank"
             >
               <FacebookSVG />
