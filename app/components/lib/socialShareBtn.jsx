@@ -6,16 +6,17 @@ import { SocialShareSVG } from './socialShareSVG'
 import { useOnClickOutside } from '../hooks'
 const styles = {
   shareDropDown: {
-    backgroundColor: '#dee2e3',
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
     width: '20%',
-    maxWidth: '85px',
+    maxWidth: '7rem',
     height: '9%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
     padding: '0.5rem',
-    fontSize: '12px',
+    fontSize: '1.5rem',
     marginRight: '0.3rem',
+    textAlign: 'center',
   },
 
   socialSVG: {
