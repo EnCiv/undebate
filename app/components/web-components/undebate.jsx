@@ -1666,12 +1666,12 @@ class RASPUndebate extends React.Component {
     Object.keys(this.participants).forEach(participant => {
       if (this[participant] && this[participant].current) {
         this[participant].current.pause()
-        this[participant].current.src = null
+        this[participant].current.removeAttribute('src')
       }
     })
     if (this.audio && this.audio.current) {
       this.audio.current.pause()
-      this.audio.current.src = null
+      this.audio.current.removeAttribute('src')
     }
   }
 
@@ -2619,13 +2619,17 @@ class RASPUndebate extends React.Component {
           <button
             onClick={this.hangup}
             key="hangup"
-            title={'Stop recording and delete all video stored in the browser.'}
+            title={
+              (this.props.hangupButton && this.props.hangupButton.title) ||
+              'Stop recording and delete all video stored in the browser.'
+            }
           >
-            Exit
+            {(this.props.hangupButton && this.props.hangupButton.name) || 'Hang Up'}
           </button>
-          {this.state.totalSize_before_hangup ? (
+          {this.state.totalSize_before_hangup && !this.state.uploadComplete ? (
             <div className={classes['hangUpButtonReally']}>
-              You have recorded video, did you really want exit and delete it, rather than finish this and post it?
+              {(this.props.hangupButton && this.props.hangupButton.question) ||
+                'You have recorded video, did you really want to exit and delete it, rather than finish this and post it?'}
               <div
                 className={classes['hangUpButtonReallyClose']}
                 onClick={() => this.setState({ totalSize_before_hangup: 0 })}

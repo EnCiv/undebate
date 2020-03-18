@@ -1401,7 +1401,7 @@ class RASPUndebate extends React.Component {
     if (this.participants[part] && this.participants[part].youtube) return // don't use HTML5 operations on a YouTube player, part might be audio
     logger.trace('playAudioObject part:', part, 'obj:', obj)
     let element = this.participants[part].element.current
-    element.src = null
+    element.src = ''
     //element.srcObject = null;
     element.src = obj.objectURL
     element.volume = obj.volume || 1 // default is 1, some objects may set volume others not
@@ -1498,12 +1498,12 @@ class RASPUndebate extends React.Component {
     Object.keys(this.participants).forEach(participant => {
       if (this.participants[participant].element.current) {
         this.participants[participant].element.current.pause()
-        this.participants[participant].element.current.src = null
+        this.participants[participant].element.current.removeAttribute('src')
       }
     })
     if (this.audio && this.audio.current) {
       this.audio.current.pause()
-      this.audio.current.src = null
+      this.audio.current.removeAttribute('src')
     }
   }
 
