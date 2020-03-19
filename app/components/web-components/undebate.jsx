@@ -28,6 +28,7 @@ import IconPrevSpeaker from '../../svgr/icon-prev-speaker'
 import IconPrevSection from '../../svgr/icon-prev-session'
 import IconPlay from '../../svgr/icon-play'
 import IconPause from '../../svgr/icon-pause'
+import IconStop from '../../svgr/icon-stop'
 import IconSkipSpeaker from '../../svgr/icon-skip-speaker'
 import IconNextSection from '../../svgr/icon-skip-session'
 import IconRedo from '../../svgr/icon-redo'
@@ -679,6 +680,7 @@ class RASPUndebate extends React.Component {
     intro: false,
     begin: false,
     allPaused: true, // so the play button shows
+    isRecording: false,
 
     seatStyle: {
       speaking: {
@@ -1609,7 +1611,13 @@ class RASPUndebate extends React.Component {
     { name: () => <IconPrevSpeaker width="60%" height="60%" />, func: this.prevSpeaker },
     {
       name: () =>
-        this.state.allPaused ? <IconPlay width="75%" height="75%" /> : <IconPause width="75%" height="75%" />,
+        this.state.isRecording ? (
+          <IconStop width="75%" height="75%" />
+        ) : this.state.allPaused ? (
+          <IconPlay width="75%" height="75%" />
+        ) : (
+          <IconPause width="75%" height="75%" />
+        ),
       func: this.allPause,
     },
     { name: () => <IconSkipSpeaker width="60%" height="60%" />, func: this.nextSpeaker },
@@ -1639,6 +1647,9 @@ class RASPUndebate extends React.Component {
     } else {
       this.allPlay()
       this.setState({ allPaused: false })
+    }
+    if (this.state.isRecording) {
+      this.stopRecording()
     }
   }
 
@@ -1781,19 +1792,30 @@ class RASPUndebate extends React.Component {
 
   rerecordButton() {
     logger.info('Undebate.rerecordButton')
-    this.camera && this.camera.stopRecording() // it might be recording when the user hit's rerecord
+    this.stopRecording() // it might be recording when the user hit's rerecord
     this.rerecord = true
     const { seatOffset, round } = this.state
     this.newOrder(seatOffset, round)
   }
 
-  newOrder(seatOffset, round) {
-    this.clearStallWatch()
+  startRecording(cb) {
+    this.camera.startRecording(cb)
+    this.setState({ isRecording: true })
+  }
+
+  stopRecording() {
     this.stopCountDown()
     if (this.talkativeTimeout) {
       clearTimeout(this.talkativeTimeout)
       this.talkativeTimeout = 0
     }
+    this.camera && this.camera.stopRecording()
+    this.setState({ isRecording: false })
+  }
+
+  newOrder(seatOffset, round) {
+    this.clearStallWatch()
+    if (this.state.isRecording) this.stopRecording()
     var followup = []
     Object.keys(this.props.participants).forEach((participant, i) => {
       let oldChair = this.seat(i)
@@ -1813,16 +1835,16 @@ class RASPUndebate extends React.Component {
         ) {
           // the oldChair and the old round
           this.rerecord = false
-          this.camera && this.camera.stopRecording()
+          this.stopRecording()
         } else if (oldChair === listeningSeat && this.state.round === listeningRound) {
           // the oldChair and the old round
-          this.camera && this.camera.stopRecording()
+          this.stopRecording()
         }
         // then see if it needs to be turned on - both might happen at the same transition
         if (newChair === listeningSeat && round === listeningRound) {
           followup.push(() => {
             this.nextMediaState(participant)
-            this.camera.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
+            this.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
           })
         } else if (newChair === 'speaking') {
           if (this.participants.human.speakingObjectURLs[round] && !this.rerecord) {
@@ -1835,7 +1857,7 @@ class RASPUndebate extends React.Component {
               this.startCountDown(limit, () => this.autoNextSpeaker())
               this.talkativeTimeout = setTimeout(() => this.setState({ talkative: true }), limit * 0.75 * 1000)
               this.nextMediaState(participant)
-              this.camera.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs))
+              this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs))
             })
           }
         } else {
@@ -1963,7 +1985,7 @@ class RASPUndebate extends React.Component {
         Object.keys(this.props.participants).forEach(part => this.nextMediaState(part))
         // special case where human is in seat2 initially - because seat2 is where we record their silence
         if (listeningRound === 0 && this.seat(Object.keys(this.props.participants).indexOf('human')) === listeningSeat)
-          this.camera.startRecording(blobs => this.saveRecordingToParticipants(false, 0, blobs)) // listening is not speaking
+          this.startRecording(blobs => this.saveRecordingToParticipants(false, 0, blobs)) // listening is not speaking
       } catch (e) {
         logger.error('getCameraMedia', e.name, e.message)
       }
