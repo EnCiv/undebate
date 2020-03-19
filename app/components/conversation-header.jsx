@@ -29,7 +29,7 @@ const styles = {
     },
   },
   leftBoxContainer: {
-    display: 'inline-block',
+    display: 'inline-block'
   },
   leftBox: {
     backgroundColor: BLUE,
@@ -38,12 +38,15 @@ const styles = {
     display: 'inline-block',
   },
   conversationTopicContent: {
+    // height: '2.5rem',
+    // backgroundColor: 'blue',
     fontSize: '2.5rem',
     fontWeight: 'bolder',
     paddingLeft: '.2em',
     paddingRight: '.2em',
     // 'borderLeft': `0.2em solid ${BLUE}`,
     '&$portrait': {
+      overflow: 'hidden',
       fontSize: '2rem',
       whiteSpace: 'nowrap',
       marginTop: '.2em',
