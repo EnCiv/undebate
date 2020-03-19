@@ -5,7 +5,7 @@ import injectSheet from 'react-jss'
 import cx from 'classnames'
 import Join from '../join'
 import Input from '../lib/input'
-
+import SocialShareBtn from '../lib/socialShareBtn'
 import ErrorBoundary from '../error-boundary'
 
 import TimeFormat from 'hh-mm-ss'
@@ -2207,7 +2207,7 @@ class RASPUndebate extends React.Component {
             </a>
           </div>
         ))
-
+    //! ===============================   beginOverlay   ===============================
     const beginOverlay = () =>
       !begin &&
       !done && (
@@ -2419,6 +2419,24 @@ class RASPUndebate extends React.Component {
           )}
           key={participant}
         >
+          {this.seat(i) === 'speaking' ? (
+            <SocialShareBtn
+              metaData={{
+                path: this.props.path,
+                subject: this.props.subject,
+                styles: {
+                  position: 'absolute',
+                  zIndex: '100',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  width: '100%',
+                  margin: '0.4rem 0 0 0',
+                  fontSize: '1.25rem',
+                },
+              }}
+            />
+          ) : null}
           <div
             style={{
               width: seatStyle[this.seat(i)].width,
