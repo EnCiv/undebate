@@ -14,6 +14,7 @@ const styles = {
     top: 0,
   },
   conversationHeader: {
+    overflow: 'hidden',
     'z-index': '10',
     position: 'absolute',
     margin: 0,
@@ -25,10 +26,12 @@ const styles = {
     'box-shadow': '0px .1vh .1vh rgba(0, 0, 0, 0.25)',
     fontFamily: 'Libre Franklin',
     '&$portrait': {
+      overflow: 'hidden',
       position: 'relative',
     },
   },
   leftBoxContainer: {
+    overflow: 'hidden',
     display: 'inline-block'
   },
   leftBox: {
@@ -38,15 +41,12 @@ const styles = {
     display: 'inline-block',
   },
   conversationTopicContent: {
-    // height: '2.5rem',
-    // backgroundColor: 'blue',
+    overflow: 'hidden',
     fontSize: '2.5rem',
     fontWeight: 'bolder',
     paddingLeft: '.2em',
     paddingRight: '.2em',
-    // 'borderLeft': `0.2em solid ${BLUE}`,
     '&$portrait': {
-      overflow: 'hidden',
       fontSize: '2rem',
       whiteSpace: 'nowrap',
       marginTop: '.2em',
@@ -64,7 +64,6 @@ const styles = {
   },
   conversationElectionDate: {
     paddingLeft: '.2em',
-    // 'borderLeft': `0.2em solid ${YELLOW}`,
     fontSize: '2rem',
     fontWeight: 'normal',
     paddingLeft: '.2em',
