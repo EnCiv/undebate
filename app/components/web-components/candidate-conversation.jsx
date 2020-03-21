@@ -1058,7 +1058,8 @@ class RASPUndebate extends React.Component {
         speakingWidthRatio = (speakingWidthRatio * heightForVideo) / calcHeightForVideo
       }
 
-      seatStyle.speaking.left = (width - speakingWidthRatio * width - agendaMaxWidth - hGap) / 2
+      // seatStyle.speaking.left centers the speaker box and the agenda
+      seatStyle.speaking.left = (width - speakingWidthRatio * width - titleHeight*(1/HDRatio) - agendaMaxWidth - hGap) / 2 
       seatStyle.speaking.width = speakingWidthRatio * width + titleHeight*(1/HDRatio)
       seatStyle.speaking.top = navBarHeight + vGap + width * seatWidthRatio * HDRatio + vGap
       introSeatStyle.speaking = { top: -(speakingWidthRatio * HDRatio * width + vGap + ShadowBox) }
@@ -1100,7 +1101,7 @@ class RASPUndebate extends React.Component {
 
       agendaStyle.top = seatStyle.speaking.top 
       agendaStyle.left = seatStyle.speaking.left + seatStyle.speaking.width + hGap
-      agendaStyle.width = Math.min(width - agendaStyle.left - hGap, agendaMaxWidth)
+      agendaStyle.width = agendaMaxWidth //Math.min(width - agendaStyle.left - hGap, agendaMaxWidth)
       agendaStyle.height = seatStyle.speaking.width * HDRatio
 
       buttonBarStyle.width = seatStyle.speaking.width * 0.6
