@@ -1214,7 +1214,7 @@ class RASPUndebate extends React.Component {
         } else {
           //if even number of seats
           seatLeft =  hGap
-          while (seat <= numOfParticipants / 2 ) {
+          while (seat <= (numOfParticipants / 2 + 1 ) ) {
             // some will go off the screen
             seatStyle['seat' + seat].top = seatTop //+ seatWidthRatio * width * HDRatio + titleHeight + hGap
             seatStyle['seat' + seat].left = seatLeft
@@ -1225,15 +1225,15 @@ class RASPUndebate extends React.Component {
             i++
           }
 
-          seatLeft = seatHorizontalPitch +  hGap
+          seatLeft = (numOfParticipants - seat + 1)*seatHorizontalPitch + hGap
 
           while (seat <= numOfParticipants) {
             // some will go off the screen
-            seatStyle['seat' + seat].top = seatTop + seatWidthRatio * width * HDRatio + titleHeight + hGap
+            seatStyle['seat' + seat] .top = seatTop + seatWidthRatio * width * HDRatio + titleHeight + hGap
             seatStyle['seat' + seat].left = seatLeft
             seatStyle['seat' + seat].width = seatWidthRatio * width + titleHeight*(1/HDRatio)
             introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
-            seatLeft += seatHorizontalPitch
+            seatLeft -= seatHorizontalPitch
             seat++
             i++
           }
