@@ -5,6 +5,7 @@ import injectSheet from 'react-jss'
 import cx from 'classnames'
 import Join from '../join'
 import Input from '../lib/input'
+import SocialShareBtn from '../lib/socialShareBtn'
 import Icon from '../lib/icon'
 
 import ErrorBoundary from '../error-boundary'
@@ -612,15 +613,6 @@ class RASPUndebate extends React.Component {
       if (process.env.NODE_ENV === 'development') this.rotateButton = true
     }
     //this.createDefaults();
-    this.human = React.createRef()
-    this.moderator = React.createRef()
-    this.audience1 = React.createRef()
-    this.audience2 = React.createRef()
-    this.audience3 = React.createRef()
-    this.audience4 = React.createRef()
-    this.audience5 = React.createRef()
-    this.audience6 = React.createRef()
-    this.audience7 = React.createRef()
     this.audio = React.createRef()
     this.getCamera = this.getCamera.bind(this)
     this.audioEnd = this.audioEnd.bind(this)
@@ -2269,6 +2261,24 @@ class RASPUndebate extends React.Component {
           )}
           key={participant}
         >
+          {this.seat(i) === 'speaking' ? (
+            <SocialShareBtn
+              metaData={{
+                path: this.props.path,
+                subject: this.props.subject,
+                styles: {
+                  position: 'absolute',
+                  zIndex: '100',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  width: '100%',
+                  margin: '0.4rem 0 0 0',
+                  fontSize: '1.25rem',
+                },
+              }}
+            />
+          ) : null}
           <div
             style={{ width: videoWidth, height: videoHeight }}
             className={cx(
@@ -2424,12 +2434,20 @@ class RASPUndebate extends React.Component {
       !this.state.hungUp &&
       this.participants.human && (
         <div className={classes['hangUpButton']}>
-          <button onClick={this.hangup} key="hangup">
-            Hang Up
+          <button
+            onClick={this.hangup}
+            key="hangup"
+            title={
+              (this.props.hangupButton && this.props.hangupButton.title) ||
+              'Stop recording and delete all video stored in the browser.'
+            }
+          >
+            {(this.props.hangupButton && this.props.hangupButton.name) || 'Hang Up'}
           </button>
-          {this.state.totalSize_before_hangup ? (
+          {this.state.totalSize_before_hangup && !this.state.uploadComplete ? (
             <div className={classes['hangUpButtonReally']}>
-              You have recorded video, did you really want to hang up?
+              {(this.props.hangupButton && this.props.hangupButton.question) ||
+                'You have recorded video, did you really want to exit and delete it, rather than finish this and post it?'}
               <div
                 className={classes['hangUpButtonReallyClose']}
                 onClick={() => this.setState({ totalSize_before_hangup: 0 })}
