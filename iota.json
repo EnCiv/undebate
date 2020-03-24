@@ -235,32 +235,6 @@
   },
   {
     "_id": {
-      "$oid": "5e62fd76f8d2a83fd85d9fec"
-    },
-    "parentId": "5e62eee2e7179a17e21444e7",
-    "subject": "Participant:What is Democracy",
-    "description": "A participant in the following discussion:This is a conversation cafe style discussion about democracy, what it is, its challenges, and its advantages.",
-    "component": {
-      "component": "MergeParticipants",
-      "participant": {
-        "speaking": [
-          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583545666/5e5b5ceab97b9e2088675fe8-0-speaking20200307T014742034Z.mp4",
-          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583545673/5e5b5ceab97b9e2088675fe8-1-speaking20200307T014745395Z.mp4",
-          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583545696/5e5b5ceab97b9e2088675fe8-2-speaking20200307T014753306Z.mp4",
-          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583545713/5e5b5ceab97b9e2088675fe8-3-speaking20200307T014815420Z.mp4"
-        ],
-        "name": "David Fridley",
-        "listening": "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583545717/5e5b5ceab97b9e2088675fe8-0-listening20200307T014832484Z.mp4",
-        "bp_info": {
-          "stage_id": "0",
-          "election_date": "2020-11-03"
-        }
-      }
-    },
-    "userId": "5e5b5ceab97b9e2088675fe8"
-  },
-  {
-    "_id": {
       "$oid": "5e6809a29f2f3600177ab1b3"
     },
     "parentId": "5e62eee2e7179a17e21444e7",
@@ -310,32 +284,6 @@
       }
     },
     "userId": "5e68ff1619a56d0017c492ac"
-  },
-  {
-    "_id": {
-      "$oid": "5e6b08551a8859001706d958"
-    },
-    "parentId": "5e62eee2e7179a17e21444e7",
-    "subject": "Participant:What is Democracy",
-    "description": "A participant in the following discussion:This is a conversation cafe style discussion about democracy, what it is, its challenges, and its advantages.",
-    "component": {
-      "component": "MergeParticipants",
-      "participant": {
-        "speaking": [
-          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584072765/5e28efbf14af500017ddf308-0-speaking20200313T041244185Z.mp4",
-          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584072771/5e28efbf14af500017ddf308-1-speaking20200313T041245366Z.mp4",
-          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584072777/5e28efbf14af500017ddf308-2-speaking20200313T041251012Z.mp4",
-          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584072783/5e28efbf14af500017ddf308-3-speaking20200313T041257045Z.mp4"
-        ],
-        "name": "David 8",
-        "listening": "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584072788/5e28efbf14af500017ddf308-0-listening20200313T041303209Z.mp4",
-        "bp_info": {
-          "stage_id": "0",
-          "election_date": "2020-11-03"
-        }
-      }
-    },
-    "userId": "5e28efbf14af500017ddf308"
   },
   {
     "_id": {
