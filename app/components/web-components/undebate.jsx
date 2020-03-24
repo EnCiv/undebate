@@ -852,7 +852,6 @@ class RASPUndebate extends React.Component {
   }
 
   onYouTubeIframeAPIReady() {
-    console.info('this.onYoutubeIframAPIReady')
     const seatStyle = this.state.seatStyle
     const innerWidth = typeof window !== 'undefined' ? window.innerWidth : 1920
     Object.keys(this.participants).forEach((participant, i) => {

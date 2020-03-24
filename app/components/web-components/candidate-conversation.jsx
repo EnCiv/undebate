@@ -582,21 +582,6 @@ class CandidateConversation extends React.Component {
   }
 }
 
-function onYouTubeIframeAPIReady() {
-  // this is called by the https://www.youtube.com/iframe_api script, if and after it is loaded
-  logger.trace(
-    'onYouTubeIframeAPIReady',
-    RASPUndebate.youTubeIFameAPIReady,
-    RASPUndebate.onYouTubeIframeAPIReadyList.length
-  )
-  RASPUndebate.youTubeIFameAPIReady
-  while (RASPUndebate.onYouTubeIframeAPIReadyList.length) {
-    RASPUndebate.onYouTubeIframeAPIReadyList.shift()()
-  }
-}
-
-if (typeof window !== 'undefined') window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady
-
 class RASPUndebate extends React.Component {
   static onYouTubeIframeAPIReadyList = []
   retries = {}
@@ -660,10 +645,12 @@ class RASPUndebate extends React.Component {
           listeningObjectURL: null,
           listeningImmediate: false,
           placeholderUrl:
-            participant !== 'human' &&
-            placeholder_image(
-              this.props.participants[participant].listening || this.props.participants[participant].speaking[0]
-            ),
+            (participant !== 'human' &&
+              !youtube &&
+              placeholder_image(
+                this.props.participants[participant].listening || this.props.participants[participant].speaking[0]
+              )) ||
+            '',
           youtube,
           element: React.createRef(),
         }
@@ -676,21 +663,21 @@ class RASPUndebate extends React.Component {
     }
     this.numParticipants = Object.keys(this.props.participants).length
     this.seating = ['speaking', 'nextUp']
-    for (let i = 2; i < this.numParticipants; i++) this.seating.push('seat' + i)
+    this.seatToName = { speaking: 'Speaking', nextUp: 'Next Up' }
+    for (let i = 2; i < this.numParticipants; i++) {
+      this.seating.push('seat' + i)
+      this.seatToName['seat' + i] = 'Seat ' + i
+    }
     this.audioSets = {}
     this.newUser = !this.props.user // if there is no user at the beginning, then this is a new user - which should be precistant throughout the existence of this component
     if (typeof window !== 'undefined' && window.screen && window.screen.lockOrientation)
       window.screen.lockOrientation('landscape')
     if (typeof window !== 'undefined' && loadYoutube) {
-      if (!RASPUndebate.youTubeIFameAPIReady) {
-        if (RASPUndebate.onYouTubeIframeAPIReadyList.length == 0) {
-          var tag = document.createElement('script')
-          tag.src = 'https://www.youtube.com/iframe_api'
-          var firstScriptTag = document.getElementsByTagName('script')[0]
-          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
-        }
-        RASPUndebate.onYouTubeIframeAPIReadyList.push(this.onYouTubeIframeAPIReady.bind(this))
-      }
+      window.onYouTubeIframeAPIReady = this.onYouTubeIframeAPIReady.bind(this)
+      var tag = document.createElement('script')
+      tag.src = 'https://www.youtube.com/iframe_api'
+      var firstScriptTag = document.getElementsByTagName('script')[0]
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
     }
     let fontSize, width, height
 
@@ -867,7 +854,7 @@ class RASPUndebate extends React.Component {
         const videoId = getYouTubeID(this.props.participants[participant].listening)
         logger.trace('Undebate.onYouTubeIframeAPIReady new player for:', participant, videoId)
         try {
-          this.youtubePlayers[participant] = new YT.Player('youtube-' + participant, {
+          this.participants[participant].youtubePlayer = new YT.Player('youtube-' + participant, {
             width: pxSeatStyleWidth(this.seat(i)),
             height: pxSeatStyleWidth(this.seat(i)) * HDRatio,
             style: { fontSize: '8px' },
@@ -919,7 +906,7 @@ class RASPUndebate extends React.Component {
     let chair = this.seat(Object.keys(this.props.participants).indexOf(participant))
     if (event.data === YT.PlayerState.ENDED) {
       if (chair === 'speaking') this.autoNextSpeaker()
-      else this.youtubePlayers[participant].seekTo(0, false)
+      else this.participants[participant].youtubePlayer.seekTo(0, false)
     }
   }
 
@@ -1307,14 +1294,15 @@ class RASPUndebate extends React.Component {
   }
 
   async playObjectURL(part, objectURL, speaking) {
-    if (!this.participants[part].element.current) return // we don't have a space for this participant
+    if (!this.participants[part].element.current && !this.participants[part].youtubePlayer) return // we don't have a space for this participant
     logger.trace('playObjectURL part:', part, 'objectURL:', objectURL)
-    if (this.participants[part].youtube) {
-      this.youtubePlayers[part].loadVideoById({ videoId: getYouTubeID(objectURL) })
+    if (this.participants[part].youtubePlayer) {
+      this.participants[part].youtubePlayer.loadVideoById({ videoId: getYouTubeID(objectURL) })
       let chair = this.seat(Object.keys(this.props.participants).indexOf(part))
-      if (chair !== 'speaking') this.youtubePlayers[part].mute()
-      else this.youtubePlayers[part].unMute()
-      if (this.youtubePlayers[part].getPlayerState() !== YT.PlayerState.PLAYING) this.youtubePlayers[part].playVideo()
+      if (chair !== 'speaking') this.participants[part].youtubePlayer.mute()
+      else this.participants[part].youtubePlayer.unMute()
+      if (this.participants[part].youtubePlayer.getPlayerState() !== YT.PlayerState.PLAYING)
+        this.participants[part].youtubePlayer.playVideo()
     } else {
       let element = this.participants[part].element.current
       if (element.src === objectURL) {
@@ -1389,12 +1377,10 @@ class RASPUndebate extends React.Component {
   }
 
   async playAudioObject(part, obj, onended) {
-    if (!this.participants[part].element.current) return // we don't have a space for this participant
-    if (this.participants[part] && this.participants[part].youtube) return // don't use HTML5 operations on a YouTube player, part might be audio
+    if (!this.audio.current) return // we don't have a space for this participant
     logger.trace('playAudioObject part:', part, 'obj:', obj)
-    let element = this.participants[part].element.current
+    let element = this.audio.current
     element.src = ''
-    //element.srcObject = null;
     element.src = obj.objectURL
     element.volume = obj.volume || 1 // default is 1, some objects may set volume others not
     element.onended = onended
@@ -1478,6 +1464,7 @@ class RASPUndebate extends React.Component {
     } else if (!this.state.allPaused) {
       Object.keys(this.participants).forEach(participant => {
         if (this.participants[participant].element.current) this.participants[participant].element.current.pause()
+        if (this.participants[participant].youtubePlayer) this.participants[participant].youtubePlayer.pauseVideo()
       })
       this.setState({ allPaused: true })
     } else {
@@ -1501,7 +1488,10 @@ class RASPUndebate extends React.Component {
 
   allPlay() {
     Object.keys(this.participants).forEach(async participant => {
-      if (this.participants[participant].element.current) {
+      if (this.participants[participant].youtubePlayer) {
+        if (this.participants[participant].youtubePlayer.getPlayerState() !== YT.PlayerState.PLAYING)
+          this.participants[participant].youtubePlayer.playVideo()
+      } else if (this.participants[participant].element.current) {
         if (
           this.participants[participant].element.current.src &&
           this.participants[participant].element.current.paused
@@ -2005,7 +1995,7 @@ class RASPUndebate extends React.Component {
   }
 
   render() {
-    const { className, classes, closing = { thanks: 'Thank You' } } = this.props
+    const { className, classes, opening = {}, closing = { thanks: 'Thank You' } } = this.props
     const {
       round,
       finishUp,
@@ -2051,7 +2041,7 @@ class RASPUndebate extends React.Component {
             <div style={{ width: '100%', height: '100%', display: 'table' }}>
               <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
                 <p style={{ fontSize: '150%' }}>We're still building this.</p>
-                <p>Recording on Safari is not supported yet. Please use Chrome for now.</p>
+                <p>Recording is not supported by this browser yet. Please try Chrome for now.</p>
               </div>
             </div>
           </div>
