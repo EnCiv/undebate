@@ -1799,9 +1799,9 @@ class RASPUndebate extends React.Component {
     this.newOrder(seatOffset, round)
   }
 
-  startRecording(cb) {
+  startRecording(cb, visible = false) {
     this.camera.startRecording(cb)
-    this.setState({ isRecording: true })
+    if (visible) this.setState({ isRecording: true })
   }
 
   stopRecording() {
@@ -1858,7 +1858,7 @@ class RASPUndebate extends React.Component {
               this.startCountDown(limit, () => this.autoNextSpeaker())
               this.talkativeTimeout = setTimeout(() => this.setState({ talkative: true }), limit * 0.75 * 1000)
               this.nextMediaState(participant)
-              this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs))
+              this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs), true)
             })
           }
         } else {
