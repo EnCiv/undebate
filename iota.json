@@ -357,16 +357,6 @@
         "bigLine": "US School Board Candidate Conversation",
         "subLine": "This is a mock conversation, these are not real candidates"
       },
-      "audio": {
-        "intro": {
-          "url": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1567095028/Generic_Light_Intro_7_sec_yp3lxk.wav",
-          "volume": 0.8
-        },
-        "ending": {
-          "url": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1567096104/Heart_Soul_Entire_Duet_2_min_45_sec_1_j5sbpj.wav",
-          "volume": 0.7
-        }
-      },
       "participants": {
         "moderator": {
           "name": "David Fridley",
@@ -1018,16 +1008,6 @@
     },
     "webComponent": {
       "webComponent": "Undebate",
-      "audio": {
-        "intro": {
-          "url": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1567095028/Generic_Light_Intro_7_sec_yp3lxk.wav",
-          "volume": 0.8
-        },
-        "ending": {
-          "url": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1567096104/Heart_Soul_Entire_Duet_2_min_45_sec_1_j5sbpj.wav",
-          "volume": 0.7
-        }
-      },
       "participants": {},
       "opening": {
         "line1": "Thank you for helping us create a mock candidate conversation.",
