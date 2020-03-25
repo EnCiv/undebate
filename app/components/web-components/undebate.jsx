@@ -1806,10 +1806,6 @@ class RASPUndebate extends React.Component {
 
   stopRecording() {
     this.stopCountDown()
-    if (this.talkativeTimeout) {
-      clearTimeout(this.talkativeTimeout)
-      this.talkativeTimeout = 0
-    }
     this.camera && this.camera.stopRecording()
     this.setState({ isRecording: false })
   }
@@ -1950,6 +1946,10 @@ class RASPUndebate extends React.Component {
     if (this.recordTimeout) {
       clearTimeout(this.recordTimeout)
       this.recordTimeout = 0
+    }
+    if (this.talkativeTimeout) {
+      clearTimeout(this.talkativeTimeout)
+      this.talkativeTimeout = 0
     }
     if (this.setState.countDown > 0) this.setState({ countDown: 0 })
   }
