@@ -1637,19 +1637,17 @@ class RASPUndebate extends React.Component {
   ]
 
   allPause() {
-    if (this.state.isRecording) {
-      this.finishedSpeaking()
-      return
-    }
     if (!this.state.begin) {
       this.beginButton()
     } else if (!this.state.allPaused) {
       Object.keys(this.participants).forEach(participant => {
         if (this[participant] && this[participant].current) this[participant].current.pause()
       })
+      if (this.state.isRecording) this.pauseRecording()
       this.setState({ allPaused: true })
     } else {
       this.allPlay()
+      if (this.rerecord) this.resumeRecording()
       this.setState({ allPaused: false })
     }
   }
@@ -1793,8 +1791,16 @@ class RASPUndebate extends React.Component {
 
   rerecordButton() {
     logger.info('Undebate.rerecordButton')
-    this.stopRecording() // it might be recording when the user hit's rerecord
+    this.pauseRecording() // it might be recording when the user hits rerecord
+    this.resumeRecording()
+  }
+
+  pauseRecording() {
+    this.stopRecording()
     this.rerecord = true
+  }
+
+  resumeRecording() {
     const { seatOffset, round } = this.state
     this.newOrder(seatOffset, round)
   }
