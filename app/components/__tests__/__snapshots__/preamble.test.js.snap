@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Preamble should render correctly 1`] = `
+<Preamble
+  classes={
+    Object {
+      "Preamble": "Preamble-Preamble-0-1-1",
+      "agreed": "Preamble-agreed-0-1-2",
+      "center": "Preamble-center-0-1-3",
+    }
+  }
+/>
+`;

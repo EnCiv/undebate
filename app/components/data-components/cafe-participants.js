@@ -2,17 +2,26 @@
 import Iota from '../../models/iota'
 import shuffle from 'shuffle-array'
 
+/**
+ * CafeParticipants
+ *
+ * Find iotas that have this as their parent id, and merge them under webComponent.participants, where moderator is first, followed by participants, followed by human.
+ * Find only the most recent up to webComponent.maxParticipants or 6 participants
+ * If a user has recorded more than once, use the most recent recording from that user
+ *
+ */
+
 /* Example input document
 the input document example
 {
     "_id": {
         "$oid": "5d5f33ede7179a084ef28452"
     },
-    "path": "/schoolboard-demo",
+    "path": "/what-is-democracy",
     "subject": "School Board Candidate Conversation - Candidate Conversation",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-        "component": "MergeParticipants",
+        "component": "CafeParticipants",
     },
     "webComponent": {
         "component": "Undebate",
@@ -137,10 +146,11 @@ What we are trying to create:
 
 const audience = 'audience'
 
-export default class MergeParticipants {
+export default class CafeParticipants {
   static fetch(undebate) {
     return new Promise(async (ok, ko) => {
       let nextIndex = 1
+      var human
       // find the first unused participants.audience<index>
       Object.keys(undebate.webComponent.participants).forEach(participant => {
         if (participant.indexOf(audience) === 0) {
@@ -148,14 +158,18 @@ export default class MergeParticipants {
           if (Number.isNaN(val)) return
           if (val >= nextIndex) nextIndex = val + 1
         }
+        if (participant === 'human') {
+          human = undebate.webComponent.participants.human
+          delete undebate.webComponent.participants.human // we are going to move this to the end
+        }
       })
-      let maxParticipants = undebate.webComponent.maxParticipants || 7
+      let maxParticipants = undebate.webComponent.maxParticipants || 6
       try {
         var newParticipantDocs = await Iota.aggregate([
           { $match: { parentId: undebate._id.toString(), 'component.component': 'MergeParticipants' } },
           { $sort: { _id: -1 } },
           { $group: { _id: '$userId', latest: { $first: '$$ROOT' } } },
-          { $limit: maxParticipants },
+          { $limit: maxParticipants }, // if there's a human, there's room for one less participant
           { $replaceRoot: { newRoot: '$latest' } },
         ])
         if (undebate.webComponent.shuffle === true) shuffle(newParticipantDocs)
@@ -184,9 +198,10 @@ export default class MergeParticipants {
         newParticipantDocs.forEach(participantDoc => {
           undebate.webComponent.participants[audience + nextIndex++] = participantDoc.component.participant
         })
+        if (human) undebate.webComponent.participants.human = human // only add the human if there is one in the source
         ok(undebate)
       } catch (err) {
-        logger.error('MergeParticipants caught error', err, 'undebate', undebate)
+        logger.error('CafeParticipants caught error', err, 'undebate', undebate)
         ok()
       }
     })
