@@ -25,18 +25,22 @@ const styles = {
     'box-shadow': '0px .1vh .1vh rgba(0, 0, 0, 0.25)',
     fontFamily: 'Libre Franklin',
     '&$portrait': {
-
       position: 'relative',
     },
   },
   leftBoxContainer: {
-    display: 'inline-block'
+    display: 'inline-block',
   },
   leftBox: {
     backgroundColor: BLUE,
     width: '0.52vw',
     height: '3.24vh',
     display: 'inline-block',
+    '&$portrait': {
+      textOverflow: 'hidden',
+      display: 'block',
+      width: '100%',
+    },
   },
   conversationTopicContent: {
     fontSize: '2.5rem',
@@ -52,6 +56,11 @@ const styles = {
   },
   rightBoxContainer: {
     display: 'inline-block',
+    '&$portrait': {
+      textOverflow: 'hidden',
+      display: 'block',
+      width: '100%',
+    },
   },
   rightBox: {
     backgroundColor: YELLOW,
@@ -124,11 +133,11 @@ class ConversationHeader extends React.Component {
               />
             </a>
           </div>
-          <div className={classes['leftBoxContainer']}>
+          <div className={cx(classes['leftBoxContainer'], portraitMode && classes['portrait'])}>
             <div className={classes['leftBox']}></div>
             <span className={classes['conversationTopicContent']}>{subject}</span>
           </div>
-          <div className={classes['rightBoxContainer']}>
+          <div className={cx(classes['rightBoxContainer'], portraitMode && classes['portrait'])}>
             <div className={classes['rightBox']}></div>
             <span className={classes['conversationElectionDate']}>
               {xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)}
@@ -141,11 +150,11 @@ class ConversationHeader extends React.Component {
         <div className={classes['conversation-header-wrapper']} key="landscape">
           <div className={classes['conversationHeader']} key="landscape-1">
             <div style={{ position: 'absolute', left: '1rem' }} key="landscape-2">
-              <div className={classes['leftBoxContainer']}>
+              <div className={cx(classes['leftBoxContainer'], portraitMode && classes['portrait'])}>
                 <div className={classes['leftBox']}></div>
                 <span className={classes['conversationTopicContent']}>{subject}</span>
               </div>
-              <div className={classes['rightBoxContainer']}>
+              <div className={cx(classes['rightBoxContainer'], portraitMode && classes['portrait'])}>
                 <div className={classes['rightBox']}></div>
                 <span className={classes['conversationElectionDate']}>
                   {xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)}
