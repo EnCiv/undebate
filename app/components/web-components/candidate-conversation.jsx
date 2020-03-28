@@ -1061,8 +1061,8 @@ class RASPUndebate extends React.Component {
       // portrait mode
       const hGap = fontSize
       const vGap = fontSize
-      let leftEdge = hGap
-      let rightEdge = hGap
+      let speakerLeftEdge = hGap
+      let speakerRightEdge = hGap
       let speakingWidthRatio = (width - 2 * hGap) / width // as wide as the screen less gaps on edges
       const speakingWidth = () => speakingWidthRatio * width
       const speakingHeight = () => speakingWidthRatio * width * HDRatio
@@ -1072,11 +1072,13 @@ class RASPUndebate extends React.Component {
       const seatHeight = () => seatWidthRatio * width * HDRatio
       const navBarHeight = 0.06 * height + 3 * fontSize + 2 * fontSize
       let rows = 2
+      let seat = 1
+      let rowLeftEdge = hGap
 
       const maxAgendaHeight = fontSize * 20
-      const numOfParticipants = Object.keys(this.props.participants).length - 1 // without the speaker
+      const numOfParticipants = Object.keys(this.props.participants).length - 1 // without the speaker/moderator
 
-      if (numOfParticipants * seatHorizontalPitch() + leftEdge < width) rows = 1
+      if (numOfParticipants * seatHorizontalPitch() - hGap <= width) rows = 1
 
       let calcHeight =
         navBarHeight +
@@ -1091,51 +1093,71 @@ class RASPUndebate extends React.Component {
         let calcHeightForVideo = 2 * seatHeight() + speakingHeight()
         seatWidthRatio = (seatWidthRatio * heightForVideo) / calcHeightForVideo
         speakingWidthRatio = (speakingWidthRatio * heightForVideo) / calcHeightForVideo
-        rightEdge = leftEdge = (width - speakingWidth()) / 2 // it will be thiner than the width, so center it
+        speakerRightEdge = speakerLeftEdge = (width - speakingWidth()) / 2 // it will be thiner than the width, so center it
       }
 
-      seatStyle.nextUp.left = leftEdge //seatWidthRatio*width*HDRatio + titleHeight + hGap
-      seatStyle.nextUp.top = navBarHeight + vGap + (rows - 1) * (seatHeight() + titleHeight + vGap)
-      seatStyle.nextUp.width = seatWidth()
-      introSeatStyle.nextUp = { left: -(seatStyle.nextUp.left + seatWidth() + ShadowBox) }
+      // check on number of rows again - the size has shrunk so it might fit now.
+      if (numOfParticipants * seatHorizontalPitch() <= width) rows = 1
+      else {
+        // if 2 rows, put nextup on the second row
+        seat++
+        seatStyle.nextUp.left = speakerLeftEdge
+        seatStyle.nextUp.top = navBarHeight + vGap + (rows - 1) * (seatHeight() + titleHeight + vGap)
+        seatStyle.nextUp.width = seatWidth()
+        introSeatStyle.nextUp = { left: -(seatStyle.nextUp.left + seatWidth() + ShadowBox) }
+      }
 
-      let seatLeft = leftEdge
-      let seat = 2
+      let seatLeft = speakerLeftEdge
+
       let seatTop = navBarHeight + vGap
-      if (rows == 1) leftEdge += seatHorizontalPitch() // don't overwrite the nextup window if it's all on one line
+      //if (rows == 1) leftEdge += seatHorizontalPitch() // don't overwrite the nextup window if it's all on one line
 
       // across the bottom
       let i = 0 // for calculating the intro
 
       // figure out where to start the top line of participants
       let topLineParticipants = numOfParticipants % 2 ? (numOfParticipants + 1) / 2 : numOfParticipants / 2
-      let topLineWidth = topLineParticipants * seatHorizontalPitch() - hGap
-      if (hGap + topLineWidth + hGap <= width)
+      if (rows === 2 && numOfParticipants == 3) topLineParticipants = 1
+      let topLineWidth = (rows === 1 ? numOfParticipants : topLineParticipants) * seatHorizontalPitch() - hGap
+      if (topLineWidth <= width)
         // all the participants on the top line will fit
         seatLeft = (width - topLineWidth) / 2
-      else if (topLineWidth + hGap > width) seatLeft = hGap
+      //if (topLineWidth + hGap > width)
+      // un-center the topline if it is wider than the viewport
+      else {
+        seatLeft = hGap
+        seatStyle.nextUp.left = hGap
+      }
       // draw first row of seats across the top
       while (seat <= 1 + topLineParticipants) {
+        let seatName = seat === 1 ? 'nextUp' : 'seat' + seat
         // one for the nextUp that's already placed
         // more seats across the top than the bottom
         // some will go off the screen
-        if (!seatStyle['seat' + seat]) seatStyle['seat' + seat] = {}
-        seatStyle['seat' + seat].top = seatTop //+ seatWidthRatio * width * HDRatio + titleHeight + hGap
-        seatStyle['seat' + seat].left = seatLeft
-        seatStyle['seat' + seat].width = seatWidth()
-        introSeatStyle['seat' + seat] = { top: maxerHeight + i * seatHorizontalPitch() } // along the bottom, each seat is further away as you move to the right
+        if (!seatStyle[seatName]) seatStyle['seat' + seat] = {}
+        seatStyle[seatName].top = seatTop //+ seatWidthRatio * width * HDRatio + titleHeight + hGap
+        seatStyle[seatName].left = seatLeft
+        seatStyle[seatName].width = seatWidth()
+        introSeatStyle[seatName] = { top: maxerHeight + i * seatHorizontalPitch() } // along the bottom, each seat is further away as you move to the right
         seatLeft += seatHorizontalPitch()
         seat++
         i++
       }
 
       if (rows > 1) {
-        seatLeft = (numOfParticipants - seat + 1) * seatHorizontalPitch() + leftEdge
-
-        if (seat === numOfParticipants && leftEdge + seatWidth() + hGap + seatWidth() + rightEdge < width) {
+        if (seat === numOfParticipants && speakerLeftEdge + seatWidth() + hGap + seatWidth() + speakerRightEdge < width)
           // there's just one left and there would be space on the right, so put it on the right side of the bottom row
-          seatLeft = width - seatWidth() - rightEdge // put it on the right side
+          seatLeft = width - seatWidth() - speakerRightEdge
+        // put it on the right side
+        else if ((numOfParticipants - seat + 2) * seatHorizontalPitch() + -vGap < width) {
+          // if all of them would fit within width so center it
+          let secondRowLeftEdge = (seatStyle['nextUp'].left =
+            (width - ((numOfParticipants - seat + 2) * seatHorizontalPitch() - vGap)) / 2) // fixup the start of the nextup seat
+          seatLeft = (numOfParticipants - seat + 1) * seatHorizontalPitch() + secondRowLeftEdge
         }
+        // its wider than the display so line it up after the nextup window
+        else seatLeft = (numOfParticipants - seat + 1) * seatHorizontalPitch() + seatStyle.nextUp.left
+
         while (seat <= numOfParticipants) {
           // some will go off the screen
           if (!seatStyle['seat' + seat]) seatStyle['seat' + seat] = {}
@@ -1149,7 +1171,7 @@ class RASPUndebate extends React.Component {
         }
       }
 
-      seatStyle.speaking.left = leftEdge
+      seatStyle.speaking.left = speakerLeftEdge
       seatStyle.speaking.top = navBarHeight + vGap + rows * (seatHeight() + titleHeight + vGap)
       seatStyle.speaking.width = speakingWidth()
       seatStyle.speaking['--speaking-height'] = speakingHeight() + 'px' // tell child div's what the speaking-height is
