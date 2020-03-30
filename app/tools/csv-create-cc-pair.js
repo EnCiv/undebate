@@ -107,19 +107,20 @@ if (args.src && args.db && args.pair) {
         // any models that need to createIndexes will push their init function
         MongoModels.toInit.shift()()
       }
-      var count = 0
-      csvRowObjList.forEach(async csvRowObj => {
-        count++
+      async function doTheUpdate(i) {
+        // need to make sure the preceeding update is done, before doing the next one - so don't do this in a forEach loop where they all get fired off in parallel
+        const csvRowObj = csvRowObjList[i]
         var result = await updateOrCreatePair(csvRowObj, viewerRecorderPair)
         viewerRecorderPair.updateProperties.call(viewerRecorderPair, csvRowObj, result.viewerObj, result.recorderObj)
-        if (--count === 0) {
-          const csvOut = new ObjectsToCsv(csvRowObjList)
-          //let outFileParts = args.src.split('.')
-          //outFileParts.splice(outFileParts.length - 1, 0, '-out')
-          await csvOut.toDisk(args.src) // write over the source file so changes will come back in
-          MongoModels.disconnect()
-        }
-      })
+        if (++i < csvRowObjList.length) doTheUpdate(i)
+        else writeCSVAndDisconnect()
+      }
+      async function writeCSVAndDisconnect() {
+        const csvOut = new ObjectsToCsv(csvRowObjList)
+        await csvOut.toDisk(args.src) // write over the source file so changes will come back in
+        MongoModels.disconnect()
+      }
+      doTheUpdate(0)
     })
     .catch(err => {
       console.error('csv caught error', err)
