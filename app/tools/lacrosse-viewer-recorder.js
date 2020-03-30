@@ -164,14 +164,14 @@ const viewer_recorder_pair = {
         },
         audience1: {
           speaking: [
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/v1570631736/5d9d3d70b558b4001722b9fc-1-speaking20191009T143533241Z.webm',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/v1570631741/5d9d3d70b558b4001722b9fc-2-speaking20191009T143536132Z.webm',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/v1570631753/5d9d3d70b558b4001722b9fc-3-speaking20191009T143549533Z.webm',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/v1570631758/5d9d3d70b558b4001722b9fc-4-speaking20191009T143553523Z.webm',
+            'https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1585548555/5e28efbf14af500017ddf308-0-speaking20200330T060914662Z.mp4',
+            'https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1585548556/5e28efbf14af500017ddf308-1-speaking20200330T060915819Z.mp4',
+            'https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1585548557/5e28efbf14af500017ddf308-2-speaking20200330T060916904Z.mp4',
+            'https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1585548559/5e28efbf14af500017ddf308-3-speaking20200330T060917767Z.mp4',
           ],
-          name: 'Adolf Gundersen',
+          name: 'David D Fridley',
           listening:
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/v1570631749/5d9d3d70b558b4001722b9fc-2-nextUp20191009T143541489Z.webm',
+            'https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1585548559/5e28efbf14af500017ddf308-0-listening20200330T060919657Z.mp4',
         },
         human: {
           listening: {
