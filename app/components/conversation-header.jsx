@@ -47,6 +47,7 @@ const styles = {
     fontWeight: 'bolder',
     paddingLeft: '.2em',
     paddingRight: '.2em',
+    marginTop: '1.25vh',
     '&$portrait': {
       fontSize: '2rem',
       whiteSpace: 'nowrap',

@@ -524,6 +524,13 @@ const styles = {
   },
   stalledNow: {},
   stalledBox: {},
+  'enciv-logo': {
+    padding: '.25em',
+    marginRight: '.25em',
+    height: '3.5vh',
+    float: 'right',
+    paddingTop: '.3em',
+  },
 }
 
 class Undebate extends React.Component {
@@ -2680,6 +2687,9 @@ class RASPUndebate extends React.Component {
           <div style={topicStyle} className={classes['conversationTopic']}>
             <p className={classes['conversationTopicContent']}>{this.props.subject}</p>
           </div>
+          <a target="#" href="https://www.EnCiv.org">
+            <img className={classes['enciv-logo']} src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png" />
+          </a>
           {this.props.logo && this.props.logo === 'undebate' ? (
             <a target="#" href="https://enciv.org/undebate">
               <img
