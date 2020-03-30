@@ -88,6 +88,7 @@ const viewer_recorder_pair = {
     },
     webComponent: {
       webComponent: 'CandidateConversation',
+      logo: 'undebate',
       closing: {
         thanks: 'Thank You.',
         iframe: {
@@ -183,6 +184,7 @@ const viewer_recorder_pair = {
     },
     webComponent: {
       webComponent: 'Undebate',
+      logo: 'undebate',
       participants: {},
       opening: {
         noPreamble: true,

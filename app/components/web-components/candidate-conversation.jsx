@@ -2562,7 +2562,7 @@ class RASPUndebate extends React.Component {
     var main = () =>
       !done && (
         <div>
-          <ConversationHeader subject={this.props.subject} bp_info={this.props.bp_info} />
+          <ConversationHeader subject={this.props.subject} bp_info={this.props.bp_info} logo={this.props.logo} />
           <div className={classes['outerBox']}>
             {Object.keys(this.props.participants).map((participant, i) => videoBox(participant, i, seatStyle))}
             {agenda(agendaStyle)}

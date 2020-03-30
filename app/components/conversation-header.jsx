@@ -80,6 +80,15 @@ const styles = {
       marginBottom: '.2em',
     },
   },
+  'undebate-logo': {
+    marginRight: '.25em',
+    height: '4vh',
+    marginTop: '1vh',
+    float: 'right',
+    '&$portrait': {
+      float: 'left',
+    },
+  },
   logo: {
     marginRight: '.25em',
     height: '6vh',
@@ -115,7 +124,7 @@ class ConversationHeader extends React.Component {
   }
   render() {
     const portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
-    const { classes, style, subject, bp_info } = this.props
+    const { classes, style, subject, bp_info, logo } = this.props
     if (portraitMode && this.state.isClient)
       return (
         <div className={cx(classes['portrait'], classes['conversation-header-wrapper'])} key="portrait">
@@ -126,12 +135,21 @@ class ConversationHeader extends React.Component {
                 src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png"
               />
             </a>
-            <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
-              <img
-                className={cx(classes['portrait'], classes['logo'])}
-                src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
-              />
-            </a>
+            {logo && logo === 'undebate' ? (
+              <a target="#" href="https://enciv.org/undebate">
+                <img
+                  className={classes['undebate-logo']}
+                  src="https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,h_100/v1585602937/Undebate_Logo.png"
+                />
+              </a>
+            ) : (
+              <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
+                <img
+                  className={classes['logo']}
+                  src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
+                />
+              </a>
+            )}
           </div>
           <div className={cx(classes['leftBoxContainer'], portraitMode && classes['portrait'])}>
             <div className={classes['leftBox']}></div>
@@ -167,12 +185,21 @@ class ConversationHeader extends React.Component {
                 src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png"
               />
             </a>
-            <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
-              <img
-                className={classes['logo']}
-                src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
-              />
-            </a>
+            {logo && logo === 'undebate' ? (
+              <a target="#" href="https://enciv.org/undebate">
+                <img
+                  className={classes['undebate-logo']}
+                  src="https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,h_100/v1585602937/Undebate_Logo.png"
+                />
+              </a>
+            ) : (
+              <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
+                <img
+                  className={classes['logo']}
+                  src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
+                />
+              </a>
+            )}
           </div>
         </div>
       )
