@@ -25,7 +25,13 @@ async function notifyOfNewParticipant(iota) {
 
   let request = {
     from: Config.sendEmailFrom,
-    to: process.env.NOTIFY_OF_NEW_PARTICIPANT_TO || 'davidfridley@enciv.org',
+    to:
+      iota.component &&
+      iota.component.participant &&
+      iota.component.participant.bp_info &&
+      iota.component.participant.bp_info.candidate_stage_result_id
+        ? process.env.NOTIFY_OF_NEW_PARTICIPANT_TO || 'davidfridley@enciv.org'
+        : 'davidfridley@enciv.org',
     subject: 'New Participant Recording',
     text: `New recording from ${iota.component.participant.name} running for ${iota.subject}. View it at ${
       process.env.HOSTNAME === 'localhost' ? 'http' : 'https'
