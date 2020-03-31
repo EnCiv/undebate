@@ -59,9 +59,11 @@ const styles = {
   conversationTopicContent: {
     width: '100vw',
     textAlign: 'center',
+    margin: '1rem 0 1rem 0',
   },
   logo: {
-    marginRight: '4px',
+    marginRight: '0.2rem',
+    marginTop: '0.2rem',
     height: '6vh',
     float: 'right',
   },
@@ -522,6 +524,13 @@ const styles = {
   },
   stalledNow: {},
   stalledBox: {},
+  'enciv-logo': {
+    padding: '.25em',
+    marginRight: '.25em',
+    height: '3.5vh',
+    float: 'right',
+    paddingTop: '.3em',
+  },
 }
 
 class Undebate extends React.Component {
@@ -2678,12 +2687,24 @@ class RASPUndebate extends React.Component {
           <div style={topicStyle} className={classes['conversationTopic']}>
             <p className={classes['conversationTopicContent']}>{this.props.subject}</p>
           </div>
-          <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
-            <img
-              className={classes['logo']}
-              src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
-            />
+          <a target="#" href="https://www.EnCiv.org">
+            <img className={classes['enciv-logo']} src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png" />
           </a>
+          {this.props.logo && this.props.logo === 'undebate' ? (
+            <a target="#" href="https://enciv.org/undebate">
+              <img
+                className={classes['logo']}
+                src="https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,h_100/v1585602937/Undebate_Logo.png"
+              />
+            </a>
+          ) : (
+            <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
+              <img
+                className={classes['logo']}
+                src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
+              />
+            </a>
+          )}
         </>
       )
     }

@@ -184,7 +184,8 @@ const styles = {
   },
   beginButton: {
     color: 'white',
-    background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
+    opacity: '0.8',
+    //background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
     'border-radius': '7px',
     'border-width': '2px',
     'border-color': 'white',
@@ -295,13 +296,16 @@ const styles = {
     background: 'yellow',
   },
   title: {
+    position: 'absolute',
+    width: '100%',
+    bottom: '0',
     'text-align': 'center',
     color: 'white',
     'font-weight': 'normal',
     'font-size': '2rem',
     'padding-top': '0.25rem',
     'padding-bottom': '0.25rem',
-    'background-color': 'black',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
     overflow: 'hidden',
     'text-overflow': 'ellipsis',
     'white-space': 'nowrap',
@@ -315,11 +319,15 @@ const styles = {
     '&$stylesSet': {
       transition: `all ${TransitionTime}ms linear`,
     },
+    '&$title-speaking': {
+      bottom: 'calc( var( --speaking-height) - 3.5rem)',
+    },
   },
   agenda: {
     textAlign: 'center',
     backgroundColor: 'white',
     position: 'absolute',
+    //border: '1px solid black',
     'box-shadow': '0px 4px 4px rgba(0,0,0,0.25)',
     'box-sizing': 'border-box',
     'font-weight': '600',
@@ -457,6 +465,7 @@ const styles = {
   },
   buttonBar: {
     //display: "table",
+    opacity: '0.6',
     textAlign: 'center',
     position: 'absolute',
     width: '50vw',
@@ -570,6 +579,7 @@ const styles = {
   },
   stalledNow: {},
   stalledBox: {},
+  'title-speaking': {},
 }
 
 class CandidateConversation extends React.Component {
@@ -955,35 +965,34 @@ class RASPUndebate extends React.Component {
     var recorderButtonBarStyle = cloneDeep(this.state.recorderButtonBarStyle)
     var introSeatStyle = cloneDeep(this.state.introSeatStyle)
     var introStyle = cloneDeep(this.state.introStyle)
-    const titleHeight = 3.5 * fontSize // this is define in the title class;
+    const titleHeight = 0 // the title is overlain the video window
+    const innerTitleHeight = 3.5 * fontSize // title is 3.5rem high, it overlays the video window at the bottom
     if (width / height > 1) {
       let speakingWidthRatio = 0.65
-      let seatWidthRatio = 0.2
+      const speakingHeight = () => speakingWidthRatio * width * HDRatio
+      let seatWidthRatio = 0.25
+      const seatHeight = () => seatWidthRatio * width * HDRatio
       const navBarHeight = 0.06 * height
       const agendaMaxWidth = 32 * fontSize
       const vGap = fontSize
       const hGap = fontSize
+      const numOfParticipants = Object.keys(this.props.participants).length - 1 // without the speaker
 
-      let calcHeight =
-        navBarHeight +
-        vGap +
-        width * seatWidthRatio * HDRatio +
-        titleHeight +
-        vGap +
-        width * speakingWidthRatio * HDRatio +
-        titleHeight +
-        vGap
+      let calcHeight = navBarHeight + vGap + seatHeight() + titleHeight + vGap + speakingHeight() + titleHeight + vGap
       if (calcHeight > height) {
         // if the window is really wide - squish the video height so it still fits
-        let heightForVideo = height - navBarHeight - vGap - titleHeight - vGap - titleHeight - vGap
-        let calcHeightForVideo = width * seatWidthRatio * HDRatio + width * speakingWidthRatio * HDRatio
+        let heightForVideo = height - navBarHeight - vGap - /*titleHeight -*/ vGap - vGap
+        let calcHeightForVideo = seatHeight() + speakingHeight()
         seatWidthRatio = (seatWidthRatio * heightForVideo) / calcHeightForVideo
         speakingWidthRatio = (speakingWidthRatio * heightForVideo) / calcHeightForVideo
       }
 
-      seatStyle.speaking.left = hGap
-      seatStyle.speaking.width = speakingWidthRatio * width
-      seatStyle.speaking.top = navBarHeight + vGap + width * seatWidthRatio * HDRatio + vGap + titleHeight
+      // seatStyle.speaking.left centers the speaker box and the agenda
+      seatStyle.speaking.left =
+        (width - speakingWidthRatio * width - titleHeight * (1 / HDRatio) - agendaMaxWidth - hGap) / 2
+      seatStyle.speaking.width = speakingWidthRatio * width + titleHeight * (1 / HDRatio)
+      seatStyle.speaking.top = navBarHeight + vGap + width * seatWidthRatio * HDRatio + vGap
+      seatStyle.speaking['--speaking-height'] = speakingHeight() + 'px' // tell child div's what the speaking-height is
       introSeatStyle.speaking = { top: -(speakingWidthRatio * HDRatio * width + vGap + ShadowBox) }
 
       seatStyle.nextUp.left = hGap
@@ -997,6 +1006,12 @@ class RASPUndebate extends React.Component {
       let seatHorizontalPitch = seatWidthRatio * width + hGap
 
       seatLeft += seatHorizontalPitch // skip over the nextUp
+
+      if (numOfParticipants * (seatWidthRatio * width) + numOfParticipants * hGap < width) {
+        seatLeft += (width - numOfParticipants * (seatWidthRatio * width) - (numOfParticipants - 1) * hGap) / 2 - hGap // centers all the seats without the nextUp speaker
+        seatStyle.nextUp.left =
+          (width - numOfParticipants * (seatWidthRatio * width) - (numOfParticipants - 1) * hGap) / 2 // offsets the nextUp from the left
+      }
 
       // across the bottom
       let i = 0 // for calculating the intro
@@ -1019,17 +1034,17 @@ class RASPUndebate extends React.Component {
 
       agendaStyle.top = seatStyle.speaking.top
       agendaStyle.left = seatStyle.speaking.left + seatStyle.speaking.width + hGap
-      agendaStyle.width = Math.min(width - agendaStyle.left - hGap, agendaMaxWidth)
-      agendaStyle.height = seatStyle.speaking.width * HDRatio + titleHeight
+      agendaStyle.width = agendaMaxWidth //Math.min(width - agendaStyle.left - hGap, agendaMaxWidth)
+      agendaStyle.height = seatStyle.speaking.width * HDRatio
 
       buttonBarStyle.width = seatStyle.speaking.width * 0.6
       buttonBarStyle.left = seatStyle.speaking.left + seatStyle.speaking.width * 0.2 // center it
       buttonBarStyle.top =
+        fontSize +
         seatStyle.speaking.top +
         seatStyle.speaking.width * HDRatio -
-        (buttonBarStyle.width / this.buttons.length) * 0.75 -
-        vGap // there are 5 buttons and they are essentially square
-
+        (buttonBarStyle.width / this.buttons.length) * 0.75 - // there are 5 buttons and they are essentially square
+        2 * vGap
       recorderButtonBarStyle.left = seatStyle.speaking.left
       recorderButtonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
       recorderButtonBarStyle.width = seatStyle.speaking.width
@@ -1044,54 +1059,133 @@ class RASPUndebate extends React.Component {
       introSeatStyle.introRight.right = '-50vw'
     } else {
       // portrait mode
-      let speakingWidthRatio = 0.65
-      let seatWidthRatio = 0.4
-      const navBarHeight = 0.06 * height + 3 * fontSize + 2 * fontSize
-      const agendaMaxWidth = 32 * fontSize
-      const vGap = fontSize
       const hGap = fontSize
+      const vGap = fontSize
+      let speakerLeftEdge = hGap
+      let speakerRightEdge = hGap
+      let speakingWidthRatio = (width - 2 * hGap) / width // as wide as the screen less gaps on edges
+      const speakingWidth = () => speakingWidthRatio * width
+      const speakingHeight = () => speakingWidthRatio * width * HDRatio
+      const seatHorizontalPitch = () => seatWidthRatio * width + hGap
+      let seatWidthRatio = 0.4
+      const seatWidth = () => seatWidthRatio * width
+      const seatHeight = () => seatWidthRatio * width * HDRatio
+      const navBarHeight = 0.06 * height + 3 * fontSize + 2 * fontSize
+      let rows = 2
+      let seat = 1
+      let rowLeftEdge = hGap
+
       const maxAgendaHeight = fontSize * 20
+      const numOfParticipants = Object.keys(this.props.participants).length - 1 // without the speaker/moderator
 
-      seatStyle.nextUp.left = hGap
-      seatStyle.nextUp.top = navBarHeight + vGap
-      seatStyle.nextUp.width = seatWidthRatio * width
-      introSeatStyle.nextUp = { left: -(seatStyle.nextUp.left + seatWidthRatio * width + ShadowBox) }
+      if (numOfParticipants * seatHorizontalPitch() - hGap <= width) rows = 1
 
-      let seat = 2
-      let seatTop = seatStyle.nextUp.top
-      let seatLeft = hGap
-      let seatHorizontalPitch = seatWidthRatio * width + hGap
+      let calcHeight =
+        navBarHeight +
+        maxAgendaHeight +
+        rows * seatHeight() +
+        (rows + 1) * titleHeight +
+        (rows + 2) * vGap +
+        speakingHeight()
+      if (calcHeight > height) {
+        // if calcHeight is taller than height - squish the video height so it still fits
+        let heightForVideo = height - navBarHeight - 6 * vGap - 3 * titleHeight - maxAgendaHeight
+        let calcHeightForVideo = 2 * seatHeight() + speakingHeight()
+        seatWidthRatio = (seatWidthRatio * heightForVideo) / calcHeightForVideo
+        speakingWidthRatio = (speakingWidthRatio * heightForVideo) / calcHeightForVideo
+        speakerRightEdge = speakerLeftEdge = (width - speakingWidth()) / 2 // it will be thiner than the width, so center it
+      }
 
-      seatLeft += seatHorizontalPitch // skip over the nextUp
+      // check on number of rows again - the size has shrunk so it might fit now.
+      if (numOfParticipants * seatHorizontalPitch() <= width) rows = 1
+      else {
+        // if 2 rows, put nextup on the second row
+        seat++
+        seatStyle.nextUp.left = speakerLeftEdge
+        seatStyle.nextUp.top = navBarHeight + vGap + (rows - 1) * (seatHeight() + titleHeight + vGap)
+        seatStyle.nextUp.width = seatWidth()
+        introSeatStyle.nextUp = { left: -(seatStyle.nextUp.left + seatWidth() + ShadowBox) }
+      }
+
+      let seatLeft = speakerLeftEdge
+
+      let seatTop = navBarHeight + vGap
+      //if (rows == 1) leftEdge += seatHorizontalPitch() // don't overwrite the nextup window if it's all on one line
 
       // across the bottom
       let i = 0 // for calculating the intro
-      while (seat <= this.numParticipants - 1) {
-        // -1 because one is speaking
+
+      // figure out where to start the top line of participants
+      let topLineParticipants = numOfParticipants % 2 ? (numOfParticipants + 1) / 2 : numOfParticipants / 2
+      if (rows === 2 && numOfParticipants == 3) topLineParticipants = 1
+      let topLineWidth = (rows === 1 ? numOfParticipants : topLineParticipants) * seatHorizontalPitch() - hGap
+      if (topLineWidth <= width)
+        // all the participants on the top line will fit
+        seatLeft = (width - topLineWidth) / 2
+      //if (topLineWidth + hGap > width)
+      // un-center the topline if it is wider than the viewport
+      else {
+        seatLeft = hGap
+        seatStyle.nextUp.left = hGap
+      }
+      // draw first row of seats across the top
+      while (seat <= 1 + topLineParticipants) {
+        let seatName = seat === 1 ? 'nextUp' : 'seat' + seat
+        // one for the nextUp that's already placed
+        // more seats across the top than the bottom
         // some will go off the screen
-        if (!seatStyle['seat' + seat]) seatStyle['seat' + seat] = {}
-        seatStyle['seat' + seat].top = seatTop
-        seatStyle['seat' + seat].left = seatLeft
-        seatStyle['seat' + seat].width = seatWidthRatio * width
-        introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
-        seatLeft += seatHorizontalPitch
+        if (!seatStyle[seatName]) seatStyle['seat' + seat] = {}
+        seatStyle[seatName].top = seatTop //+ seatWidthRatio * width * HDRatio + titleHeight + hGap
+        seatStyle[seatName].left = seatLeft
+        seatStyle[seatName].width = seatWidth()
+        introSeatStyle[seatName] = { top: maxerHeight + i * seatHorizontalPitch() } // along the bottom, each seat is further away as you move to the right
+        seatLeft += seatHorizontalPitch()
         seat++
         i++
       }
 
-      seatStyle.speaking.left = hGap
-      seatStyle.speaking.top = navBarHeight + vGap + seatWidthRatio * width * HDRatio + titleHeight + vGap
-      seatStyle.speaking.width = width - 2 * hGap
+      if (rows > 1) {
+        if (seat === numOfParticipants && speakerLeftEdge + seatWidth() + hGap + seatWidth() + speakerRightEdge < width)
+          // there's just one left and there would be space on the right, so put it on the right side of the bottom row
+          seatLeft = width - seatWidth() - speakerRightEdge
+        // put it on the right side
+        else if ((numOfParticipants - seat + 2) * seatHorizontalPitch() + -vGap < width) {
+          // if all of them would fit within width so center it
+          let secondRowLeftEdge = (seatStyle['nextUp'].left =
+            (width - ((numOfParticipants - seat + 2) * seatHorizontalPitch() - vGap)) / 2) // fixup the start of the nextup seat
+          seatLeft = (numOfParticipants - seat + 1) * seatHorizontalPitch() + secondRowLeftEdge
+        }
+        // its wider than the display so line it up after the nextup window
+        else seatLeft = (numOfParticipants - seat + 1) * seatHorizontalPitch() + seatStyle.nextUp.left
+
+        while (seat <= numOfParticipants) {
+          // some will go off the screen
+          if (!seatStyle['seat' + seat]) seatStyle['seat' + seat] = {}
+          seatStyle['seat' + seat].top = seatTop + seatWidthRatio * width * HDRatio + titleHeight + hGap
+          seatStyle['seat' + seat].left = seatLeft
+          seatStyle['seat' + seat].width = seatWidthRatio * width + titleHeight * (1 / HDRatio)
+          introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
+          seatLeft -= seatHorizontalPitch()
+          seat++
+          i++
+        }
+      }
+
+      seatStyle.speaking.left = speakerLeftEdge
+      seatStyle.speaking.top = navBarHeight + vGap + rows * (seatHeight() + titleHeight + vGap)
+      seatStyle.speaking.width = speakingWidth()
+      seatStyle.speaking['--speaking-height'] = speakingHeight() + 'px' // tell child div's what the speaking-height is
       introSeatStyle.speaking = { top: -(speakingWidthRatio * HDRatio * width + vGap + ShadowBox) }
 
       seatStyle.finishUp.left = 0.5 * width
       seatStyle.finishUp.top = 0.5 * height
       seatStyle.finishUp.width = 0.01 * width
 
-      agendaStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + titleHeight + vGap
+      agendaStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
       agendaStyle.left = seatStyle.speaking.left
       agendaStyle.width = seatStyle.speaking.width
-      agendaStyle.height = Math.min(maxAgendaHeight, height - agendaStyle.top - vGap)
+      agendaStyle.height = Math.max(maxAgendaHeight, height - agendaStyle.top - vGap)
+
       introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
       buttonBarStyle.width = seatStyle.speaking.width * 0.6
@@ -1099,9 +1193,8 @@ class RASPUndebate extends React.Component {
       buttonBarStyle.top =
         seatStyle.speaking.top +
         seatStyle.speaking.width * HDRatio -
-        (buttonBarStyle.width / this.buttons.length) * 0.75 -
-        vGap // there are 5 buttons and they are essentially square
-
+        (buttonBarStyle.width / this.buttons.length) * 0.75 - // there are 5 buttons and they are essentially square
+        1 * vGap
       recorderButtonBarStyle.left = seatStyle.speaking.left
       recorderButtonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
       recorderButtonBarStyle.width = seatStyle.speaking.width
@@ -2077,11 +2170,14 @@ class RASPUndebate extends React.Component {
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
           <div style={{ width: '100%', height: '100%', display: 'table' }}>
             <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-              <button className={classes['beginButton']} onClick={this.beginButton}>
-                Begin
-              </button>
+              <IconPlay width="25%" height="25%" className={classes['beginButton']} onClick={this.beginButton} />
             </div>
           </div>
+          {/*<div style={{ width: '100%', height: '100%', display: 'table' }} >
+                        <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }} >
+                        <button className={classes['beginButton']} onClick={this.beginButton}>Begin</button>
+                        </div>
+                    </div>*/}
         </div>
       )
 
@@ -2137,7 +2233,11 @@ class RASPUndebate extends React.Component {
                     <span className={classes['donateButton']}>
                       <button
                         onClick={() => {
-                          let win = window.open('https://ballotpedia.org/Donate:_Candidate_Conversations', '_blank')
+                          let dst =
+                            this.props.logo === 'undebate'
+                              ? 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H7XBVF5U2C9NJ&source=url'
+                              : 'https://ballotpedia.org/Donate:_Candidate_Conversations'
+                          let win = window.open(dst, '_blank')
                           win.focus()
                         }}
                       >
@@ -2232,13 +2332,19 @@ class RASPUndebate extends React.Component {
       let chair = this.seat(i)
       let videoWidth = pxSeatStyleWidth(this.seat(i))
       let videoHeight = pxSeatStyleWidth(this.seat(i)) * HDRatio
-      if (participant === 'human' && this.seat(i) === 'speaking') humanSpeaking = true
+      const speaking = this.seat(i) === 'speaking'
+      if (participant === 'human' && speaking) humanSpeaking = true
       const style = seatStyle[chair] //noOverlay || bot || intro ? seatStyle[chair] : Object.assign({},seatStyle[chair],introSeatStyle[chair])
       let participant_name
       if (participant === 'human' && this.props.bp_info && this.props.bp_info.candidate_name)
         participant_name = this.props.bp_info.candidate_name
       else participant_name = this.props.participants[participant].name
       /*src={"https://www.youtube.com/embed/"+getYouTubeID(this.participants[participant].listeningObjectURL)+"?enablejsapi=1&autoplay=1&loop=1&controls=0&disablekb=1&fs=0&modestbranding=1&rel=0"}*/
+      // if (this.seat(i) === 'speaking') {
+      // const titleStyle = this.state.titleSpeakerStyle
+      // } else {
+      // }
+
       return (
         <div
           style={style}
@@ -2328,11 +2434,19 @@ class RASPUndebate extends React.Component {
                   <p>{`${this.state.waitingPercent}% complete`}</p>
                 </div>
               </div>
+
+              <div
+                className={cx(
+                  classes['title'],
+                  speaking && classes['title-speaking'],
+                  stylesSet && classes['stylesSet'],
+                  finishUp && classes['finishUp']
+                )}
+              >
+                <span>{participant_name}</span>
+              </div>
             </>
           )}
-          <div className={cx(classes['title'], stylesSet && classes['stylesSet'], finishUp && classes['finishUp'])}>
-            <span>{participant_name}</span>
-          </div>
         </div>
       )
     }
@@ -2452,7 +2566,7 @@ class RASPUndebate extends React.Component {
     var main = () =>
       !done && (
         <div>
-          <ConversationHeader subject={this.props.subject} bp_info={this.props.bp_info} />
+          <ConversationHeader subject={this.props.subject} bp_info={this.props.bp_info} logo={this.props.logo} />
           <div className={classes['outerBox']}>
             {Object.keys(this.props.participants).map((participant, i) => videoBox(participant, i, seatStyle))}
             {agenda(agendaStyle)}
