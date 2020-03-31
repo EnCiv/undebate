@@ -2233,7 +2233,11 @@ class RASPUndebate extends React.Component {
                     <span className={classes['donateButton']}>
                       <button
                         onClick={() => {
-                          let win = window.open('https://ballotpedia.org/Donate:_Candidate_Conversations', '_blank')
+                          let dst =
+                            this.props.logo === 'undebate'
+                              ? 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H7XBVF5U2C9NJ&source=url'
+                              : 'https://ballotpedia.org/Donate:_Candidate_Conversations'
+                          let win = window.open(dst, '_blank')
                           win.focus()
                         }}
                       >
