@@ -5,8 +5,7 @@ const MongoModels = require('mongo-models')
 /**
  * CSV File format
  *
- * fullname,lastname,race,party,street1,street2,city,state,zip,contactemail,Campaign Website,Facebook,Twitter,Phone #,election_date,recorded,candidate_stage_result_id,recorder url,recorder url updated,viewer url,viewer url updated
-
+ * firstname, fullname,lastname,race,party,street1,street2,city,state,zip,contactemail,Campaign Website,Facebook,Twitter,Phone #,election_date,recorded,candidate_stage_result_id,recorder url,recorder url updated,viewer url,viewer url updated
  *
  */
 
@@ -120,7 +119,7 @@ const viewer_recorder_pair = {
               '4- What office are you running for?',
             ],
             ['What do you love about where you live?'],
-            ['What inspired me to run for office?'],
+            ['What inspired you to run for office?'],
             ['If elected, what will be your top 3 priorities?'],
             ['Thank you!'],
           ],
@@ -157,7 +156,7 @@ const viewer_recorder_pair = {
               '4- What office are you running for?',
             ],
             ['What do you love about where you live?'],
-            ['What inspired me to run for office?'],
+            ['What inspired you to run for office?'],
             ['If elected, what will be your top 3 priorities?'],
             ['Thank you!'],
           ],
