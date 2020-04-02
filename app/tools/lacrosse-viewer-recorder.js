@@ -139,14 +139,14 @@ const viewer_recorder_pair = {
         moderator: {
           name: 'Will Ferguson',
           speaking: [
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585593213/5e41731909ef5200170e691a-0-speaking20200330T183228921Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585593233/5e41731909ef5200170e691a-1-speaking20200330T183333333Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585593242/5e41731909ef5200170e691a-2-speaking20200330T183353828Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585593267/5e41731909ef5200170e691a-3-speaking20200330T183402830Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585593288/5e41731909ef5200170e691a-4-speaking20200330T183427393Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585763877/5e41731909ef5200170e691a-0-speaking20200401T175733191Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585763885/5e41731909ef5200170e691a-1-speaking20200401T175757491Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585763892/5e41731909ef5200170e691a-2-speaking20200401T175805840Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585763900/5e41731909ef5200170e691a-3-speaking20200401T175812097Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585763921/5e41731909ef5200170e691a-4-speaking20200401T175820847Z.mp4',
           ],
           listening:
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/v1585611305/5e41731909ef5200170e691a-5-speaking20200330T183448303Z_q1dd31.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585763942/5e41731909ef5200170e691a-5-speaking20200401T175841022Z.mp4',
           agenda: [
             [
               'Introductions',
@@ -164,14 +164,14 @@ const viewer_recorder_pair = {
         },
         audience1: {
           speaking: [
-            'https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1585548555/5e28efbf14af500017ddf308-0-speaking20200330T060914662Z.mp4',
-            'https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1585548556/5e28efbf14af500017ddf308-1-speaking20200330T060915819Z.mp4',
-            'https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1585548557/5e28efbf14af500017ddf308-2-speaking20200330T060916904Z.mp4',
-            'https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1585548559/5e28efbf14af500017ddf308-3-speaking20200330T060917767Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585676624/5e838143548a860017fffba4-0-speaking20200331T174339908Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585676631/5e838143548a860017fffba4-1-speaking20200331T174342975Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585676641/5e838143548a860017fffba4-2-speaking20200331T174350659Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585676655/5e838143548a860017fffba4-3-speaking20200331T174400726Z.mp4',
           ],
-          name: 'David D Fridley',
+          name: 'Katie Karaoke',
           listening:
-            'https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1585548559/5e28efbf14af500017ddf308-0-listening20200330T060919657Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585676656/5e838143548a860017fffba4-0-listening20200331T174414795Z.mp4',
         },
         human: {
           listening: {
@@ -183,6 +183,8 @@ const viewer_recorder_pair = {
     },
     webComponent: {
       webComponent: 'Undebate',
+      instructionLink:
+        'https://docs.google.com/document/d/1jHt1Nvb4K5mamuWhvbksgDP_vpq09HnhXy_pJQXvAQM/edit?usp=sharing',
       logo: 'undebate',
       participants: {},
       opening: {
