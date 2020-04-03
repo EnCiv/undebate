@@ -269,6 +269,7 @@ const styles = {
     position: 'absolute',
     marginRight: '0.2rem',
     cursor: 'pointer',
+    pointerEvents: 'auto',
   },
   finishButton: {
     cursor: 'pointer',
