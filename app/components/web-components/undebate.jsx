@@ -365,20 +365,32 @@ const styles = {
 
   join: {
     'margin-right': '1em',
+    fontSize: '1.25rem',
     'button&': {
+      fontSize: '2rem',
+      cursor: 'pointer',
       'margin-left': '1em',
-      'padding-top': '0.5em',
-      'padding-bottom': '0.5em',
+
+      padding: '1em',
+      'border-radius': '.25em',
+      border: 'white solid 1px',
       '&:disabled': {
         'text-decoration': 'none',
         background: 'lightgray',
+        cursor: 'default',
       },
+    },
+    'button[name=Join]&': {
+      backgroundColor: '#00ff7f',
     },
     'a&': {
       'margin-right': '0.25em',
     },
     'i&': {
       'margin-right': 0,
+    },
+    'input&': {
+      fontsize: '2rem',
     },
   },
   name: {
@@ -474,6 +486,7 @@ const styles = {
       '&:disabled': {
         'text-decoration': 'none',
         background: 'lightgray',
+        cursor: 'default',
       },
     },
     '& div': {

@@ -237,9 +237,8 @@ class Join extends React.Component {
       confirm = this.refs.confirm.value,
       agree = ReactDOM.findDOMNode(this.refs.agree).classList.contains('fa-check-square-o') // true if the box is checked
 
-    if (!this.state.loginActive && email && isEmail(email) && password && !confirm) this.setState({ loginActive: true })
-    if (this.state.loginActive && (!email || !isEmail(email) || !password || confirm))
-      this.setState({ loginActive: false })
+    if (!this.state.loginActive && email && isEmail(email) && password) this.setState({ loginActive: true })
+    if (this.state.loginActive && (!email || !isEmail(email) || !password)) this.setState({ loginActive: false })
     if (!this.state.joinActive && email && isEmail(email) && password && confirm && password == confirm && agree)
       this.setState({ joinActive: true })
     if (this.state.joinActive && (!email || !isEmail(email) || !password || !confirm || password != confirm || !agree))
@@ -273,7 +272,12 @@ class Join extends React.Component {
       <React.Fragment>
         {!successMessage && (
           <React.Fragment>
-            <button className={className} onClick={this.login.bind(this)} disabled={!this.state.loginActive}>
+            <button
+              className={className}
+              onClick={this.login.bind(this)}
+              disabled={!this.state.loginActive}
+              name="Login"
+            >
               Login
             </button>
             <Input
@@ -318,7 +322,12 @@ class Join extends React.Component {
             <a className={className} href="https://enciv.org/terms/" target="_blank">
               Terms of Service
             </a>
-            <button className={className} onClick={this.signup.bind(this)} disabled={!this.state.joinActive}>
+            <button
+              className={className}
+              onClick={this.signup.bind(this)}
+              disabled={!this.state.joinActive}
+              name="Join"
+            >
               Join
             </button>
 
