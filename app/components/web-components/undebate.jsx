@@ -74,6 +74,26 @@ const styles = {
     '&$scrollableIframe': {
       height: 'auto',
     },
+    pointerEvents: 'none', // warning - nothing is going to get clicked on unless it sets pointer-events to auto
+    // now turn on pointer events for all these things
+    '& button': {
+      pointerEvents: 'auto',
+    },
+    '& i': {
+      pointerEvents: 'auto',
+    },
+    '& img': {
+      pointerEvents: 'auto',
+    },
+    '& svg': {
+      pointerEvents: 'auto',
+    },
+    '& input': {
+      pointerEvents: 'auto',
+    },
+    '& a': {
+      pointerEvents: 'auto',
+    },
   },
   innerWrapper: {
     position: 'relative',
@@ -199,6 +219,7 @@ const styles = {
     },
   },
   beginButton: {
+    cursor: 'pointer',
     color: 'white',
     background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
     'border-radius': '7px',
@@ -214,6 +235,7 @@ const styles = {
     left: '85vw',
     bottom: '5vh',
     '& button': {
+      cursor: 'pointer',
       height: '5.5rem',
       color: 'white',
       background: 'linear-gradient(to bottom, #ff6745 0%,#ff5745 51%,#ff4745 100%)',
@@ -227,6 +249,7 @@ const styles = {
     },
   },
   hangUpButtonReally: {
+    cursor: 'pointer',
     display: 'inline-block',
     position: 'absolute',
     left: 0,
@@ -248,26 +271,10 @@ const styles = {
     cursor: 'pointer',
   },
   finishButton: {
+    cursor: 'pointer',
     width: '12vw',
     position: 'absolute',
     right: '25vw',
-    top: '68vh',
-    color: 'white',
-    background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
-    'border-radius': '7px',
-    'border-width': '2px',
-    'border-color': 'white',
-    'font-size': '1.25em',
-    padding: '1em',
-    '&:disabled': {
-      'text-decoration': 'none',
-      background: 'lightgray',
-    },
-  },
-  rerecordButton: {
-    width: '12vw',
-    position: 'absolute',
-    left: '25vw',
     top: '68vh',
     color: 'white',
     background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
@@ -358,20 +365,32 @@ const styles = {
 
   join: {
     'margin-right': '1em',
+    fontSize: '1.25rem',
     'button&': {
+      fontSize: '2rem',
+      cursor: 'pointer',
       'margin-left': '1em',
-      'padding-top': '0.5em',
-      'padding-bottom': '0.5em',
+
+      padding: '1em',
+      'border-radius': '.25em',
+      border: 'white solid 1px',
       '&:disabled': {
         'text-decoration': 'none',
         background: 'lightgray',
+        cursor: 'default',
       },
+    },
+    'button[name=Join]&': {
+      backgroundColor: '#00ff7f',
     },
     'a&': {
       'margin-right': '0.25em',
     },
     'i&': {
       'margin-right': 0,
+    },
+    'input&': {
+      fontsize: '2rem',
     },
   },
   name: {
@@ -418,6 +437,7 @@ const styles = {
     overflow: 'hidden',
     'text-overflow': 'clip',
     '& button': {
+      pointer: 'cursor',
       display: 'inline-block',
       verticalAlign: 'top',
       height: '100%',
@@ -433,6 +453,7 @@ const styles = {
   },
   recorderButtonBar: {
     //display: "table",
+    cursor: 'pointer',
     position: 'absolute',
     width: '50vw',
     left: '25vw',
@@ -443,6 +464,7 @@ const styles = {
     border: 'none',
     backgroundColor: 'transparent',
     '& button': {
+      cursor: 'pointer',
       display: 'inline-block',
       verticalAlign: 'middle',
       height: '100%',
@@ -464,6 +486,7 @@ const styles = {
       '&:disabled': {
         'text-decoration': 'none',
         background: 'lightgray',
+        cursor: 'default',
       },
     },
     '& div': {
@@ -530,6 +553,16 @@ const styles = {
     height: '3.5vh',
     float: 'right',
     paddingTop: '.3em',
+  },
+  instructionLink: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    margin: '1rem 0 0 1rem',
+  },
+  instructionIcon: {
+    fontSize: '3rem',
+    color: 'gray',
   },
 }
 
@@ -2684,6 +2717,20 @@ class RASPUndebate extends React.Component {
     const conversationTopic = topicStyle => {
       return (
         <>
+          {this.props.instructionLink && (
+            <div className={classes['instructionLink']}>
+              <a target="#" href={this.props.instructionLink}>
+                <i
+                  className={cx('far', 'fa-question-circle', classes['instructionIcon'])}
+                  onClick={() => {
+                    this.allPause()
+                    let win = window.open(this.props.instructionLink, '_blank')
+                    win.focus()
+                  }}
+                />
+              </a>
+            </div>
+          )}
           <div style={topicStyle} className={classes['conversationTopic']}>
             <p className={classes['conversationTopicContent']}>{this.props.subject}</p>
           </div>

@@ -112,10 +112,20 @@ const months = ['zero', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 
 function xxxx_xx_xxTommmdd_yyyy(str) {
   if (!str) return ''
   let parts = str.split('-')
-  let year = parts[0]
-  let month = months[parseInt(parts[1])]
-  let day = parts[2]
-  return `${month} ${day}, ${year}`
+  if (parts.length === 3) {
+    let year = parts[0]
+    let month = months[parseInt(parts[1])]
+    let day = parts[2]
+    return `${month} ${day}, ${year}`
+  }
+  parts = str.split('/')
+  if (parts.length === 3) {
+    let year = parts[2]
+    let month = months[parseInt(parts[1])]
+    let day = parts[0]
+    return `${month} ${day}, ${year}`
+  }
+  return ''
 }
 
 class ConversationHeader extends React.Component {
