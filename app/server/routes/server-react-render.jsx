@@ -55,8 +55,11 @@ function serverReactRender(req, res, next) {
                     <link rel="manifest"  href="/assets/images/site.webmanifest"/>
                     <link rel="shortcut icon" href="/assets/images/favicon.ico" />
                     <meta name="theme-color" content="#ffffff"/>
-
-
+                    ${(props.iota &&
+                      props.iota.webComponent &&
+                      props.iota.webComponent.metaTags &&
+                      props.iota.webComponent.metaTags.reduce((acc, meta) => acc + `<meta ${meta}>\n`, '')) ||
+                      ''}
                     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
                     <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:400,800&display=swap" rel="stylesheet">
 
