@@ -2,18 +2,6 @@
 
 import React from 'react'
 import injectSheet from 'react-jss'
-import cx from 'classnames'
-import ErrorBoundary from '../error-boundary'
-
-class UndebateIframes extends React.Component {
-  render() {
-    return (
-      <ErrorBoundary>
-        <WrappedUndebateIframes {...this.props} />
-      </ErrorBoundary>
-    )
-  }
-}
 
 const styles = {
   title: {
@@ -24,7 +12,7 @@ const styles = {
   frame: { marginTop: '1em', marginBottom: '1em', width: '100vw' },
 }
 
-class WrappedUndebateIframes extends React.Component {
+class UndebateIframes extends React.Component {
   render() {
     const { classes } = this.props
     const width = typeof window !== 'undefined' ? window.innerWidth : 1920
