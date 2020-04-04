@@ -22,6 +22,15 @@ const styles = {
   socialSVG: {
     marginRight: '0.8rem',
   },
+  shareIconDivWrapper: {
+    marginRight: '0.3rem',
+    cursor: 'pointer',
+    pointerEvents: 'auto',
+  },
+  shareIconSvg: {
+    fill: 'white',
+    pointerEvents: 'auto',
+  },
 }
 const SocialShareBtn = props => {
   const [isOpen, setIsOpen] = useState(false)
@@ -36,8 +45,8 @@ const SocialShareBtn = props => {
   const { classes, metaData } = props
   return (
     <div style={metaData.styles}>
-      <div style={{ marginRight: '0.3rem', cursor: 'pointer' }} onClick={handleClick}>
-        <SocialShareSVG />
+      <div className={classes.shareIconDivWrapper} onClick={handleClick}>
+        <SocialShareSVG styles={classes.shareIconSvg} />
       </div>
       {isOpen && (
         <div className={classes.shareDropDown} ref={shareLayoverRef}>
