@@ -1083,7 +1083,7 @@ class RASPUndebate extends React.Component {
 
       // across the bottom
       let i = 0 // for calculating the intro
-      while (seat <= 7) {
+      while (seat <= numOfParticipants - 1) {
         // some will go off the screen
         seatStyle['seat' + seat].top = seatTop
         seatStyle['seat' + seat].left = seatLeft
@@ -1093,6 +1093,10 @@ class RASPUndebate extends React.Component {
         seat++
         i++
       }
+
+      seatStyle['seat' + numOfParticipants].top = seatTop
+      seatStyle['seat' + numOfParticipants].left = width - seatWidthRatio*width -hGap 
+      seatStyle['seat' + numOfParticipants].width = seatWidthRatio * width
 
       seatStyle.finishUp.left = 0.5 * width
       seatStyle.finishUp.top = ((0.5 + 0.15) * width * HDRatio + (0.05 + 0.015) * height + TopMargin) / 2
