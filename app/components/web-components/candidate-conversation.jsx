@@ -1081,15 +1081,18 @@ class RASPUndebate extends React.Component {
           (width - numOfParticipants * (seatWidthRatio * width) - (numOfParticipants - 1) * hGap) / 2 // offsets the nextUp from the left
       }
 
+      const middleSeatsWidth = width - 2*seatWidthRatio*width - 2*hGap //this is the width between the first and the last seat
+
       // across the bottom
       let i = 0 // for calculating the intro
       while (seat <= numOfParticipants - 1) {
         // some will go off the screen
         seatStyle['seat' + seat].top = seatTop
         seatStyle['seat' + seat].left = seatLeft
-        seatStyle['seat' + seat].width = seatWidthRatio * width
+        seatStyle['seat' + seat].width = (middleSeatsWidth- (numOfParticipants - 1)*hGap)/(numOfParticipants - 2)   //seatWidthRatio * width
         introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
-        seatLeft += seatHorizontalPitch
+        // seatLeft += seatHorizontalPitch
+        seatLeft +=  seatStyle['seat' + seat].width + hGap
         seat++
         i++
       }
