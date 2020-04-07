@@ -18,3 +18,9 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+Cypress.Server.defaults({
+  whitelist: xhr => {
+    return (xhr.method === 'GET' || xhr.method === 'POST') && /(socket.io|sockjs-node)/.test(xhr.url)
+  },
+})
