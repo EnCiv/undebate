@@ -1,6 +1,10 @@
 describe('Candidate Conversation', () => {
   beforeEach(() => {
     cy.visit('/schoolboard-conversation')
+
+    cy.get('video').each($video => {
+      $video.attr('muted', true)
+    })
   })
 
   it('clicking on the Begin button should cause the videos to play', () => {
