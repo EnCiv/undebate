@@ -2603,6 +2603,9 @@ class RASPUndebate extends React.Component {
                   height: parseFloat(seatStyle[this.seat(i)].width) * HDRatio + 'vw',
                 }}
                 key={participant + '-video'}
+                data-testid={participant + '-video'}
+                participant={participant}
+                chair={chair}
               ></video>
               <div
                 className={cx(classes['stalledOverlay'], this.state.stalled === participant && classes['stalledNow'])}
