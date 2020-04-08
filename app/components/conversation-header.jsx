@@ -14,7 +14,7 @@ const styles = {
     top: 0,
   },
   conversationHeader: {
-    overflow: 'hidden',
+
     'z-index': '10',
     position: 'absolute',
     margin: 0,
@@ -31,14 +31,18 @@ const styles = {
     },
   },
   leftBoxContainer: {
-    overflow: 'hidden',
-    display: 'inline-block'
+    display: 'inline-block',
   },
   leftBox: {
     backgroundColor: BLUE,
     width: '0.52vw',
     height: '3.24vh',
     display: 'inline-block',
+    '&$portrait': {
+      textOverflow: 'hidden',
+      display: 'block',
+      width: '100%',
+    },
   },
   conversationTopicContent: {
     overflow: 'hidden',
@@ -46,6 +50,7 @@ const styles = {
     fontWeight: 'bolder',
     paddingLeft: '.2em',
     paddingRight: '.2em',
+    marginTop: '1.25vh',
     '&$portrait': {
       fontSize: '2rem',
       whiteSpace: 'nowrap',
@@ -55,6 +60,11 @@ const styles = {
   },
   rightBoxContainer: {
     display: 'inline-block',
+    '&$portrait': {
+      textOverflow: 'hidden',
+      display: 'block',
+      width: '100%',
+    },
   },
   rightBox: {
     backgroundColor: YELLOW,
@@ -72,6 +82,15 @@ const styles = {
       whiteSpace: 'nowrap',
       marginTop: '.2em',
       marginBottom: '.2em',
+    },
+  },
+  'undebate-logo': {
+    marginRight: '.25em',
+    height: '4vh',
+    marginTop: '1vh',
+    float: 'right',
+    '&$portrait': {
+      float: 'left',
     },
   },
   logo: {
@@ -96,10 +115,20 @@ const months = ['zero', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 
 function xxxx_xx_xxTommmdd_yyyy(str) {
   if (!str) return ''
   let parts = str.split('-')
-  let year = parts[0]
-  let month = months[parseInt(parts[1])]
-  let day = parts[2]
-  return `${month} ${day}, ${year}`
+  if (parts.length === 3) {
+    let year = parts[0]
+    let month = months[parseInt(parts[1])]
+    let day = parts[2]
+    return `${month} ${day}, ${year}`
+  }
+  parts = str.split('/')
+  if (parts.length === 3) {
+    let year = parts[2]
+    let month = months[parseInt(parts[1])]
+    let day = parts[0]
+    return `${month} ${day}, ${year}`
+  }
+  return ''
 }
 
 class ConversationHeader extends React.Component {
@@ -109,7 +138,7 @@ class ConversationHeader extends React.Component {
   }
   render() {
     const portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
-    const { classes, style, subject, bp_info } = this.props
+    const { classes, style, subject, bp_info, logo } = this.props
     if (portraitMode && this.state.isClient)
       return (
         <div className={cx(classes['portrait'], classes['conversation-header-wrapper'])} key="portrait">
@@ -120,18 +149,27 @@ class ConversationHeader extends React.Component {
                 src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png"
               />
             </a>
-            <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
-              <img
-                className={cx(classes['portrait'], classes['logo'])}
-                src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
-              />
-            </a>
+            {logo && logo === 'undebate' ? (
+              <a target="#" href="https://enciv.org/undebate">
+                <img
+                  className={classes['undebate-logo']}
+                  src="https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,h_100/v1585602937/Undebate_Logo.png"
+                />
+              </a>
+            ) : (
+              <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
+                <img
+                  className={classes['logo']}
+                  src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
+                />
+              </a>
+            )}
           </div>
-          <div className={classes['leftBoxContainer']}>
+          <div className={cx(classes['leftBoxContainer'], portraitMode && classes['portrait'])}>
             <div className={classes['leftBox']}></div>
             <span className={classes['conversationTopicContent']}>{subject}</span>
           </div>
-          <div className={classes['rightBoxContainer']}>
+          <div className={cx(classes['rightBoxContainer'], portraitMode && classes['portrait'])}>
             <div className={classes['rightBox']}></div>
             <span className={classes['conversationElectionDate']}>
               {xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)}
@@ -144,11 +182,11 @@ class ConversationHeader extends React.Component {
         <div className={classes['conversation-header-wrapper']} key="landscape">
           <div className={classes['conversationHeader']} key="landscape-1">
             <div style={{ position: 'absolute', left: '1rem' }} key="landscape-2">
-              <div className={classes['leftBoxContainer']}>
+              <div className={cx(classes['leftBoxContainer'], portraitMode && classes['portrait'])}>
                 <div className={classes['leftBox']}></div>
                 <span className={classes['conversationTopicContent']}>{subject}</span>
               </div>
-              <div className={classes['rightBoxContainer']}>
+              <div className={cx(classes['rightBoxContainer'], portraitMode && classes['portrait'])}>
                 <div className={classes['rightBox']}></div>
                 <span className={classes['conversationElectionDate']}>
                   {xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)}
@@ -161,12 +199,21 @@ class ConversationHeader extends React.Component {
                 src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png"
               />
             </a>
-            <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
-              <img
-                className={classes['logo']}
-                src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
-              />
-            </a>
+            {logo && logo === 'undebate' ? (
+              <a target="#" href="https://enciv.org/undebate">
+                <img
+                  className={classes['undebate-logo']}
+                  src="https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,h_100/v1585602937/Undebate_Logo.png"
+                />
+              </a>
+            ) : (
+              <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
+                <img
+                  className={classes['logo']}
+                  src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
+                />
+              </a>
+            )}
           </div>
         </div>
       )

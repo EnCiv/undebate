@@ -5,7 +5,7 @@ import injectSheet from 'react-jss'
 import cx from 'classnames'
 import Join from '../join'
 import Input from '../lib/input'
-
+import SocialShareBtn from '../lib/socialShareBtn'
 import ErrorBoundary from '../error-boundary'
 
 import TimeFormat from 'hh-mm-ss'
@@ -19,7 +19,7 @@ const ResolutionToFontSizeTable = require('../../../resolution-to-font-size-tabl
 const TransitionTime = 500
 const TopMargin = 0
 const IntroTransition = 'all 5s ease'
-const HDRatio = 0.5625
+const HDRatio = 1080 / 1920 //0.5625
 const ShadowBox = 10
 
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser'
@@ -28,6 +28,7 @@ import IconPrevSpeaker from '../../svgr/icon-prev-speaker'
 import IconPrevSection from '../../svgr/icon-prev-session'
 import IconPlay from '../../svgr/icon-play'
 import IconPause from '../../svgr/icon-pause'
+import IconStop from '../../svgr/icon-stop'
 import IconSkipSpeaker from '../../svgr/icon-skip-speaker'
 import IconNextSection from '../../svgr/icon-skip-session'
 import IconRedo from '../../svgr/icon-redo'
@@ -58,9 +59,11 @@ const styles = {
   conversationTopicContent: {
     width: '100vw',
     textAlign: 'center',
+    margin: '1rem 0 1rem 0',
   },
   logo: {
-    marginRight: '4px',
+    marginRight: '0.2rem',
+    marginTop: '0.2rem',
     height: '6vh',
     float: 'right',
   },
@@ -70,6 +73,26 @@ const styles = {
     height: '100vh',
     '&$scrollableIframe': {
       height: 'auto',
+    },
+    pointerEvents: 'none', // warning - nothing is going to get clicked on unless it sets pointer-events to auto
+    // now turn on pointer events for all these things
+    '& button': {
+      pointerEvents: 'auto',
+    },
+    '& i': {
+      pointerEvents: 'auto',
+    },
+    '& img': {
+      pointerEvents: 'auto',
+    },
+    '& svg': {
+      pointerEvents: 'auto',
+    },
+    '& input': {
+      pointerEvents: 'auto',
+    },
+    '& a': {
+      pointerEvents: 'auto',
     },
   },
   innerWrapper: {
@@ -196,6 +219,7 @@ const styles = {
     },
   },
   beginButton: {
+    cursor: 'pointer',
     color: 'white',
     background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
     'border-radius': '7px',
@@ -211,6 +235,7 @@ const styles = {
     left: '85vw',
     bottom: '5vh',
     '& button': {
+      cursor: 'pointer',
       height: '5.5rem',
       color: 'white',
       background: 'linear-gradient(to bottom, #ff6745 0%,#ff5745 51%,#ff4745 100%)',
@@ -224,6 +249,7 @@ const styles = {
     },
   },
   hangUpButtonReally: {
+    cursor: 'pointer',
     display: 'inline-block',
     position: 'absolute',
     left: 0,
@@ -243,28 +269,13 @@ const styles = {
     position: 'absolute',
     marginRight: '0.2rem',
     cursor: 'pointer',
+    pointerEvents: 'auto',
   },
   finishButton: {
+    cursor: 'pointer',
     width: '12vw',
     position: 'absolute',
     right: '25vw',
-    top: '68vh',
-    color: 'white',
-    background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
-    'border-radius': '7px',
-    'border-width': '2px',
-    'border-color': 'white',
-    'font-size': '1.25em',
-    padding: '1em',
-    '&:disabled': {
-      'text-decoration': 'none',
-      background: 'lightgray',
-    },
-  },
-  rerecordButton: {
-    width: '12vw',
-    position: 'absolute',
-    left: '25vw',
     top: '68vh',
     color: 'white',
     background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
@@ -355,20 +366,32 @@ const styles = {
 
   join: {
     'margin-right': '1em',
+    fontSize: '1.25rem',
     'button&': {
+      fontSize: '2rem',
+      cursor: 'pointer',
       'margin-left': '1em',
-      'padding-top': '0.5em',
-      'padding-bottom': '0.5em',
+
+      padding: '1em',
+      'border-radius': '.25em',
+      border: 'white solid 1px',
       '&:disabled': {
         'text-decoration': 'none',
         background: 'lightgray',
+        cursor: 'default',
       },
+    },
+    'button[name=Join]&': {
+      backgroundColor: '#00ff7f',
     },
     'a&': {
       'margin-right': '0.25em',
     },
     'i&': {
       'margin-right': 0,
+    },
+    'input&': {
+      fontsize: '2rem',
     },
   },
   name: {
@@ -415,6 +438,7 @@ const styles = {
     overflow: 'hidden',
     'text-overflow': 'clip',
     '& button': {
+      pointer: 'cursor',
       display: 'inline-block',
       verticalAlign: 'top',
       height: '100%',
@@ -430,6 +454,7 @@ const styles = {
   },
   recorderButtonBar: {
     //display: "table",
+    cursor: 'pointer',
     position: 'absolute',
     width: '50vw',
     left: '25vw',
@@ -440,6 +465,7 @@ const styles = {
     border: 'none',
     backgroundColor: 'transparent',
     '& button': {
+      cursor: 'pointer',
       display: 'inline-block',
       verticalAlign: 'middle',
       height: '100%',
@@ -461,6 +487,7 @@ const styles = {
       '&:disabled': {
         'text-decoration': 'none',
         background: 'lightgray',
+        cursor: 'default',
       },
     },
     '& div': {
@@ -521,18 +548,23 @@ const styles = {
   },
   stalledNow: {},
   stalledBox: {},
-}
-
-const seating = ['speaking', 'nextUp', 'seat2', 'seat3', 'seat4', 'seat5', 'seat6', 'seat7']
-const seatToName = {
-  speaking: 'Speaking',
-  nextUp: 'Next Up',
-  seat2: 'Seat #2',
-  seat3: 'Seat #3',
-  seat4: 'Seat #4',
-  seat5: 'Seat #5',
-  seat6: 'Seat #6',
-  seat7: 'Seat #7',
+  'enciv-logo': {
+    padding: '.25em',
+    marginRight: '.25em',
+    height: '3.5vh',
+    float: 'right',
+    paddingTop: '.3em',
+  },
+  instructionLink: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    margin: '1rem 0 0 1rem',
+  },
+  instructionIcon: {
+    fontSize: '3rem',
+    color: 'gray',
+  },
 }
 
 class Undebate extends React.Component {
@@ -544,21 +576,6 @@ class Undebate extends React.Component {
     )
   }
 }
-
-function onYouTubeIframeAPIReady() {
-  // this is called by the https://www.youtube.com/iframe_api script, if and after it is loaded
-  logger.trace(
-    'onYouTubeIframeAPIReady',
-    RASPUndebate.youTubeIFameAPIReady,
-    RASPUndebate.onYouTubeIframeAPIReadyList.length
-  )
-  RASPUndebate.youTubeIFameAPIReady
-  while (RASPUndebate.onYouTubeIframeAPIReadyList.length) {
-    RASPUndebate.onYouTubeIframeAPIReadyList.shift()()
-  }
-}
-
-if (typeof window !== 'undefined') window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady
 
 class RASPUndebate extends React.Component {
   static onYouTubeIframeAPIReadyList = []
@@ -576,15 +593,6 @@ class RASPUndebate extends React.Component {
       if (process.env.NODE_ENV === 'development') this.rotateButton = true
     }
     //this.createDefaults();
-    this.human = React.createRef()
-    this.moderator = React.createRef()
-    this.audience1 = React.createRef()
-    this.audience2 = React.createRef()
-    this.audience3 = React.createRef()
-    this.audience4 = React.createRef()
-    this.audience5 = React.createRef()
-    this.audience6 = React.createRef()
-    this.audience7 = React.createRef()
     this.audio = React.createRef()
     this.getCamera = this.getCamera.bind(this)
     this.audioEnd = this.audioEnd.bind(this)
@@ -609,11 +617,15 @@ class RASPUndebate extends React.Component {
     if (!this.canNotRecordHere) {
       Object.keys(this.props.participants).forEach(participant => {
         let youtube = false
-        if (participant !== 'human' && this.props.participants[participant].listening.match(/youtu\.be|youtube\.com/)) {
+        if (
+          participant !== 'human' &&
+          this.props.participants[participant].listening &&
+          this.props.participants[participant].listening.match(/youtu\.be|youtube\.com/)
+        ) {
           // the whole participant is marked youtube if listening is youtube
           youtube = true
           loadYoutube = true
-        } else if (this.forceMP4 && participant !== 'human') {
+        } else if (this.forceMP4 && participant !== 'human' && this.props.participants[participant].listening) {
           this.props.participants[participant].listening = this.props.participants[participant].listening.replace(
             /\.webm$/gi,
             '.mp4'
@@ -627,8 +639,15 @@ class RASPUndebate extends React.Component {
           speakingImmediate: [],
           listeningObjectURL: null,
           listeningImmediate: false,
-          placeholderUrl: participant !== 'human' && placeholder_image(this.props.participants[participant].listening),
+          placeholderUrl:
+            (participant !== 'human' &&
+              !youtube &&
+              placeholder_image(
+                this.props.participants[participant].listening || this.props.participants[participant].speaking[0]
+              )) ||
+            '',
           youtube,
+          element: React.createRef(),
         }
         if (participant === 'human') {
           this.participants.human.speakingBlobs = []
@@ -638,20 +657,22 @@ class RASPUndebate extends React.Component {
       this.participants = {}
     }
     this.numParticipants = Object.keys(this.props.participants).length
+    this.seating = ['speaking', 'nextUp']
+    this.seatToName = { speaking: 'Speaking', nextUp: 'Next Up' }
+    for (let i = 2; i < this.numParticipants; i++) {
+      this.seating.push('seat' + i)
+      this.seatToName['seat' + i] = 'Seat ' + i
+    }
     this.audioSets = {}
     this.newUser = !this.props.user // if there is no user at the beginning, then this is a new user - which should be precistant throughout the existence of this component
     if (typeof window !== 'undefined' && window.screen && window.screen.lockOrientation)
       window.screen.lockOrientation('landscape')
     if (typeof window !== 'undefined' && loadYoutube) {
-      if (!RASPUndebate.youTubeIFameAPIReady) {
-        if (RASPUndebate.onYouTubeIframeAPIReadyList.length == 0) {
-          var tag = document.createElement('script')
-          tag.src = 'https://www.youtube.com/iframe_api'
-          var firstScriptTag = document.getElementsByTagName('script')[0]
-          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
-        }
-        RASPUndebate.onYouTubeIframeAPIReadyList.push(this.onYouTubeIframeAPIReady.bind(this))
-      }
+      window.onYouTubeIframeAPIReady = this.onYouTubeIframeAPIReady.bind(this)
+      var tag = document.createElement('script')
+      tag.src = 'https://www.youtube.com/iframe_api'
+      var firstScriptTag = document.getElementsByTagName('script')[0]
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
     }
     if (typeof window !== 'undefined') this.calcFontSize()
     else {
@@ -679,6 +700,7 @@ class RASPUndebate extends React.Component {
     intro: false,
     begin: false,
     allPaused: true, // so the play button shows
+    isRecording: false,
 
     seatStyle: {
       speaking: {
@@ -855,8 +877,9 @@ class RASPUndebate extends React.Component {
       logger.trace('loadTime', this.loadTime)
       if (this.loadTime > 1000) this.setState({ slowInternet: true })
     }
-    if (this.canNotRecordHere) return // no reason to go further
+
     // first load the moderator's speaking part and the listening part for all the participants;
+    if (this.canNotRecordHere) return // no reason to go further
     Object.keys(this.props.participants).forEach(participant => {
       if (participant === 'human') return
       this.preFetchObjectURL(participant, participant === 'moderator', 0)
@@ -881,7 +904,7 @@ class RASPUndebate extends React.Component {
         const videoId = getYouTubeID(this.props.participants[participant].listening)
         logger.trace('Undebate.onYouTubeIframeAPIReady new player for:', participant, videoId)
         try {
-          this.youtubePlayers[participant] = new YT.Player('youtube-' + participant, {
+          this.participants[participant].youtubePlayer = new YT.Player('youtube-' + participant, {
             width: (parseFloat(seatStyle[this.seat(i)].width) * innerWidth) / 100,
             height: (parseFloat(seatStyle[this.seat(i)].width) * HDRatio * innerWidth) / 100,
             style: { fontSize: '8px' },
@@ -933,7 +956,7 @@ class RASPUndebate extends React.Component {
     let chair = this.seat(Object.keys(this.props.participants).indexOf(participant))
     if (event.data === YT.PlayerState.ENDED) {
       if (chair === 'speaking') this.autoNextSpeaker()
-      else this.youtubePlayers[participant].seekTo(0, false)
+      else this.participants[participant].youtubePlayer.seekTo(0, false)
     }
   }
 
@@ -1146,7 +1169,7 @@ class RASPUndebate extends React.Component {
 
         // across the bottom
         let i = 0 // for calculating the intro
-        while (seat <= 7) {
+        while (seat <= this.numParticipants - 1) {
           // some will go off the screen
           seatStyle['seat' + seat].top = seatTop
           seatStyle['seat' + seat].left = seatLeft
@@ -1244,7 +1267,7 @@ class RASPUndebate extends React.Component {
       let seatHorizontalPitch = seatWidthRatio * width + horizontalSeatSpace
       // across the bottom
       let i = 0 // for calculating the intro
-      while (seat <= 7) {
+      while (seat <= this.numParticipants - 1) {
         // some will go off the screen
         seatStyle['seat' + seat].top = seatTop
         seatStyle['seat' + seat].left = seatLeft
@@ -1344,7 +1367,13 @@ class RASPUndebate extends React.Component {
       if (part === 'human') objectURL = 'cameraStream'
       //set it to something - but this.camera.cameraStream should really be used
       else if (!(objectURL = this.participants[part].listeningObjectURL))
-        this.participants[part].listeningImmediate = true
+        if (this.props.participants[part].listening) {
+          // listeningObject hasn't loaded yet
+          this.participants[part].listeningImmediate = true
+        } else {
+          // there is no listening object
+          return this.playObjectURL(part, '', speaking) // part is listening, but theres no video, for stopping of the currently playing video so the placeholder image can take over
+        }
     }
     if (objectURL) this.playObjectURL(part, objectURL, speaking)
   }
@@ -1469,16 +1498,17 @@ class RASPUndebate extends React.Component {
   }
 
   async playObjectURL(part, objectURL, speaking) {
-    if (!this[part]) return // we don't have a space for this participant
+    if (!this.participants[part].element.current && !this.participants[part].youtubePlayer) return // we don't have a space for this participant
     logger.trace('playObjectURL part:', part, 'objectURL:', objectURL)
-    if (this.participants[part].youtube) {
-      this.youtubePlayers[part].loadVideoById({ videoId: getYouTubeID(objectURL) })
+    if (this.participants[part].youtubePlayer) {
+      this.participants[part].youtubePlayer.loadVideoById({ videoId: getYouTubeID(objectURL) })
       let chair = this.seat(Object.keys(this.props.participants).indexOf(part))
-      if (chair !== 'speaking') this.youtubePlayers[part].mute()
-      else this.youtubePlayers[part].unMute()
-      if (this.youtubePlayers[part].getPlayerState() !== YT.PlayerState.PLAYING) this.youtubePlayers[part].playVideo()
+      if (chair !== 'speaking') this.participants[part].youtubePlayer.mute()
+      else this.participants[part].youtubePlayer.unMute()
+      if (this.participants[part].youtubePlayer.getPlayerState() !== YT.PlayerState.PLAYING)
+        this.participants[part].youtubePlayer.playVideo()
     } else {
-      let element = this[part].current
+      let element = this.participants[part].element.current
       if (element.src === objectURL) {
         return // don't change it.
       }
@@ -1519,10 +1549,16 @@ class RASPUndebate extends React.Component {
         element.loop = false
       } else {
         if (element.src === objectURL && element.muted && element.loop) return
-        element.src = objectURL
-        element.muted = true
-        element.loop = true
+        if (!objectURL) {
+          if (!element.paused) element.pause()
+          element.removeAttribute('src') // can't set the src to "", but you can remove src which will set it to ""
+        } else {
+          element.src = objectURL
+          element.muted = true
+          element.loop = true
+        }
       }
+      if (!objectURL) return // if nothing (no listening video) don't try to play it.
       try {
         // we have to stallWatch before we play because play might not return right away for lack of data
         let stallWatchPlayed
@@ -1545,12 +1581,10 @@ class RASPUndebate extends React.Component {
   }
 
   async playAudioObject(part, obj, onended) {
-    if (!this[part]) return // we don't have a space for this participant
-    if (this.participants[part] && this.participants[part].youtube) return // don't use HTML5 operations on a YouTube player, part might be audio
+    if (!this.audio.current) return // we don't have a space for this participant
     logger.trace('playAudioObject part:', part, 'obj:', obj)
-    let element = this[part].current
-    element.src = null
-    //element.srcObject = null;
+    let element = this.audio.current
+    element.src = ''
     element.src = obj.objectURL
     element.volume = obj.volume || 1 // default is 1, some objects may set volume others not
     element.onended = onended
@@ -1601,7 +1635,7 @@ class RASPUndebate extends React.Component {
   seat(i, seatOffset) {
     if (this.state.finishUp) return 'finishUp'
     if (typeof seatOffset === 'undefined') seatOffset = this.state.seatOffset
-    return seating[(seatOffset + i) % this.numParticipants]
+    return this.seating[(seatOffset + i) % this.numParticipants]
   }
 
   buttons = [
@@ -1609,7 +1643,13 @@ class RASPUndebate extends React.Component {
     { name: () => <IconPrevSpeaker width="60%" height="60%" />, func: this.prevSpeaker },
     {
       name: () =>
-        this.state.allPaused ? <IconPlay width="75%" height="75%" /> : <IconPause width="75%" height="75%" />,
+        this.state.isRecording ? (
+          <IconStop width="75%" height="75%" />
+        ) : this.state.allPaused ? (
+          <IconPlay width="75%" height="75%" />
+        ) : (
+          <IconPause width="75%" height="75%" />
+        ),
       func: this.allPause,
     },
     { name: () => <IconSkipSpeaker width="60%" height="60%" />, func: this.nextSpeaker },
@@ -1633,34 +1673,44 @@ class RASPUndebate extends React.Component {
       this.beginButton()
     } else if (!this.state.allPaused) {
       Object.keys(this.participants).forEach(participant => {
-        if (this[participant] && this[participant].current) this[participant].current.pause()
+        if (this.participants[participant].element.current) this.participants[participant].element.current.pause()
+        if (this.participants[participant].youtubePlayer) this.participants[participant].youtubePlayer.pauseVideo()
       })
+      if (this.state.isRecording) this.pauseRecording()
       this.setState({ allPaused: true })
     } else {
       this.allPlay()
+      if (this.rerecord) this.resumeRecording()
       this.setState({ allPaused: false })
     }
   }
 
   allStop() {
     Object.keys(this.participants).forEach(participant => {
-      if (this[participant] && this[participant].current) {
-        this[participant].current.pause()
-        this[participant].current.src = null
+      if (this.participants[participant].element.current) {
+        this.participants[participant].element.current.pause()
+        this.participants[participant].element.current.removeAttribute('src')
       }
     })
     if (this.audio && this.audio.current) {
       this.audio.current.pause()
-      this.audio.current.src = null
+      this.audio.current.removeAttribute('src')
     }
   }
 
   allPlay() {
     Object.keys(this.participants).forEach(async participant => {
-      if (this[participant]) {
-        if (this[participant].current.paused) {
+      if (this.participants[participant].youtubePlayer) {
+        if (this.participants[participant].youtubePlayer.getPlayerState() !== YT.PlayerState.PLAYING)
+          this.participants[participant].youtubePlayer.playVideo()
+      } else if (this.participants[participant].element.current) {
+        if (
+          this.participants[participant].element.current.src &&
+          this.participants[participant].element.current.paused
+        ) {
+          // if no src it's just a placeholder - don't play it
           try {
-            await this[participant].current.play()
+            await this.participants[participant].element.current.play()
           } catch (err) {
             if (err.name === 'NotAllowedError') {
               this.requestPermissionElements.push(element)
@@ -1781,19 +1831,34 @@ class RASPUndebate extends React.Component {
 
   rerecordButton() {
     logger.info('Undebate.rerecordButton')
-    this.camera && this.camera.stopRecording() // it might be recording when the user hit's rerecord
+    this.pauseRecording() // it might be recording when the user hits rerecord
+    this.resumeRecording()
+  }
+
+  pauseRecording() {
+    this.stopRecording()
     this.rerecord = true
+  }
+
+  resumeRecording() {
     const { seatOffset, round } = this.state
     this.newOrder(seatOffset, round)
   }
 
+  startRecording(cb, visible = false) {
+    this.camera.startRecording(cb)
+    if (visible) this.setState({ isRecording: true })
+  }
+
+  stopRecording() {
+    this.stopCountDown()
+    this.camera && this.camera.stopRecording()
+    this.setState({ isRecording: false })
+  }
+
   newOrder(seatOffset, round) {
     this.clearStallWatch()
-    this.stopCountDown()
-    if (this.talkativeTimeout) {
-      clearTimeout(this.talkativeTimeout)
-      this.talkativeTimeout = 0
-    }
+    if (this.state.isRecording) this.stopRecording()
     var followup = []
     Object.keys(this.props.participants).forEach((participant, i) => {
       let oldChair = this.seat(i)
@@ -1813,16 +1878,23 @@ class RASPUndebate extends React.Component {
         ) {
           // the oldChair and the old round
           this.rerecord = false
-          this.camera && this.camera.stopRecording()
+          this.stopRecording()
         } else if (oldChair === listeningSeat && this.state.round === listeningRound) {
           // the oldChair and the old round
-          this.camera && this.camera.stopRecording()
+          this.stopRecording()
         }
         // then see if it needs to be turned on - both might happen at the same transition
         if (newChair === listeningSeat && round === listeningRound) {
           followup.push(() => {
+            if (listeningSeat === 'speaking') {
+              // recording the listening segment from the speakers seat
+              let limit =
+                (this.props.participants.moderator.timeLimits && this.props.participants.moderator.timeLimits[round]) ||
+                60
+              this.startCountDown(limit, () => this.autoNextSpeaker())
+            }
             this.nextMediaState(participant)
-            this.camera.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
+            this.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
           })
         } else if (newChair === 'speaking') {
           if (this.participants.human.speakingObjectURLs[round] && !this.rerecord) {
@@ -1835,7 +1907,7 @@ class RASPUndebate extends React.Component {
               this.startCountDown(limit, () => this.autoNextSpeaker())
               this.talkativeTimeout = setTimeout(() => this.setState({ talkative: true }), limit * 0.75 * 1000)
               this.nextMediaState(participant)
-              this.camera.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs))
+              this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs), true)
             })
           }
         } else {
@@ -1873,7 +1945,8 @@ class RASPUndebate extends React.Component {
     if (!this.state.totalSize_before_hangup) {
       let totalSize = 0
       for (let round = 0; round < this.participants.human.speakingBlobs.length; round++) {
-        totalSize += this.participants.human.speakingBlobs[round].size
+        totalSize +=
+          (this.participants.human.speakingBlobs[round] && this.participants.human.speakingBlobs[round].size) || 0
       }
       if (this.participants.human.listeningBlob) {
         totalSize += this.participants.human.listeningBlob.size
@@ -1928,6 +2001,10 @@ class RASPUndebate extends React.Component {
       clearTimeout(this.recordTimeout)
       this.recordTimeout = 0
     }
+    if (this.talkativeTimeout) {
+      clearTimeout(this.talkativeTimeout)
+      this.talkativeTimeout = 0
+    }
     if (this.setState.countDown > 0) this.setState({ countDown: 0 })
   }
 
@@ -1963,7 +2040,7 @@ class RASPUndebate extends React.Component {
         Object.keys(this.props.participants).forEach(part => this.nextMediaState(part))
         // special case where human is in seat2 initially - because seat2 is where we record their silence
         if (listeningRound === 0 && this.seat(Object.keys(this.props.participants).indexOf('human')) === listeningSeat)
-          this.camera.startRecording(blobs => this.saveRecordingToParticipants(false, 0, blobs)) // listening is not speaking
+          this.startRecording(blobs => this.saveRecordingToParticipants(false, 0, blobs)) // listening is not speaking
       } catch (e) {
         logger.error('getCameraMedia', e.name, e.message)
       }
@@ -1975,15 +2052,29 @@ class RASPUndebate extends React.Component {
 
   videoError(participant, e) {
     logger.error('Undebate.videoError ' + e.target.error.code + '; details: ' + e.target.error.message, participant)
-    if (e.target.error.code === 3 && e.target.error.message.startsWith('PIPELINE_ERROR_DECODE')) {
+    if (
+      e.target.error.code === e.target.error.MEDIA_ERR_DECODE &&
+      e.target.error.message.startsWith('PIPELINE_ERROR_DECODE')
+    ) {
       // there is something wrong with the video we are trying to play
       if (this.seat(Object.keys(this.props.participants).indexOf(participant)) === 'speaking') {
         this.autoNextSpeaker() // skip to the next speaker
-        logger.error('Undebate.videoError on speaker, skipping', e.target.error.message, this[participant].current.src)
+        logger.error(
+          'Undebate.videoError on speaker, skipping',
+          e.target.error.message,
+          this.participants[participant].element.current.src
+        )
       } else {
-        logger.error('Undebate.videoError on listener, ignoring', e.target.error.message, this[participant].current.src)
+        logger.error(
+          'Undebate.videoError on listener, ignoring',
+          e.target.error.message,
+          this.participants[participant].element.current.src
+        )
       }
-    } else this.autoNextSpeaker() // skip to the next speaker
+    } else {
+      let chair = this.seat(Object.keys(this.props.participants).indexOf(participant))
+      if (chair === 'speaking') this.autoNextSpeaker() // if error is on who's speaking skip to next speaker, else ignore the error
+    }
   }
 
   // we have to check on the speaker's video periodically to see if it's stalled by checking if the currentTime is increasing
@@ -1999,7 +2090,7 @@ class RASPUndebate extends React.Component {
       logger.error('Undebate.stallWatch called but timeout already set', this.stallWatchTimeout)
     }
 
-    const element = this[speaker].current
+    const element = this.participants[speaker].element.current
     var lastTime = -1
     var tickCount = 0
 
@@ -2207,12 +2298,12 @@ class RASPUndebate extends React.Component {
             </a>
           </div>
         ))
-
+    //! ===============================   beginOverlay   ===============================
     const beginOverlay = () =>
       !begin &&
       !done && (
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
-          {noOverlay ? (
+          {noOverlay || opening.noPreamble ? (
             <div style={{ width: '100%', height: '100%', display: 'table' }}>
               <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
                 <button style={{ marginTop: '25vh' }} className={classes['beginButton']} onClick={this.beginButton}>
@@ -2397,7 +2488,7 @@ class RASPUndebate extends React.Component {
     let humanSpeaking = false
 
     var videoBox = (participant, i, seatStyle) => {
-      if (!this[participant]) return null // we don't have room for this participant
+      if (!this.participants[participant].element) return null // we don't have room for this participant
       let chair = this.seat(i)
       if (participant === 'human' && this.seat(i) === 'speaking') humanSpeaking = true
       const style =
@@ -2419,6 +2510,24 @@ class RASPUndebate extends React.Component {
           )}
           key={participant}
         >
+          {this.seat(i) === 'speaking' ? (
+            <SocialShareBtn
+              metaData={{
+                path: this.props.path,
+                subject: this.props.subject,
+                styles: {
+                  position: 'absolute',
+                  zIndex: '100',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  width: '100%',
+                  margin: '0.4rem 0 0 0',
+                  fontSize: '1.25rem',
+                },
+              }}
+            />
+          ) : null}
           <div
             style={{
               width: seatStyle[this.seat(i)].width,
@@ -2453,8 +2562,8 @@ class RASPUndebate extends React.Component {
               )}
               style={{
                 fontSize: '8px',
-                width: (parseFloat(seatStyle[this.seat(i)].width) * innerWidth) / 100,
-                height: (parseFloat(seatStyle[this.seat(i)].width) * HDRatio * innerWidth) / 100,
+                width: seatStyle[this.seat(i)].width,
+                height: parseFloat(seatStyle[this.seat(i)].width) * HDRatio + 'vw',
               }}
             >
               <div id={'youtube-' + participant} style={{ fontSize: '8px' }}></div>
@@ -2469,7 +2578,7 @@ class RASPUndebate extends React.Component {
                   stylesSet && !intro && classes['intro'],
                   stylesSet && !begin && classes['begin']
                 )}
-                ref={this[participant]}
+                ref={this.participants[participant].element}
                 playsInline
                 autoPlay={!bot}
                 controls={false}
@@ -2497,7 +2606,7 @@ class RASPUndebate extends React.Component {
             </>
           )}
           <div className={cx(classes['videoFoot'], stylesSet && classes['stylesSet'], finishUp && classes['finishUp'])}>
-            <span>{!finishUp && seatToName[this.seat(i)] + ': '}</span>
+            <span>{!finishUp && this.seatToName[this.seat(i)] + ': '}</span>
             <span>{participant_name}</span>
           </div>
         </div>
@@ -2581,12 +2690,20 @@ class RASPUndebate extends React.Component {
       !this.state.hungUp &&
       this.participants.human && (
         <div className={classes['hangUpButton']}>
-          <button onClick={this.hangup} key="hangup">
-            Hang Up
+          <button
+            onClick={this.hangup}
+            key="hangup"
+            title={
+              (this.props.hangupButton && this.props.hangupButton.title) ||
+              'Stop recording and delete all video stored in the browser.'
+            }
+          >
+            {(this.props.hangupButton && this.props.hangupButton.name) || 'Hang Up'}
           </button>
-          {this.state.totalSize_before_hangup ? (
+          {this.state.totalSize_before_hangup && !this.state.uploadComplete ? (
             <div className={classes['hangUpButtonReally']}>
-              You have recorded video, did you really want to hang up?
+              {(this.props.hangupButton && this.props.hangupButton.question) ||
+                'You have recorded video, did you really want to exit and delete it, rather than finish this and post it?'}
               <div
                 className={classes['hangUpButtonReallyClose']}
                 onClick={() => this.setState({ totalSize_before_hangup: 0 })}
@@ -2601,15 +2718,41 @@ class RASPUndebate extends React.Component {
     const conversationTopic = topicStyle => {
       return (
         <>
+          {this.props.instructionLink && (
+            <div className={classes['instructionLink']}>
+              <a target="#" href={this.props.instructionLink}>
+                <i
+                  className={cx('far', 'fa-question-circle', classes['instructionIcon'])}
+                  onClick={() => {
+                    this.allPause()
+                    let win = window.open(this.props.instructionLink, '_blank')
+                    win.focus()
+                  }}
+                />
+              </a>
+            </div>
+          )}
           <div style={topicStyle} className={classes['conversationTopic']}>
             <p className={classes['conversationTopicContent']}>{this.props.subject}</p>
           </div>
-          <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
-            <img
-              className={classes['logo']}
-              src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
-            />
+          <a target="#" href="https://www.EnCiv.org">
+            <img className={classes['enciv-logo']} src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png" />
           </a>
+          {this.props.logo && this.props.logo === 'undebate' ? (
+            <a target="#" href="https://enciv.org/undebate">
+              <img
+                className={classes['logo']}
+                src="https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,h_100/v1585602937/Undebate_Logo.png"
+              />
+            </a>
+          ) : (
+            <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
+              <img
+                className={classes['logo']}
+                src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
+              />
+            </a>
+          )}
         </>
       )
     }
@@ -2654,10 +2797,11 @@ class RASPUndebate extends React.Component {
         >
           <audio ref={this.audio} playsInline controls={false} onEnded={this.audioEnd} key="audio"></audio>
           {main()}
-          {((this.participants.human && this.state.preambleAgreed) || !this.participants.human) &&
+          {((this.participants.human && (this.state.preambleAgreed || opening.noPreamble)) ||
+            !this.participants.human) &&
             !bot &&
             beginOverlay()}
-          {this.participants.human && !intro && !begin && !done && (
+          {this.participants.human && !opening.noPreamble && !intro && !begin && !done && (
             <CandidatePreamble
               subject={this.props.subject}
               bp_info={this.props.bp_info}
@@ -2670,7 +2814,8 @@ class RASPUndebate extends React.Component {
             />
           )}
           {ending()}
-          {((this.participants.human && this.state.preambleAgreed) || !this.participants.human) &&
+          {((this.participants.human && (this.state.preambleAgreed || opening.noPreamble)) ||
+            !this.participants.human) &&
             buttonBar(buttonBarStyle)}
           {recorderButtonBar(recorderButtonBarStyle)}
           {permissionOverlay()}

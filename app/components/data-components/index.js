@@ -7,6 +7,7 @@
 // Also, TypeComponent.attributes() will return module.attributes if it is defined.
 
 const Components = {
+  CafeParticipants: require('./cafe-participants'),
   MergeParticipants: require('./merge-participants'),
   UndebateCreator: require('./undebate-creator'),
 }
