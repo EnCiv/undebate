@@ -1,8 +1,8 @@
 import React, { useState, useRef, useCallback } from 'react'
 import injectSheet from 'react-jss'
+import SocialShareSVG from './socialShareSVG'
 import { TwitterSVG } from './socialShareTwitterSVG'
 import { FacebookSVG } from './socialShareFacebookSVG'
-import { SocialShareSVG } from './socialShareSVG'
 import { useOnClickOutside } from '../hooks'
 const styles = {
   shareDropDown: {
@@ -22,15 +22,6 @@ const styles = {
   socialSVG: {
     marginRight: '0.8rem',
   },
-  shareIconDivWrapper: {
-    marginRight: '0.3rem',
-    cursor: 'pointer',
-    pointerEvents: 'auto',
-  },
-  shareIconSvg: {
-    fill: 'white',
-    pointerEvents: 'auto',
-  },
 }
 const SocialShareBtn = props => {
   const [isOpen, setIsOpen] = useState(false)
@@ -44,10 +35,8 @@ const SocialShareBtn = props => {
   )
   const { classes, metaData } = props
   return (
-    <div style={metaData.styles}>
-      <div className={classes.shareIconDivWrapper} onClick={handleClick}>
-        <SocialShareSVG styles={classes.shareIconSvg} />
-      </div>
+    <div style={{ ...metaData.styles }}>
+      <SocialShareSVG isOpen={isOpen} handleClick={handleClick} />
       {isOpen && (
         <div className={classes.shareDropDown} ref={shareLayoverRef}>
           <div>SHARE</div>

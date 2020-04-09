@@ -2368,9 +2368,10 @@ class RASPUndebate extends React.Component {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'flex-end',
-                  width: '100%',
+                  width: '99%',
                   margin: '0.4rem 0 0 0',
-                  fontSize: '1.25rem',
+                  fontSize: '2rem',
+                  marginTop: '0.75rem',
                 },
               }}
             />
