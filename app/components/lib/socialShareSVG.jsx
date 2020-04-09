@@ -3,7 +3,7 @@ import injectSheet from 'react-jss'
 
 const styles = {
   shareIconSvg: {
-    fill: props => (props.isOpen ? 'white' : 'grey'),
+    fill: 'white',
     pointerEvents: 'auto',
     '&:hover': {
       fill: 'white',
