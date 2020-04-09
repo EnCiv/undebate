@@ -981,7 +981,7 @@ class RASPUndebate extends React.Component {
     if (typeof ResolutionToFontSizeTable[key] === 'number') {
       newFontSize = ResolutionToFontSizeTable[key]
     } else {
-      logger.error('Undebate.calcFontSize not found', this.props.browserConfig.type, key, navigator.userAgent)
+      logger.trace('Undebate.calcFontSize not found', this.props.browserConfig.type, key, navigator.userAgent)
     }
 
     if (!newFontSize) {
@@ -1672,17 +1672,21 @@ class RASPUndebate extends React.Component {
     if (!this.state.begin) {
       this.beginButton()
     } else if (!this.state.allPaused) {
-      Object.keys(this.participants).forEach(participant => {
-        if (this.participants[participant].element.current) this.participants[participant].element.current.pause()
-        if (this.participants[participant].youtubePlayer) this.participants[participant].youtubePlayer.pauseVideo()
-      })
-      if (this.state.isRecording) this.pauseRecording()
-      this.setState({ allPaused: true })
+      this.ensurePaused()
     } else {
       this.allPlay()
       if (this.rerecord) this.resumeRecording()
       this.setState({ allPaused: false })
     }
+  }
+
+  ensurePaused() {
+    Object.keys(this.participants).forEach(participant => {
+      if (this.participants[participant].element.current) this.participants[participant].element.current.pause()
+      if (this.participants[participant].youtubePlayer) this.participants[participant].youtubePlayer.pauseVideo()
+    })
+    if (this.state.isRecording) this.pauseRecording()
+    if (!this.state.allPaused) this.setState({ allPaused: true })
   }
 
   allStop() {
@@ -2724,7 +2728,7 @@ class RASPUndebate extends React.Component {
                 <i
                   className={cx('far', 'fa-question-circle', classes['instructionIcon'])}
                   onClick={() => {
-                    this.allPause()
+                    this.ensurePaused()
                     let win = window.open(this.props.instructionLink, '_blank')
                     win.focus()
                   }}
@@ -2745,13 +2749,18 @@ class RASPUndebate extends React.Component {
                 src="https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,h_100/v1585602937/Undebate_Logo.png"
               />
             </a>
-          ) : (
+          ) : this.props.logo && this.props.logo === 'none' ? (
+            false
+          ) : (this.props.logo && this.props.logo === 'CandidateConversations') ||
+            typeof this.props.logo === 'undefined' ? (
             <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
               <img
                 className={classes['logo']}
                 src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
               />
             </a>
+          ) : (
+            false
           )}
         </>
       )

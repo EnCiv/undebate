@@ -12,10 +12,12 @@
     "transpile": "babel app --ignore **/__tests__ --out-dir dist --source-maps",
     "hot-transpile": "babel --watch app --ignore **/__tests__ --out-dir dist --source-maps",
     "hot-server": "nodemon --inspect dist/server/start.js",
+    "hot-server-no-inspect": "nodemon dist/server/start.js",
     "hot-client": "webpack-dev-server --config webpack-dev.config.js --devtool source-map --host 0.0.0.0",
     "postinstall": "bash postinstall.sh",
     "packbuild": "webpack --config webpack-prod.config.js",
-    "dev": "echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 10 && npm run hot-server\" \"sleep 15 && npm run hot-client\""
+    "dev": "echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 20 && npm run hot-server\" \"sleep 15 && npm run hot-client\"",
+    "dev-no-inspect": "echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 20 && npm run hot-server-no-inspect\" \"sleep 15 && npm run hot-client\""
   },
   "repository": {
     "type": "git",
