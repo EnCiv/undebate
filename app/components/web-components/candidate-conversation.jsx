@@ -296,11 +296,7 @@ const styles = {
     background: 'yellow',
   },
   title: {
-<<<<<<< HEAD
-    position: "absolute",
-=======
     position: 'absolute',
->>>>>>> a141cd501fd14b759814f419d93ac46553d209e3
     width: '100%',
     bottom: '0',
     'text-align': 'center',
@@ -1026,7 +1022,7 @@ class RASPUndebate extends React.Component {
         if (!seatStyle['seat' + seat]) seatStyle['seat' + seat] = {}
         seatStyle['seat' + seat].top = seatTop
         seatStyle['seat' + seat].left = seatLeft
-        seatStyle['seat' + seat].width = (middleSeatsWidth- (numOfParticipants - 1)*hGap)/(numOfParticipants - 2)   //seatWidthRatio * width
+        seatStyle['seat' + seat].width = (middleSeatsWidth - (numOfParticipants - 1)*hGap)/(numOfParticipants - 2)   //seatWidthRatio * width
         introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
         // seatLeft += seatHorizontalPitch
         seatLeft +=  seatStyle['seat' + seat].width + hGap
@@ -1056,7 +1052,7 @@ class RASPUndebate extends React.Component {
         seatStyle.speaking.width * HDRatio -
         (buttonBarStyle.width / this.buttons.length) * 0.75 - // there are 5 buttons and they are essentially square
         2 * vGap
-        
+
       recorderButtonBarStyle.left = seatStyle.speaking.left
       recorderButtonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
       recorderButtonBarStyle.width = seatStyle.speaking.width
@@ -1073,56 +1069,19 @@ class RASPUndebate extends React.Component {
       // portrait mode
       const hGap = fontSize
       const vGap = fontSize
-<<<<<<< HEAD
-      let speakingWidthRatio = (width - 2 * hGap) / width
-=======
+
       let speakerLeftEdge = hGap
       let speakerRightEdge = hGap
       let speakingWidthRatio = (width - 2 * hGap) / width // as wide as the screen less gaps on edges
       const speakingWidth = () => speakingWidthRatio * width
       const speakingHeight = () => speakingWidthRatio * width * HDRatio
       const seatHorizontalPitch = () => seatWidthRatio * width + hGap
->>>>>>> a141cd501fd14b759814f419d93ac46553d209e3
+
       let seatWidthRatio = 0.4
       const seatWidth = () => seatWidthRatio * width
       const seatHeight = () => seatWidthRatio * width * HDRatio
       const navBarHeight = 0.06 * height + 3 * fontSize + 2 * fontSize
-<<<<<<< HEAD
-      const agendaMaxWidth = 32 * fontSize
-      let speakingWidth = width - 2 * hGap
-      const maxAgendaHeight = fontSize * 20
-      const numOfParticipants = Object.keys(this.props.participants).length - 1 // without the speaker
 
-      let calcHeight =
-        navBarHeight +
-        Math.min(maxAgendaHeight, height - agendaStyle.top - vGap) +
-        2 * width * seatWidthRatio * HDRatio +
-        3 * titleHeight +
-        4 * vGap +
-        speakingWidth * HDRatio
-      if (calcHeight > height) {
-        // if the window is really wide - squish the video height so it still fits
-        let heightForVideo =
-          height -
-          navBarHeight -
-          6 * vGap -
-          3 * titleHeight -
-          Math.min(maxAgendaHeight, height - agendaStyle.top - vGap)
-        let calcHeightForVideo = 2 * width * seatWidthRatio * HDRatio + speakingWidth * HDRatio
-        seatWidthRatio = (seatWidthRatio * heightForVideo) / calcHeightForVideo
-        speakingWidthRatio = (speakingWidthRatio * heightForVideo) / calcHeightForVideo
-      }
-
-      seatStyle.nextUp.left = hGap //seatWidthRatio*width*HDRatio + titleHeight + hGap
-      seatStyle.nextUp.top = navBarHeight + vGap + seatWidthRatio * width * HDRatio + titleHeight + hGap
-      seatStyle.nextUp.width = seatWidthRatio * width + titleHeight*(1/HDRatio)
-      introSeatStyle.nextUp = { left: -(seatStyle.nextUp.left + seatWidthRatio * width + ShadowBox) }
-
-      let seat = 2
-      let seatTop = navBarHeight + vGap
-      let seatLeft = hGap
-      let seatHorizontalPitch = seatWidthRatio * width + titleHeight*(1/HDRatio) + hGap
-=======
       let rows = 2
       let seat = 1
       let rowLeftEdge = hGap
@@ -1147,7 +1106,6 @@ class RASPUndebate extends React.Component {
         speakingWidthRatio = (speakingWidthRatio * heightForVideo) / calcHeightForVideo
         speakerRightEdge = speakerLeftEdge = (width - speakingWidth()) / 2 // it will be thiner than the width, so center it
       }
->>>>>>> a141cd501fd14b759814f419d93ac46553d209e3
 
       // check on number of rows again - the size has shrunk so it might fit now.
       if (numOfParticipants * seatHorizontalPitch() <= width) rows = 1
@@ -1167,86 +1125,6 @@ class RASPUndebate extends React.Component {
 
       // across the bottom
       let i = 0 // for calculating the intro
-<<<<<<< HEAD
-
-      if (numOfParticipants < 4) {
-        //if less than 4 participants display seats in one row
-        while (seat <= 7) {
-          // some will go off the screen
-          seatStyle['seat' + seat].top = seatTop
-          seatStyle['seat' + seat].left = seatLeft
-          seatStyle['seat' + seat].width = seatWidthRatio * width + titleHeight*(1/HDRatio)
-          introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
-          seatLeft += seatHorizontalPitch
-          seat++
-          i++
-        }
-      } else {
-        //if 4 or more participants display seats in two rows
-        if (numOfParticipants % 2 !== 0) {
-          // if odd number of seats
-
-          while (seat <= (numOfParticipants / 2 + 1 ) ) {
-            // some will go off the screen
-            seatStyle['seat' + seat].top = seatTop //+ seatWidthRatio * width * HDRatio + titleHeight + hGap
-            seatStyle['seat' + seat].left = seatLeft
-            seatStyle['seat' + seat].width = seatWidthRatio * width + titleHeight*(1/HDRatio)
-            introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
-            seatLeft += seatHorizontalPitch
-            seat++
-            i++
-          }
-
-          seatLeft = (numOfParticipants - seat + 1)*seatHorizontalPitch + hGap
-
-          while (seat <= numOfParticipants) {
-            // some will go off the screen
-            seatStyle['seat' + seat] .top = seatTop + seatWidthRatio * width * HDRatio + titleHeight + hGap
-            seatStyle['seat' + seat].left = seatLeft
-            seatStyle['seat' + seat].width = seatWidthRatio * width + titleHeight*(1/HDRatio)
-            introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
-            seatLeft -= seatHorizontalPitch
-            seat++
-            i++
-          }
-        } else {
-          //if even number of seats
-          seatLeft =  hGap
-          while (seat <= (numOfParticipants / 2 + 1 ) ) {
-            // some will go off the screen
-            seatStyle['seat' + seat].top = seatTop //+ seatWidthRatio * width * HDRatio + titleHeight + hGap
-            seatStyle['seat' + seat].left = seatLeft
-            seatStyle['seat' + seat].width = seatWidthRatio * width + titleHeight*(1/HDRatio)
-            introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
-            seatLeft += seatHorizontalPitch
-            seat++
-            i++
-          }
-
-          seatLeft = (numOfParticipants - seat + 1)*seatHorizontalPitch + hGap
-
-          while (seat <= numOfParticipants) {
-            // some will go off the screen
-            seatStyle['seat' + seat] .top = seatTop + seatWidthRatio * width * HDRatio + titleHeight + hGap
-            seatStyle['seat' + seat].left = seatLeft
-            seatStyle['seat' + seat].width = seatWidthRatio * width + titleHeight*(1/HDRatio)
-            introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
-            seatLeft -= seatHorizontalPitch
-            seat++
-            i++
-          }
-        }
-      }
-      // if (calcHeight/ > height) {
-        // seatStyle.speaking.left = (width - speakingWidthRatio * width) / 2
-      // } else {
-        seatStyle.speaking.left = hGap
-      // }
-      // seatStyle.speaking.left= hGap;
-      seatStyle.speaking.top = navBarHeight + vGap + 2 * seatWidthRatio * width * HDRatio + 2 * titleHeight + 2 * vGap
-      seatStyle.speaking.width = width - 2*hGap
-=======
-
       // figure out where to start the top line of participants
       let topLineParticipants = numOfParticipants % 2 ? (numOfParticipants + 1) / 2 : numOfParticipants / 2
       if (rows === 2 && numOfParticipants == 3) topLineParticipants = 1
@@ -1307,7 +1185,7 @@ class RASPUndebate extends React.Component {
       seatStyle.speaking.top = navBarHeight + vGap + rows * (seatHeight() + titleHeight + vGap)
       seatStyle.speaking.width = speakingWidth()
       seatStyle.speaking['--speaking-height'] = speakingHeight() + 'px' // tell child div's what the speaking-height is
->>>>>>> a141cd501fd14b759814f419d93ac46553d209e3
+
       introSeatStyle.speaking = { top: -(speakingWidthRatio * HDRatio * width + vGap + ShadowBox) }
 
       seatStyle.finishUp.left = 0.5 * width
@@ -1318,11 +1196,7 @@ class RASPUndebate extends React.Component {
       agendaStyle.left = seatStyle.speaking.left
       agendaStyle.width = seatStyle.speaking.width
       agendaStyle.height = Math.max(maxAgendaHeight, height - agendaStyle.top - vGap)
-<<<<<<< HEAD
-      
-=======
 
->>>>>>> a141cd501fd14b759814f419d93ac46553d209e3
       introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
       buttonBarStyle.width = seatStyle.speaking.width * 0.6
@@ -1330,14 +1204,10 @@ class RASPUndebate extends React.Component {
       buttonBarStyle.top =
         seatStyle.speaking.top +
         seatStyle.speaking.width * HDRatio -
-<<<<<<< HEAD
-        (buttonBarStyle.width / this.buttons.length) * 0.75 -
-        vGap - titleHeight // there are 5 buttons and they are essentially square
 
-=======
         (buttonBarStyle.width / this.buttons.length) * 0.75 - // there are 5 buttons and they are essentially square
         1 * vGap
->>>>>>> a141cd501fd14b759814f419d93ac46553d209e3
+
       recorderButtonBarStyle.left = seatStyle.speaking.left
       recorderButtonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
       recorderButtonBarStyle.width = seatStyle.speaking.width
@@ -2484,13 +2354,10 @@ class RASPUndebate extends React.Component {
       else participant_name = this.props.participants[participant].name
       /*src={"https://www.youtube.com/embed/"+getYouTubeID(this.participants[participant].listeningObjectURL)+"?enablejsapi=1&autoplay=1&loop=1&controls=0&disablekb=1&fs=0&modestbranding=1&rel=0"}*/
       // if (this.seat(i) === 'speaking') {
-<<<<<<< HEAD
-        // const titleStyle = this.state.titleSpeakerStyle
-      // } else { 
-=======
+
       // const titleStyle = this.state.titleSpeakerStyle
       // } else {
->>>>>>> a141cd501fd14b759814f419d93ac46553d209e3
+
       // }
 
       return (
@@ -2583,12 +2450,7 @@ class RASPUndebate extends React.Component {
                 </div>
               </div>
 
-<<<<<<< HEAD
-              <div className={cx(classes['title'], stylesSet && classes['stylesSet'], finishUp && classes['finishUp'])}>
-                <span>{participant_name}</span>
-              </div>
 
-=======
               <div
                 className={cx(
                   classes['title'],
@@ -2599,7 +2461,7 @@ class RASPUndebate extends React.Component {
               >
                 <span>{participant_name}</span>
               </div>
->>>>>>> a141cd501fd14b759814f419d93ac46553d209e3
+
             </>
           )}
         </div>
