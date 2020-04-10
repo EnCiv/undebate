@@ -5,6 +5,17 @@ import { TwitterSVG } from './socialShareTwitterSVG'
 import { FacebookSVG } from './socialShareFacebookSVG'
 import { useOnClickOutside } from '../hooks'
 const styles = {
+  socialShareWrapper: {
+    position: 'absolute',
+    zIndex: '100',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    width: '99%',
+    margin: '0.4rem 0 0 0',
+    fontSize: '2rem',
+    marginTop: '0.75rem',
+  },
   shareDropDown: {
     backgroundColor: 'rgba(255, 255, 255, 0.6)',
     width: '20%',
@@ -35,7 +46,7 @@ const SocialShareBtn = props => {
   )
   const { classes, metaData } = props
   return (
-    <div style={{ ...metaData.styles }}>
+    <div className={classes.socialShareWrapper}>
       <SocialShareSVG isOpen={isOpen} handleClick={handleClick} />
       {isOpen && (
         <div className={classes.shareDropDown} ref={shareLayoverRef}>

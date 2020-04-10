@@ -2362,17 +2362,6 @@ class RASPUndebate extends React.Component {
               metaData={{
                 path: this.props.path,
                 subject: this.props.subject,
-                styles: {
-                  position: 'absolute',
-                  zIndex: '100',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'flex-end',
-                  width: '99%',
-                  margin: '0.4rem 0 0 0',
-                  fontSize: '2rem',
-                  marginTop: '0.75rem',
-                },
               }}
             />
           ) : null}
