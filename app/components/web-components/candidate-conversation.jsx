@@ -1017,7 +1017,7 @@ class RASPUndebate extends React.Component {
       // across the bottom
       let i = 0 // for calculating the intro
 
-      if((this.numParticipants - 1) < 12) {
+      if((this.numParticipants - 1) < 8) {
         while (seat <= this.numParticipants - 1) {
           // -1 because one is speaking
           // some will go off the screen
@@ -1031,7 +1031,7 @@ class RASPUndebate extends React.Component {
           seat++
           i++
         }
-      } else if((this.numParticipants - 1) > 12) {
+      } else if((this.numParticipants - 1) > 7) {
 
         seatLeft = seatHorizontalPitch + hGap
 
@@ -1041,7 +1041,7 @@ class RASPUndebate extends React.Component {
           if (!seatStyle['seat' + seat]) seatStyle['seat' + seat] = {}
           seatStyle['seat' + seat].top = seatTop
           seatStyle['seat' + seat].left = seatLeft
-          seatStyle['seat' + seat].width = (middleSeatsWidth - (numOfParticipants - 1)*hGap)/(numOfParticipants - 2)   //seatWidthRatio * width
+          seatStyle['seat' + seat].width = (middleSeatsWidth - (numOfParticipants - 1)*hGap)/((numOfParticipants - 2)/2 +1)   //seatWidthRatio * width
           introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
           // seatLeft += seatHorizontalPitch
           seatLeft +=  seatStyle['seat' + seat].width + hGap
@@ -1055,7 +1055,7 @@ class RASPUndebate extends React.Component {
           if (!seatStyle['seat' + seat]) seatStyle['seat' + seat] = {}
           seatStyle['seat' + seat].top = seatTop + (middleSeatsWidth - (numOfParticipants - 1)*hGap)/(numOfParticipants - 2)*HDRatio
           seatStyle['seat' + seat].left = seatLeft
-          seatStyle['seat' + seat].width = (middleSeatsWidth - (numOfParticipants - 1)*hGap)/(numOfParticipants - 2)   //seatWidthRatio * width
+          seatStyle['seat' + seat].width = (middleSeatsWidth - (numOfParticipants - 1)*hGap)/((numOfParticipants - 2)/2 + 1)   //seatWidthRatio * width
           introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
           // seatLeft += seatHorizontalPitch
           seatLeft +=  seatStyle['seat' + seat].width + hGap
