@@ -1017,7 +1017,7 @@ class RASPUndebate extends React.Component {
       // across the bottom
       let i = 0 // for calculating the intro
 
-      if((this.numParticipants - 1) < 8) {
+      if((this.numParticipants - 1) < 14) {
         while (seat <= this.numParticipants - 1) {
           // -1 because one is speaking
           // some will go off the screen
@@ -1031,7 +1031,7 @@ class RASPUndebate extends React.Component {
           seat++
           i++
         }
-      } else if((this.numParticipants - 1) > 7) {
+      } else if((this.numParticipants - 1) > 14) {
 
         seatLeft = seatHorizontalPitch + hGap
 
