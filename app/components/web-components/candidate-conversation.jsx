@@ -1033,21 +1033,21 @@ class RASPUndebate extends React.Component {
         }
       } else if((this.numParticipants - 1) > 14) {
 
-        seatLeft = seatHorizontalPitch + hGap
-
         while (seat <= ((this.numParticipants - 1)/2 + 1)) {
           // -1 because one is speaking
           // some will go off the screen
           if (!seatStyle['seat' + seat]) seatStyle['seat' + seat] = {}
           seatStyle['seat' + seat].top = seatTop
           seatStyle['seat' + seat].left = seatLeft
-          seatStyle['seat' + seat].width = (middleSeatsWidth - (numOfParticipants - 1)*hGap)/((numOfParticipants - 2)/2 +1)   //seatWidthRatio * width
+          seatStyle['seat' + seat].width = (middleSeatsWidth - (numOfParticipants - 1)*hGap)/((numOfParticipants - 2)/2 + 1)   //seatWidthRatio * width
           introSeatStyle['seat' + seat] = { top: maxerHeight + i * (seatWidthRatio * HDRatio * width + vGap) } // along the bottom, each seat is further away as you move to the right
           // seatLeft += seatHorizontalPitch
           seatLeft +=  seatStyle['seat' + seat].width + hGap
           seat++
           i++
         }
+
+        seatLeft = seatHorizontalPitch + hGap
 
         while (seat <= this.numParticipants - 1) {
           // -1 because one is speaking
