@@ -2034,7 +2034,7 @@ class RASPUndebate extends React.Component {
       logger.trace('Using media constraints:', constraints)
 
       try {
-        await this.camera.getCameraStream(constraints)
+        await this.camera.getCameraStream(constraints, () => this.nextMediaState('human'))
         const listeningRound =
           (this.props.participants.human.listening && this.props.participants.human.listening.round) || Infinity
         const listeningSeat =
