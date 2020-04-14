@@ -88,10 +88,12 @@ export default class ReactCameraRecorder extends React.Component {
     this.constraints = cloneDeep(constraints)
     this.cameraStreamUpdater = cameraStreamUpdater
     if (this.canNotRecordHere) return Promise.reject(new Error('can not record here'))
-    else
+    else {
+      this.setState({ getCameraStream: true })
       return new Promise((ok, ko) => {
         this.getCameraStreamFromCalculatedConstraints(ok, ko)
       })
+    }
   }
 
   async getCameraStreamFromCalculatedConstraints(ok, ko) {
@@ -234,14 +236,24 @@ export default class ReactCameraRecorder extends React.Component {
   }
 
   render() {
-    if (typeof this.state.cameraIndex === 'undefined') return null
+    if (typeof this.state.cameraIndex === 'undefined' || !this.state.getCameraStream) return null
     else
       return (
         <div
-          style={{ zIndex: 10, cursor: 'pointer', pointerEvents: 'auto', position: 'absolute' }}
+          style={{
+            zIndex: 10,
+            margin: '1em',
+            border: '1px solid #808080',
+            borderRadius: '3px',
+            padding: '.1em',
+            cursor: 'pointer',
+            pointerEvents: 'auto',
+            position: 'absolute',
+            bottom: '3em',
+          }}
           onClick={this.nextCamera}
         >
-          Next Camera
+          Change Camera
         </div>
       )
   }
