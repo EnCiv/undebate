@@ -3,9 +3,8 @@ import injectSheet from 'react-jss'
 import superagent from 'superagent'
 import isEmail from 'is-email'
 import Icon from '../lib/icon'
-import SubmitBtn from './submitBtn'
 
-const AuthForm = props => {
+const Temp = props => {
   const [hasAgreed, setHasAgreed] = useState(false)
   const [onLogin, setOnLogin] = useState(false)
   const [formValues, setFormValues] = useState({
@@ -19,7 +18,6 @@ const AuthForm = props => {
   const [formValidationErrors, setFormValidationErrors] = useState([])
   const handleTabSwitch = bool => setOnLogin(bool)
   const { email, password, confirmPassword } = formValues
-
   useEffect(() => {
     if (!onLogin) {
       if (email && password && confirmPassword && password === confirmPassword && hasAgreed) {
@@ -39,9 +37,7 @@ const AuthForm = props => {
       return setIsDisabled(true)
     }
   }, [formValues, hasAgreed, formValidationErrors, onLogin])
-
   const handleChange = e => setFormValues({ ...formValues, [e.target.name]: e.target.value })
-
   const emailBlurMsg = 'email address is not valid'
   const passwordBlurMsg = 'Passwords do not match'
   const handleOnBlur = (message, isEmailBlur = false) => {
@@ -59,16 +55,13 @@ const AuthForm = props => {
     const filteredValidations = formValidationErrors.filter((msg, i) => i !== index)
     return setFormValidationErrors(filteredValidations)
   }
-
   const handleSignUp = e => {
     e.preventDefault()
     if (isDisabled) return
-
     setFormValidationErrors([])
     setInfoMessage('Signing you up...')
     const { email, password } = formValues
     const userInfo = { email, password }
-
     superagent
       .post('/sign/up')
       .send(userInfo)
@@ -101,7 +94,6 @@ const AuthForm = props => {
   const handleLogin = e => {
     e.preventDefault()
     if (isDisabled) return
-
     setInfoMessage('Logging you in...')
     const { email, password } = formValues
     const userInfo = Object.assign({}, props.userInfo, { email, password })
@@ -120,7 +112,6 @@ const AuthForm = props => {
               setTimeout(() => (location.href = props.newLocation ? props.newLocation : window.location.pathname), 800)
             }
             break
-
           default:
             setFormValidationErrors([
               'The email and password you entered did not match our records. Please double-check and try again.',
@@ -152,7 +143,6 @@ const AuthForm = props => {
       window.socket.close()
     } else cb()
   }
-
   const { classes } = props
   if (successMessage) {
     return <span>{successMessage}</span>
@@ -168,6 +158,18 @@ const AuthForm = props => {
         </div>
       </div>
       <form>
+        <label style={{ color: '#18397D', textAlign: 'left', fontWeight: '900' }}>
+          First Name
+          <input
+            style={{
+              boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+              border: 'none',
+              fontSize: '1.4rem',
+              height: '2rem',
+              padding: '0.5rem',
+            }}
+          />
+        </label>
         <label>
           Email Address
           <input
@@ -227,7 +229,6 @@ const AuthForm = props => {
     </div>
   )
 }
-
 const styles = {
   authFormWrapper: {
     border: '0.5px solid black',
@@ -267,4 +268,5 @@ const styles = {
     color: 'red',
   },
 }
+export const AuthForm = injectSheet(styles)(Temp)
 export default injectSheet(styles)(AuthForm)
