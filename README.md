@@ -22,6 +22,8 @@ Contributions are accepted under the MIT License without additional conditions. 
 
 You will need a github.com account, and a heroku.com account. Heroku is like a server in the cloud that you can push git repo's to, and after you push, heroku will build and run them. It's also great because they give you free accounts that you can use for development.
 
+The install instructions are **[here](./doc/install.md)**
+
 # Prettier
 
 This project is now using prettier. This makes some spacing and the user of quotes and a few other things consistent across the project.
@@ -38,97 +40,100 @@ This project is now using prettier. This makes some spacing and the user of quot
 
 If you are not using VSC prettier will also be run before you commit, but see if prettier is available for your editor and post instuctions here
 
-# Install
+## How to add a new web page to the server
 
-You will need to install the following, if you do not already have them.
+Here is the flow. When a user visits the server with a url, `getIota()` in [server](./app/server/server.js) will look up the path in the database. If it finds a match, it will look for a webComponent and render that on the server through [app/server/routes/serverReactRender](./app/server/routes/server-react-render.jsx). All the properties of this webComponent will be passed as props to the corresponding React component.Then the page will be sent to the browser, and then rehydrated there, meaning the webComponent will run again on the browser, starting at [app/client/main.js](./app/client/main.js) and react will connect all the DOM elements.
 
-1. Git: On windows go to https://git-scm.com/download/win and install it. If you are on a Mac, install brew first, https://brew.sh/ and then `brew install git`
-2. Node.js: https://nodejs.org/en/download/
-3. Heroku: https://devcenter.heroku.com/articles/heroku-cli
-4. I use visual studio code, but you can use another environment, but you will need to be able to run git-bash terminal windows in your environment.
-   https://code.visualstudio.com/
+### 1) Add a React Component to [./app/components/web-components](./app/components/web-components)\*\*
 
-## Setup
+here is simple one, [./app/components/web-components/undebate-iframes.jsx](./app/components/web-components/undebate-iframes.jsx):
 
-On your browser go to your github account and login
+```
+'use strict'
 
-If you have just installed VSC you need to setup the bash shell. Use Control-Shift-P
-In the input field type "Select Default Shell"
-Choose "Git Bash"
+import React from 'react'
+import injectSheet from 'react-jss'
 
-Then open a git-bash shell - on VSC use Control-\`
 
-    mkdir enciv
-    cd enciv
-    git clone https://github.com/EnCiv/undebate
-    cd undebate
-    npm install
+const styles = {
+  title: {
+    color: 'black',
+    fontSize: '2rem',
+    textAlign: 'center',
+  },
+  frame: { marginTop: '1em', marginBottom: '1em', width: '100vw' },
+}
 
-Note - if you are using multiple accounts with heroku, make sure that on your browser you are logged into the account that you want to use.
+class UndebateIframes extends React.Component {
+  render() {
+    const { classes } = this.props
+    const width = typeof window !== 'undefined' ? window.innerWidth : 1920
+    const height = typeof window !== 'undefined' ? window.innerHeight : 1080
 
-Heroku calls them 'apps' but think of it as a server instance in the cloud with a URL, the name you give it is part of the url. Create one with:
+    return (
+      <div>
+        <div>
+          <span className={classes['title']}>These are the Undebates</span>
+        </div>
+        <iframe
+          className={classes.frame}
+          height={height * 0.9}
+          width={width}
+          name="race1"
+          src="https://cc.enciv.org/san-francisco-district-attorney"
+        />
+        <iframe
+          className={classes.frame}
+          height={height * 0.9}
+          width={width}
+          name="race2"
+          src="https://cc.enciv.org/country:us/state:wi/office:city-of-onalaska-mayor/2020-4-7"
+        />
+      </div>
+    )
+  }
+}
+export default injectSheet(styles)(UndebateIframes)
+```
 
-    heroku create undebate-something-unique
+### 2) Add that component to the [index.js](./components/web-components/index.js)
 
-Then we add the MongoDB database. It's also in cloud. You will be able to use this one database when you are running locally, and when you are running in the cloud.
+```
+  ...
+  const WebComponents = {
+    TestJoin: require('./test-join'),
+    ...
+    UndebateIframes: require('./undebate-iframes'),
+  }
+  ...
+```
 
-    heroku addons:create mongolab:sandbox -a undebate-something-unique
+Wish List: I wish that this file could be automatically generated based on the files in the directory. For now, we do it manually.
 
-Now lets get the environment variable with the URI for that database and store it in your bash configuration file so you can use it when you run locally. This string has a password in it and it should never be shared or commited to a repo. The .gitignore file ignores .bashrc so it won't get added into a repo - just make sure it stays that way.
+### 3) Create a new document in the iotas collection of the database
 
-    echo "export MONGODB_URI="\"`heroku config:get MONGODB_URI -a undebate-something-unique`\" >> .bashrc
+The example is the minimum information required. Any additional properties you add to webComponent will be passed as props to the associated React component.
 
-Now we will add Cloudinary - a Content Delivery Network that has image and video manipulation features. A CDN gives you a place to store these things, and deliver them quickly over the internet. Your node server would be slower, and doesn't keep the files after the server restarts.
+```
+{
+    "path": "/iframe-demo",
+    "subject": "Iframe demo",
+    "description": "a quick prototype of a page showing multiple undebates in separate iframes",
+    "webComponent": {
+        "webComponent": "UndebateIframes"
+    },
+}
+```
 
-    heroku addons:create cloudinary:starter -a undebate-something-unique
+Note that the \_id property is not shown here. When you add this document to the database, it will automatically assign the \_id.
 
-Again we get the environment variable with the URL for Cloudinary and store it in your config file for local use. There's a password in the string, so keep it secret.
+### 4) Add new document to iota.js
 
-    echo "export CLOUDINARY_URL="\"`heroku config:get CLOUDINARY_URL -a undebate-something-unique`\" >> .bashrc
+If the new document that you are creating should be included in every new installation, then you should add the document, with the \_id assigned, to [iota.json](./iota.json)
 
-Now we just tell node we are in development mode. Later we will set it to production
+### 5) Advanced: Component
 
-    echo "export NODE_ENV=development" >> .bashrc
-    heroku config:set NODE_ENV=development
-
-Then to get all these environment variable set in your current instance of bash do this. But you won't have to it the next time you start up.
-
-    source .bashrc
-
-Now you should be able to run it.
-
-    npm run dev
-
-You should now be able to browser to localhost:3011/schoolboard-conversation and see an undebate. The server is running locally on our machine. It's using webpack, which is really neat bacuase when you save changes to the source code, it will automatically be compliled and applied to the server and to the application in your browser. You may still have to refresh your browser page though.
-
-You can use Control-C to terminate the server
-
-To run this in the cloud on heroku:
-
-    git push heroku HEAD:master
-
-Then you will be able to browse to `https://undebate-something-unique.herokuapp.com/schoolboard-conversation` and see the same thing.
-
-Then, to record your own part in the schoolboard conversation browser to: localhost:3011/schoolboard-conversation-candidate-recorder or `https://undebate-something-unique.herokuapp.com/schoolboard-conversation-candidate-recorder`
-
-## EMAIL Setup
-
-Setting up email from the server is not required, and is kind of hard. For information on how to do it for g-suite see https://medium.com/@imre_7961/nodemailer-with-g-suite-oauth2-4c86049f778a
-If you do, edit the .bashrc file and add these lines
-
-    export NODEMAILER_SERVICE="gmail"
-    NODEMAILER_USER="no-reply@yourdomain.com"
-    NODEMAILER_SERVICE_CLIENT="XXXXXXXXXXXXXXXXXXXXX"
-    NODEMAILER_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nXXXXX........XXXXX\n-----END PRIVATE KEY-----\n
-
-If you use Zoho, you can do it like this.
-
-    export NODEMAILER_SERVICE="Zoho"
-    NODEMAILER_USER="no-reply@yourdomain.com"
-    NODEMAILER_PASS="xxxxxxxxx"
-
-If you use some other service, or 'things change' as they always do, go to app/server/util/send-mail.js and address them, but don't break the above configurations
-After you make changes to the .bashrc file you will need to heroku config:set them to get them to heroku
+If your page should pull data out of the database, or calculate something to pass to the web component, then you can add a component to [app/components/components](./app/components/data-components), add it to the [app/components/data-components/index.js](./app/components/data-components/index.js) and then add a component: {component: YourComponentNane, ...} to the document above.
 
 ## Database
 
@@ -142,3 +147,12 @@ There is a tool that lets you view and edit the database in a browser window. Th
    2. logs: We are using log4js and the output goes to this collection, and to the console. To view the logs from the server in the cloud use `app/tools/logwatch.js db $MONGODB_URI`. To exit, Control-C
    3. users: when people save their recordings, a users record is created. There's not much here now, and we need to expand on this.
 5. You can click on collections and look through them, you can edit entries (carefully!), and you can create new ones.
+
+The server will only copy the iota.js file into the database if the databse is empty when it starts up. Another thing you can do is use mongoimport to upload the iota.js file into the database. To do that you will need to install mongo from https://docs.mongodb.com/manual/administration/install-community/ and then:
+
+```
+mongoimport --type json --collection iotas --file iota.json --uri $MONGODB_URI --jsonArray --mode
+upsert
+```
+
+**Note this will overwrite documents of the same \_id.** But other documents won't be harmed.

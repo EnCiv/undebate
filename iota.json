@@ -1,210 +1,1727 @@
 [
-    {
-        "_id": {
-            "$oid": "5d6350b0e7179a084ef376b9"
-        },
-        "path": "/schoolboard-conversation",
-        "subject": "School Board Candidate Conversation - Candidate Conversation",
-        "description": "A prototype Candidate Conversation for schoolboard",
-        "component": {
-            "component": "MergeParticipants"
-        },
-        "webComponent": {
-            "webComponent": "Undebate",
-            "opening": {
-                "line1": "You are about to experience a new kind of conversation",
-                "line2": "This is how voters can learn about candidates in a more human way",
-                "line3": "And this is how we can efficiently facilitate 500K conversations all over the country, every election season",
-                "line4": "The topic of the discussion is:",
-                "bigLine": "US School Board Candidate Conversation",
-                "subLine": "This is a mock conversation, these are not real candidates"
-            },
-            "audio": {
-                "intro": {
-                    "url": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1567095028/Generic_Light_Intro_7_sec_yp3lxk.wav",
-                    "volume": 0.8
-                },
-                "ending": {
-                    "url": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1567096104/Heart_Soul_Entire_Duet_2_min_45_sec_1_j5sbpj.wav",
-                    "volume": 0.7
-                }
-            },
-            "participants": {
-                "moderator": {
-                    "name": "David Fridley",
-                    "speaking": [
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788682/candidate-conversation-moderator-0_at5un1.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788667/candidate-converation-moderator-1_z2kjhr.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788659/candidate-confersation-moderator-2_cid3dq.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788634/candidate-conversation-moderator-3_iq0npa.mp4"
-                    ],
-                    "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
-                    "agenda": [
-                        [
-                            "Introductions",
-                            "1- Who you are",
-                            "2- Where you are",
-                            "3- One word to describe yourself",
-                            "4- What office you are running for"
-                        ],
-                        [
-                            "What type of skills should students be learning for success in the 21st century?"
-                        ],
-                        [
-                            "Closing Remarks"
-                        ]
-                    ],
-                    "timeLimits": [
-                        10,
-                        60,
-                        60
-                    ]
-                }
-            }
+  {
+    "_id": {
+      "$oid": "5d6350b0e7179a084ef376b9"
+    },
+    "path": "/candidate-conversation-5",
+    "subject": "Candidate Conversation with 5 participants",
+    "description": "A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants"
+    },
+    "webComponent": {
+      "webComponent": "CandidateConversation",
+      "opening": {
+        "line1": "You are about to experience a new kind of conversation",
+        "line2": "This is how voters can learn about candidates in a more human way",
+        "line3": "And this is how we can efficiently facilitate 500K conversations all over the country, every election season",
+        "line4": "The topic of the discussion is:",
+        "bigLine": "US School Board Candidate Conversation",
+        "subLine": "This is a mock conversation, these are not real candidates"
+      },
+      "participants": {
+        "moderator": {
+          "name": "David Fridley",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788682/candidate-conversation-moderator-0_at5un1.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788667/candidate-converation-moderator-1_z2kjhr.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788659/candidate-confersation-moderator-2_cid3dq.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788634/candidate-conversation-moderator-3_iq0npa.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Who you are",
+              "2- Where you are",
+              "3- One word to describe yourself",
+              "4- What office you are running for"
+            ],
+            ["What type of skills should students be learning for success in the 21st century?"],
+            ["Closing Remarks"]
+          ],
+          "timeLimits": [10, 60, 60]
         }
-    },
-    {
-        "_id": {
-            "$oid": "5d63521ce7179a084ef376f4"
-        },
-        "path": "/schoolboard-conversation-candidate-recorder",
-        "subject": "School Board Candidate Conversation - Candidate Conversation",
-        "description": "A prototype Candidate Conversation for schoolboard",
-        "component": {
-            "component": "UndebateCreator",
-            "participants": {
-                "moderator": {
-                    "name": "David Fridley",
-                    "speaking": [
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788719/candidate-conversation-creator-moderator-0_d7a3zr.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788635/candidate-conversation-creator-moderator-1_gtchg2.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788669/candidate-conversation-creator-moderator-2_bsceus.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788656/candidate-conversation-creator-moderator-3_qomqgj.mp4"
-                    ],
-                    "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
-                    "agenda": [
-                        [
-                            "Introductions",
-                            "1- Who you are",
-                            "2- Where you are",
-                            "3- One word to describe yourself",
-                            "4- What office you are running for"
-                        ],
-                        [
-                            "What type of skills should students be learning for success in the 21st century?"
-                        ],
-                        [
-                            "Closing Remarks"
-                        ]
-                    ],
-                    "timeLimits": [
-                        10,
-                        60,
-                        60
-                    ]
-                },
-                "audience1": {
-                    "name": "Adolf Gundersen",
-                    "speaking": [
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1565640905/undebate-short-a1.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1565640905/undebate-short-a2.mp4",
-                        "https://res.cloudinary.com/hf6mryjpf/video/upload/v1565640905/undebate-short-a3.mp4"
-                    ],
-                    "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1565640905/undebate-short-as.mp4"
-                },
-                "human": {
-                    "listening": {
-                        "round": 2,
-                        "seat": "nextUp"
-                    }
-                }
-            }
-        },
-        "webComponent": {
-            "webComponent": "Undebate",
-            "audio": {
-                "intro": {
-                    "url": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1567095028/Generic_Light_Intro_7_sec_yp3lxk.wav",
-                    "volume": 0.8
-                },
-                "ending": {
-                    "url": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1567096104/Heart_Soul_Entire_Duet_2_min_45_sec_1_j5sbpj.wav",
-                    "volume": 0.7
-                }
-            },
-            "participants": {},
-            "opening": {
-                "line1": "Thank you for helping us create a mock candidate conversation.",
-                "line2": "All will be explained to you through this interactive video platform",
-                "line3": "This is how we could efficiently facilitate 500K conversations all over the country, every election season",
-                "line4": "Candidate Recorder for:",
-                "bigLine": "US School Board Candidate Conversation",
-                "subLine": "Your video will be recorded, you will have the option to upload it or not at the end."
-            }
-        },
-        "parentId": "5d6350b0e7179a084ef376b9"
-    },
-    {
-        "_id": {
-            "$oid": "5d65a6b877fff400177d50ed"
-        },
-        "parentId": "5d6350b0e7179a084ef376b9",
-        "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
-        "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
-        "component": {
-            "component": "MergeParticipants",
-            "participant": {
-                "speaking": [
-                    "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566942893/5d5dc697d32514001766ca87-1-speaking20190827T215452394Z.webm",
-                    "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566942898/5d5dc697d32514001766ca87-2-speaking20190827T215455964Z.webm",
-                    "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566942903/5d5dc697d32514001766ca87-3-speaking20190827T215503161Z.webm"
-                ],
-                "name": "Will",
-                "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566942901/5d5dc697d32514001766ca87-2-nextUp20190827T215500659Z.webm"
-            }
-        },
-        "userId": "5d5dc697d32514001766ca87"
-    },
-    {
-        "_id": {
-            "$oid": "5d685ada8d5ab100175a1dd8"
-        },
-        "parentId": "5d6350b0e7179a084ef376b9",
-        "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
-        "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
-        "component": {
-            "component": "MergeParticipants",
-            "participant": {
-                "speaking": [
-                    "https://res.cloudinary.com/hf6mryjpf/video/upload/v1567120064/5d685ab98d5ab100175a1dd7-1-speaking20190829T230738520Z.webm",
-                    "https://res.cloudinary.com/hf6mryjpf/video/upload/du_41/v1567120076/5d685ab98d5ab100175a1dd7-2-speaking20190829T230743431Z.webm",
-                    "https://res.cloudinary.com/hf6mryjpf/video/upload/v1567120089/5d685ab98d5ab100175a1dd7-3-speaking20190829T230802074Z.webm"
-                ],
-                "name": "MaryBeth MaryBeth McGarvey",
-                "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1567120083/5d685ab98d5ab100175a1dd7-2-nextUp20190829T230755711Z.webm"
-            }
-        },
-        "userId": "5d685ab98d5ab100175a1dd7"
-    },
-    {
-        "_id": {
-            "$oid": "5d6569ade7179a084ef472eb"
-        },
-        "parentId": "5d6350b0e7179a084ef376b9",
-        "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
-        "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
-        "component": {
-            "component": "MergeParticipants",
-            "participant": {
-                "speaking": [
-                    "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566839072/5d64111ba62cb60017dad9eb-1-speaking20190826T170428600Z.webm",
-                    "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566839081/5d64111ba62cb60017dad9eb-2-speaking20190826T170432708Z.webm",
-                    "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566839337/5d64111ba62cb60017dad9eb-3-speaking20190826T170818981Z.webm"
-                ],
-                "name": "Alex Johnson",
-                "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566926818/5d64111ba62cb60017dad9eb-listening20190826T170818981Z_s1wphm.mp4"
-            }
-        },
-        "userId": "5d64111ba62cb60017dad9eb"
+      }
     }
+  },
+  {
+    "_id": {
+      "$oid": "5e7e88a67c213e3443f11dbf"
+    },
+    "path": "/candidate-conversation",
+    "subject": "Candidate Conversation",
+    "description": "A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants"
+    },
+    "webComponent": {
+      "webComponent": "CandidateConversation",
+      "opening": {
+        "line1": "You are about to experience a new kind of conversation",
+        "line2": "This is how voters can learn about candidates in a more human way",
+        "line3": "And this is how we can efficiently facilitate 500K conversations all over the country, every election season",
+        "line4": "The topic of the discussion is:",
+        "bigLine": "US School Board Candidate Conversation",
+        "subLine": "This is a mock conversation, these are not real candidates"
+      },
+      "participants": {
+        "moderator": {
+          "name": "David Fridley",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788682/candidate-conversation-moderator-0_at5un1.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788667/candidate-converation-moderator-1_z2kjhr.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788659/candidate-confersation-moderator-2_cid3dq.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788634/candidate-conversation-moderator-3_iq0npa.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Who you are",
+              "2- Where you are",
+              "3- One word to describe yourself",
+              "4- What office you are running for"
+            ],
+            ["What type of skills should students be learning for success in the 21st century?"],
+            ["Closing Remarks"]
+          ],
+          "timeLimits": [10, 60, 60]
+        }
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5d63521ce7179a084ef376f4"
+    },
+    "path": "/candidate-conversation-candidate-recorder",
+    "subject": "Candidate Recorder for Candidate Conversation",
+    "description": "A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "UndebateCreator",
+      "participants": {
+        "moderator": {
+          "name": "David Fridley",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-creator-moderator-0_d7a3zr.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788635/candidate-conversation-creator-moderator-1_gtchg2.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788669/candidate-conversation-creator-moderator-2_bsceus.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788656/candidate-conversation-creator-moderator-3_qomqgj.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Who you are",
+              "2- Where you are",
+              "3- One word to describe yourself",
+              "4- What office you are running for"
+            ],
+            ["What type of skills should students be learning for success in the 21st century?"],
+            ["Closing Remarks"]
+          ],
+          "timeLimits": [10, 60, 60]
+        },
+        "audience1": {
+          "name": "Adolf Gundersen",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a1.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a2.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a3.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-as.mp4"
+        },
+        "human": {
+          "listening": {
+            "round": 2,
+            "seat": "nextUp"
+          }
+        }
+      }
+    },
+    "webComponent": {
+      "webComponent": "Undebate",
+      "participants": {},
+      "opening": {
+        "line1": "Thank you for helping us create a mock candidate conversation.",
+        "line2": "All will be explained to you through this interactive video platform",
+        "line3": "This is how we could efficiently facilitate 500K conversations all over the country, every election season",
+        "line4": "Candidate Recorder for:",
+        "bigLine": "US School Board Candidate Conversation",
+        "subLine": "Your video will be recorded, you will have the option to upload it or not at the end."
+      }
+    },
+    "parentId": "5e7e88a67c213e3443f11dbf"
+  },
+  {
+    "_id": {
+      "$oid": "5d65a6b877fff400177d50ed"
+    },
+    "parentId": "5d6350b0e7179a084ef376b9",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942893/5d5dc697d32514001766ca87-1-speaking20190827T215452394Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942898/5d5dc697d32514001766ca87-2-speaking20190827T215455964Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942903/5d5dc697d32514001766ca87-3-speaking20190827T215503161Z.mp4"
+        ],
+        "name": "Will",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942901/5d5dc697d32514001766ca87-2-nextUp20190827T215500659Z.mp4"
+      }
+    },
+    "userId": "5d5dc697d32514001766ca87"
+  },
+  {
+    "_id": {
+      "$oid": "5d685ada8d5ab100175a1dd8"
+    },
+    "parentId": "5d6350b0e7179a084ef376b9",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120064/5d685ab98d5ab100175a1dd7-1-speaking20190829T230738520Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/du_41/v1567120076/5d685ab98d5ab100175a1dd7-2-speaking20190829T230743431Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120089/5d685ab98d5ab100175a1dd7-3-speaking20190829T230802074Z.mp4"
+        ],
+        "name": "MaryBeth MaryBeth McGarvey",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120083/5d685ab98d5ab100175a1dd7-2-nextUp20190829T230755711Z.mp4"
+      }
+    },
+    "userId": "5d685ab98d5ab100175a1dd7"
+  },
+  {
+    "_id": {
+      "$oid": "5d6569ade7179a084ef472eb"
+    },
+    "parentId": "5d6350b0e7179a084ef376b9",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839072/5d64111ba62cb60017dad9eb-1-speaking20190826T170428600Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839081/5d64111ba62cb60017dad9eb-2-speaking20190826T170432708Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839337/5d64111ba62cb60017dad9eb-3-speaking20190826T170818981Z.mp4"
+        ],
+        "name": "Alex Johnson",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566926818/5d64111ba62cb60017dad9eb-listening20190826T170818981Z_s1wphm.mp4"
+      }
+    },
+    "userId": "5d64111ba62cb60017dad9eb"
+  },
+  {
+    "_id": {
+      "$oid": "5e7a95376039e7001781146e"
+    },
+    "parentId": "5d6350b0e7179a084ef376b9",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1585091891/5e7a952d6039e7001781146a-0-speaking20200324T231809669Z.mp4",
+          "https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1585091891/5e7a952d6039e7001781146a-1-speaking20200324T231810915Z.mp4",
+          "https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1585091892/5e7a952d6039e7001781146a-2-speaking20200324T231811580Z.mp4"
+        ],
+        "name": "Davud Frudket",
+        "listening": "https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1585091894/5e7a952d6039e7001781146a-0-listening20200324T231812508Z.mp4"
+      }
+    },
+    "userId": "5e7a952d6039e7001781146a"
+  },
+  {
+    "_id": {
+      "$oid": "5e62eee2e7179a17e21444e7"
+    },
+    "path": "/what-is-democracy",
+    "subject": "What is Democracy",
+    "description": "This is a conversation cafe style discussion about democracy, what it is, its challenges, and its advantages.",
+    "component": {
+      "component": "CafeParticipants"
+    },
+    "webComponent": {
+      "opening": {
+        "noPreamble": true
+      },
+      "maxParticipants": 5,
+      "webComponent": "Undebate",
+      "participants": {
+        "moderator": {
+          "name": "David Fridley",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1583539961/5d5b74751e3b194174cd9b94-0-speaking20200307T001232226Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1583539962/5d5b74751e3b194174cd9b94-1-speaking20200307T001241427Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1583539962/5d5b74751e3b194174cd9b94-2-speaking20200307T001242059Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1583539963/5d5b74751e3b194174cd9b94-3-speaking20200307T001242736Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1583539964/5d5b74751e3b194174cd9b94-4-speaking20200307T001243414Z.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1583539965/5d5b74751e3b194174cd9b94-5-speaking20200307T001244393Z.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- What is your first name",
+              "2- What city and state are you in",
+              "3- One word to describe yourself"
+            ],
+            ["What is democracy or what does it mean to you?"],
+            ["What are the challenges in a democracy? Or what are its weaknesses"],
+            ["What are the advantages, or strengths of democracy?"],
+            ["Thank You!"]
+          ],
+          "timeLimits": [15, 60, 60, 60]
+        },
+        "human": {
+          "listening": {
+            "round": 1,
+            "seat": "nextUp"
+          }
+        }
+      },
+      "closing": {
+        "thanks": "Thank You!",
+        "iframe": {
+          "src": "https://docs.google.com/forms/d/e/1FAIpQLScYiUwoqCmlqr5KQf99ewVRxEvyCrx9CvSH196xlqqtj7cEkg/viewform?embedded=true",
+          "width": 640,
+          "height": 1579
+        }
+      }
+    },
+    "bp_info": {
+      "stage_id": "0",
+      "election_date": "2020-11-03"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5e6809a29f2f3600177ab1b3"
+    },
+    "parentId": "5e62eee2e7179a17e21444e7",
+    "subject": "Participant:What is Democracy",
+    "description": "A participant in the following discussion:This is a conversation cafe style discussion about democracy, what it is, its challenges, and its advantages.",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583876500/5e68098e9f2f3600177ab1af-0-speaking20200310T214140489Z.mp4",
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583876503/5e68098e9f2f3600177ab1af-1-speaking20200310T214141310Z.mp4",
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583876507/5e68098e9f2f3600177ab1af-2-speaking20200310T214143708Z.mp4",
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583876512/5e68098e9f2f3600177ab1af-3-speaking20200310T214148300Z.mp4"
+        ],
+        "name": "David Fridley",
+        "listening": "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583876513/5e68098e9f2f3600177ab1af-0-listening20200310T214152882Z.mp4",
+        "bp_info": {
+          "stage_id": "0",
+          "election_date": "2020-11-03"
+        }
+      }
+    },
+    "userId": "5e68098e9f2f3600177ab1af"
+  },
+  {
+    "_id": {
+      "$oid": "5e6902ff19a56d0017c492c3"
+    },
+    "parentId": "5e62eee2e7179a17e21444e7",
+    "subject": "Participant:What is Democracy",
+    "description": "A participant in the following discussion:This is a conversation cafe style discussion about democracy, what it is, its challenges, and its advantages.",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583940332/5e68ff1619a56d0017c492ac-0-speaking20200311T152531818Z.mp4",
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583940335/5e68ff1619a56d0017c492ac-1-speaking20200311T152532379Z.mp4",
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583940339/5e68ff1619a56d0017c492ac-2-speaking20200311T152535299Z.mp4",
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583940344/5e68ff1619a56d0017c492ac-3-speaking20200311T152539296Z.mp4"
+        ],
+        "name": "Adolf G Gundersen",
+        "listening": "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583940350/5e68ff1619a56d0017c492ac-0-listening20200311T152544519Z.mp4",
+        "bp_info": {
+          "stage_id": "0",
+          "election_date": "2020-11-03"
+        }
+      }
+    },
+    "userId": "5e68ff1619a56d0017c492ac"
+  },
+  {
+    "_id": {
+      "$oid": "5d8d4b67e7179a022443304c"
+    },
+    "path": "/youtube",
+    "subject": "School Board Candidate Conversation - Candidate Conversation using Youtube Video",
+    "description": "A prototype Candidate Conversation for schoolboard, using Youtube video",
+    "component": {
+      "component": "MergeParticipants"
+    },
+    "webComponent": {
+      "webComponent": "Undebate",
+      "opening": {
+        "line1": "You are about to experience a new kind of conversation",
+        "line2": "This is how voters can learn about candidates in a more human way",
+        "line3": "And this is how we can efficiently facilitate 500K conversations all over the country, every election season",
+        "line4": "The topic of the discussion is:",
+        "bigLine": "US School Board Candidate Conversation",
+        "subLine": "This is a mock conversation, these are not real candidates"
+      },
+      "participants": {
+        "moderator": {
+          "name": "David Fridley",
+          "speaking": [
+            "https://youtu.be/8W3XUJ6Z7zA",
+            "https://youtu.be/f4xmG1StKeA",
+            "https://youtu.be/IQfs-n_SXYQ",
+            "https://youtu.be/cK0FsPy1hsk"
+          ],
+          "listening": "https://youtu.be/5PXieM334KQ",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Who you are",
+              "2- Where you are",
+              "3- One word to describe yourself",
+              "4- What office you are running for"
+            ],
+            ["What type of skills should students be learning for success in the 21st century?"],
+            ["Closing Remarks"]
+          ],
+          "timeLimits": [10, 60, 60]
+        }
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5d8d4bfbe7179a0224433067"
+    },
+    "parentId": "5d8d4b67e7179a022443304c",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation with Youtube",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard with youtube",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": ["https://youtu.be/IrjAOoJlQms", "https://youtu.be/g7EnKPpj1EI", "https://youtu.be/ZumTUbVO9zc"],
+        "name": "Will",
+        "listening": "https://youtu.be/YJdlpXHdf6o"
+      }
+    },
+    "userId": "5d5dc697d32514001766ca87"
+  },
+  {
+    "_id": {
+      "$oid": "5e73edba7c213e3443ee6877"
+    },
+    "path": "/hackforla-projects",
+    "subject": "HackForLA Projects",
+    "description": "HackForLA Projects",
+    "component": {
+      "component": "MergeParticipants"
+    },
+    "webComponent": {
+      "webComponent": "CandidateConversation",
+      "closing": {
+        "thanks": "Thank You.",
+        "link": {
+          "name": "Go To HackForLA",
+          "url": "https://hackForLA.org"
+        }
+      },
+      "shuffle": true,
+      "maxParticipants": 16,
+      "participants": {
+        "moderator": {
+          "name": "Bonnie Wolfe",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1584163570/5e6923f6e05aa100179cef0b-1-speaking20200314T052555851Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1584163577/5e6923f6e05aa100179cef0b-2-speaking20200314T052610118Z.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1584152960/5e6923f6e05aa100179cef0b-4-speaking20200314T022912590Z.mp4",
+          "agenda": [
+            ["Project Introductions", "1- Why join this project", "2- What it's about", "3- What they are looking for"],
+            ["Thank you!"]
+          ],
+          "timeLimits": [15, 180]
+        }
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5e73efddeb50a0043777e846"
+    },
+    "parentId": "5e73edba7c213e3443ee6877",
+    "subject": "Participant:HackForLA Projects Recorder",
+    "description": "A participant in the following discussion:A Recorder for projects leads introducing their HackForLA Projects",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583957392/5e68098e9f2f3600177ab1af-0-speaking20200311T200946676Z.mp4",
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583957393/5e68098e9f2f3600177ab1af-1-speaking20200311T200952046Z.mp4"
+        ],
+        "name": "undebate",
+        "listening": ""
+      }
+    },
+    "userId": "5e68098e9f2f3600177ab1af"
+  },
+  {
+    "_id": {
+      "$oid": "5e73efddeb50a0043777e847"
+    },
+    "parentId": "5e73edba7c213e3443ee6877",
+    "subject": "Participant:HackForLA Projects Recorder",
+    "description": "A participant in the following discussion:A Recorder for projects leads introducing their HackForLA Projects",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584315131/5e6ebabd404a7300175c5f1a-0-speaking20200315T233114339Z.mp4"
+        ],
+        "name": "Engage",
+        "listening": ""
+      }
+    },
+    "userId": "5e6ebabd404a7300175c5f1a"
+  },
+  {
+    "_id": {
+      "$oid": "5e73efddeb50a0043777e84f"
+    },
+    "parentId": "5e73edba7c213e3443ee6877",
+    "subject": "Participant:HackForLA Projects Recorder",
+    "description": "A participant in the following discussion:A Recorder for projects leads introducing their HackForLA Projects",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584330515/5e6ef52873d153001751f314-0-speaking20200316T034809909Z.mp4"
+        ],
+        "name": "Host Home",
+        "listening": ""
+      }
+    },
+    "userId": "5e6ef52873d153001751f314"
+  },
+  {
+    "_id": {
+      "$oid": "5e73efddeb50a0043777e851"
+    },
+    "parentId": "5e73edba7c213e3443ee6877",
+    "subject": "Participant:HackForLA Projects Recorder",
+    "description": "A participant in the following discussion:A Recorder for projects leads introducing their HackForLA Projects",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584324814/5e6d372a2acc7900176826fd-0-speaking20200316T021304149Z.mp4"
+        ],
+        "name": "TDM Calculator",
+        "listening": ""
+      }
+    },
+    "userId": "5e6d372a2acc7900176826fd"
+  },
+  {
+    "_id": {
+      "$oid": "5e73efddeb50a0043777e852"
+    },
+    "parentId": "5e73edba7c213e3443ee6877",
+    "subject": "Participant:HackForLA Projects Recorder",
+    "description": "A participant in the following discussion:A Recorder for projects leads introducing their HackForLA Projects",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584328706/5e6ed59f404a7300175c6494-0-speaking20200316T031758998Z.mp4"
+        ],
+        "name": "Civic Tech Index",
+        "listening": ""
+      }
+    },
+    "userId": "5e6ed59f404a7300175c6494"
+  },
+  {
+    "_id": {
+      "$oid": "5e73efddeb50a0043777e84d"
+    },
+    "parentId": "5e73edba7c213e3443ee6877",
+    "subject": "Participant:HackForLA Projects Recorder",
+    "description": "A participant in the following discussion:A Recorder for projects leads introducing their HackForLA Projects",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584401756/5e700b29b8d91a001783d8aa-0-speaking20200316T233545719Z.mp4"
+        ],
+        "name": "Equity Language",
+        "listening": ""
+      }
+    },
+    "userId": "5e700b29b8d91a001783d8aa"
+  },
+  {
+    "_id": {
+      "$oid": "5e73efddeb50a0043777e84c"
+    },
+    "parentId": "5e73edba7c213e3443ee6877",
+    "subject": "Participant:HackForLA Projects Recorder",
+    "description": "A participant in the following discussion:A Recorder for projects leads introducing their HackForLA Projects",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584491377/5e716b619345c0001731a634-0-speaking20200318T002928087Z.mp4"
+        ],
+        "name": "Not Today",
+        "listening": ""
+      }
+    },
+    "userId": "5e716b619345c0001731a634"
+  },
+  {
+    "_id": {
+      "$oid": "5e73efddeb50a0043777e848"
+    },
+    "parentId": "5e73edba7c213e3443ee6877",
+    "subject": "Participant:HackForLA Projects Recorder",
+    "description": "A participant in the following discussion:A Recorder for projects leads introducing their HackForLA Projects",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584240349/5e6d919e685fb3001737947a-0-speaking20200315T024546673Z.mp4"
+        ],
+        "name": "New Schools Today",
+        "listening": ""
+      }
+    },
+    "userId": "5e6d919e685fb3001737947a"
+  },
+  {
+    "_id": {
+      "$oid": "5e73efddeb50a0043777e84b"
+    },
+    "parentId": "5e73edba7c213e3443ee6877",
+    "subject": "Participant:HackForLA Projects Recorder",
+    "description": "A participant in the following discussion:A Recorder for projects leads introducing their HackForLA Projects",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584508913/5e71afe49345c0001731a768-0-speaking20200318T052145119Z.mp4"
+        ],
+        "name": "Lucky Parking",
+        "listening": ""
+      }
+    },
+    "userId": "5e71afe49345c0001731a768"
+  },
+  {
+    "_id": {
+      "$oid": "5e73efddeb50a0043777e850"
+    },
+    "parentId": "5e73edba7c213e3443ee6877",
+    "subject": "Participant:HackForLA Projects Recorder",
+    "description": "A participant in the following discussion:A Recorder for projects leads introducing their HackForLA Projects",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584349183/5e6f373373d153001751f47b-0-speaking20200316T085929557Z.mp4"
+        ],
+        "name": "311-Data",
+        "listening": ""
+      }
+    },
+    "userId": "5e6f373373d153001751f47b"
+  },
+  {
+    "_id": {
+      "$oid": "5e73efddeb50a0043777e84e"
+    },
+    "parentId": "5e73edba7c213e3443ee6877",
+    "subject": "Participant:HackForLA Projects Recorder",
+    "description": "A participant in the following discussion:A Recorder for projects leads introducing their HackForLA Projects",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584462497/5e70fa65c67a3400175fbbd1-0-speaking20200317T162723620Z.mp4"
+        ],
+        "name": "covid help",
+        "listening": ""
+      }
+    },
+    "userId": "5e70fa65c67a3400175fbbd1"
+  },
+  {
+    "_id": {
+      "$oid": "5e73efddeb50a0043777e84a"
+    },
+    "parentId": "5e73edba7c213e3443ee6877",
+    "subject": "Participant:HackForLA Projects Recorder",
+    "description": "A participant in the following discussion:A Recorder for projects leads introducing their HackForLA Projects",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584404679/5e7010e7b8d91a001783d917-0-speaking20200317T002420200Z.mp4"
+        ],
+        "name": "public tree map"
+      }
+    },
+    "userId": "5e7010e7b8d91a001783d917"
+  },
+  {
+    "_id": {
+      "$oid": "5e73efddeb50a0043777e849"
+    },
+    "parentId": "5e73edba7c213e3443ee6877",
+    "subject": "Participant:HackForLA Projects Recorder",
+    "description": "A participant in the following discussion:A Recorder for projects leads introducing their HackForLA Projects",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1584323337/5e6ebfd1404a7300175c5f49-0-speaking20200316T014835743Z.mp4"
+        ],
+        "name": "Hackforla.org Website",
+        "listening": ""
+      }
+    },
+    "userId": "5e6ebfd1404a7300175c5f49"
+  },
+  {
+    "_id": {
+      "$oid": "5e695d397c213e3443eb52d4"
+    },
+    "path": "/hackforla-projects-recorder",
+    "subject": "HackForLA Projects Recorder",
+    "description": "A Recorder for projects leads introducing their HackForLA Projects",
+    "component": {
+      "component": "UndebateCreator",
+      "participants": {
+        "moderator": {
+          "name": "Bonnie Wolfe",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/a_auto/v1583948802/5e6923f6e05aa100179cef0b-0-speaking20200311T174609531Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1583948811/5e6923f6e05aa100179cef0b-4-speaking20200311T174622846Z.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1583948817/5e6923f6e05aa100179cef0b-5-speaking20200311T174625782Z.mp4",
+          "agenda": [
+            ["Project Introductions", "1- Why join this project", "2- What it's about", "3- What they are looking for"],
+            ["Thank you!"]
+          ],
+          "timeLimits": [180, 10]
+        },
+        "audience1": {
+          "speaking": [
+            "https://res.cloudinary.com/hisfgxdff/video/upload/q_auto/v1583957392/5e68098e9f2f3600177ab1af-0-speaking20200311T200946676Z.mp4"
+          ],
+          "name": "undebate"
+        },
+        "human": {}
+      }
+    },
+    "webComponent": {
+      "webComponent": "Undebate",
+      "noPreamble": true,
+      "participants": {},
+      "opening": {
+        "noPreamble": true
+      },
+      "maxParticipants": 20,
+      "closing": {
+        "thanks": "Thank You!",
+        "link": {
+          "name": "Your feedback would help us make this even better",
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeMNX1zEUAVuI3aZY9qreBfqMaXsS-yMLf7WYiylqVjHvoP2g/viewform"
+        },
+        "iframe": {
+          "src": "https://docs.google.com/forms/d/e/1FAIpQLSeMNX1zEUAVuI3aZY9qreBfqMaXsS-yMLf7WYiylqVjHvoP2g/viewform?embedded=true",
+          "width": 700,
+          "height": 1122
+        }
+      }
+    },
+    "parentId": "5e73edba7c213e3443ee6877"
+  },
+  {
+    "_id": {
+      "$oid": "5e77d5f9e7179a17e21a7674"
+    },
+    "path": "/schoolboard-undebate",
+    "subject": "School Board Candidate Conversation",
+    "description": "A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants"
+    },
+    "webComponent": {
+      "webComponent": "Undebate",
+      "closing": {
+        "thanks": "Thank You.",
+        "link": {
+          "name": "Your feedback would help us make this even better",
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeh7kAVWpyjnSYmHhjfpjfalgznfDA_AF2xmrFB8ZzQj75Vyw/viewform"
+        }
+      },
+      "participants": {
+        "moderator": {
+          "name": "David Fridley",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788682/candidate-conversation-moderator-0_at5un1.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788667/candidate-converation-moderator-1_z2kjhr.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788659/candidate-confersation-moderator-2_cid3dq.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788634/candidate-conversation-moderator-3_iq0npa.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Who you are",
+              "2- Where you are",
+              "3- One word to describe yourself",
+              "4- What office you are running for"
+            ],
+            ["What type of skills should students be learning for success in the 21st century?"],
+            ["Closing Remarks"]
+          ],
+          "timeLimits": [10, 60, 60]
+        }
+      }
+    },
+    "bp_info": {
+      "stage_id": "0",
+      "election_date": "2020-03-17"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5e77da0beb50a004379de9b2"
+    },
+    "parentId": "5e77d5f9e7179a17e21a7674",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567791387/5d72990d3fa2d80017b4185c-1-speaking20190906T173614865Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567791409/5d72990d3fa2d80017b4185c-2-speaking20190906T173626878Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567791470/5d72990d3fa2d80017b4185c-3-speaking20190906T173727374Z.mp4"
+        ],
+        "name": "Kayla Harris",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567791447/5d72990d3fa2d80017b4185c-2-nextUp20190906T173649602Z.mp4"
+      }
+    },
+    "userId": "5d72990d3fa2d80017b4185c"
+  },
+  {
+    "_id": {
+      "$oid": "5e77da0beb50a004379de9b3"
+    },
+    "parentId": "5e77d5f9e7179a17e21a7674",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120064/5d685ab98d5ab100175a1dd7-1-speaking20190829T230738520Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/du_41/v1567120076/5d685ab98d5ab100175a1dd7-2-speaking20190829T230743431Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120089/5d685ab98d5ab100175a1dd7-3-speaking20190829T230802074Z.mp4"
+        ],
+        "name": "MaryBeth MaryBeth McGarvey",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120083/5d685ab98d5ab100175a1dd7-2-nextUp20190829T230755711Z.mp4"
+      }
+    },
+    "userId": "5d685ab98d5ab100175a1dd7"
+  },
+  {
+    "_id": {
+      "$oid": "5e77da0beb50a004379de9ab"
+    },
+    "parentId": "5e77d5f9e7179a17e21a7674",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839072/5d64111ba62cb60017dad9eb-1-speaking20190826T170428600Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839081/5d64111ba62cb60017dad9eb-2-speaking20190826T170432708Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839337/5d64111ba62cb60017dad9eb-3-speaking20190826T170818981Z.mp4"
+        ],
+        "name": "Alex Johnson",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566926818/5d64111ba62cb60017dad9eb-listening20190826T170818981Z_s1wphm.mp4"
+      }
+    },
+    "userId": "5d64111ba62cb60017dad9eb"
+  },
+  {
+    "_id": {
+      "$oid": "5e77da0beb50a004379de9af"
+    },
+    "parentId": "5e77d5f9e7179a17e21a7674",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566944837/5d5dc697d32514001766ca87-1-speaking20190827T222715853Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566944840/5d5dc697d32514001766ca87-2-speaking20190827T222719383Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566944850/5d5dc697d32514001766ca87-3-speaking20190827T222729467Z.mp4"
+        ],
+        "name": "Gina",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566944847/5d5dc697d32514001766ca87-2-nextUp20190827T222722560Z.mp4"
+      }
+    },
+    "userId": "5d5c9156812d5b2b60748509"
+  },
+  {
+    "_id": {
+      "$oid": "5e77da0beb50a004379de9ac"
+    },
+    "parentId": "5e77d5f9e7179a17e21a7674",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566946250/5d5dc697d32514001766ca87-1-speaking20190827T225048748Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566946255/5d5dc697d32514001766ca87-2-speaking20190827T225052164Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566946268/5d5dc697d32514001766ca87-3-speaking20190827T225105040Z.mp4"
+        ],
+        "name": "Will",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566946263/5d5dc697d32514001766ca87-2-nextUp20190827T225057673Z.mp4"
+      }
+    },
+    "userId": "5d5dc697d32514001766ca87"
+  },
+  {
+    "_id": {
+      "$oid": "5e77da0beb50a004379de9ae"
+    },
+    "parentId": "5e77d5f9e7179a17e21a7674",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1569164281/5d878bf51b2bb00017efa259-1-speaking20190922T145756899Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1569164289/5d878bf51b2bb00017efa259-2-speaking20190922T145800544Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1569164311/5d878bf51b2bb00017efa259-3-speaking20190922T145819066Z.mp4"
+        ],
+        "name": "Geoff Pallay",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1569164300/5d878bf51b2bb00017efa259-2-nextUp20190922T145808630Z.mp4"
+      }
+    },
+    "userId": "5d878bf51b2bb00017efa259"
+  },
+  {
+    "_id": {
+      "$oid": "5e77da0beb50a004379de9b1"
+    },
+    "parentId": "5e77d5f9e7179a17e21a7674",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567188839/5d5d6c289c65db0017630613-1-speaking20190830T181356047Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567188844/5d5d6c289c65db0017630613-2-speaking20190830T181359287Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567188857/5d5d6c289c65db0017630613-3-speaking20190830T181411606Z.mp4"
+        ],
+        "name": "Rita Horbett",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567188851/5d5d6c289c65db0017630613-2-nextUp20190830T181404108Z.mp4"
+      }
+    },
+    "userId": "5d5d6c289c65db0017630613"
+  },
+  {
+    "_id": {
+      "$oid": "5e77da0beb50a004379de9ad"
+    },
+    "parentId": "5e77d5f9e7179a17e21a7674",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566944524/5d5dc697d32514001766ca87-1-speaking20190827T222203796Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566944530/5d5dc697d32514001766ca87-2-speaking20190827T222206579Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566944543/5d5dc697d32514001766ca87-3-speaking20190827T222219463Z.mp4"
+        ],
+        "name": "Justin",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566944537/5d5dc697d32514001766ca87-2-nextUp20190827T222212310Z.mp4"
+      }
+    },
+    "userId": "5d5cba65bcb746373ceb98da"
+  },
+  {
+    "_id": {
+      "$oid": "5e77da0beb50a004379de9b4"
+    },
+    "path": "/schoolboard-undebate-candidate-recorder",
+    "subject": "School Board Candidate Conversation - Candidate Conversation",
+    "description": "A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "UndebateCreator",
+      "participants": {
+        "moderator": {
+          "name": "David Fridley",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-creator-moderator-0_d7a3zr.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788635/candidate-conversation-creator-moderator-1_gtchg2.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788669/candidate-conversation-creator-moderator-2_bsceus.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788656/candidate-conversation-creator-moderator-3_qomqgj.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Who you are",
+              "2- Where you are",
+              "3- One word to describe yourself",
+              "4- What office you are running for"
+            ],
+            ["What type of skills should students be learning for success in the 21st century?"],
+            ["Closing Remarks"]
+          ],
+          "timeLimits": [10, 60, 60]
+        },
+        "audience1": {
+          "name": "Adolf Gundersen",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a1.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a2.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a3.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-as.mp4"
+        },
+        "human": {
+          "listening": {
+            "round": 2,
+            "seat": "nextUp"
+          }
+        }
+      }
+    },
+    "webComponent": {
+      "webComponent": "Undebate",
+      "participants": {},
+      "opening": {
+        "line1": "Thank you for helping us create a mock candidate conversation.",
+        "line2": "All will be explained to you through this interactive video platform",
+        "line3": "This is how we could efficiently facilitate 500K conversations all over the country, every election season",
+        "line4": "Candidate Recorder for:",
+        "bigLine": "US School Board Candidate Conversation",
+        "subLine": "Your video will be recorded, you will have the option to upload it or not at the end."
+      }
+    },
+    "parentId": "5e77d5f9e7179a17e21a7674"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e501d7c213e3443f10e1c"
+    },
+    "path": "/candidate-conversation-2",
+    "subject": "Candidate Conversation with 2 participants",
+    "description": "A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants"
+    },
+    "webComponent": {
+      "webComponent": "CandidateConversation",
+      "opening": {
+        "line1": "You are about to experience a new kind of conversation",
+        "line2": "This is how voters can learn about candidates in a more human way",
+        "line3": "And this is how we can efficiently facilitate 500K conversations all over the country, every election season",
+        "line4": "The topic of the discussion is:",
+        "bigLine": "US School Board Candidate Conversation",
+        "subLine": "This is a mock conversation, these are not real candidates"
+      },
+      "participants": {
+        "moderator": {
+          "name": "David Fridley",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788682/candidate-conversation-moderator-0_at5un1.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788667/candidate-converation-moderator-1_z2kjhr.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788659/candidate-confersation-moderator-2_cid3dq.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788634/candidate-conversation-moderator-3_iq0npa.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Who you are",
+              "2- Where you are",
+              "3- One word to describe yourself",
+              "4- What office you are running for"
+            ],
+            ["What type of skills should students be learning for success in the 21st century?"],
+            ["Closing Remarks"]
+          ],
+          "timeLimits": [10, 60, 60]
+        }
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5e7e50fd7c213e3443f10e52"
+    },
+    "parentId": "5e7e501d7c213e3443f10e1c",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942893/5d5dc697d32514001766ca87-1-speaking20190827T215452394Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942898/5d5dc697d32514001766ca87-2-speaking20190827T215455964Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942903/5d5dc697d32514001766ca87-3-speaking20190827T215503161Z.mp4"
+        ],
+        "name": "Will",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942901/5d5dc697d32514001766ca87-2-nextUp20190827T215500659Z.mp4"
+      }
+    },
+    "userId": "5d5dc697d32514001766ca87"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e51377c213e3443f10e60"
+    },
+    "parentId": "5e7e501d7c213e3443f10e1c",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120064/5d685ab98d5ab100175a1dd7-1-speaking20190829T230738520Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/du_41/v1567120076/5d685ab98d5ab100175a1dd7-2-speaking20190829T230743431Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120089/5d685ab98d5ab100175a1dd7-3-speaking20190829T230802074Z.mp4"
+        ],
+        "name": "MaryBeth MaryBeth McGarvey",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120083/5d685ab98d5ab100175a1dd7-2-nextUp20190829T230755711Z.mp4"
+      }
+    },
+    "userId": "5d685ab98d5ab100175a1dd7"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e6e147c213e3443f116e5"
+    },
+    "path": "/candidate-conversation-3",
+    "subject": "Candidate Conversation with 3 participants",
+    "description": "A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants"
+    },
+    "webComponent": {
+      "webComponent": "CandidateConversation",
+      "opening": {
+        "line1": "You are about to experience a new kind of conversation",
+        "line2": "This is how voters can learn about candidates in a more human way",
+        "line3": "And this is how we can efficiently facilitate 500K conversations all over the country, every election season",
+        "line4": "The topic of the discussion is:",
+        "bigLine": "US School Board Candidate Conversation",
+        "subLine": "This is a mock conversation, these are not real candidates"
+      },
+      "participants": {
+        "moderator": {
+          "name": "David Fridley",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788682/candidate-conversation-moderator-0_at5un1.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788667/candidate-converation-moderator-1_z2kjhr.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788659/candidate-confersation-moderator-2_cid3dq.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788634/candidate-conversation-moderator-3_iq0npa.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Who you are",
+              "2- Where you are",
+              "3- One word to describe yourself",
+              "4- What office you are running for"
+            ],
+            ["What type of skills should students be learning for success in the 21st century?"],
+            ["Closing Remarks"]
+          ],
+          "timeLimits": [10, 60, 60]
+        }
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5e7e6e677c213e3443f116e9"
+    },
+    "parentId": "5e7e6e147c213e3443f116e5",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942893/5d5dc697d32514001766ca87-1-speaking20190827T215452394Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942898/5d5dc697d32514001766ca87-2-speaking20190827T215455964Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942903/5d5dc697d32514001766ca87-3-speaking20190827T215503161Z.mp4"
+        ],
+        "name": "Will",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942901/5d5dc697d32514001766ca87-2-nextUp20190827T215500659Z.mp4"
+      }
+    },
+    "userId": "5d5dc697d32514001766ca87"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e6ece7c213e3443f116fc"
+    },
+    "parentId": "5e7e6e147c213e3443f116e5",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120064/5d685ab98d5ab100175a1dd7-1-speaking20190829T230738520Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/du_41/v1567120076/5d685ab98d5ab100175a1dd7-2-speaking20190829T230743431Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120089/5d685ab98d5ab100175a1dd7-3-speaking20190829T230802074Z.mp4"
+        ],
+        "name": "MaryBeth MaryBeth McGarvey",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120083/5d685ab98d5ab100175a1dd7-2-nextUp20190829T230755711Z.mp4"
+      }
+    },
+    "userId": "5d685ab98d5ab100175a1dd7"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e6f2f7c213e3443f1170a"
+    },
+    "parentId": "5e7e6e147c213e3443f116e5",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839072/5d64111ba62cb60017dad9eb-1-speaking20190826T170428600Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839081/5d64111ba62cb60017dad9eb-2-speaking20190826T170432708Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839337/5d64111ba62cb60017dad9eb-3-speaking20190826T170818981Z.mp4"
+        ],
+        "name": "Alex Johnson",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566926818/5d64111ba62cb60017dad9eb-listening20190826T170818981Z_s1wphm.mp4"
+      }
+    },
+    "userId": "5d64111ba62cb60017dad9eb"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e733c7c213e3443f1187e"
+    },
+    "path": "/candidate-conversation-4",
+    "subject": "Candidate Conversation with 4 participants",
+    "description": "A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants"
+    },
+    "webComponent": {
+      "webComponent": "CandidateConversation",
+      "opening": {
+        "line1": "You are about to experience a new kind of conversation",
+        "line2": "This is how voters can learn about candidates in a more human way",
+        "line3": "And this is how we can efficiently facilitate 500K conversations all over the country, every election season",
+        "line4": "The topic of the discussion is:",
+        "bigLine": "US School Board Candidate Conversation",
+        "subLine": "This is a mock conversation, these are not real candidates"
+      },
+      "participants": {
+        "moderator": {
+          "name": "David Fridley",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788682/candidate-conversation-moderator-0_at5un1.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788667/candidate-converation-moderator-1_z2kjhr.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788659/candidate-confersation-moderator-2_cid3dq.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788634/candidate-conversation-moderator-3_iq0npa.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Who you are",
+              "2- Where you are",
+              "3- One word to describe yourself",
+              "4- What office you are running for"
+            ],
+            ["What type of skills should students be learning for success in the 21st century?"],
+            ["Closing Remarks"]
+          ],
+          "timeLimits": [10, 60, 60]
+        }
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5e7e74e67c213e3443f11908"
+    },
+    "parentId": "5e7e733c7c213e3443f1187e",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942893/5d5dc697d32514001766ca87-1-speaking20190827T215452394Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942898/5d5dc697d32514001766ca87-2-speaking20190827T215455964Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942903/5d5dc697d32514001766ca87-3-speaking20190827T215503161Z.mp4"
+        ],
+        "name": "Will",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942901/5d5dc697d32514001766ca87-2-nextUp20190827T215500659Z.mp4"
+      }
+    },
+    "userId": "5d5dc697d32514001766ca87"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e75a67c213e3443f11921"
+    },
+    "parentId": "5e7e733c7c213e3443f1187e",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120064/5d685ab98d5ab100175a1dd7-1-speaking20190829T230738520Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/du_41/v1567120076/5d685ab98d5ab100175a1dd7-2-speaking20190829T230743431Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120089/5d685ab98d5ab100175a1dd7-3-speaking20190829T230802074Z.mp4"
+        ],
+        "name": "MaryBeth MaryBeth McGarvey",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120083/5d685ab98d5ab100175a1dd7-2-nextUp20190829T230755711Z.mp4"
+      }
+    },
+    "userId": "5d685ab98d5ab100175a1dd7"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e75d37c213e3443f11928"
+    },
+    "parentId": "5e7e733c7c213e3443f1187e",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839072/5d64111ba62cb60017dad9eb-1-speaking20190826T170428600Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839081/5d64111ba62cb60017dad9eb-2-speaking20190826T170432708Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839337/5d64111ba62cb60017dad9eb-3-speaking20190826T170818981Z.mp4"
+        ],
+        "name": "Alex Johnson",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566926818/5d64111ba62cb60017dad9eb-listening20190826T170818981Z_s1wphm.mp4"
+      }
+    },
+    "userId": "5d64111ba62cb60017dad9eb"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e76247c213e3443f1192f"
+    },
+    "parentId": "5e7e733c7c213e3443f1187e",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "name": "Adolf Gundersen",
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a1.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a2.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a3.mp4"
+        ],
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-as.mp4"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5e7e78ee7c213e3443f119d3"
+    },
+    "path": "/candidate-conversation-6",
+    "subject": "Candidate Conversation with 6 participants",
+    "description": "A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants"
+    },
+    "webComponent": {
+      "webComponent": "CandidateConversation",
+      "opening": {
+        "line1": "You are about to experience a new kind of conversation",
+        "line2": "This is how voters can learn about candidates in a more human way",
+        "line3": "And this is how we can efficiently facilitate 500K conversations all over the country, every election season",
+        "line4": "The topic of the discussion is:",
+        "bigLine": "US School Board Candidate Conversation",
+        "subLine": "This is a mock conversation, these are not real candidates"
+      },
+      "participants": {
+        "moderator": {
+          "name": "David Fridley",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788682/candidate-conversation-moderator-0_at5un1.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788667/candidate-converation-moderator-1_z2kjhr.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788659/candidate-confersation-moderator-2_cid3dq.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788634/candidate-conversation-moderator-3_iq0npa.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Who you are",
+              "2- Where you are",
+              "3- One word to describe yourself",
+              "4- What office you are running for"
+            ],
+            ["What type of skills should students be learning for success in the 21st century?"],
+            ["Closing Remarks"]
+          ],
+          "timeLimits": [10, 60, 60]
+        }
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5e7e7b1e7c213e3443f11a75"
+    },
+    "parentId": "5e7e78ee7c213e3443f119d3",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942893/5d5dc697d32514001766ca87-1-speaking20190827T215452394Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942898/5d5dc697d32514001766ca87-2-speaking20190827T215455964Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942903/5d5dc697d32514001766ca87-3-speaking20190827T215503161Z.mp4"
+        ],
+        "name": "Will",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942901/5d5dc697d32514001766ca87-2-nextUp20190827T215500659Z.mp4"
+      }
+    },
+    "userId": "5d5dc697d32514001766ca87"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e7b397c213e3443f11a76"
+    },
+    "parentId": "5e7e78ee7c213e3443f119d3",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120064/5d685ab98d5ab100175a1dd7-1-speaking20190829T230738520Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/du_41/v1567120076/5d685ab98d5ab100175a1dd7-2-speaking20190829T230743431Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120089/5d685ab98d5ab100175a1dd7-3-speaking20190829T230802074Z.mp4"
+        ],
+        "name": "MaryBeth MaryBeth McGarvey",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120083/5d685ab98d5ab100175a1dd7-2-nextUp20190829T230755711Z.mp4"
+      }
+    },
+    "userId": "5d685ab98d5ab100175a1dd7"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e7b537c213e3443f11a77"
+    },
+    "parentId": "5e7e78ee7c213e3443f119d3",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839072/5d64111ba62cb60017dad9eb-1-speaking20190826T170428600Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839081/5d64111ba62cb60017dad9eb-2-speaking20190826T170432708Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839337/5d64111ba62cb60017dad9eb-3-speaking20190826T170818981Z.mp4"
+        ],
+        "name": "Alex Johnson",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566926818/5d64111ba62cb60017dad9eb-listening20190826T170818981Z_s1wphm.mp4"
+      }
+    },
+    "userId": "5d64111ba62cb60017dad9eb"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e7b707c213e3443f11a7d"
+    },
+    "parentId": "5e7e78ee7c213e3443f119d3",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "name": "Adolf Gundersen",
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a1.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a2.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a3.mp4"
+        ],
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-as.mp4"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5e7e7b8a7c213e3443f11a86"
+    },
+    "parentId": "5e7e78ee7c213e3443f119d3",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567791387/5d72990d3fa2d80017b4185c-1-speaking20190906T173614865Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567791409/5d72990d3fa2d80017b4185c-2-speaking20190906T173626878Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567791470/5d72990d3fa2d80017b4185c-3-speaking20190906T173727374Z.mp4"
+        ],
+        "name": "Kayla Harris",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567791447/5d72990d3fa2d80017b4185c-2-nextUp20190906T173649602Z.mp4"
+      }
+    },
+    "userId": "5d72990d3fa2d80017b4185c"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e7baf7c213e3443f11a8e"
+    },
+    "parentId": "5e7e78ee7c213e3443f119d3",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1569164281/5d878bf51b2bb00017efa259-1-speaking20190922T145756899Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1569164289/5d878bf51b2bb00017efa259-2-speaking20190922T145800544Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1569164311/5d878bf51b2bb00017efa259-3-speaking20190922T145819066Z.mp4"
+        ],
+        "name": "Geoff Pallay",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1569164300/5d878bf51b2bb00017efa259-2-nextUp20190922T145808630Z.mp4"
+      }
+    },
+    "userId": "5d878bf51b2bb00017efa259"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e89a47c213e3443f11dd3"
+    },
+    "path": "/candidate-conversation-7",
+    "subject": "Candidate Conversation with 7 participants",
+    "description": "A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants"
+    },
+    "webComponent": {
+      "webComponent": "CandidateConversation",
+      "opening": {
+        "line1": "You are about to experience a new kind of conversation",
+        "line2": "This is how voters can learn about candidates in a more human way",
+        "line3": "And this is how we can efficiently facilitate 500K conversations all over the country, every election season",
+        "line4": "The topic of the discussion is:",
+        "bigLine": "US School Board Candidate Conversation",
+        "subLine": "This is a mock conversation, these are not real candidates"
+      },
+      "participants": {
+        "moderator": {
+          "name": "David Fridley",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788682/candidate-conversation-moderator-0_at5un1.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788667/candidate-converation-moderator-1_z2kjhr.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788659/candidate-confersation-moderator-2_cid3dq.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788634/candidate-conversation-moderator-3_iq0npa.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Who you are",
+              "2- Where you are",
+              "3- One word to describe yourself",
+              "4- What office you are running for"
+            ],
+            ["What type of skills should students be learning for success in the 21st century?"],
+            ["Closing Remarks"]
+          ],
+          "timeLimits": [10, 60, 60]
+        }
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5e7e8ad07c213e3443f11e01"
+    },
+    "parentId": "5e7e89a47c213e3443f11dd3",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942893/5d5dc697d32514001766ca87-1-speaking20190827T215452394Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942898/5d5dc697d32514001766ca87-2-speaking20190827T215455964Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942903/5d5dc697d32514001766ca87-3-speaking20190827T215503161Z.mp4"
+        ],
+        "name": "Will",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942901/5d5dc697d32514001766ca87-2-nextUp20190827T215500659Z.mp4"
+      }
+    },
+    "userId": "5d5dc697d32514001766ca87"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e8ae97c213e3443f11e0c"
+    },
+    "parentId": "5e7e89a47c213e3443f11dd3",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120064/5d685ab98d5ab100175a1dd7-1-speaking20190829T230738520Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/du_41/v1567120076/5d685ab98d5ab100175a1dd7-2-speaking20190829T230743431Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120089/5d685ab98d5ab100175a1dd7-3-speaking20190829T230802074Z.mp4"
+        ],
+        "name": "MaryBeth MaryBeth McGarvey",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120083/5d685ab98d5ab100175a1dd7-2-nextUp20190829T230755711Z.mp4"
+      }
+    },
+    "userId": "5d685ab98d5ab100175a1dd7"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e8b0e7c213e3443f11e0f"
+    },
+    "parentId": "5e7e89a47c213e3443f11dd3",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839072/5d64111ba62cb60017dad9eb-1-speaking20190826T170428600Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839081/5d64111ba62cb60017dad9eb-2-speaking20190826T170432708Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839337/5d64111ba62cb60017dad9eb-3-speaking20190826T170818981Z.mp4"
+        ],
+        "name": "Alex Johnson",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566926818/5d64111ba62cb60017dad9eb-listening20190826T170818981Z_s1wphm.mp4"
+      }
+    },
+    "userId": "5d64111ba62cb60017dad9eb"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e8b2c7c213e3443f11e16"
+    },
+    "parentId": "5e7e89a47c213e3443f11dd3",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "name": "Adolf Gundersen",
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a1.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a2.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a3.mp4"
+        ],
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-as.mp4"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5e7e8b4b7c213e3443f11e17"
+    },
+    "parentId": "5e7e89a47c213e3443f11dd3",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567791387/5d72990d3fa2d80017b4185c-1-speaking20190906T173614865Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567791409/5d72990d3fa2d80017b4185c-2-speaking20190906T173626878Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567791470/5d72990d3fa2d80017b4185c-3-speaking20190906T173727374Z.mp4"
+        ],
+        "name": "Kayla Harris",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567791447/5d72990d3fa2d80017b4185c-2-nextUp20190906T173649602Z.mp4"
+      }
+    },
+    "userId": "5d72990d3fa2d80017b4185c"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e8b687c213e3443f11e18"
+    },
+    "parentId": "5e7e89a47c213e3443f11dd3",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1569164281/5d878bf51b2bb00017efa259-1-speaking20190922T145756899Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1569164289/5d878bf51b2bb00017efa259-2-speaking20190922T145800544Z.mp4",
+          "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1569164311/5d878bf51b2bb00017efa259-3-speaking20190922T145819066Z.mp4"
+        ],
+        "name": "Geoff Pallay",
+        "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1569164300/5d878bf51b2bb00017efa259-2-nextUp20190922T145808630Z.mp4"
+      }
+    },
+    "userId": "5d878bf51b2bb00017efa259"
+  },
+  {
+    "_id": {
+      "$oid": "5e7e8b867c213e3443f11e24"
+    },
+    "parentId": "5e7e89a47c213e3443f11dd3",
+    "subject": "Participant:School Board Candidate Conversation - Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1585091891/5e7a952d6039e7001781146a-0-speaking20200324T231809669Z.mp4",
+          "https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1585091891/5e7a952d6039e7001781146a-1-speaking20200324T231810915Z.mp4",
+          "https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1585091892/5e7a952d6039e7001781146a-2-speaking20200324T231811580Z.mp4"
+        ],
+        "name": "Davud Frudket",
+        "listening": "https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1585091894/5e7a952d6039e7001781146a-0-listening20200324T231812508Z.mp4"
+      }
+    },
+    "userId": "5e7a952d6039e7001781146a"
+  }
 ]

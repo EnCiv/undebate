@@ -96,7 +96,7 @@ class HttpServer extends EventEmitter {
       if (req.reactProps) req.reactProps.browserConfig = browserConfig
       else req.reactProps = { browserConfig }
       logger.info(req.method, req.originalUrl, req.headers['user-agent'], {
-        browserConfig: req.reactProps.browserConfig,
+        browserConfig: JSON.stringify(req.reactProps.browserConfig),
       })
       next()
     })

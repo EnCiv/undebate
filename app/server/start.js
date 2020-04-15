@@ -83,6 +83,9 @@ async function asyncStart(emitter) {
         ko(error)
       }
     })
+
+    require('./events/notify-of-new-participant') // no need to assign it to anything
+
     emitter.emit.bind(emitter, 'message', 'started')
   } catch (error) {
     emitter.emit('error', error)
