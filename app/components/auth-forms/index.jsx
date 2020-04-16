@@ -3,7 +3,9 @@ import injectSheet from 'react-jss'
 import superagent from 'superagent'
 import isEmail from 'is-email'
 import Icon from '../lib/icon'
-
+import { FormInput } from './formInput'
+import { JoinForm } from './joinForm'
+import { LoginForm } from './loginForm'
 const Temp = props => {
   const [hasAgreed, setHasAgreed] = useState(false)
   const [onLogin, setOnLogin] = useState(false)
@@ -11,6 +13,8 @@ const Temp = props => {
     email: '',
     password: '',
     confirmPassword: '',
+    firstName: '',
+    lastName: '',
   })
   const [isDisabled, setIsDisabled] = useState(true)
   const [infoMessage, setInfoMessage] = useState(null)
@@ -40,6 +44,7 @@ const Temp = props => {
   const handleChange = e => setFormValues({ ...formValues, [e.target.name]: e.target.value })
   const emailBlurMsg = 'email address is not valid'
   const passwordBlurMsg = 'Passwords do not match'
+
   const handleOnBlur = (message, isEmailBlur = false) => {
     const index = formValidationErrors.indexOf(message)
     const condition = isEmailBlur
@@ -158,73 +163,31 @@ const Temp = props => {
         </div>
       </div>
       <form>
-        <label style={{ color: '#18397D', textAlign: 'left', fontWeight: '900' }}>
-          First Name
-          <input
-            style={{
-              boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-              border: 'none',
-              fontSize: '1.4rem',
-              height: '2rem',
-              padding: '0.5rem',
-            }}
+        {onLogin ? (
+          <LoginForm
+            formValidationErrors={formValidationErrors}
+            handleOnBlur={handleOnBlur}
+            handleChange={handleChange}
+            handleLogin={handleLogin}
+            formValues={formValues}
+            infoMessage={infoMessage}
+            isDisabled={isDisabled}
+            classes={classes}
           />
-        </label>
-        <label>
-          Email Address
-          <input
-            placeholder="example@email.com"
-            name="email"
-            onChange={e => handleChange(e)}
-            onBlur={() => handleOnBlur(emailBlurMsg, true)}
-            required
+        ) : (
+          <JoinForm
+            handleOnBlur={handleOnBlur}
+            handleChange={handleChange}
+            handleSignUp={handleSignUp}
+            hasAgreed={hasAgreed}
+            setHasAgreed={setHasAgreed}
+            isDisabled={isDisabled}
+            classes={classes}
+            formValidationErrors={formValidationErrors}
+            infoMessage={infoMessage}
+            formValues={formValues}
           />
-        </label>
-        <label>
-          Password
-          <input
-            placeholder="Password"
-            name="password"
-            onChange={e => handleChange(e)}
-            onBlur={() => handleOnBlur(passwordBlurMsg)}
-            type="password"
-            required
-          />
-        </label>
-        <label style={onLogin ? { display: 'none' } : null}>
-          Confirm password
-          <input
-            placeholder="Confirm password"
-            name="confirmPassword"
-            onChange={e => handleChange(e)}
-            type="password"
-            onBlur={() => handleOnBlur(passwordBlurMsg)}
-          />
-        </label>
-        <div style={onLogin ? { display: 'none' } : { display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-          <Icon
-            onClick={() => setHasAgreed(!hasAgreed)}
-            className={hasAgreed ? 'fa-check-square-o' : 'fa-square-o'}
-            icon={hasAgreed ? 'fa-check-square-o' : 'fa-square-o'}
-            size="2"
-            name="agree"
-          />
-          <span>I agree to the </span>
-          <a href="https://enciv.org/terms/" target="_blank">
-            Terms of Service
-          </a>
-        </div>
-        <button
-          name="Join"
-          className={isDisabled ? classes.disable : classes.activeBtn}
-          onClick={e => (!onLogin ? handleSignUp(e) : handleLogin(e))}
-        >
-          {!onLogin ? 'Join' : 'Login'}
-        </button>
-        {!!formValidationErrors.length && (
-          <span className={classes.formValidationErrors}>{formValidationErrors[0]}</span>
         )}
-        {infoMessage && <span>{infoMessage}</span>}
       </form>
     </div>
   )
