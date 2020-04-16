@@ -1,9 +1,6 @@
 import React from 'react'
 import { FormInput } from './formInput'
 
-const emailBlurMsg = 'email address is not valid'
-const passwordBlurMsg = 'Passwords do not match'
-
 export const LoginForm = ({
   handleChange,
   formValues,
@@ -13,8 +10,10 @@ export const LoginForm = ({
   classes,
   formValidationErrors,
   infoMessage,
+  validationMessages,
 }) => {
   const { email, password } = formValues
+  const { emailBlurMsg, passwordBlurMsg } = validationMessages
   return (
     <>
       <FormInput

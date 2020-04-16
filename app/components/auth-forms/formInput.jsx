@@ -1,9 +1,9 @@
 import React from 'react'
 
 export const FormInput = props => {
-  const { labelName, handleChange, handleBlur, name, type, value } = props
+  const { labelName, handleChange, handleBlur, name, type, value, width } = props
   return (
-    <label style={{ color: '#18397D', textAlign: 'left', fontWeight: '900' }}>
+    <label style={{ color: '#18397D', textAlign: 'left', fontWeight: '900', width }}>
       {labelName}
       <input
         name={name}
@@ -26,4 +26,5 @@ export const FormInput = props => {
 
 FormInput.defaultProps = {
   type: 'text',
+  width: 'inherit',
 }

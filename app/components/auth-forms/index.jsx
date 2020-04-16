@@ -6,6 +6,7 @@ import Icon from '../lib/icon'
 import { FormInput } from './formInput'
 import { JoinForm } from './joinForm'
 import { LoginForm } from './loginForm'
+import { Tabs } from './tabs/Tabs'
 const Temp = props => {
   const [hasAgreed, setHasAgreed] = useState(false)
   const [onLogin, setOnLogin] = useState(false)
@@ -20,6 +21,9 @@ const Temp = props => {
   const [infoMessage, setInfoMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
   const [formValidationErrors, setFormValidationErrors] = useState([])
+  const emailBlurMsg = 'email address is not valid'
+  const passwordBlurMsg = 'Passwords do not match'
+  const validationMessages = { emailBlurMsg, passwordBlurMsg }
   const handleTabSwitch = bool => setOnLogin(bool)
   const { email, password, confirmPassword } = formValues
   useEffect(() => {
@@ -42,8 +46,6 @@ const Temp = props => {
     }
   }, [formValues, hasAgreed, formValidationErrors, onLogin])
   const handleChange = e => setFormValues({ ...formValues, [e.target.name]: e.target.value })
-  const emailBlurMsg = 'email address is not valid'
-  const passwordBlurMsg = 'Passwords do not match'
 
   const handleOnBlur = (message, isEmailBlur = false) => {
     const index = formValidationErrors.indexOf(message)
@@ -89,9 +91,7 @@ const Temp = props => {
             }
             break
           default:
-            setFormValidationErrors([
-              'The email and password you entered did not match our records. Please double-check and try again.',
-            ])
+            setFormValidationErrors(['Unknown error'])
             break
         }
       })
@@ -154,38 +154,33 @@ const Temp = props => {
   }
   return (
     <div className={props.classes.authFormWrapper}>
-      <div className={classes.tabs}>
-        <div className={!onLogin ? classes.activeTab : classes.nonActiveTab} onClick={() => handleTabSwitch(false)}>
-          Join
-        </div>
-        <div className={onLogin ? classes.activeTab : classes.nonActiveTab} onClick={() => handleTabSwitch(true)}>
-          Login
-        </div>
-      </div>
+      <Tabs classes={classes} onLogin={onLogin} handleTabSwitch={handleTabSwitch} />
       <form>
         {onLogin ? (
           <LoginForm
+            handleLogin={handleLogin}
             formValidationErrors={formValidationErrors}
             handleOnBlur={handleOnBlur}
             handleChange={handleChange}
-            handleLogin={handleLogin}
             formValues={formValues}
             infoMessage={infoMessage}
             isDisabled={isDisabled}
             classes={classes}
+            validationMessages={validationMessages}
           />
         ) : (
           <JoinForm
-            handleOnBlur={handleOnBlur}
-            handleChange={handleChange}
             handleSignUp={handleSignUp}
             hasAgreed={hasAgreed}
             setHasAgreed={setHasAgreed}
+            formValidationErrors={formValidationErrors}
+            handleOnBlur={handleOnBlur}
+            handleChange={handleChange}
+            formValues={formValues}
+            infoMessage={infoMessage}
             isDisabled={isDisabled}
             classes={classes}
-            formValidationErrors={formValidationErrors}
-            infoMessage={infoMessage}
-            formValues={formValues}
+            validationMessages={validationMessages}
           />
         )}
       </form>
@@ -208,6 +203,9 @@ const styles = {
     width: '100%',
     pointerEvents: 'auto',
     cursor: 'pointer',
+    color: '#18397D',
+    fontWeight: '900',
+    fontSize: '2rem',
   },
   activeTab: {
     backgroundColor: '#E5E5E5',

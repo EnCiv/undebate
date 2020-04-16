@@ -2,9 +2,6 @@ import React from 'react'
 import Icon from '../lib/icon'
 import { FormInput } from './formInput'
 
-const emailBlurMsg = 'email address is not valid'
-const passwordBlurMsg = 'Passwords do not match'
-
 export const JoinForm = ({
   handleOnBlur,
   handleChange,
@@ -16,13 +13,16 @@ export const JoinForm = ({
   formValidationErrors,
   infoMessage,
   formValues,
+  validationMessages,
 }) => {
   const { email, firstName, lastName, password, confirmPassword } = formValues
+  const { emailBlurMsg, passwordBlurMsg } = validationMessages
+
   return (
     <>
-      <div style={{ display: 'flex' }}>
-        <FormInput labelName="FIRST NAME" handleChange={handleChange} name="firstName" value={firstName} />
-        <FormInput labelName="LAST NAME" handleChange={handleChange} name="lastName" value={lastName} />
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <FormInput labelName="FIRST NAME" handleChange={handleChange} name="firstName" value={firstName} width="45%" />
+        <FormInput labelName="LAST NAME" handleChange={handleChange} name="lastName" value={lastName} width="45%" />
       </div>
       <FormInput
         labelName="EMAIL ADDRESS"
