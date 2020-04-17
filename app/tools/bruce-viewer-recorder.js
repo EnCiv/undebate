@@ -192,7 +192,7 @@ var viewer_recorder_pair = {
         moderator: {
           name: 'Navi Sidhu',
           speaking: [
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587101794/5e8b7be3946422001760d842-0-speaking20200417T053334879Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587158129/5e8b7be3946422001760d842-0-speaking20200417T211221929Z.mp4',
             'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074314/5e8b7be3946422001760d842-1-speaking20200416T215753103Z.mp4',
             'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074325/5e8b7be3946422001760d842-2-speaking20200416T215834167Z.mp4',
             'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074330/5e8b7be3946422001760d842-3-speaking20200416T215845703Z.mp4',
@@ -326,7 +326,7 @@ var viewer_recorder_pair = {
         moderator: {
           name: 'Navi Sidhu',
           speaking: [
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074273/5e8b7be3946422001760d842-0-speaking20200416T215715398Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587158129/5e8b7be3946422001760d842-0-speaking20200417T211221929Z.mp4',
             'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074617/5e8b7be3946422001760d842-1-speaking20200416T220329980Z.mp4',
             'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074636/5e8b7be3946422001760d842-2-speaking20200416T220337570Z.mp4',
             'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074646/5e8b7be3946422001760d842-3-speaking20200416T220356087Z.mp4',
