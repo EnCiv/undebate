@@ -1,6 +1,7 @@
 'use strict;'
 import React from 'react'
 import supportsVideoType from './lib/supports-video-type'
+import cloneDeep from 'lodash/cloneDeep'
 
 /***
  *
@@ -30,6 +31,7 @@ import supportsVideoType from './lib/supports-video-type'
 const WebRTCMediaRecordPeriod = 100
 
 export default class ReactCameraRecorder extends React.Component {
+  state = {}
   constructor(props) {
     super(props)
     if (typeof window !== 'undefined') {
@@ -40,6 +42,17 @@ export default class ReactCameraRecorder extends React.Component {
     }
     this.startRecorderState = { state: 'READY' } //"BLOCK", "QUEUED"
     this.stopRecording = noError => !noError && logger.error('stopRecording called before startRecording')
+    if (typeof navigator !== 'undefined') {
+      // doesn't exist on the server
+      navigator.mediaDevices.enumerateDevices().then(devices => {
+        this.devices = devices
+        this.videoCameras = devices.reduce((acc, device) => (device.kind === 'videoinput' && acc.push(device), acc), [])
+        if (this.videoCameras.length > 1) {
+          this.setState({ cameraIndex: 0 })
+        }
+      })
+    }
+    this.nextCamera = this.nextCamera.bind(this)
   }
 
   releaseCamera() {
@@ -69,21 +82,38 @@ export default class ReactCameraRecorder extends React.Component {
         width: 640,
         height: 360,
       },
-    }
+    },
+    cameraStreamUpdater
   ) {
+    this.constraints = cloneDeep(constraints)
+    this.cameraStreamUpdater = cameraStreamUpdater
     if (this.canNotRecordHere) return Promise.reject(new Error('can not record here'))
-    else
-      return new Promise(async (ok, ko) => {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia(constraints)
-          logger.trace('getUserMedia() got stream:', stream)
-          this.cameraStream = stream
-          ok(stream)
-        } catch (e) {
-          logger.error('navigator.getUserMedia error:', e.name, e.message)
-          ko(e)
-        }
+    else {
+      this.setState({ getCameraStream: true })
+      return new Promise((ok, ko) => {
+        this.getCameraStreamFromCalculatedConstraints(ok, ko)
       })
+    }
+  }
+
+  async getCameraStreamFromCalculatedConstraints(ok, ko) {
+    let calcConstraints = cloneDeep(this.constraints)
+    if (typeof this.state.cameraIndex !== 'undefined') {
+      calcConstraints.video.deviceId = this.videoCameras[this.state.cameraIndex].deviceId
+      let audioInput = this.devices.filter(
+        device => device.group === this.videoCameras[this.state.cameraIndex].groupId && device.kind === 'audioinput'
+      )
+      if (audioInput.length) calcConstraints.audio.deviceId = audioInput[0].deviceId
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia(calcConstraints)
+      logger.trace('getUserMedia() got stream:', stream)
+      this.cameraStream = stream
+      ok && ok(stream)
+    } catch (e) {
+      logger.error('navigator.getUserMedia error:', e.name, e.message)
+      ko && ko(e)
+    }
   }
 
   // called by parent to start the recording
@@ -196,7 +226,35 @@ export default class ReactCameraRecorder extends React.Component {
     this.releaseCamera()
   }
 
+  nextCamera(e) {
+    this.releaseCamera()
+    let cameraIndex = this.state.cameraIndex
+    if (++cameraIndex >= this.videoCameras.length) cameraIndex = 0
+    this.setState({ cameraIndex }, () => {
+      this.getCameraStreamFromCalculatedConstraints(this.cameraStreamUpdater)
+    })
+  }
+
   render() {
-    return null
+    if (typeof this.state.cameraIndex === 'undefined' || !this.state.getCameraStream) return null
+    else
+      return (
+        <div
+          style={{
+            zIndex: 10,
+            margin: '1em',
+            border: '1px solid #808080',
+            borderRadius: '3px',
+            padding: '.1em',
+            cursor: 'pointer',
+            pointerEvents: 'auto',
+            position: 'absolute',
+            bottom: '3em',
+          }}
+          onClick={this.nextCamera}
+        >
+          Change Camera
+        </div>
+      )
   }
 }
