@@ -1,6 +1,7 @@
 import React from 'react'
-import Icon from '../lib/icon'
 import { FormInput } from './formInput'
+import { AuthBtn } from './authBtn'
+import { AgreementTerms } from './agreementTerms'
 
 export const JoinForm = ({
   handleOnBlur,
@@ -48,22 +49,8 @@ export const JoinForm = ({
         type="password"
         handleBlur={() => handleOnBlur(passwordBlurMsg)}
       />
-      <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-        <Icon
-          onClick={() => setHasAgreed(!hasAgreed)}
-          className={hasAgreed ? 'fa-check-square-o' : 'fa-square-o'}
-          icon={hasAgreed ? 'fa-check-square-o' : 'fa-square-o'}
-          size="2"
-          name="agree"
-        />
-        <span>I agree to the </span>
-        <a href="https://enciv.org/terms/" target="_blank">
-          Terms of Service
-        </a>
-      </div>
-      <button name="Join" className={isDisabled ? classes.disable : classes.activeBtn} onClick={e => handleSignUp(e)}>
-        {'Join'}
-      </button>
+      <AgreementTerms setHasAgreed={setHasAgreed} hasAgreed={hasAgreed} />
+      <AuthBtn classes={isDisabled ? classes.disable : classes.activeBtn} handleClick={handleSignUp} btnName="Join" />
       {!!formValidationErrors.length && <span className={classes.formValidationErrors}>{formValidationErrors[0]}</span>}
       {infoMessage && <span>{infoMessage}</span>}
     </>

@@ -1,5 +1,6 @@
 import React from 'react'
 import { FormInput } from './formInput'
+import { AuthBtn } from './authBtn'
 
 export const LoginForm = ({
   handleChange,
@@ -32,9 +33,8 @@ export const LoginForm = ({
         handleBlur={() => handleOnBlur(passwordBlurMsg)}
         type="password"
       />
-      <button name="login" className={isDisabled ? classes.disable : classes.activeBtn} onClick={e => handleLogin(e)}>
-        {'Login'}
-      </button>
+      <AuthBtn classes={isDisabled ? classes.disable : classes.activeBtn} handleClick={handleLogin} btnName="Login" />
+
       {!!formValidationErrors.length && <span className={classes.formValidationErrors}>{formValidationErrors[0]}</span>}
       {infoMessage && <span>{infoMessage}</span>}
     </>
