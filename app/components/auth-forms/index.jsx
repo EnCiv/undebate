@@ -191,6 +191,8 @@ const styles = {
   authFormWrapper: {
     border: '0.5px solid black',
     padding: '3rem',
+    display: 'flex',
+    flexDirection: 'column',
     '& form': {},
     '& label': {
       display: 'flex',
@@ -220,10 +222,15 @@ const styles = {
   },
   disable: {
     backgroundColor: '#D3D3D3',
+    float: 'right',
+    width: '35%',
   },
   activeBtn: {
-    backgroundColor: '#00FF7F',
+    backgroundColor: '#E5A650',
     cursor: 'pointer',
+    float: 'right',
+    width: '35%',
+    color: 'white',
   },
   formValidationErrors: {
     color: 'red',
