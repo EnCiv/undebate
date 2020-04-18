@@ -1,9 +1,9 @@
 import React from 'react'
 import Icon from '../lib/icon'
 
-export const AgreementTerms = ({ setHasAgreed, hasAgreed }) => {
+export const AgreementTerms = ({ setHasAgreed, hasAgreed, classes }) => {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#18397D', marginTop: '1rem' }}>
+    <div className={classes}>
       <Icon
         onClick={() => setHasAgreed(!hasAgreed)}
         className={hasAgreed ? 'fa-check-square-o' : 'fa-square-o'}
@@ -11,7 +11,7 @@ export const AgreementTerms = ({ setHasAgreed, hasAgreed }) => {
         size="2"
         name="agree"
       />
-      <span style={{ color: '#18397D' }}>
+      <span>
         I agree to the{' '}
         <a href="https://enciv.org/terms/" target="_blank" style={{ color: '#18397D' }}>
           Terms of Service
