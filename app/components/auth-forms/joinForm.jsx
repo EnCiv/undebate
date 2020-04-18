@@ -49,7 +49,7 @@ export const JoinForm = ({
         type="password"
         handleBlur={() => handleOnBlur(passwordBlurMsg)}
       />
-      <AgreementTerms setHasAgreed={setHasAgreed} hasAgreed={hasAgreed} />
+      <AgreementTerms setHasAgreed={setHasAgreed} hasAgreed={hasAgreed} classes={classes.agreementWrapper} />
       <AuthBtn classes={isDisabled ? classes.disable : classes.activeBtn} handleClick={handleSignUp} btnName="Join" />
       {!!formValidationErrors.length && <span className={classes.formValidationErrors}>{formValidationErrors[0]}</span>}
       {infoMessage && <span>{infoMessage}</span>}

@@ -19,7 +19,6 @@ const Temp = props => {
   })
   const [isDisabled, setIsDisabled] = useState(true)
   const [infoMessage, setInfoMessage] = useState(null)
-  const [successMessage, setSuccessMessage] = useState(null)
   const [formValidationErrors, setFormValidationErrors] = useState([])
   const emailBlurMsg = 'email address is not valid'
   const passwordBlurMsg = 'Passwords do not match'
@@ -149,9 +148,7 @@ const Temp = props => {
     } else cb()
   }
   const { classes } = props
-  if (successMessage) {
-    return <span>{successMessage}</span>
-  }
+
   return (
     <div className={props.classes.authFormWrapper}>
       <Tabs classes={classes} onLogin={onLogin} handleTabSwitch={handleTabSwitch} />
@@ -159,6 +156,10 @@ const Temp = props => {
         {onLogin ? (
           <LoginForm
             handleLogin={handleLogin}
+            hasAgreed={hasAgreed}
+            setHasAgreed={setHasAgreed}
+            setInfoMessage={setInfoMessage}
+            setFormValidationErrors={setFormValidationErrors}
             formValidationErrors={formValidationErrors}
             handleOnBlur={handleOnBlur}
             handleChange={handleChange}
@@ -193,6 +194,9 @@ const styles = {
     padding: '3rem',
     display: 'flex',
     flexDirection: 'column',
+    width: '30rem',
+    maxWidth: '30rem',
+    minHeight: '42rem',
     '& form': {},
     '& label': {
       display: 'flex',
@@ -210,11 +214,11 @@ const styles = {
     fontSize: '2rem',
   },
   activeTab: {
-    backgroundColor: '#E5E5E5',
+    backgroundColor: 'white',
     width: '50%',
   },
   nonActiveTab: {
-    backgroundColor: 'white',
+    backgroundColor: '#E5E5E5',
     width: '50%',
   },
   hide: {
@@ -223,17 +227,35 @@ const styles = {
   disable: {
     backgroundColor: '#D3D3D3',
     float: 'right',
-    width: '35%',
+    width: '9rem',
+    height: '3rem',
+    fontSize: '1.5rem',
+    fontWeight: '600',
   },
   activeBtn: {
     backgroundColor: '#E5A650',
     cursor: 'pointer',
     float: 'right',
-    width: '35%',
+    width: '9rem',
+    height: '3rem',
     color: 'white',
+    fontSize: '1.5rem',
+    fontWeight: '600',
+  },
+  agreementWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    color: '#18397D',
+    marginTop: '1rem',
+    '& span': {
+      marginLeft: '0.5rem',
+      fontWeight: '800',
+    },
   },
   formValidationErrors: {
     color: 'red',
+    width: '100%',
   },
 }
 export const AuthForm = injectSheet(styles)(Temp)
