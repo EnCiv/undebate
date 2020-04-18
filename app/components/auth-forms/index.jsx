@@ -46,9 +46,7 @@ const Temp = props => {
   }, [formValues, hasAgreed, formValidationErrors, onLogin])
   const handleChange = e => setFormValues({ ...formValues, [e.target.name]: e.target.value })
 
-  const handleTabSwitch = bool => {
-    setOnLogin(bool)
-  }
+  const handleTabSwitch = bool => setOnLogin(bool)
   const handleOnBlur = (message, condition) => {
     const index = formValidationErrors.indexOf(message)
     if (condition) {
@@ -98,6 +96,7 @@ const Temp = props => {
   const handleLogin = e => {
     e.preventDefault()
     if (isDisabled) return
+    setLoginErrors(null)
     setInfoMessage('Logging you in...')
     const { email, password } = formValues
     const userInfo = Object.assign({}, props.userInfo, { email, password })
