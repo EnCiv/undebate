@@ -26,5 +26,4 @@ export const FormInput = props => {
 
 FormInput.defaultProps = {
   type: 'text',
-  width: 'inherit',
 }
