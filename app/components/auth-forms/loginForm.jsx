@@ -52,8 +52,7 @@ export const LoginForm = ({
         placeholder="email@address.com"
       />
       <FormInput labelName="PASSWORD" name="password" value={password} handleChange={handleChange} type="password" />
-      <AgreementTerms setHasAgreed={setHasAgreed} hasAgreed={hasAgreed} classes={classes.agreementWrapper} />
-      <div style={{ marginTop: '1rem' }}>
+      <div style={{ marginTop: '2rem' }}>
         <AuthBtn classes={isDisabled ? classes.disable : classes.activeBtn} handleClick={handleLogin} btnName="Login" />
       </div>
       {infoMessage && <span>{infoMessage}</span>}
