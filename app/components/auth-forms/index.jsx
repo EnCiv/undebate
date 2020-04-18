@@ -7,7 +7,7 @@ import { FormInput } from './formInput'
 import { JoinForm } from './joinForm'
 import { LoginForm } from './loginForm'
 import { Tabs } from './tabs/Tabs'
-const Temp = props => {
+const PreInject = props => {
   const [hasAgreed, setHasAgreed] = useState(false)
   const [onLogin, setOnLogin] = useState(false)
   const [formValues, setFormValues] = useState({
@@ -258,5 +258,4 @@ const styles = {
     width: '100%',
   },
 }
-export const AuthForm = injectSheet(styles)(Temp)
-export default injectSheet(styles)(AuthForm)
+export const AuthForm = injectSheet(styles)(PreInject)
