@@ -46,11 +46,8 @@ const Temp = props => {
   }, [formValues, hasAgreed, formValidationErrors, onLogin])
   const handleChange = e => setFormValues({ ...formValues, [e.target.name]: e.target.value })
 
-  const handleOnBlur = (message, isEmailBlur = false) => {
+  const handleOnBlur = (message, condition) => {
     const index = formValidationErrors.indexOf(message)
-    const condition = isEmailBlur
-      ? email && !isEmail(email)
-      : password && confirmPassword && password !== confirmPassword
     if (condition) {
       // prevents from adding duplicate message
       if (index < 0) {

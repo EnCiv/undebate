@@ -1,4 +1,6 @@
 import React from 'react'
+import isEmail from 'is-email'
+
 import { FormInput } from './formInput'
 import { AuthBtn } from './authBtn'
 import { AgreementTerms } from './agreementTerms'
@@ -18,7 +20,8 @@ export const JoinForm = ({
 }) => {
   const { email, firstName, lastName, password, confirmPassword } = formValues
   const { emailBlurMsg, passwordBlurMsg } = validationMessages
-
+  const handlePasswordBlur = password && confirmPassword && password !== confirmPassword
+  const handleEmailBlur = email && !isEmail(email)
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -30,7 +33,7 @@ export const JoinForm = ({
         handleChange={handleChange}
         name="email"
         value={email}
-        handleBlur={() => handleOnBlur(emailBlurMsg, true)}
+        handleBlur={() => handleOnBlur(emailBlurMsg, handleEmailBlur)}
         placeholder="email@address.com"
       />
       <FormInput
@@ -38,7 +41,7 @@ export const JoinForm = ({
         name="password"
         value={password}
         handleChange={handleChange}
-        handleBlur={() => handleOnBlur(passwordBlurMsg)}
+        handleBlur={() => handleOnBlur(passwordBlurMsg, handlePasswordBlur)}
         type="password"
       />
       <FormInput
@@ -47,7 +50,7 @@ export const JoinForm = ({
         value={confirmPassword}
         handleChange={handleChange}
         type="password"
-        handleBlur={() => handleOnBlur(passwordBlurMsg)}
+        handleBlur={() => handleOnBlur(passwordBlurMsg, handlePasswordBlur)}
       />
       <AgreementTerms setHasAgreed={setHasAgreed} hasAgreed={hasAgreed} classes={classes.agreementWrapper} />
       <AuthBtn classes={isDisabled ? classes.disable : classes.activeBtn} handleClick={handleSignUp} btnName="Join" />
