@@ -1,7 +1,7 @@
 import React from 'react'
 
 export const FormInput = props => {
-  const { labelName, handleChange, handleBlur, name, type, value, width } = props
+  const { labelName, handleChange, handleBlur, name, type, value, width, placeHolder } = props
   return (
     <label style={{ color: '#18397D', textAlign: 'left', fontWeight: '900', width }}>
       {labelName}
@@ -19,6 +19,7 @@ export const FormInput = props => {
         type={type}
         required
         value={value}
+        placeholder={placeHolder}
       />
     </label>
   )

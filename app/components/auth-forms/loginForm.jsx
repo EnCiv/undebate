@@ -49,14 +49,14 @@ export const LoginForm = ({
         name="email"
         value={email}
         handleBlur={() => handleOnBlur(emailBlurMsg, handleEmailBlur)}
-        placeholder="email@address.com"
+        placeHolder="email@address.com"
       />
       <FormInput labelName="PASSWORD" name="password" value={password} handleChange={handleChange} type="password" />
       <div style={{ marginTop: '2rem' }}>
         <AuthBtn classes={isDisabled ? classes.disable : classes.activeBtn} handleClick={handleLogin} btnName="Login" />
       </div>
       {infoMessage && <span>{infoMessage}</span>}
-      {loginErrors && <span className={classes.formValidationErrors}>{loginErrors}</span>}
+      {loginErrors && <div className={classes.formValidationErrors}>{loginErrors}</div>}
     </>
   )
 }
