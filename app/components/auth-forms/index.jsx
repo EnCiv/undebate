@@ -20,10 +20,10 @@ const Temp = props => {
   const [isDisabled, setIsDisabled] = useState(true)
   const [infoMessage, setInfoMessage] = useState(null)
   const [formValidationErrors, setFormValidationErrors] = useState([])
+  const [loginErrors, setLoginErrors] = useState(null)
   const emailBlurMsg = 'email address is not valid'
   const passwordBlurMsg = 'Passwords do not match'
   const validationMessages = { emailBlurMsg, passwordBlurMsg }
-  const handleTabSwitch = bool => setOnLogin(bool)
   const { email, password, confirmPassword } = formValues
   useEffect(() => {
     if (!onLogin) {
@@ -38,7 +38,7 @@ const Temp = props => {
       }
     }
     if (onLogin) {
-      if (isEmail(email) && password) {
+      if (email && password) {
         return setIsDisabled(false)
       }
       return setIsDisabled(true)
@@ -46,6 +46,9 @@ const Temp = props => {
   }, [formValues, hasAgreed, formValidationErrors, onLogin])
   const handleChange = e => setFormValues({ ...formValues, [e.target.name]: e.target.value })
 
+  const handleTabSwitch = bool => {
+    setOnLogin(bool)
+  }
   const handleOnBlur = (message, condition) => {
     const index = formValidationErrors.indexOf(message)
     if (condition) {
@@ -114,7 +117,7 @@ const Temp = props => {
             }
             break
           default:
-            setFormValidationErrors([
+            setLoginErrors([
               'The email and password you entered did not match our records. Please double-check and try again.',
             ])
             break
@@ -165,6 +168,7 @@ const Temp = props => {
             isDisabled={isDisabled}
             classes={classes}
             validationMessages={validationMessages}
+            loginErrors={loginErrors}
           />
         ) : (
           <JoinForm

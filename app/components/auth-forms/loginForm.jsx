@@ -19,6 +19,7 @@ export const LoginForm = ({
   setFormValidationErrors,
   setHasAgreed,
   hasAgreed,
+  loginErrors,
 }) => {
   const { email, password } = formValues
   const { emailBlurMsg, passwordBlurMsg } = validationMessages
@@ -55,8 +56,8 @@ export const LoginForm = ({
       <div style={{ marginTop: '1rem' }}>
         <AuthBtn classes={isDisabled ? classes.disable : classes.activeBtn} handleClick={handleLogin} btnName="Login" />
       </div>
-      {!!formValidationErrors.length && <span className={classes.formValidationErrors}>{formValidationErrors[0]}</span>}
       {infoMessage && <span>{infoMessage}</span>}
+      {loginErrors && <span className={classes.formValidationErrors}>{loginErrors}</span>}
     </>
   )
 }
