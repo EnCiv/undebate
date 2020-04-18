@@ -215,14 +215,14 @@ var viewer_recorder_pair = {
         },
         audience1: {
           speaking: [
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585676624/5e838143548a860017fffba4-0-speaking20200331T174339908Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585676631/5e838143548a860017fffba4-1-speaking20200331T174342975Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585676641/5e838143548a860017fffba4-2-speaking20200331T174350659Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585676655/5e838143548a860017fffba4-3-speaking20200331T174400726Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587164209/5e8b7be3946422001760d842-0-speaking20200417T225637018Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587164237/5e8b7be3946422001760d842-1-speaking20200417T225649811Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587164272/5e8b7be3946422001760d842-2-speaking20200417T225717026Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587164287/5e8b7be3946422001760d842-3-speaking20200417T225752465Z.mp4',
           ],
-          name: 'Katie Karaoke',
+          name: 'Example Speaker',
           listening:
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585676656/5e838143548a860017fffba4-0-listening20200331T174414795Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074390/5e8b7be3946422001760d842-5-speaking20200416T215918176Z.mp4',
         },
         human: {
           listening: {
@@ -349,14 +349,14 @@ var viewer_recorder_pair = {
         },
         audience1: {
           speaking: [
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585676624/5e838143548a860017fffba4-0-speaking20200331T174339908Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585676631/5e838143548a860017fffba4-1-speaking20200331T174342975Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585676641/5e838143548a860017fffba4-2-speaking20200331T174350659Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585676655/5e838143548a860017fffba4-3-speaking20200331T174400726Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587164209/5e8b7be3946422001760d842-0-speaking20200417T225637018Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587164237/5e8b7be3946422001760d842-1-speaking20200417T225649811Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587164272/5e8b7be3946422001760d842-2-speaking20200417T225717026Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587164287/5e8b7be3946422001760d842-3-speaking20200417T225752465Z.mp4',
           ],
-          name: 'Katie Karaoke',
+          name: 'Example Speaker',
           listening:
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1585676656/5e838143548a860017fffba4-0-listening20200331T174414795Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074390/5e8b7be3946422001760d842-5-speaking20200416T215918176Z.mp4',
         },
         human: {
           listening: {
