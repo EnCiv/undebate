@@ -7,7 +7,7 @@ import Join from '../join'
 import Input from '../lib/input'
 import SocialShareBtn from '../lib/socialShareBtn'
 import ErrorBoundary from '../error-boundary'
-
+import { AuthForm } from '../auth-forms/index'
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep'
 import getYouTubeID from 'get-youtube-id'
@@ -2456,12 +2456,8 @@ class RASPUndebate extends React.Component {
                           <div style={{ textAlign: 'center' }}>
                             <span>Join and your recorded videos will be uploaded and shared</span>
                           </div>
-                          <div>
-                            <Join
-                              className={this.props.classes['join']}
-                              userInfo={{ name: this.state.name }}
-                              onChange={this.onUserLogin.bind(this)}
-                            ></Join>
+                          <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <AuthForm userInfo={{ name: this.state.name }} onChange={this.onUserLogin.bind(this)} />
                           </div>
                         </>
                       )}
