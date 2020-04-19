@@ -46,8 +46,7 @@ async function notifyOfNewParticipant(iota) {
     let message = {
       from: Config.sendEmailFrom,
       to: iota.component.participant.bp_info.candidate_emails[0],
-      //cc: 'electionboard@g.ucla.edu',
-      cc: 'ddfridley@yahoo.com',
+      cc: process.env.UCLA_USA_EMAIL,
       subject: 'Candidate Conversation for:' + iota.component.participant.bp_info.office,
       text: `Welcome ${
         iota.component.participant.bp_info.candidate_name
