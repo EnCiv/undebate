@@ -27,6 +27,7 @@ const getIotaPropertyFromCSVColumn = {
   recorder_url_name: () => 'recorder_url',
   url_update_name: name => name + '_updated',
   lastname: row => row['Ballot Name'].split(' ').reduce((acc, word) => word, ''), // the last word in the full name will be the last name
+  election_source: () => 'UniversityOfCaliforniaLosAngeles.UndergraduateStudentsAssociation',
 }
 
 function date_dash(date) {
@@ -74,6 +75,7 @@ var viewer_recorder_pair = {
     }, {})
     if (nextPrev.nextElection) newViewer.bp_info.nextElection = nextPrev.nextElection
     if (nextPrev.prevElection) newViewer.bp_info.prevElection = nextPrev.prevElection
+    newViewer.bp_info.election_source = getIotaPropertyFromCSVColumn.election_source(csvRowObj)
   },
   overWriteRecorderInfo: function(newRecorder, viewerObj, csvRowObj) {
     newRecorder.subject = getIotaPropertyFromCSVColumn.office(csvRowObj) + '-Candidate Recorder'
@@ -102,6 +104,7 @@ var viewer_recorder_pair = {
     newRecorder.path = this.recorderPath(csvRowObj) // must set raceObject.unique_id before calling this
     newRecorder.bp_info.candidate_emails = getIotaPropertyFromCSVColumn.candidate_emails(csvRowObj)
     newRecorder.bp_info.party = getIotaPropertyFromCSVColumn.party(csvRowObj)
+    newRecorder.bp_info.election_source = getIotaPropertyFromCSVColumn.election_source(csvRowObj)
     newRecorder.parentId = viewerObj._id.toString()
   },
   updateLinkProperty: function(csvRowObj, property, path) {
@@ -178,6 +181,7 @@ var viewer_recorder_pair = {
       },
     },
     bp_info: {
+      //election_source:
       //election_list: []
     },
   },
@@ -252,6 +256,7 @@ var viewer_recorder_pair = {
       },
     },
     bp_info: {
+      //election_source:
       //"office": "Illinois House of Representatives District 38",
       //"party": null,
       //"unique_id": "92251",
@@ -312,6 +317,7 @@ var viewer_recorder_pair = {
       },
     },
     bp_info: {
+      //election_source:
       //election_list: []
     },
   },
@@ -386,6 +392,7 @@ var viewer_recorder_pair = {
       },
     },
     bp_info: {
+      //election_source:
       //"office": "Illinois House of Representatives District 38",
       //"party": null,
       //"unique_id": "92251",
@@ -395,7 +402,7 @@ var viewer_recorder_pair = {
       //"candidate_emails": [],
       //"person_emails": []
     },
-    //        "parentId": ""
+    //"parentId": ""
   },
 }
 
