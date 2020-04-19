@@ -1675,15 +1675,11 @@ class RASPUndebate extends React.Component {
   ]
 
   recorderButtons = [
-    { name: () => <span title="Re-record">Redo</span>, func: this.rerecordButton, title: () => 'Re-record' },
+    { name: () => 'Redo', func: this.rerecordButton, title: () => 'Re-record' },
     { name: () => 'key1', func: null, title: () => '' }, // keyN because react keys have to have unigue names
     { name: () => 'key2', func: null, title: () => '' },
     { name: () => 'key3', func: null, title: () => '' },
-    {
-      name: () => <span title="Done Speaking">Finished Speaking</span>,
-      func: this.finishedSpeaking,
-      title: () => 'Done Speaking',
-    },
+    { name: () => 'Finished Speaking', func: this.finishedSpeaking, title: () => 'Done Speaking' },
   ]
 
   allPause() {
@@ -2327,7 +2323,7 @@ class RASPUndebate extends React.Component {
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
           {noOverlay || opening.noPreamble ? (
             <div style={{ width: '100%', height: '100%', display: 'table' }}>
-              <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
+              <div title="Begin" style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
                 <button style={{ marginTop: '25vh' }} className={classes['beginButton']} onClick={this.beginButton}>
                   Begin
                 </button>
@@ -2533,15 +2529,12 @@ class RASPUndebate extends React.Component {
           key={participant}
         >
           {this.seat(i) === 'speaking' ? (
-            <span title="Share" style={{ cursor: 'pointer', pointerEvents: 'auto' }}>
-              <SocialShareBtn
-                title="Share"
-                metaData={{
-                  path: this.props.path,
-                  subject: this.props.subject,
-                }}
-              />
-            </span>
+            <SocialShareBtn
+              metaData={{
+                path: this.props.path,
+                subject: this.props.subject,
+              }}
+            />
           ) : null}
           <div
             style={{

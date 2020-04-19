@@ -1528,27 +1528,37 @@ class RASPUndebate extends React.Component {
   }
 
   buttons = [
-    { name: () => <IconPrevSection width="60%" height="auto" />, func: this.prevSection },
-    { name: () => <IconPrevSpeaker width="60%" height="auto" />, func: this.prevSpeaker },
+    {
+      name: () => <IconPrevSection width="60%" height="auto" />,
+      func: this.prevSection,
+      title: () => 'Previous Question',
+    },
+    {
+      name: () => <IconPrevSpeaker width="60%" height="auto" />,
+      func: this.prevSpeaker,
+      title: () => 'Previous Speaker',
+    },
     {
       name: () =>
         this.state.allPaused ? <IconPlay width="75%" height="auto" /> : <IconPause width="75%" height="75%" />,
       func: this.allPause,
+      title: () => (this.state.isRecording ? 'Stop' : this.state.allPaused ? 'Play' : 'Pause'),
     },
-    { name: () => <IconSkipSpeaker width="60%" height="auto" />, func: this.nextSpeaker },
+    { name: () => <IconSkipSpeaker width="60%" height="auto" />, func: this.nextSpeaker, title: () => 'Next Speaker' },
     {
       name: () => <IconNextSection width="60%" height="auto" />,
       func: this.nextSection,
+      title: () => 'Next Question',
       disabled: () => this.participants.human && !this.participants.human.speakingObjectURLs[this.state.round],
     },
   ]
 
   recorderButtons = [
-    { name: () => 'Redo', func: this.rerecordButton },
-    { name: () => 'key1', func: null }, // keyN because react keys have to have unigue names
-    { name: () => 'key2', func: null },
-    { name: () => 'key3', func: null },
-    { name: () => 'Finished Speaking', func: this.finishedSpeaking },
+    { name: () => 'Redo', func: this.rerecordButton, title: () => 'Re-record' },
+    { name: () => 'key1', func: null, title: () => '' }, // keyN because react keys have to have unigue names
+    { name: () => 'key2', func: null, title: () => '' },
+    { name: () => 'key3', func: null, title: () => '' },
+    { name: () => 'Finished Speaking', func: this.finishedSpeaking, title: () => 'Done Speaking' },
   ]
 
   allPause() {
@@ -2170,7 +2180,9 @@ class RASPUndebate extends React.Component {
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
           <div style={{ width: '100%', height: '100%', display: 'table' }}>
             <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-              <IconPlay width="25%" height="25%" className={classes['beginButton']} onClick={this.beginButton} />
+              <span title="Begin">
+                <IconPlay width="25%" height="25%" className={classes['beginButton']} onClick={this.beginButton} />
+              </span>
             </div>
           </div>
           {/*<div style={{ width: '100%', height: '100%', display: 'table' }} >
@@ -2490,7 +2502,8 @@ class RASPUndebate extends React.Component {
           {this.buttons.map(button => (
             <div
               style={{ width: 100 / this.buttons.length + '%', display: 'inline-block', height: 'auto' }}
-              key={button.name}
+              title={button.title()}
+              key={button.title()}
             >
               <div disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
                 {button.name()}
@@ -2510,7 +2523,8 @@ class RASPUndebate extends React.Component {
           {this.recorderButtons.map(button => (
             <div
               style={{ width: 100 / this.recorderButtons.length + '%', display: 'inline-block', height: '100%' }}
-              key={button.name}
+              key={button.title()}
+              title={button.title()}
             >
               {button.func ? (
                 <button disabled={!humanSpeaking} onClick={button.func.bind(this)}>
