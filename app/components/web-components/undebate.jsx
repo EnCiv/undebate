@@ -1884,7 +1884,10 @@ class RASPUndebate extends React.Component {
       logger.trace('rotateOrder', round, seatOffset, participant, oldChair, newChair)
       if (participant === 'human') {
         const listeningRound =
-          (this.props.participants.human.listening && this.props.participants.human.listening.round) || Infinity
+          this.props.participants.human.listening &&
+          typeof this.props.participants.human.listening.round !== 'undefined'
+            ? this.props.participants.human.listening.round
+            : Infinity // 0 is a valid round
         const listeningSeat =
           (this.props.participants.human.listening && this.props.participants.human.listening.seat) || 'seat2'
         // first see if recording needs to be turned off (do this first)
@@ -2050,7 +2053,10 @@ class RASPUndebate extends React.Component {
       try {
         await this.camera.getCameraStream(constraints, () => this.nextMediaState('human'))
         const listeningRound =
-          (this.props.participants.human.listening && this.props.participants.human.listening.round) || Infinity
+          this.props.participants.human.listening &&
+          typeof this.props.participants.human.listening.round !== 'undefined'
+            ? this.props.participants.human.listening.round
+            : Infinity // 0 is a valid round
         const listeningSeat =
           (this.props.participants.human.listening && this.props.participants.human.listening.seat) || 'seat2'
         logger.trace('getUserMedia() got stream:', this.camera.cameraStream)
