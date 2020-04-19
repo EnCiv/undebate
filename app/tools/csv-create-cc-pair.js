@@ -13,6 +13,31 @@ const csv = require('csvtojson')
 const ObjectsToCsv = require('objects-to-csv')
 const mergeWith = require('lodash/mergeWith')
 
+function waitForKeyTryAgain(toDo) {
+  if (!waitForKeyTryAgain.started) waitForKeyTryAgain.started = true
+  // we only need to call this once to set things up
+  else return
+  // thanks to https://stackoverflow.com/questions/5006821/nodejs-how-to-read-keystrokes-from-stdin for this code
+  var stdin = process.stdin
+  // without this, we would only get streams once enter is pressed
+  stdin.setRawMode(true)
+  // resume stdin in the parent process (node app won't quit all by itself
+  // unless an error or process.exit() happens)
+  stdin.resume()
+  // i don't want binary, do you?
+  stdin.setEncoding('utf8')
+  // on any data into stdin
+  stdin.on('data', function(key) {
+    // ctrl-c ( end of text )
+    if (key === '\u0003') {
+      process.exit()
+    }
+    // write the key to stdout all normal like
+    process.stdout.write(key)
+    if (toDo) toDo()
+  })
+}
+
 // Iota uses logger
 const log4js = require('log4js')
 
@@ -37,7 +62,7 @@ function updateOrCreatePair(csvRowObj, template) {
   return new Promise(async (ok, ko) => {
     async function createNewRecorder(viewerObj) {
       try {
-        var newRecorder = cloneDeep(template.recorder)
+        var newRecorder = cloneDeep(template.getRecorder(csvRowObj))
         template.overWriteRecorderInfo.call(template, newRecorder, viewerObj, csvRowObj)
         var recorderObj = await Iota.create(newRecorder)
         console.info('created recorder', viewerObj.subject, viewerObj.path, recorderObj.path)
@@ -50,7 +75,7 @@ function updateOrCreatePair(csvRowObj, template) {
     var viewers = await Iota.find({ path: template.viewerPath.call(template, csvRowObj) })
     if (viewers.length == 0) {
       // create the new race
-      var newViewer = cloneDeep(template.viewer)
+      var newViewer = cloneDeep(template.getViewer(csvRowObj))
       template.overWriteViewerInfo.call(template, newViewer, csvRowObj)
       try {
         var viewerObj = await Iota.create(newViewer)
@@ -63,7 +88,7 @@ function updateOrCreatePair(csvRowObj, template) {
     } else if (viewers.length) {
       // update the race
       var viewerObj = cloneDeep(viewers[0])
-      mergeWithVerbose(viewerObj, template.viewer)
+      mergeWithVerbose(viewerObj, template.getViewer(csvRowObj))
       template.overWriteViewerInfo.call(template, viewerObj, csvRowObj)
       await Iota.findOneAndReplace({ _id: viewerObj._id }, viewerObj)
       var recorders = await Iota.find({ path: template.recorderPath.call(template, csvRowObj) })
@@ -73,7 +98,7 @@ function updateOrCreatePair(csvRowObj, template) {
         return
       } else {
         var newRecorder = cloneDeep(recorders[0])
-        mergeWithVerbose(newRecorder, template.recorder)
+        mergeWithVerbose(newRecorder, template.getRecorder(csvRowObj))
         template.overWriteRecorderInfo.call(template, newRecorder, viewerObj, csvRowObj)
         var recorderObj = await Iota.findOneAndReplace({ _id: newRecorder._id }, newRecorder)
         return ok({ viewerObj, recorderObj })
@@ -116,16 +141,35 @@ if (args.src && args.db && args.pair) {
         else writeCSVAndDisconnect()
       }
       async function writeCSVAndDisconnect() {
-        const csvOut = new ObjectsToCsv(csvRowObjList)
-        await csvOut.toDisk(args.src) // write over the source file so changes will come back in
         MongoModels.disconnect()
+        const csvOut = new ObjectsToCsv(csvRowObjList)
+        async function writeItOut() {
+          try {
+            await csvOut.toDisk(args.src) // write over the source file so changes will come back in
+            console.info('csv File updated', args.src)
+            process.exit(0)
+          } catch (error) {
+            if (error.code === 'EBUSY') {
+              // happens when excel has the file open
+              console.info(`${error.path} busy, try again? ^C to exit`)
+              waitForKeyTryAgain(writeItOut)
+            } else {
+              console.error('error trying to write csv file', error)
+              process.exit()
+            }
+          }
+        }
+        writeItOut()
       }
+      viewerRecorderPair.setup && viewerRecorderPair.setup(csvRowObjList)
       doTheUpdate(0)
     })
     .catch(err => {
       console.error('csv caught error', err)
     })
 } else {
-  console.error('usage: csv-create-cc-pair src <csv file> db <database uri> pair <viewer-recorder-pair.js')
+  console.error(
+    'usage: csv-create-cc-pair src <csv file> db <database uri> pair <viewer-recorder-pair.js> Note: pair must be relative to path of this program'
+  )
   process.exit()
 }
