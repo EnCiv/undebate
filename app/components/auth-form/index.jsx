@@ -84,7 +84,7 @@ const PreInject = props => {
     setFormValidationErrors([])
     setInfoMessage('Signing you up...')
     const { email, password } = formValues
-    const userInfo = { email, password }
+    const userInfo = { email, password, firstName, lastName }
     superagent
       .post('/sign/up')
       .send(userInfo)
@@ -101,7 +101,7 @@ const PreInject = props => {
           case 200:
             setInfoMessage('Welcome aboard!')
             if (props.onChange) {
-              authenticateSocketIo(() => props.onChange({ userId: JSON.parse(res.text).id }))
+              authenticateSocketIo(() => props.onChange({ userId: JSON.parse(res.text).id, firstName, lastName }))
             } else {
               setTimeout(() => (location.href = props.newLocation ? props.newLocation : window.location.pathname))
             }
@@ -166,7 +166,6 @@ const PreInject = props => {
     } else cb()
   }
   const { classes } = props
-
   return (
     <div className={props.classes.authFormWrapper}>
       <Tabs classes={classes} onLogin={onLogin} handleTabSwitch={handleTabSwitch} />
