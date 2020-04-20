@@ -1972,8 +1972,8 @@ class RASPUndebate extends React.Component {
   onUserLogin(info) {
     logger.info('Undebate.onUserLogin')
     logger.trace('onUserLogin', info)
-    const { userId } = info
-    this.setState({ newUserId: userId })
+    const { userId, firstName, lastName } = info
+    this.setState({ newUserId: userId, firstName, lastName })
   }
 
   onUserUpload() {
@@ -2457,7 +2457,10 @@ class RASPUndebate extends React.Component {
                             <span>Join and your recorded videos will be uploaded and shared</span>
                           </div>
                           <div style={{ display: 'flex', justifyContent: 'center' }}>
-                            <AuthForm userInfo={{ name: this.state.name }} onChange={this.onUserLogin.bind(this)} />
+                            <AuthForm
+                              userInfo={{ name: this.state.name, firstName: this.state.firstName }}
+                              onChange={this.onUserLogin.bind(this)}
+                            />
                           </div>
                         </>
                       )}
