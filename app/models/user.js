@@ -15,6 +15,8 @@ class User extends MongoModels {
     return new Promise(async (ok, ko) => {
       var error
       const { password, email, name } = user
+      if (!email) error = `User.create attempted, but no email. name=${name}`
+      if (!password) error = `User.create attempted, but no password. name=${name}, email=${email}`
       if (password && email) {
         bcrypt.hash(password, 10, async (err, hash) => {
           if (err) {
@@ -36,10 +38,6 @@ class User extends MongoModels {
           }
         })
         return // let bcrypt do it's think
-      } else if (!email) {
-        error = `User.create attempted, but no email. name=${name}`
-      } else if (!password) {
-        error = `User.create attempted, but no password. name=${name}, email=${email}`
       }
       logger.error(error)
       ko(new Error(error))
