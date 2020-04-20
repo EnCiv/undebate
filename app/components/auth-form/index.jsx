@@ -24,10 +24,10 @@ const PreInject = props => {
   const emailBlurMsg = 'email address is not valid'
   const passwordBlurMsg = 'Passwords do not match'
   const validationMessages = { emailBlurMsg, passwordBlurMsg }
-  const { email, password, confirmPassword } = formValues
+  const { email, password, confirmPassword, firstName, lastName } = formValues
   useEffect(() => {
     if (!onLogin) {
-      if (email && password && confirmPassword && password === confirmPassword && hasAgreed) {
+      if (email && password && confirmPassword && password === confirmPassword && hasAgreed && firstName && lastName) {
         if (!isEmail(email)) {
           setIsDisabled(true)
         } else {
@@ -47,6 +47,7 @@ const PreInject = props => {
   const handleChange = e => setFormValues({ ...formValues, [e.target.name]: e.target.value })
 
   const handleTabSwitch = bool => setOnLogin(bool)
+
   const handleOnBlur = (message, condition) => {
     const index = formValidationErrors.indexOf(message)
     if (condition) {
@@ -61,7 +62,25 @@ const PreInject = props => {
   }
   const handleSignUp = e => {
     e.preventDefault()
-    if (isDisabled) return
+    e.stopPropagation()
+    if (isDisabled) {
+      if (confirmPassword.length === 0) {
+        if (!formValidationErrors.includes('please confirm password')) {
+          setFormValidationErrors(['please confirm password', ...formValidationErrors])
+        }
+      }
+      if (!hasAgreed) {
+        if (!formValidationErrors.includes('must agree to terms')) {
+          setFormValidationErrors([...formValidationErrors, 'must agree to terms'])
+        }
+      }
+      if (confirmPassword && hasAgreed) {
+        const index = formValidationErrors.indexOf('please confirm password')
+        const index2 = formValidationErrors.indexOf('must agree to terms')
+        setFormValidationErrors(formValidationErrors.filter((msg, i) => i !== index || index2))
+      }
+      return
+    }
     setFormValidationErrors([])
     setInfoMessage('Signing you up...')
     const { email, password } = formValues
@@ -151,7 +170,7 @@ const PreInject = props => {
   return (
     <div className={props.classes.authFormWrapper}>
       <Tabs classes={classes} onLogin={onLogin} handleTabSwitch={handleTabSwitch} />
-      <form>
+      <form onSubmit={onLogin ? handleLogin : handleSignUp}>
         {onLogin ? (
           <LoginForm
             handleLogin={handleLogin}
