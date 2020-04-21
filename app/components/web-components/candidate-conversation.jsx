@@ -580,6 +580,46 @@ const styles = {
   stalledNow: {},
   stalledBox: {},
   'title-speaking': {},
+  'next-election-div': {
+    top: 0,
+    position: 'absolute',
+    right: 0,
+    height: '100vh',
+    display: 'table',
+    '&$portrait': {
+      height: '98%',
+    },
+  },
+  'previous-election-div': {
+    top: 0,
+    position: 'absolute',
+    left: 0,
+    height: '100vh',
+    display: 'table',
+    '&$portrait': {
+      height: '98%',
+    },
+  },
+  'election-inner-div': {
+    display: 'table-cell',
+    verticalAlign: 'middle',
+    '&$portrait': {
+      verticalAlign: 'bottom',
+    },
+  },
+  'election-icon': {
+    display: 'inline-block',
+    verticalAlign: 'middle',
+    cursor: 'pointer',
+    pointerEvents: 'auto',
+    border: 'none',
+    background: 'transparent',
+    padding: 0,
+    '&$portrait': {
+      verticalAlign: 'bottom',
+    },
+  },
+  portrait: {},
 }
 
 class CandidateConversation extends React.Component {
@@ -967,6 +1007,7 @@ class RASPUndebate extends React.Component {
     var introStyle = cloneDeep(this.state.introStyle)
     const titleHeight = 0 // the title is overlain the video window
     const innerTitleHeight = 3.5 * fontSize // title is 3.5rem high, it overlays the video window at the bottom
+    var portraitMode = false
     if (width / height > 1) {
       let speakingWidthRatio = 0.65
       const speakingHeight = () => speakingWidthRatio * width * HDRatio
@@ -1059,6 +1100,7 @@ class RASPUndebate extends React.Component {
       introSeatStyle.introRight.right = '-50vw'
     } else {
       // portrait mode
+      portraitMode = true
       const hGap = fontSize
       const vGap = fontSize
       let speakerLeftEdge = hGap
@@ -1208,7 +1250,16 @@ class RASPUndebate extends React.Component {
       introStyle.introRight.height = 'auto'
       introSeatStyle.introRight.right = '-50vw'
     }
-    return { seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, titleHeight }
+    return {
+      seatStyle,
+      agendaStyle,
+      buttonBarStyle,
+      recorderButtonBarStyle,
+      introSeatStyle,
+      introStyle,
+      titleHeight,
+      portraitMode,
+    }
   }
 
   saveRecordingToParticipants(speaking, round, blobs) {
@@ -2116,6 +2167,7 @@ class RASPUndebate extends React.Component {
       introStyle,
       stylesSet,
       titleHeight,
+      portraitMode,
     } = this.state
 
     const getIntroStyle = name =>
@@ -2567,6 +2619,38 @@ class RASPUndebate extends React.Component {
         </div>
       )
 
+    const nextElection = () =>
+      this.props.bp_info &&
+      this.props.bp_info.nextElection && (
+        <div className={cx(classes['next-election-div'], portraitMode && classes['portrait'])}>
+          <div className={cx(classes['election-inner-div'], portraitMode && classes['portrait'])} title="Next Office">
+            <button
+              className={cx(classes['election-icon'], portraitMode && classes['portrait'])}
+              onClick={() => (window.location = this.props.bp_info.nextElection)}
+            >
+              <Icon icon="chevron-right" size="4" name="next-section" />
+            </button>
+          </div>
+        </div>
+      )
+
+    const previousElection = () =>
+      this.props.bp_info &&
+      this.props.bp_info.prevElection && (
+        <div className={cx(classes['previous-election-div'], portraitMode && classes['portrait'])}>
+          <div
+            className={cx(classes['election-inner-div'], portraitMode && classes['portrait'])}
+            title="Previous Office"
+          >
+            <button
+              className={cx(classes['election-icon'], portraitMode && classes['portrait'])}
+              onClick={() => (window.location = this.props.bp_info.prevElection)}
+            >
+              <Icon icon="chevron-left" size="4" name="previous-election" />
+            </button>
+          </div>
+        </div>
+      )
     var main = () =>
       !done && (
         <div>
@@ -2625,6 +2709,8 @@ class RASPUndebate extends React.Component {
           {waitingOnModeratorOverlay()}
           {hangupButton()}
           {hungUp()}
+          {nextElection()}
+          {previousElection()}
         </section>
       </div>
     )
