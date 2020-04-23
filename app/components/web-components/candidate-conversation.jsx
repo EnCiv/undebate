@@ -2310,7 +2310,7 @@ class RASPUndebate extends React.Component {
                     </span>
                     <span>
                       <div className={classes['donateCallToAction']}>
-                        EnCiv is a 501(c)3 nonprofit working to bring free and fare candidate conversations to elections
+                        EnCiv is a 501(c)3 nonprofit working to bring free and fair candidate conversations to elections
                         across the country. Donations will help us keep this going.
                       </div>
                     </span>

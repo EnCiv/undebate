@@ -147,9 +147,9 @@ var viewer_recorder_pair = {
         thanks: 'Thank You.',
         iframe: {
           src:
-            'https://docs.google.com/forms/d/e/1FAIpQLSdupdesY-JhnhaB6rZn0-18VOMM3bkmrexrStPJ9-384NfqEg/viewform?embedded=true',
+            'https://docs.google.com/forms/d/e/1FAIpQLSfFJZF0N50n6vR9A8lc4Yqd3CUe7vwrTYNWeBMH0FfI1aeErg/viewform?embedded=true',
           width: '640',
-          height: '2950',
+          height: '4800',
         },
       },
       shuffle: true,
@@ -157,14 +157,14 @@ var viewer_recorder_pair = {
         moderator: {
           name: 'Navi Sidhu',
           speaking: [
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074273/5e8b7be3946422001760d842-0-speaking20200416T215715398Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074314/5e8b7be3946422001760d842-1-speaking20200416T215753103Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074325/5e8b7be3946422001760d842-2-speaking20200416T215834167Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074330/5e8b7be3946422001760d842-3-speaking20200416T215845703Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074358/5e8b7be3946422001760d842-4-speaking20200416T215850541Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587521326/5e8b7be3946422001760d842-0-speaking20200422T020815621Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587521352/5e8b7be3946422001760d842-1-speaking20200422T020846814Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587521359/5e8b7be3946422001760d842-2-speaking20200422T020912223Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587521362/5e8b7be3946422001760d842-3-speaking20200422T020919009Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587521378/5e8b7be3946422001760d842-4-speaking20200422T020922069Z.mp4',
           ],
           listening:
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074390/5e8b7be3946422001760d842-5-speaking20200416T215918176Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/so_0.5,w_640,h_360,c_fill,g_center,q_auto/v1587609069/5e8b7be3946422001760d842-0-speaking20200423T023039846Z.mp4',
           agenda: [
             ['Introductions', '1- Name', '2- Year', '3- Major', '4- What office are you running for?'],
             [
@@ -249,9 +249,9 @@ var viewer_recorder_pair = {
         thanks: 'Thank You.',
         iframe: {
           src:
-            'https://docs.google.com/forms/d/e/1FAIpQLSfAKYlqUpTlWSzUxwcltDjGNbMykiWLSHkPMYiqnX7hdcxEHA/viewform?embedded=true',
+            'https://docs.google.com/forms/d/e/1FAIpQLSchcQjvnbpwEcOl9ysmZ4-KwDyK7RynwJvxPqRTWhdq8SN02g/viewform?embedded=true',
           width: 640,
-          height: 1100,
+          height: 1550,
         },
       },
     },
@@ -283,9 +283,9 @@ var viewer_recorder_pair = {
         thanks: 'Thank You.',
         iframe: {
           src:
-            'https://docs.google.com/forms/d/e/1FAIpQLSdupdesY-JhnhaB6rZn0-18VOMM3bkmrexrStPJ9-384NfqEg/viewform?embedded=true',
+            'https://docs.google.com/forms/d/e/1FAIpQLSfFJZF0N50n6vR9A8lc4Yqd3CUe7vwrTYNWeBMH0FfI1aeErg/viewform?embedded=true',
           width: '640',
-          height: '2950',
+          height: '4800',
         },
       },
       shuffle: true,
@@ -293,16 +293,16 @@ var viewer_recorder_pair = {
         moderator: {
           name: 'Navi Sidhu',
           speaking: [
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074273/5e8b7be3946422001760d842-0-speaking20200416T215715398Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074617/5e8b7be3946422001760d842-1-speaking20200416T220329980Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074636/5e8b7be3946422001760d842-2-speaking20200416T220337570Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074646/5e8b7be3946422001760d842-3-speaking20200416T220356087Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074358/5e8b7be3946422001760d842-4-speaking20200416T215850541Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587522220/5e8b7be3946422001760d842-0-speaking20200422T022310506Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587522223/5e8b7be3946422001760d842-1-speaking20200422T022340358Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587522233/5e8b7be3946422001760d842-2-speaking20200422T022343047Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587522240/5e8b7be3946422001760d842-3-speaking20200422T022353856Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587522255/5e8b7be3946422001760d842-4-speaking20200422T022400559Z.mp4',
           ],
           listening:
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074390/5e8b7be3946422001760d842-5-speaking20200416T215918176Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/so_0.5,w_640,h_360,c_fill,g_center,q_auto/v1587609069/5e8b7be3946422001760d842-0-speaking20200423T023039846Z.mp4',
           agenda: [
-            ['Introductions', '1- Name', '2- Year', '3- Major', '4- What office are you running for?'],
+            ['Introductions', '1- Name', '2- Year', '3- Major', '4- What referenda you represent?'],
             ['Describe your referenda and the purpose of your referenda.'],
             [
               'Seeing that an increase in student fees are generally considered last measures, has your referenda considered all other funding options and what have been some of the past challenges with the funding for your project?',
@@ -339,9 +339,9 @@ var viewer_recorder_pair = {
             'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074358/5e8b7be3946422001760d842-4-speaking20200416T215850541Z.mp4',
           ],
           listening:
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/w_640,h_360,c_fill,g_center,q_auto/v1587074390/5e8b7be3946422001760d842-5-speaking20200416T215918176Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/so_0.5,w_640,h_360,c_fill,g_center,q_auto/v1587609069/5e8b7be3946422001760d842-0-speaking20200423T023039846Z.mp4',
           agenda: [
-            ['Introductions', '1- Name', '2- Year', '3- Major', '4- What office are you running for?'],
+            ['Introductions', '1- Name', '2- Year', '3- Major', '4- What referenda you represent?'],
             ['Describe your referenda and the purpose of your referenda.'],
             [
               'Seeing that an increase in student fees are generally considered last measures, has your referenda considered all other funding options and what have been some of the past challenges with the funding for your project?',
@@ -385,9 +385,9 @@ var viewer_recorder_pair = {
         thanks: 'Thank You.',
         iframe: {
           src:
-            'https://docs.google.com/forms/d/e/1FAIpQLSfAKYlqUpTlWSzUxwcltDjGNbMykiWLSHkPMYiqnX7hdcxEHA/viewform?embedded=true',
+            'https://docs.google.com/forms/d/e/1FAIpQLSchcQjvnbpwEcOl9ysmZ4-KwDyK7RynwJvxPqRTWhdq8SN02g/viewform?embedded=true',
           width: 640,
-          height: 1100,
+          height: 1550,
         },
       },
     },
