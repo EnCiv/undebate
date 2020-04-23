@@ -18,7 +18,7 @@ window.reactSetPath = path => {
 }
 
 if (typeof window !== 'undefined') {
-  window.addEventListener('beforeunload', e => {
+  window.addEventListener('unload', e => {
     // Cancel the event
     //e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
     // Chrome requires returnValue to be set
