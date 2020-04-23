@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import injectSheet from 'react-jss'
 import superagent from 'superagent'
 import isEmail from 'is-email'
-import Icon from '../lib/icon'
 import { FormInput } from './formInput'
 import { JoinForm } from './joinForm'
 import { LoginForm } from './loginForm'
@@ -215,11 +214,13 @@ const styles = {
     width: '30rem',
     maxWidth: '30rem',
     minHeight: '42rem',
+    fontSize: 'inherit',
     '& form': {},
     '& label': {
       display: 'flex',
       flexDirection: 'column',
       marginTop: '3rem',
+      fontSize: 'inherit',
     },
   },
   tabs: {
@@ -249,6 +250,7 @@ const styles = {
     height: '3rem',
     fontSize: '1.5rem',
     fontWeight: '600',
+    fontSize: 'inherit',
   },
   activeBtn: {
     backgroundColor: '#E5A650',

@@ -2519,6 +2519,7 @@ class RASPUndebate extends React.Component {
                 path: this.props.path,
                 subject: this.props.subject,
               }}
+              fontSize={this.state.fontSize}
             />
           ) : null}
           <div
