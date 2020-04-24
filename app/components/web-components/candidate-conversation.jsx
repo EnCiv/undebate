@@ -192,6 +192,8 @@ const styles = {
     'font-size': '2rem',
     padding: '2rem',
     'margin-top': '2rem',
+    cursor: 'pointer',
+    pointerEvents: 'auto',
   },
   hangUpButton: {
     width: '12vw',
@@ -744,6 +746,25 @@ class RASPUndebate extends React.Component {
     // we need to calculate the position of everything if/or as if rendered on the server. Then in componentDidMount we can calculate based on the real size.  This is because react.hydrate needs to be able to match the serverside and the browser side
     let calculatedStyles = this.calculateStyles(width, height, height, fontSize)
     Object.assign(this.state, calculatedStyles, { fontSize })
+
+    //the beginButton can be styles through css
+    if (typeof window !== 'undefined' && this.props.beginButton) {
+      let button = document.querySelectorAll(`.${this.props.classes.beginButton}`)[0]
+      const { opacity, circleColor, pathColor } = this.props.beginButton
+      if (button && opacity) {
+        button.style.opacity = opacity
+      }
+      let circle = document.querySelectorAll(`.${this.props.classes.beginButton} circle`)[0]
+      if (circle && circleColor) {
+        circle.setAttribute('stroke', circleColor)
+        circle.setAttribute('fill', circleColor)
+      }
+      let path = document.querySelectorAll(`.${this.props.classes.beginButton} path`)[0]
+      if (path && pathColor) {
+        path.setAttribute('stroke', pathColor)
+        path.setAttribute('fill', pathColor)
+      }
+    }
   }
 
   state = {
