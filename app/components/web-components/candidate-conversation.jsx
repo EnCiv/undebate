@@ -43,6 +43,8 @@ import supportsVideoType from '../lib/supports-video-type'
 
 import { auto_quality, placeholder_image } from '../lib/cloudinary-urls'
 import createParticipant from '../lib/create-participant'
+import BeginButton from '../begin-button'
+
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
 }
@@ -746,25 +748,6 @@ class RASPUndebate extends React.Component {
     // we need to calculate the position of everything if/or as if rendered on the server. Then in componentDidMount we can calculate based on the real size.  This is because react.hydrate needs to be able to match the serverside and the browser side
     let calculatedStyles = this.calculateStyles(width, height, height, fontSize)
     Object.assign(this.state, calculatedStyles, { fontSize })
-
-    //the beginButton can be styles through css
-    if (typeof window !== 'undefined' && this.props.beginButton) {
-      let button = document.querySelectorAll(`.${this.props.classes.beginButton}`)[0]
-      const { opacity, circleColor, pathColor } = this.props.beginButton
-      if (button && opacity) {
-        button.style.opacity = opacity
-      }
-      let circle = document.querySelectorAll(`.${this.props.classes.beginButton} circle`)[0]
-      if (circle && circleColor) {
-        circle.setAttribute('stroke', circleColor)
-        circle.setAttribute('fill', circleColor)
-      }
-      let path = document.querySelectorAll(`.${this.props.classes.beginButton} path`)[0]
-      if (path && pathColor) {
-        path.setAttribute('stroke', pathColor)
-        path.setAttribute('fill', pathColor)
-      }
-    }
   }
 
   state = {
@@ -2253,9 +2236,7 @@ class RASPUndebate extends React.Component {
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
           <div style={{ width: '100%', height: '100%', display: 'table' }}>
             <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-              <span title="Begin">
-                <IconPlay width="25%" height="25%" className={classes['beginButton']} onClick={this.beginButton} />
-              </span>
+              <BeginButton onClick={this.beginButton} {...this.props.beginButton} />
             </div>
           </div>
           {/*<div style={{ width: '100%', height: '100%', display: 'table' }} >
