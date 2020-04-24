@@ -4,9 +4,14 @@ import { createUseStyles } from 'react-jss'
 import IconPlay from '../svgr/icon-play'
 
 const useStyles = createUseStyles({
-  beginButton: {
-    color: 'white',
+  outer: {
     opacity: props => props.opacity,
+    '& :hover': {
+      opacity: props => props.opacity * 0.8,
+    },
+  },
+  icon: {
+    color: 'white',
     'border-radius': '7px',
     'border-width': '2px',
     'border-color': 'white',
@@ -26,12 +31,12 @@ const useStyles = createUseStyles({
   },
 })
 
-const BeginButton = ({ children, onClick, ...props }) => {
+const BeginButton = ({ children, width, height, onClick, ...props }) => {
   const classes = useStyles(props)
   return (
-    <span title="Begin">
-      <IconPlay width="25%" height="25%" className={classes['beginButton']} onClick={onClick} />
-    </span>
+    <div className={classes.outer} title="Begin">
+      <IconPlay width={width} height={height} className={classes.icon} onClick={onClick} />
+    </div>
   )
 }
 
@@ -39,6 +44,8 @@ BeginButton.defaultProps = {
   opacity: '0.8',
   circleColor: '#000',
   pathColor: '#FFF',
+  width: '20%',
+  height: '20%',
 }
 
 export default BeginButton
