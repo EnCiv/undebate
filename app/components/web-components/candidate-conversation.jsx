@@ -43,6 +43,8 @@ import supportsVideoType from '../lib/supports-video-type'
 
 import { auto_quality, placeholder_image } from '../lib/cloudinary-urls'
 import createParticipant from '../lib/create-participant'
+import BeginButton from '../begin-button'
+
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
 }
@@ -192,6 +194,8 @@ const styles = {
     'font-size': '2rem',
     padding: '2rem',
     'margin-top': '2rem',
+    cursor: 'pointer',
+    pointerEvents: 'auto',
   },
   hangUpButton: {
     width: '12vw',
@@ -2232,9 +2236,7 @@ class RASPUndebate extends React.Component {
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
           <div style={{ width: '100%', height: '100%', display: 'table' }}>
             <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-              <span title="Begin">
-                <IconPlay width="25%" height="25%" className={classes['beginButton']} onClick={this.beginButton} />
-              </span>
+              <BeginButton onClick={this.beginButton} {...this.props.beginButton} />
             </div>
           </div>
           {/*<div style={{ width: '100%', height: '100%', display: 'table' }} >
