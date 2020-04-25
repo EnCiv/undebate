@@ -3,7 +3,7 @@
 import React from 'react' // needed by render to string
 import { renderToString } from 'react-dom/server'
 import App from '../../components/app'
-import { JssProvider, SheetsRegistry } from 'react-jss'
+import { JssProvider, SheetsRegistry, createGenerateId } from 'react-jss'
 import publicConfig from '../../../public.json'
 import cloneDeep from 'lodash/cloneDeep'
 
@@ -33,9 +33,10 @@ function serverReactRender(req, res, next) {
     )
 
     const sheets = new SheetsRegistry()
+    const generateId = createGenerateId()
 
     const body = renderToString(
-      <JssProvider registry={sheets}>
+      <JssProvider registry={sheets} generateId={generateId}>
         <App {...props} />
       </JssProvider>
     )

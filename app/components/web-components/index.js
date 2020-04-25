@@ -42,15 +42,17 @@ class WebComponent extends React.Component {
       Object.assign(newProps, this.props)
       WebComponentClass = WebComponents[objOrStr]
     }
-    if (typeof WebComponentClass === 'object')
+    if (typeof WebComponentClass === 'undefined') {
+      logger.error('WebComponent not defined:', objOrStr)
+      return null
+    }
+    if (WebComponentClass.default)
       // commonJS module or require
       WebComponentClass = WebComponentClass.default
 
-    if (newProps.webComponent) delete newProps.webComponent
+    delete newProps.webComponent
 
-    if (typeof WebComponentClass === 'function') return <WebComponentClass {...newProps} />
-    logger.error('WebComponent not function', typeof WebComponentClass)
-    return null
+    return <WebComponentClass {...newProps} />
   }
 }
 
