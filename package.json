@@ -9,6 +9,7 @@
     "test:coverage": "npm test -- --coverage",
     "test:watch": "npm test -- --watch",
     "cypress": "cypress open",
+    "cypress:headless": "cypress run --headless --browser chrome",
     "svgr": "svgr --icon --filename-case kebab assets/svg --out-dir app/svgr && rm app/svgr/index.js",
     "transpile": "babel app --ignore **/__tests__ --out-dir dist --source-maps",
     "hot-transpile": "babel --watch app --ignore **/__tests__ --out-dir dist --source-maps",
