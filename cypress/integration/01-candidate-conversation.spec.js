@@ -8,9 +8,7 @@ describe('Candidate Conversation', () => {
   })
 
   it('clicking on the Begin button should cause the videos to play', () => {
-    cy.get('button')
-      .contains('Begin')
-      .click()
+    cy.get('[data-testid=begin-button]').click()
 
     cy.wait(3000)
 
@@ -23,9 +21,7 @@ describe('Candidate Conversation', () => {
   })
 
   it('videos should rotate after the moderator finishes speaking', () => {
-    cy.get('button')
-      .contains('Begin')
-      .click()
+    cy.get('[data-testid=begin-button]').click()
 
     cy.wait(3000)
 
