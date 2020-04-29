@@ -156,6 +156,149 @@
   },
   {
     "_id": {
+      "$oid": "5ea6566f7c213e2096457e8b"
+    },
+    "path": "/candidate-conversation-candidate-recorder-sendinblue",
+    "subject": "Candidate Recorder for Candidate Conversation testing sendinblue",
+    "description": "A prototype Candidate Conversation for schoolboard testing sendinblue",
+    "component": {
+      "component": "UndebateCreator",
+      "participants": {
+        "moderator": {
+          "name": "David Fridley",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-creator-moderator-0_d7a3zr.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788635/candidate-conversation-creator-moderator-1_gtchg2.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788669/candidate-conversation-creator-moderator-2_bsceus.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788656/candidate-conversation-creator-moderator-3_qomqgj.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Who you are",
+              "2- Where you are",
+              "3- One word to describe yourself",
+              "4- What office you are running for"
+            ],
+            ["What type of skills should students be learning for success in the 21st century?"],
+            ["Closing Remarks"]
+          ],
+          "timeLimits": [10, 60, 60]
+        },
+        "audience1": {
+          "name": "Adolf Gundersen",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a1.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a2.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a3.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-as.mp4"
+        },
+        "human": {
+          "listening": {
+            "round": 2,
+            "seat": "nextUp"
+          }
+        }
+      }
+    },
+    "webComponent": {
+      "webComponent": "Undebate",
+      "participants": {},
+      "opening": {
+        "line1": "Thank you for helping us create a mock candidate conversation.",
+        "line2": "All will be explained to you through this interactive video platform",
+        "line3": "This is how we could efficiently facilitate 500K conversations all over the country, every election season",
+        "line4": "Candidate Recorder for:",
+        "bigLine": "US School Board Candidate Conversation",
+        "subLine": "Your video will be recorded, you will have the option to upload it or not at the end."
+      }
+    },
+    "bp_info": {
+      "office": "School Board",
+      "candidate_name": "Ex Ample",
+      "candidate_last_name": "Ample",
+      "election_date": "1776_07_04",
+      "candidate_emails": ["change_this_to_a_real_email_address@example.com"],
+      "candidate_stage_result_id": "1"
+    },
+    "parentId": "5e7e88a67c213e3443f11dbf"
+  },
+  {
+    "_id": {
+      "$oid": "5e92144f7c213e2a9a31e0d0"
+    },
+    "path": "/candidate-conversation-candidate-recorder-with-email",
+    "subject": "Candidate Recorder for Candidate Conversation",
+    "description": "A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "UndebateCreator",
+      "participants": {
+        "moderator": {
+          "name": "David Fridley",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-creator-moderator-0_d7a3zr.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788635/candidate-conversation-creator-moderator-1_gtchg2.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788669/candidate-conversation-creator-moderator-2_bsceus.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788656/candidate-conversation-creator-moderator-3_qomqgj.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Who you are",
+              "2- Where you are",
+              "3- One word to describe yourself",
+              "4- What office you are running for"
+            ],
+            ["What type of skills should students be learning for success in the 21st century?"],
+            ["Closing Remarks"]
+          ],
+          "timeLimits": [10, 60, 60]
+        },
+        "audience1": {
+          "name": "Adolf Gundersen",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a1.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a2.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-a3.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1565640905/undebate-short-as.mp4"
+        },
+        "human": {
+          "listening": {
+            "round": 2,
+            "seat": "nextUp"
+          }
+        }
+      }
+    },
+    "webComponent": {
+      "webComponent": "Undebate",
+      "participants": {},
+      "opening": {
+        "line1": "Thank you for helping us create a mock candidate conversation.",
+        "line2": "All will be explained to you through this interactive video platform",
+        "line3": "This is how we could efficiently facilitate 500K conversations all over the country, every election season",
+        "line4": "Candidate Recorder for:",
+        "bigLine": "US School Board Candidate Conversation",
+        "subLine": "Your video will be recorded, you will have the option to upload it or not at the end."
+      },
+      "bp_info": {
+        "candidate_name": "Ex Ample",
+        "candidate_emails": ["change_this_to_a_real_email_address@example.com"],
+        "last_name": "Ample",
+        "election_date": "2020-09-04",
+        "unique_id": "5e7e88a67c213e3443f11de0",
+        "party": "sometimes",
+        "office": "School Board email test"
+      }
+    },
+    "parentId": "5dfc539a7c213e6bf14d7ee2"
+  },
+  {
+    "_id": {
       "$oid": "5d65a6b877fff400177d50ed"
     },
     "parentId": "5d6350b0e7179a084ef376b9",
