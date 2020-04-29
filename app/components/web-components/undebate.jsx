@@ -484,11 +484,11 @@ const styles = {
       'border-color': 'white',
       'font-size': '1.25em',
       //'padding': '1em',
-    },
-    '& button:disabled': {
-      'text-decoration': 'none',
-      background: 'lightgray',
-      cursor: 'default',
+      '&:disabled': {
+        'text-decoration': 'none',
+        background: 'lightgray',
+        cursor: 'default',
+      },
     },
     '& div': {
       display: 'inline-block',
