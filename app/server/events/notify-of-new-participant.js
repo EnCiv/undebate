@@ -98,6 +98,19 @@ async function notifyOfNewParticipant(iota) {
         ...iota.component.participant.bp_info,
       },
     }
+    if (process.env.SENDINBLUE_BCC) {
+      // add a bcc option so we can know it's really working
+      // could be "First Last <example.email.com>"" or just "example.email.com"
+      let parts = process.env.SENDINBLUE_BCC.split('<')
+      var bcc = {}
+      if (parts.length > 1) {
+        bcc.name = parts[0].trim()
+        bcc.email = parts[1].split('>')[0].trim()
+      } else {
+        bcc.email = parts[0].trim()
+      }
+      sendSmtpEmail.bcc = [bcc]
+    }
     delete sendSmtpEmail.params.candidate_emails
     delete sendSmtpEmail.params.person_emails
     logger.info('notifyOfNewParticipant:SibSMTPApi', sendSmtpEmail)
