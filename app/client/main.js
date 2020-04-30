@@ -17,6 +17,16 @@ window.reactSetPath = path => {
   render(reactProps)
 }
 
+if (typeof window !== 'undefined') {
+  window.addEventListener('unload', e => {
+    // Cancel the event
+    //e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+    // Chrome requires returnValue to be set
+    e.returnValue = ''
+    window.socket.disconnect(true) // disconnect the socket so we don't see fewer connection timeouts on the server
+  })
+}
+
 window.socket.on('welcome', user => {
   /*if ( ! user ) {
     new Facebook().on('ready', () => Facebook.connect(false));

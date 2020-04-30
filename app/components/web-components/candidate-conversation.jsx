@@ -43,6 +43,8 @@ import supportsVideoType from '../lib/supports-video-type'
 
 import { auto_quality, placeholder_image } from '../lib/cloudinary-urls'
 import createParticipant from '../lib/create-participant'
+import BeginButton from '../begin-button'
+
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
 }
@@ -192,6 +194,8 @@ const styles = {
     'font-size': '2rem',
     padding: '2rem',
     'margin-top': '2rem',
+    cursor: 'pointer',
+    pointerEvents: 'auto',
   },
   hangUpButton: {
     width: '12vw',
@@ -580,6 +584,46 @@ const styles = {
   stalledNow: {},
   stalledBox: {},
   'title-speaking': {},
+  'next-election-div': {
+    top: 0,
+    position: 'absolute',
+    right: 0,
+    height: '100vh',
+    display: 'table',
+    '&$portrait': {
+      height: '98%',
+    },
+  },
+  'previous-election-div': {
+    top: 0,
+    position: 'absolute',
+    left: 0,
+    height: '100vh',
+    display: 'table',
+    '&$portrait': {
+      height: '98%',
+    },
+  },
+  'election-inner-div': {
+    display: 'table-cell',
+    verticalAlign: 'middle',
+    '&$portrait': {
+      verticalAlign: 'bottom',
+    },
+  },
+  'election-icon': {
+    display: 'inline-block',
+    verticalAlign: 'middle',
+    cursor: 'pointer',
+    pointerEvents: 'auto',
+    border: 'none',
+    background: 'transparent',
+    padding: 0,
+    '&$portrait': {
+      verticalAlign: 'bottom',
+    },
+  },
+  portrait: {},
 }
 
 class CandidateConversation extends React.Component {
@@ -967,6 +1011,7 @@ class RASPUndebate extends React.Component {
     var introStyle = cloneDeep(this.state.introStyle)
     const titleHeight = 0 // the title is overlain the video window
     const innerTitleHeight = 3.5 * fontSize // title is 3.5rem high, it overlays the video window at the bottom
+    var portraitMode = false
     if (width / height > 1) {
       let speakingWidthRatio = 0.65
       const speakingHeight = () => speakingWidthRatio * width * HDRatio
@@ -1059,6 +1104,7 @@ class RASPUndebate extends React.Component {
       introSeatStyle.introRight.right = '-50vw'
     } else {
       // portrait mode
+      portraitMode = true
       const hGap = fontSize
       const vGap = fontSize
       let speakerLeftEdge = hGap
@@ -1208,7 +1254,16 @@ class RASPUndebate extends React.Component {
       introStyle.introRight.height = 'auto'
       introSeatStyle.introRight.right = '-50vw'
     }
-    return { seatStyle, agendaStyle, buttonBarStyle, recorderButtonBarStyle, introSeatStyle, introStyle, titleHeight }
+    return {
+      seatStyle,
+      agendaStyle,
+      buttonBarStyle,
+      recorderButtonBarStyle,
+      introSeatStyle,
+      introStyle,
+      titleHeight,
+      portraitMode,
+    }
   }
 
   saveRecordingToParticipants(speaking, round, blobs) {
@@ -1528,27 +1583,37 @@ class RASPUndebate extends React.Component {
   }
 
   buttons = [
-    { name: () => <IconPrevSection width="60%" height="auto" />, func: this.prevSection },
-    { name: () => <IconPrevSpeaker width="60%" height="auto" />, func: this.prevSpeaker },
+    {
+      name: () => <IconPrevSection width="60%" height="auto" />,
+      func: this.prevSection,
+      title: () => 'Previous Question',
+    },
+    {
+      name: () => <IconPrevSpeaker width="60%" height="auto" />,
+      func: this.prevSpeaker,
+      title: () => 'Previous Speaker',
+    },
     {
       name: () =>
         this.state.allPaused ? <IconPlay width="75%" height="auto" /> : <IconPause width="75%" height="75%" />,
       func: this.allPause,
+      title: () => (this.state.isRecording ? 'Stop' : this.state.allPaused ? 'Play' : 'Pause'),
     },
-    { name: () => <IconSkipSpeaker width="60%" height="auto" />, func: this.nextSpeaker },
+    { name: () => <IconSkipSpeaker width="60%" height="auto" />, func: this.nextSpeaker, title: () => 'Next Speaker' },
     {
       name: () => <IconNextSection width="60%" height="auto" />,
       func: this.nextSection,
+      title: () => 'Next Question',
       disabled: () => this.participants.human && !this.participants.human.speakingObjectURLs[this.state.round],
     },
   ]
 
   recorderButtons = [
-    { name: () => 'Redo', func: this.rerecordButton },
-    { name: () => 'key1', func: null }, // keyN because react keys have to have unigue names
-    { name: () => 'key2', func: null },
-    { name: () => 'key3', func: null },
-    { name: () => 'Finished Speaking', func: this.finishedSpeaking },
+    { name: () => 'Redo', func: this.rerecordButton, title: () => 'Re-record' },
+    { name: () => 'key1', func: null, title: () => '' }, // keyN because react keys have to have unigue names
+    { name: () => 'key2', func: null, title: () => '' },
+    { name: () => 'key3', func: null, title: () => '' },
+    { name: () => 'Finished Speaking', func: this.finishedSpeaking, title: () => 'Done Speaking' },
   ]
 
   allPause() {
@@ -2106,6 +2171,7 @@ class RASPUndebate extends React.Component {
       introStyle,
       stylesSet,
       titleHeight,
+      portraitMode,
     } = this.state
 
     const getIntroStyle = name =>
@@ -2170,7 +2236,7 @@ class RASPUndebate extends React.Component {
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
           <div style={{ width: '100%', height: '100%', display: 'table' }}>
             <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-              <IconPlay width="25%" height="25%" className={classes['beginButton']} onClick={this.beginButton} />
+              <BeginButton onClick={this.beginButton} {...this.props.beginButton} />
             </div>
           </div>
           {/*<div style={{ width: '100%', height: '100%', display: 'table' }} >
@@ -2246,7 +2312,7 @@ class RASPUndebate extends React.Component {
                     </span>
                     <span>
                       <div className={classes['donateCallToAction']}>
-                        EnCiv is a 501(c)3 nonprofit working to bring free and fare candidate conversations to elections
+                        EnCiv is a 501(c)3 nonprofit working to bring free and fair candidate conversations to elections
                         across the country. Donations will help us keep this going.
                       </div>
                     </span>
@@ -2490,7 +2556,8 @@ class RASPUndebate extends React.Component {
           {this.buttons.map(button => (
             <div
               style={{ width: 100 / this.buttons.length + '%', display: 'inline-block', height: 'auto' }}
-              key={button.name}
+              title={button.title()}
+              key={button.title()}
             >
               <div disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
                 {button.name()}
@@ -2510,7 +2577,8 @@ class RASPUndebate extends React.Component {
           {this.recorderButtons.map(button => (
             <div
               style={{ width: 100 / this.recorderButtons.length + '%', display: 'inline-block', height: '100%' }}
-              key={button.name}
+              key={button.title()}
+              title={button.title()}
             >
               {button.func ? (
                 <button disabled={!humanSpeaking} onClick={button.func.bind(this)}>
@@ -2553,6 +2621,38 @@ class RASPUndebate extends React.Component {
         </div>
       )
 
+    const nextElection = () =>
+      this.props.bp_info &&
+      this.props.bp_info.nextElection && (
+        <div className={cx(classes['next-election-div'], portraitMode && classes['portrait'])}>
+          <div className={cx(classes['election-inner-div'], portraitMode && classes['portrait'])} title="Next Office">
+            <button
+              className={cx(classes['election-icon'], portraitMode && classes['portrait'])}
+              onClick={() => (window.location = this.props.bp_info.nextElection)}
+            >
+              <Icon icon="chevron-right" size="4" name="next-section" />
+            </button>
+          </div>
+        </div>
+      )
+
+    const previousElection = () =>
+      this.props.bp_info &&
+      this.props.bp_info.prevElection && (
+        <div className={cx(classes['previous-election-div'], portraitMode && classes['portrait'])}>
+          <div
+            className={cx(classes['election-inner-div'], portraitMode && classes['portrait'])}
+            title="Previous Office"
+          >
+            <button
+              className={cx(classes['election-icon'], portraitMode && classes['portrait'])}
+              onClick={() => (window.location = this.props.bp_info.prevElection)}
+            >
+              <Icon icon="chevron-left" size="4" name="previous-election" />
+            </button>
+          </div>
+        </div>
+      )
     var main = () =>
       !done && (
         <div>
@@ -2611,6 +2711,8 @@ class RASPUndebate extends React.Component {
           {waitingOnModeratorOverlay()}
           {hangupButton()}
           {hungUp()}
+          {nextElection()}
+          {previousElection()}
         </section>
       </div>
     )
