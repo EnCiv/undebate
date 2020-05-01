@@ -57,10 +57,10 @@ function serverReactRender(req, res, next) {
                     <link rel="shortcut icon" href="/assets/images/favicon.ico" />
                     <meta name="theme-color" content="#ffffff"/>
                     ${(props.iota &&
-                      props.iota.webComponent &&
-                      props.iota.webComponent.metaTags &&
-                      props.iota.webComponent.metaTags.reduce((acc, meta) => acc + `<meta ${meta}>\n`, '')) ||
-                      ''}
+        props.iota.webComponent &&
+        props.iota.webComponent.metaTags &&
+        props.iota.webComponent.metaTags.reduce((acc, meta) => acc + `<meta ${meta}>\n`, '')) ||
+      ''}
                     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
                     <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:400,800&display=swap" rel="stylesheet">
 
@@ -77,25 +77,25 @@ function serverReactRender(req, res, next) {
                 <body style="margin: 0; padding: 0">
                     <div id="synapp">${body}</div>
                     ${
-                      props.browserConfig &&
-                      ((props.browserConfig.browser.name == 'chrome' && props.browserConfig.browser.version[0] >= 54) ||
-                        (props.browserConfig.browser.name == 'safari' &&
-                          props.browserConfig.browser.version[0] >= 11) ||
-                        (props.browserConfig.browser.name == 'opera' && props.browserConfig.browser.version[0] >= 41) ||
-                        (props.browserConfig.browser.name == 'firefox' &&
-                          props.browserConfig.browser.version[0] >= 50) ||
-                        (props.browserConfig.browser.name == 'edge' && props.browserConfig.browser.version[0] >= 15))
-                        ? (logger.info('index browser supports ES6'), '')
-                        : (logger.info('index browser does not support ES6'), '')
-                    }
+      props.browserConfig &&
+        ((props.browserConfig.browser.name == 'chrome' && props.browserConfig.browser.version[0] >= 54) ||
+          (props.browserConfig.browser.name == 'safari' &&
+            props.browserConfig.browser.version[0] >= 11) ||
+          (props.browserConfig.browser.name == 'opera' && props.browserConfig.browser.version[0] >= 41) ||
+          (props.browserConfig.browser.name == 'firefox' &&
+            props.browserConfig.browser.version[0] >= 50) ||
+          (props.browserConfig.browser.name == 'edge' && props.browserConfig.browser.version[0] >= 15))
+        ? (logger.info('index browser supports ES6'), '')
+        : (logger.info('index browser does not support ES6'), '')
+      }
                     <script src='/socket.io/socket.io.js' ></script>
                     <script src='/assets/webpack/main.js' ></script>
                     <script src='/assets/js/socket.io-stream.js'></script>
                     ${
-                      dev === 'production'
-                        ? `<script>{(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', "${publicConfig['google analytics'].key}", 'auto'); ga('send', 'pageview');}</script>`
-                        : ''
-                    }
+      dev === 'production'
+        ? `<script>{(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', "${publicConfig['google analytics'].key}", 'auto'); ga('send', 'pageview');}</script>`
+        : ''
+      }
                     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
                 </body>
             </html>`
