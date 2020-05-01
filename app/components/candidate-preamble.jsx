@@ -137,6 +137,8 @@ class CandidatePreamble extends React.Component {
             </li>
           </ul>
           {/*<CandidateJoin classes={classes} userInfo={{email: (bp_info.candidate_email && bp_info.candidate_email[0]) || (bp_info.person_email && bp_info.person_email[0]), name: bp_info.candidate_name}} onChange={onClick}/>*/}
+          <h2>Questions for candidate</h2>
+          <ul>{this.makeQuestions(this.props.candidate_questions)}</ul>
           <div className={classes['center']}>
             <Button onClick={onClick}>Next</Button>
           </div>
