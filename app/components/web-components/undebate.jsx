@@ -1346,7 +1346,7 @@ class RASPUndebate extends React.Component {
     logger.trace(`nextMediaState part:${part}`)
     //if (part === 'human') return;
     // humans won't get here
-    var { round } = this.state
+    var { round, reviewing } = this.state
 
     let speaking = this.seat(Object.keys(this.props.participants).indexOf(part)) === 'speaking'
 
@@ -1364,7 +1364,7 @@ class RASPUndebate extends React.Component {
         logger.error('Undebate.nextMediaState need to do something about stallWatch with preFetch')
       }
     } else {
-      if (part === 'human') objectURL = 'cameraStream'
+      if (part === 'human' && !reviewing) objectURL = 'cameraStream'
       //set it to something - but this.camera.cameraStream should really be used
       else if (!(objectURL = this.participants[part].listeningObjectURL))
         if (this.props.participants[part].listening) {
@@ -1954,6 +1954,8 @@ class RASPUndebate extends React.Component {
 
   finished() {
     logger.info('Undebate.finished')
+    this.clearStallWatch()
+    this.allStop()
     this.audioSets && this.audioSets.ending && this.playAudioObject('audio', this.audioSets.ending)
     setTimeout(() => {
       this.camera && this.camera.releaseCamera()
@@ -2037,7 +2039,7 @@ class RASPUndebate extends React.Component {
   }
 
   async getCameraMedia() {
-    if (this.props.participants.human) {
+    if (this.props.participants.human && !this.state.reviewing) {
       // if we have a human in this debate
       const constraints = {
         audio: {
@@ -2443,6 +2445,28 @@ class RASPUndebate extends React.Component {
                 <span className={cx(classes['thanks'], scrollableIframe && classes['scrollableIframe'])}>
                   {closing.thanks}
                 </span>
+                <div>
+                  <button
+                    className={classes['beginButton']}
+                    onClick={() =>
+                      this.setState(
+                        {
+                          intro: true,
+                          stylesSet: true,
+                          allPaused: false,
+                          round: 0,
+                          seatOffset: 0,
+                          done: 0,
+                          finishUp: 0,
+                          reviewing: 1,
+                        },
+                        () => this.onIntroEnd()
+                      )
+                    }
+                  >
+                    Review It
+                  </button>
+                </div>
                 {surveyForm()}
                 {this.participants.human && !this.state.uploadComplete && (
                   <>
