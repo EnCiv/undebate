@@ -77,6 +77,23 @@ class CandidateJoin extends Join {
 }
 
 class CandidatePreamble extends React.Component {
+  makeQuestions = questions => {
+    console.log(questions)
+    return (
+      <ul>
+        {questions.map((question, index) =>
+          typeof question === 'string' ? (
+            <li key={index}>{question}</li>
+          ) : (
+            <li>
+              <ul>{this.makeQuestions(question)}</ul>
+            </li>
+          )
+        )}
+      </ul>
+    )
+  }
+
   render() {
     const { classes, onClick, agreed, bp_info } = this.props
     return (
