@@ -80,7 +80,7 @@ class CandidatePreamble extends React.Component {
   makeQuestions = questions => {
     console.log(questions)
     return (
-      <ul>
+      <ul style={{ listStyleType: 'none', padding: '0' }}>
         {questions.map((question, index) =>
           typeof question === 'string' ? (
             <li key={index}>{question}</li>
@@ -141,7 +141,7 @@ class CandidatePreamble extends React.Component {
           </ul>
           {/*<CandidateJoin classes={classes} userInfo={{email: (bp_info.candidate_email && bp_info.candidate_email[0]) || (bp_info.person_email && bp_info.person_email[0]), name: bp_info.candidate_name}} onChange={onClick}/>*/}
           <h2>Questions for candidate</h2>
-          <ul>{this.makeQuestions(this.props.candidate_questions)}</ul>
+          {this.makeQuestions(this.props.candidate_questions)}
           <div className={classes['center']}>
             <Button onClick={onClick}>Next</Button>
           </div>
