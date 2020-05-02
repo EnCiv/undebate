@@ -84,9 +84,12 @@ class CandidatePreamble extends React.Component {
         {questions.map((question, index) =>
           typeof question === 'string' ? (
             <li key={index}>{question}</li>
+          ) : question.length === 1 ? (
+            <li key={index}>{question[0]}</li>
           ) : (
             <li>
-              <ul>{this.makeQuestions(question)}</ul>
+              {question[0]}
+              <ul>{this.makeQuestions(question.slice(1))}</ul>
             </li>
           )
         )}
