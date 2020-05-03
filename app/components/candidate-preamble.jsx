@@ -97,7 +97,7 @@ const QuestionModal = ({ questions, closeModal }) => {
   }
 
   return (
-    <div className="QuestionModal">
+    <div className="QuestionModal" style={{ padding: '2em' }}>
       <button onClick={() => closeModal()}>close</button>
 
       <h2>Questions for candidate</h2>
@@ -110,17 +110,33 @@ class RenderModal extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      open: true,
+      open: false,
     }
   }
   toggleModal = () => {
     this.setState({ open: !this.state.open })
   }
   render() {
+    const { buttonText } = this.props
     return (
-      <div class="modal" style={{ zIndex: 3, display: 'relative', top: '20vh' }}>
-        {' '}
-        {this.state.open ? this.props.render(this.toggleModal) : null}{' '}
+      <div class="modal">
+        {!this.state.open ? <button onClick={() => this.toggleModal()}>{buttonText}</button> : null}{' '}
+        <div
+          style={{
+            width: '40vw',
+            position: 'absolute',
+            left: '23vw',
+            top: '5vh',
+            background: 'white',
+            boxShadow: '10px 5px 30px lightslategray',
+            maxHeight: '80vh',
+            overflow: 'auto',
+            display: 'block',
+            borderRadius: '.2em',
+          }}
+        >
+          {this.state.open ? this.props.render(this.toggleModal) : null}{' '}
+        </div>
       </div>
     )
   }
@@ -134,7 +150,7 @@ class CandidatePreamble extends React.Component {
     return (
       <div className={cx(classes['Preamble'], agreed && classes['agreed'])}>
         <ConversationHeader subject={this.props.subject} bp_info={this.props.bp_info} />
-        <div className={classes['Preamble-inner']}>
+        <div className={classes['Preamble-inner']} style={{ position: 'relative' }}>
           <p>
             Welcome{' '}
             {bp_info && bp_info.candidate_name ? (
@@ -172,6 +188,7 @@ class CandidatePreamble extends React.Component {
             </li>
           </ul>
           <RenderModal
+            buttonText="Preview Questions"
             render={close => (
               <QuestionModal questions={this.props.candidate_questions} closeModal={close}></QuestionModal>
             )}
