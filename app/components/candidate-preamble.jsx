@@ -1,11 +1,14 @@
 'use strict'
 import Join from './join'
 import React from 'react'
+import ReactDOM from 'react-dom'
 import injectSheet from 'react-jss'
 import Button from './button'
 import cx from 'classnames'
 import Icon from './lib/icon'
 import ConversationHeader from './conversation-header'
+
+// const APP_BODY = document.getElementsByTagName('BODY')[0]
 
 const styles = {
   Preamble: {
@@ -102,6 +105,37 @@ const QuestionModal = ({ questions, closeModal }) => {
 
       <h2>Questions for candidate</h2>
       {makeQuestions(questions)}
+      <p>
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto tempore suscipit fuga obcaecati? Quas,
+        adipisci nobis. Dicta aliquam voluptatibus voluptatum expedita doloribus consectetur laudantium deserunt magnam
+        unde earum praesentium fuga, rerum sapiente quis dolore natus voluptate mollitia ducimus eaque ad consequatur
+        tempore. Alias provident itaque, veritatis architecto ut consequatur quos iste voluptatum accusantium nemo odio
+        voluptate molestiae accusamus libero magnam assumenda. Aliquid molestias pariatur dolorem consequuntur natus
+        commodi animi consequatur, magni ducimus, veritatis ipsum illo quaerat. Eius quibusdam nesciunt maxime
+        consequatur! Sed magnam ut commodi, nesciunt a molestiae et odit itaque sapiente placeat adipisci. Vero cum
+        assumenda nemo temporibus dignissimos dicta hic commodi voluptas est eum culpa a qui recusandae provident, quasi
+        quam ullam unde tenetur laudantium, itaque modi deserunt. Rerum, aliquid? Quisquam, earum ducimus placeat iste
+        dolorem aperiam assumenda quasi, consequuntur perferendis, provident nobis sint accusamus aspernatur facilis
+        sequi? Voluptatum culpa neque facilis illum eligendi ut recusandae eum atque pariatur veritatis aliquid, error
+        quis excepturi vero nihil voluptatem fugit, a officia consequuntur, quod sit? Voluptatibus quod hic facilis
+        necessitatibus, voluptas vitae omnis! Doloremque hic distinctio ratione vero veniam labore reprehenderit qui
+        earum provident, quis facilis expedita blanditiis consequuntur iure harum, dolores eius? Ut quia tenetur
+        accusamus explicabo numquam labore est corporis velit harum praesentium, vel molestiae doloribus ad.
+        Reprehenderit a quaerat officiis exercitationem accusantium, corporis sint laboriosam officia aut aliquam.
+        Expedita voluptatum, dolorem ullam exercitationem quisquam possimus fugiat magnam aliquam. Aliquam ipsum quod
+        suscipit ea impedit assumenda voluptatem debitis eius, facere eveniet maxime ad natus ut ab excepturi earum?
+        Debitis consectetur quibusdam itaque modi praesentium laborum nisi eaque atque repellat corrupti, eum quis
+        deleniti nihil officia dolore tempore quia asperiores vero labore earum nobis dignissimos. Recusandae reiciendis
+        perspiciatis ratione magnam, tempora et ad tenetur quasi, maxime iusto, odit harum. Nam ipsam nobis iure eum
+        dicta, soluta modi ex! Rerum dolorum iure perspiciatis nam praesentium quasi ut hic dolorem optio ipsum. Amet
+        nostrum aspernatur repellendus doloribus error repellat architecto et voluptatum reiciendis maiores atque sint
+        deserunt facilis, quos corrupti quo explicabo inventore tenetur incidunt cumque neque assumenda commodi?
+        Doloribus, vero? Quisquam doloribus fugit ullam aspernatur molestiae, provident sequi debitis, praesentium
+        veniam consequuntur cum et, qui expedita labore ducimus! Maiores quo dolores ut? Voluptas magnam aliquid amet,
+        perferendis alias atque. Beatae ea voluptas a velit molestiae dolorum libero asperiores, assumenda ex alias
+        similique quos mollitia magnam distinctio architecto aliquam dolor necessitatibus doloremque. Deleniti nostrum
+        possimus necessitatibus nulla officia maiores odio consectetur.
+      </p>
     </div>
   )
 }
@@ -118,25 +152,35 @@ class RenderModal extends React.Component {
   }
   render() {
     const { buttonText } = this.props
+    let app_root
+    if (typeof document !== 'undefined') {
+      app_root = document.getElementById('synapp')
+    }
     return (
-      <div class="modal">
+      <div className="modal">
         {!this.state.open ? <button onClick={() => this.toggleModal()}>{buttonText}</button> : null}{' '}
-        <div
-          style={{
-            width: '40vw',
-            position: 'absolute',
-            left: '23vw',
-            top: '5vh',
-            background: 'white',
-            boxShadow: '10px 5px 30px lightslategray',
-            maxHeight: '80vh',
-            overflow: 'auto',
-            display: 'block',
-            borderRadius: '.2em',
-          }}
-        >
-          {this.state.open ? this.props.render(this.toggleModal) : null}{' '}
-        </div>
+        {app_root
+          ? ReactDOM.createPortal(
+              <div
+                style={{
+                  zIndex: 3,
+                  width: '40vw',
+                  position: 'absolute',
+                  left: '23vw',
+                  top: '8vh',
+                  background: 'white',
+                  boxShadow: '10px 5px 30px lightslategray',
+                  maxHeight: '80vh',
+                  overflow: 'auto',
+                  display: 'block',
+                  borderRadius: '.2em',
+                }}
+              >
+                {this.state.open ? this.props.render(this.toggleModal) : null}{' '}
+              </div>,
+              app_root
+            )
+          : null}
       </div>
     )
   }
