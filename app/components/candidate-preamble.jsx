@@ -130,22 +130,30 @@ class RenderModal extends React.Component {
           ? ReactDOM.createPortal(
               <div
                 style={{
-                  zIndex: 3,
-                  width: '40vw',
-                  minWidth: '300px',
                   position: 'absolute',
-                  left: '23vw',
                   top: '8vh',
-                  background: 'white',
-                  boxShadow: '10px 5px 30px lightslategray',
-                  maxHeight: '80vh',
-                  overflow: 'auto',
-                  display: 'block',
-                  borderRadius: '.2em',
-                  fontFamily: `'Montserrat', sans-serif`,
+                  left: 0,
+                  justifyContent: 'center',
+                  width: '100%',
                 }}
               >
-                {this.state.open ? this.props.render(this.toggleModal) : null}{' '}
+                <div
+                  style={{
+                    zIndex: 3,
+                    width: '70vw',
+                    minWidth: '280px',
+                    margin: '0 auto',
+                    background: 'white',
+                    boxShadow: '10px 5px 30px lightslategray',
+                    maxHeight: '80vh',
+                    overflow: 'auto',
+                    display: 'block',
+                    borderRadius: '.2em',
+                    fontFamily: `'Montserrat', sans-serif`,
+                  }}
+                >
+                  {this.state.open ? this.props.render(this.toggleModal) : null}{' '}
+                </div>
               </div>,
               app_root
             )
