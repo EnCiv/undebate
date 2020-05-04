@@ -2695,7 +2695,7 @@ class RASPUndebate extends React.Component {
           {this.recorderButtons.map(button => (
             <div
               style={{ width: 100 / this.recorderButtons.length + '%', display: 'inline-block', height: '100%' }}
-              key={button.title()}
+              key={button.title() || button.name}
               title={button.title()}
             >
               {button.func ? (
