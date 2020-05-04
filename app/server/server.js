@@ -120,7 +120,7 @@ class HttpServer extends EventEmitter {
     }
 
     const apiLimiter = expressRateLimit({
-      windowMs: 30 * 1000,
+      windowMs: 60 * 1000,
       max: 2,
       message: "Too many attempts logging in, please try again after 24 hours"
     });
