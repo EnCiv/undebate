@@ -8,6 +8,8 @@
     "test": "jest",
     "test:coverage": "npm test -- --coverage",
     "test:watch": "npm test -- --watch",
+    "cypress": "cypress open",
+    "cypress:headless": "cypress run --headless --browser chrome",
     "svgr": "svgr --icon --filename-case kebab assets/svg --out-dir app/svgr && rm app/svgr/index.js",
     "transpile": "babel app --ignore **/__tests__ --out-dir dist --source-maps",
     "hot-transpile": "babel --watch app --ignore **/__tests__ --out-dir dist --source-maps",
@@ -36,6 +38,7 @@
     "@babel/preset-react": "^7.8.3",
     "@svgr/cli": "^5.0.1",
     "concurrently": "^4.1.2",
+    "cypress": "^4.2.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "husky": "^4.2.3",
@@ -48,11 +51,11 @@
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+    "@babel/plugin-transform-react-inline-elements": "^7.9.0",
     "@babel/plugin-transform-regenerator": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/runtime": "^7.8.4",
     "@hapi/joi": "^15.1.0",
-    "@sendgrid/mail": "^6.5.5",
     "babel-loader": "^8.0.6",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
@@ -84,6 +87,7 @@
     "react-jss": "^10.1.1",
     "regenerator-runtime": "^0.13.3",
     "shuffle-array": "^1.0.1",
+    "sib-api-v3-sdk": "^7.2.2",
     "sniffr": "^1.2.0",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
@@ -98,7 +102,7 @@
   },
   "engines": {
     "node": "~10.16.2",
-    "npm": "6.9.0"
+    "npm": "6.13.4"
   },
   "husky": {
     "hooks": {
