@@ -122,7 +122,7 @@ class HttpServer extends EventEmitter {
     const apiLimiter = expressRateLimit({
       windowMs: 60 * 1000,
       max: 2,
-      message: "Too many attempts logging in, please try again after 24 hours"
+      message: "Too many attempts logging in, please try again after 24 hours."
     });
     //will need trust proxy for production
     this.app.set('trust proxy', 'loopback');
