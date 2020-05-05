@@ -691,16 +691,44 @@ class RASPUndebate extends React.Component {
   }
 
   state = {
-    errorMsg: '',
-    seatOffset: 0,
-    round: 0,
-    countDown: 0,
-    moderatorReadyToStart: false,
+    errorMsg: '', // not used any more - was message if there was some kind of error with video or something
+    /** this really helps explain round and seatOffset, example of  4 participants.  time increases as you go down.
+     *  round  seatOffset
+     *     0      0  Moderator is speaking
+     *     0      3  First participant is speaking
+     *     0      2  Second participant is speaking
+     *     0      1  Third participant is speaking
+     *     1      0  Moderator is speaking
+     *     1      3  First participant is speaking
+     *     1      2  Second participant is speaking
+     *     1      1  Third participant is speaking
+     *     2      0  Moderator is speaking
+     */
+    seatOffset: 0, //
+    round: 0, // what "Question" is being asked, 0 is introduction
+    countDown: 0, // countdown seconds the users has to speak
+    moderatorReadyToStart: false, // true when the moderator's video is ready to start playing - either it's been fetched or we ware playing from a url
     stylesSet: false,
-    intro: false,
-    begin: false,
-    allPaused: true, // so the play button shows
-    isRecording: false,
+    intro: false, // cause the intro scene to start moving
+    begin: false, // set in onIntro ends, after the intro ends, or it is set after the begin button is pressed
+    allPaused: true, // so the play button shows,
+    isRecording: false, // video is being recorded
+    requestPermission: false, // set when there is an error that suggest that the uses should press a button to interact with the display again to give permission to the browser to play audio+video
+    finishUp: false, // after the undebate is done, finishup is set so that all the video windows flow into their finished position and size
+    totalSize_before_hangup: 0, // size of video stored so far, counted so you don't hangup with recorded video accidentally
+    newUserId: '', // userId - valid if user joins in this session
+    name: '', // name of the users - to use in the title
+    reviewing: false, // the user has gone through the recording process once, and has come back to review
+    stalled: false, // used by stall watch
+    waitingPercent: 0, // used by stall watch
+    done: false,
+    hungUp: false, // true if user hit the Hangup button
+    uploadComplete: false, // true if user uploads a video and it completes
+    preFetchQueue: 0, // size of the list this.preFetchQueue to fetch
+    preambleAgreed: false, // if the user clicked on agreed on the preamble screen
+    left: 0, // a left offset to compensate for what might be in the body to align to left side of screen
+    fontSize: 13, // the calculated fontsize
+    progress: '', // progress reported by onUserUpload to show while upload is in progress
 
     seatStyle: {
       speaking: {
@@ -1346,7 +1374,7 @@ class RASPUndebate extends React.Component {
     logger.trace(`nextMediaState part:${part}`)
     //if (part === 'human') return;
     // humans won't get here
-    var { round, reviewing } = this.state
+    const { round, reviewing } = this.state
 
     let speaking = this.seat(Object.keys(this.props.participants).indexOf(part)) === 'speaking'
 
@@ -1744,19 +1772,6 @@ class RASPUndebate extends React.Component {
       }
     })
   }
-
-  /** this really helps explain round and seatOffset, example of  4 participants.  time increases as you go down.
-   *  round  seatOffset
-   *     0      0  Moderator is speaking
-   *     0      3  First participant is speaking
-   *     0      2  Second participant is speaking
-   *     0      1  Third participant is speaking
-   *     1      0  Moderator is speaking
-   *     1      3  First participant is speaking
-   *     1      2  Second participant is speaking
-   *     1      1  Third participant is speaking
-   *     2      0  Moderator is speaking
-   */
 
   prevSection() {
     var { seatOffset, round } = this.state
