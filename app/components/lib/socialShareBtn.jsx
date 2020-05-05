@@ -12,26 +12,19 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'flex-end',
     width: '99%',
-    margin: '0.4rem 0 0 0',
-    fontSize: '2rem',
-    marginTop: '0.75rem',
+    marginTop: '0.5em',
   },
   shareDropDown: {
     backgroundColor: 'rgba(255, 255, 255, 0.6)',
-    width: '20%',
-    maxWidth: '7rem',
-    height: '9%',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
-    padding: '0.5rem',
-    fontSize: '1.5rem',
-    marginRight: '0.3rem',
+    padding: '0.1em',
+    fontSize: '.8em',
     textAlign: 'center',
   },
-
-  socialSVG: {
-    marginRight: '0.8rem',
+  iconWrapper: {
+    display: 'flex',
+    justifyContent: 'space-evenly',
   },
 }
 const SocialShareBtn = props => {
@@ -46,12 +39,12 @@ const SocialShareBtn = props => {
   )
   const { classes, metaData } = props
   return (
-    <div className={classes.socialShareWrapper}>
+    <div className={classes.socialShareWrapper} style={{ fontSize: props.fontSize }}>
       <SocialShareSVG isOpen={isOpen} handleClick={handleClick} />
       {isOpen && (
         <div className={classes.shareDropDown} ref={shareLayoverRef}>
           <div>SHARE</div>
-          <div>
+          <div className={classes.iconWrapper}>
             <a
               className={classes.socialSVG}
               target="_blank"

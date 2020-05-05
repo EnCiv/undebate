@@ -7,7 +7,7 @@ import Join from '../join'
 import Input from '../lib/input'
 import SocialShareBtn from '../lib/socialShareBtn'
 import ErrorBoundary from '../error-boundary'
-
+import { AuthForm } from '../auth-form/index'
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep'
 import getYouTubeID from 'get-youtube-id'
@@ -1989,8 +1989,8 @@ class RASPUndebate extends React.Component {
   onUserLogin(info) {
     logger.info('Undebate.onUserLogin')
     logger.trace('onUserLogin', info)
-    const { userId } = info
-    this.setState({ newUserId: userId })
+    const { userId, firstName, lastName } = info
+    this.setState({ newUserId: userId, firstName, lastName })
   }
 
   onUserUpload() {
@@ -2481,12 +2481,11 @@ class RASPUndebate extends React.Component {
                           <div style={{ textAlign: 'center' }}>
                             <span>Join and your recorded videos will be uploaded and shared</span>
                           </div>
-                          <div>
-                            <Join
-                              className={this.props.classes['join']}
-                              userInfo={{ name: this.state.name }}
+                          <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <AuthForm
+                              userInfo={{ name: this.state.name, firstName: this.state.firstName }}
                               onChange={this.onUserLogin.bind(this)}
-                            ></Join>
+                            />
                           </div>
                         </>
                       )}
@@ -2545,6 +2544,7 @@ class RASPUndebate extends React.Component {
                 path: this.props.path,
                 subject: this.props.subject,
               }}
+              fontSize={this.state.fontSize}
             />
           ) : null}
           <div

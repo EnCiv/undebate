@@ -8,13 +8,17 @@ const schema = Joi.object({
   name: Joi.string(),
   email: Joi.string().email(),
   password: Joi.string(),
+  firstName: Joi.string(),
+  lastName: Joi.string(),
 })
 
 class User extends MongoModels {
   static create(user) {
     return new Promise(async (ok, ko) => {
       var error
-      const { password, email, name } = user
+      const { password, email, name, firstName, lastName } = user
+      if (!email) error = `User.create attempted, but no email. name=${name}`
+      if (!password) error = `User.create attempted, but no password. name=${name}, email=${email}`
       if (password && email) {
         bcrypt.hash(password, 10, async (err, hash) => {
           if (err) {
@@ -36,10 +40,6 @@ class User extends MongoModels {
           }
         })
         return // let bcrypt do it's think
-      } else if (!email) {
-        error = `User.create attempted, but no email. name=${name}`
-      } else if (!password) {
-        error = `User.create attempted, but no password. name=${name}, email=${email}`
       }
       logger.error(error)
       ko(new Error(error))
@@ -65,7 +65,12 @@ User.schema = schema
 async function init() {
   try {
     await User.createIndexes([
-      { key: { email: 1 }, name: 'email', unique: true, partialFilterExpression: { email: { $exists: true } } },
+      {
+        key: { email: 1 },
+        name: 'email',
+        unique: true,
+        partialFilterExpression: { email: { $exists: true } },
+      },
     ])
   } catch (err) {
     logger.error('User.createIndexes error:', err)
