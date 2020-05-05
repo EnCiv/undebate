@@ -2325,7 +2325,12 @@ class RASPUndebate extends React.Component {
           {noOverlay || opening.noPreamble ? (
             <div style={{ width: '100%', height: '100%', display: 'table' }}>
               <div title="Begin" style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-                <button style={{ marginTop: '25vh' }} className={classes['beginButton']} onClick={this.beginButton}>
+                <button
+                  style={{ marginTop: '25vh' }}
+                  className={classes['beginButton']}
+                  onClick={this.beginButton}
+                  data-testid="begin-button"
+                >
                   Begin
                 </button>
               </div>
@@ -2598,6 +2603,9 @@ class RASPUndebate extends React.Component {
                   height: parseFloat(seatStyle[this.seat(i)].width) * HDRatio + 'vw',
                 }}
                 key={participant + '-video'}
+                data-testid={participant + '-video'}
+                participant={participant}
+                chair={chair}
               ></video>
               <div
                 className={cx(classes['stalledOverlay'], this.state.stalled === participant && classes['stalledNow'])}
