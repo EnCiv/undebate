@@ -92,7 +92,7 @@ const PreInject = props => {
           console.log(err)
         }
         setInfoMessage(null)
-        console.log(res)
+
         switch (res.status) {
           case 401:
             setFormValidationErrors(['This email is already take'])
@@ -125,6 +125,9 @@ const PreInject = props => {
         setInfoMessage(null)
         if (err) logger.error('Join.login error', err)
         switch (res.status) {
+          case 429:
+            setLoginErrors(['Too many attempts logging in, try again in 24 hrs'])
+            break
           case 200:
             setInfoMessage('Welcome back')
             if (props.onChange) {
@@ -187,20 +190,20 @@ const PreInject = props => {
             loginErrors={loginErrors}
           />
         ) : (
-          <JoinForm
-            handleSignUp={handleSignUp}
-            hasAgreed={hasAgreed}
-            setHasAgreed={setHasAgreed}
-            formValidationErrors={formValidationErrors}
-            handleOnBlur={handleOnBlur}
-            handleChange={handleChange}
-            formValues={formValues}
-            infoMessage={infoMessage}
-            isDisabled={isDisabled}
-            classes={classes}
-            validationMessages={validationMessages}
-          />
-        )}
+            <JoinForm
+              handleSignUp={handleSignUp}
+              hasAgreed={hasAgreed}
+              setHasAgreed={setHasAgreed}
+              formValidationErrors={formValidationErrors}
+              handleOnBlur={handleOnBlur}
+              handleChange={handleChange}
+              formValues={formValues}
+              infoMessage={infoMessage}
+              isDisabled={isDisabled}
+              classes={classes}
+              validationMessages={validationMessages}
+            />
+          )}
       </form>
     </div>
   )
