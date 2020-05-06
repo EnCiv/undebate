@@ -95,7 +95,7 @@ const PreInject = props => {
 
         switch (res.status) {
           case 401:
-            setFormValidationErrors(['This email is already take'])
+            setFormValidationErrors(['This email is already taken'])
             break
           case 200:
             setInfoMessage('Welcome aboard!')
@@ -190,20 +190,20 @@ const PreInject = props => {
             loginErrors={loginErrors}
           />
         ) : (
-            <JoinForm
-              handleSignUp={handleSignUp}
-              hasAgreed={hasAgreed}
-              setHasAgreed={setHasAgreed}
-              formValidationErrors={formValidationErrors}
-              handleOnBlur={handleOnBlur}
-              handleChange={handleChange}
-              formValues={formValues}
-              infoMessage={infoMessage}
-              isDisabled={isDisabled}
-              classes={classes}
-              validationMessages={validationMessages}
-            />
-          )}
+          <JoinForm
+            handleSignUp={handleSignUp}
+            hasAgreed={hasAgreed}
+            setHasAgreed={setHasAgreed}
+            formValidationErrors={formValidationErrors}
+            handleOnBlur={handleOnBlur}
+            handleChange={handleChange}
+            formValues={formValues}
+            infoMessage={infoMessage}
+            isDisabled={isDisabled}
+            classes={classes}
+            validationMessages={validationMessages}
+          />
+        )}
       </form>
     </div>
   )
