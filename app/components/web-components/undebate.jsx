@@ -1875,21 +1875,21 @@ class RASPUndebate extends React.Component {
   }
 
   newOrder(seatOffset, round) {
+    const { participants } = this.props
+
     this.clearStallWatch()
     if (this.state.isRecording) this.stopRecording()
     var followup = []
-    Object.keys(this.props.participants).forEach((participant, i) => {
+    Object.keys(participants).forEach((participant, i) => {
       let oldChair = this.seat(i)
       let newChair = this.seat(i, seatOffset)
       logger.trace('rotateOrder', round, seatOffset, participant, oldChair, newChair)
       if (participant === 'human') {
         const listeningRound =
-          this.props.participants.human.listening &&
-          typeof this.props.participants.human.listening.round !== 'undefined'
-            ? this.props.participants.human.listening.round
+          participants.human.listening && typeof participants.human.listening.round !== 'undefined'
+            ? participants.human.listening.round
             : Infinity // 0 is a valid round
-        const listeningSeat =
-          (this.props.participants.human.listening && this.props.participants.human.listening.seat) || 'seat2'
+        const listeningSeat = (participants.human.listening && participants.human.listening.seat) || 'seat2'
         // first see if recording needs to be turned off (do this first)
         if (oldChair === 'speaking' && newChair === 'speaking' && this.rerecord) {
           // the user is initiating a rerecord
@@ -1909,9 +1909,7 @@ class RASPUndebate extends React.Component {
           followup.push(() => {
             if (listeningSeat === 'speaking') {
               // recording the listening segment from the speakers seat
-              let limit =
-                (this.props.participants.moderator.timeLimits && this.props.participants.moderator.timeLimits[round]) ||
-                60
+              let limit = (participants.moderator.timeLimits && participants.moderator.timeLimits[round]) || 60
               this.startCountDown(limit, () => this.autoNextSpeaker())
             }
             this.nextMediaState(participant)
@@ -1923,7 +1921,7 @@ class RASPUndebate extends React.Component {
           } else {
             followup.push(() => {
               let limit =
-                (this.props.participants.moderator.timeLimits && this.props.participants.moderator.timeLimits[round]) ||
+                (participants.moderator.timeLimits && participants.moderator.timeLimits[round]) ||
                 60
               this.startCountDown(limit, () => this.autoNextSpeaker())
               this.talkativeTimeout = setTimeout(() => this.setState({ talkative: true }), limit * 0.75 * 1000)
