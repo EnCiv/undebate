@@ -35,7 +35,7 @@ const BeginButton = ({ children, width, height, onClick, ...props }) => {
   const classes = useStyles(props)
   return (
     <div className={classes.outer} title="Begin">
-      <IconPlay width={width} height={height} className={classes.icon} onClick={onClick} />
+      <IconPlay width={width} height={height} className={classes.icon} onClick={onClick} data-testid="begin-button" />
     </div>
   )
 }
