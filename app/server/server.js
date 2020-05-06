@@ -20,6 +20,7 @@ import serverReactRender from './routes/server-react-render'
 import User from '../models/user'
 import Iota from '../models/iota'
 import helmet from 'helmet'
+import compression from 'compression'
 
 import API from './api'
 import Sniffr from 'sniffr'
@@ -79,6 +80,7 @@ class HttpServer extends EventEmitter {
 
   set() {
     this.app.set('port', +(process.env.PORT || 3012))
+    this.app.use(compression())
     this.app.use(helmet())
     this.app.use(helmet.hidePoweredBy({ setTo: 'Powered by Ruby on Rails.' }))
   }
