@@ -15,11 +15,13 @@ class App extends React.Component {
       var { iota, ...newProps } = this.props
       Object.assign(newProps, this.props.iota)
       return (
-        <div style={{ position: 'relative' }}>
-          <WebComponent webComponent={this.props.iota.webComponent} {...newProps} />
-          <Footer />
-          <SiteFeedback />
-        </div>
+        <ErrorBoundary>
+          <div style={{ position: 'relative' }}>
+            <WebComponent webComponent={this.props.iota.webComponent} {...newProps} />
+            <Footer />
+            <SiteFeedback />
+          </div>
+        </ErrorBoundary>
       )
     } else
       return (
