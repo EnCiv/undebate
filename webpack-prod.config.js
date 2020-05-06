@@ -1,6 +1,5 @@
 const path = require("path");
 const webpack = require("webpack");
-const compressionplugin = require('compression-webpack-plugin');
 
 const use = [
     {
@@ -48,6 +47,5 @@ module.exports = {
     },
     plugins: [
         new webpack.IgnorePlugin(/nodemailer/), // not used in the client side - those should be move outside of the app directory
-        //new compressionplugin({ deleteOriginalAssets: true, })
     ]
 };
