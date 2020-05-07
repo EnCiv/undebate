@@ -170,9 +170,14 @@ const LogoLinks = ({ classes, logo }) => {
 }
 
 class ConversationHeader extends React.Component {
-  state = { isClient: false }
+  state = { isClient: false, isPortrait: false }
   componentDidMount() {
-    this.setState({ isClient: true }) // because it will render in landscape more on the server and rehydrate has to find it that way - before you can change it.
+    this.setState({ isClient: true, isPortrait: this.props.portraitMode }) // because it will render in landscape more on the server and rehydrate has to find it that way - before you can change it.
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.portraitMode !== prevProps.portraitMode) {
+      this.setState({ isPortrait: this.props.portraitMode })
+    }
   }
   render() {
     const portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
@@ -194,10 +199,11 @@ class ConversationHeader extends React.Component {
           classes['conversation-header-wrapper'],
           !portraitMode && classes['conversationHeader']
         )}
+        key={portraitMode}
       >
         <LogoLinks classes={classes} logo={logo}></LogoLinks>
 
-        {console.log(typeof document === 'object' ? document.getElementById('spanID0').offsetWidth : null)}
+        {/* {console.log(typeof document === 'object' ? document.getElementById('spanID0').offsetWidth : null)} */}
         {makeBox('leftBoxContainer')('leftBox')('conversationTopicContent')(subject)}
         {makeBox('rightBoxContainer')('rightBox')('conversationElectionDate')(
           xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)
