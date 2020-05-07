@@ -180,9 +180,13 @@ class ConversationHeader extends React.Component {
     const makeBox = boxType => decoratorClass => spanClass => spanContent => (
       <div className={cx(classes[boxType], portraitMode && classes['portrait'])}>
         <div className={cx(classes[decoratorClass])}></div>
-        <span className={cx(classes[spanClass])}>{spanContent}</span>
+        <span id={makeBox.idTag + makeBox.counter++} className={cx(classes[spanClass])}>
+          {spanContent}
+        </span>
       </div>
     )
+    makeBox.idTag = 'spanID'
+    makeBox.counter = 0
     return (
       <div
         className={cx(
@@ -193,11 +197,11 @@ class ConversationHeader extends React.Component {
       >
         <LogoLinks classes={classes} logo={logo}></LogoLinks>
 
+        {console.log(typeof document === 'object' ? document.getElementById('spanID0').offsetWidth : null)}
         {makeBox('leftBoxContainer')('leftBox')('conversationTopicContent')(subject)}
-        {makeBox('rightBoxContainer')('rightBox')('convsersationElectionDate')(
+        {makeBox('rightBoxContainer')('rightBox')('conversationElectionDate')(
           xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)
         )}
-        {console.log(bp_info)}
       </div>
     )
   }
