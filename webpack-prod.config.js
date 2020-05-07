@@ -1,8 +1,9 @@
 const path = require("path");
-const webpack=require("webpack");
+const webpack = require("webpack");
 
-const use= [
-    {   loader: "babel-loader",
+const use = [
+    {
+        loader: "babel-loader",
     }
 ]
 
@@ -11,7 +12,7 @@ module.exports = {
     mode: 'production',
     context: path.resolve(__dirname, "app"),
     entry: {
-    main:    "./client/main.js",
+        main: "./client/main.js",
     },
     devtool: 'source-map',
     output: {
@@ -39,12 +40,12 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['*','.js','.jsx'],
+        extensions: ['*', '.js', '.jsx'],
     },
     node: {
         fs: 'empty' // logger wants to require fs though it's not needed on the browser
     },
-    plugins:[
+    plugins: [
         new webpack.IgnorePlugin(/nodemailer/), // not used in the client side - those should be move outside of the app directory
     ]
 };
