@@ -292,6 +292,9 @@ const styles = {
   talkative: {
     background: 'yellow',
   },
+  warmup: {
+    background: 'red',
+  },
   videoFoot: {
     'text-align': 'center',
     color: '#404',
@@ -422,6 +425,11 @@ const styles = {
       display: 'block',
     },
     '&$talkative': {
+      left: 'calc( 50vw - 1em)',
+      fontSize: '4em',
+      background: 'rgba(128,128,128,0.7)',
+    },
+    '&$warmup': {
       left: 'calc( 50vw - 1em)',
       fontSize: '4em',
       background: 'rgba(128,128,128,0.7)',
@@ -700,6 +708,7 @@ class RASPUndebate extends React.Component {
     intro: false,
     begin: false,
     allPaused: true, // so the play button shows
+    warmup: false,
     isRecording: false,
 
     seatStyle: {
@@ -1877,7 +1886,7 @@ class RASPUndebate extends React.Component {
   recordWithCountDown(timeLimits, participant, round) {
     const limit = (timeLimits && timeLimits[round]) || 60
     this.startCountDown(limit, () => this.autoNextSpeaker())
-    this.startTalkativeTimeout(limit)
+    this.startTalkativeTimeout(limit * 0.75)
     this.nextMediaState(participant)
     this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs), true)
   }
@@ -1928,8 +1937,9 @@ class RASPUndebate extends React.Component {
             followup.push(() => this.nextMediaState(participant))
           } else {
             followup.push(() => {
-              const timeLimits = participants.moderator.timeLimits
-              this.recordWithCountDown(timeLimits, participant, round)
+              const { timeLimits } = participants.moderator
+              const warmupSeconds = 3
+              this.warmupCountDown(warmupSeconds, () => this.recordWithCountDown(timeLimits, participant, round))
             })
           }
         } else {
@@ -2004,24 +2014,25 @@ class RASPUndebate extends React.Component {
   }
 
   startCountDown(seconds, finishFunc) {
-    if (this.recordTimeout) clearTimeout(this.recordTimeout)
     const counter = sec => {
       if (sec > 0) {
-        this.recordTimeout = setTimeout(() => counter(sec - 1), 1000)
+        this.countdownTimeout = setTimeout(() => counter(sec - 1), 1000)
         this.setState({ countDown: sec - 1 })
       } else {
-        this.recordTimeout = 0
+        this.countdownTimeout = 0
         finishFunc && setTimeout(finishFunc) // called after timeout to avoid setState collisions
         if (this.state.countDown !== 0) this.setState({ countDown: 0 })
       }
     }
-    this.recordTimeout = setTimeout(() => counter(seconds), TransitionTime) // can't call setState from here because it will collide with the setstate of the parent event handler
+
+    if (this.countdownTimeout) clearTimeout(this.countdownTimeout)
+    this.countdownTimeout = setTimeout(() => counter(seconds), TransitionTime) // can't call setState from here because it will collide with the setstate of the parent event handler
   }
 
   stopCountDown() {
-    if (this.recordTimeout) {
-      clearTimeout(this.recordTimeout)
-      this.recordTimeout = 0
+    if (this.countdownTimeout) {
+      clearTimeout(this.countdownTimeout)
+      this.countdownTimeout = 0
     }
     if (this.talkativeTimeout) {
       clearTimeout(this.talkativeTimeout)
@@ -2030,9 +2041,17 @@ class RASPUndebate extends React.Component {
     if (this.setState.countDown > 0) this.setState({ countDown: 0 })
   }
 
-  startTalkativeTimeout(limit) {
+  startTalkativeTimeout(seconds) {
     if (this.talkativeTimeout) clearTimeout(this.talkativeTimeout)
-    this.talkativeTimeout = setTimeout(() => this.setState({ talkative: true }), limit * 0.75 * 1000)
+    this.talkativeTimeout = setTimeout(() => this.setState({ talkative: true }), seconds * 1000)
+  }
+
+  warmupCountDown(seconds, finishFunc) {
+    this.setState({ warmup: true })
+    this.startCountDown(seconds, () => {
+      finishFunc()
+      this.setState({ warmup: false })
+    })
   }
 
   onIntroEnd() {
@@ -2261,6 +2280,7 @@ class RASPUndebate extends React.Component {
       begin,
       requestPermission,
       talkative,
+      warmup,
       moderatorReadyToStart,
       intro,
       seatStyle,
@@ -2806,7 +2826,8 @@ class RASPUndebate extends React.Component {
               humanSpeaking &&
                 (this.rerecord || !this.participants.human.speakingObjectURLs[round]) &&
                 classes['counting'],
-              talkative && classes['talkative']
+              talkative && classes['talkative'],
+              warmup && classes['warmup']
             )}
           >
             {TimeFormat.fromS(Math.round(this.state.countDown), 'mm:ss')}
