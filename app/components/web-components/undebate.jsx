@@ -1874,6 +1874,14 @@ class RASPUndebate extends React.Component {
     this.setState({ isRecording: false })
   }
 
+  recordWithCountDown(timeLimits, participant, round) {
+    const limit = (timeLimits && timeLimits[round]) || 60
+    this.startCountDown(limit, () => this.autoNextSpeaker())
+    this.startTalkativeTimeout(limit)
+    this.nextMediaState(participant)
+    this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs), true)
+  }
+
   newOrder(seatOffset, round) {
     const { participants } = this.props
 
@@ -1920,13 +1928,8 @@ class RASPUndebate extends React.Component {
             followup.push(() => this.nextMediaState(participant))
           } else {
             followup.push(() => {
-              let limit =
-                (participants.moderator.timeLimits && participants.moderator.timeLimits[round]) ||
-                60
-              this.startCountDown(limit, () => this.autoNextSpeaker())
-              this.talkativeTimeout = setTimeout(() => this.setState({ talkative: true }), limit * 0.75 * 1000)
-              this.nextMediaState(participant)
-              this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs), true)
+              const timeLimits = participants.moderator.timeLimits
+              this.recordWithCountDown(timeLimits, participant, round)
             })
           }
         } else {
@@ -2025,6 +2028,11 @@ class RASPUndebate extends React.Component {
       this.talkativeTimeout = 0
     }
     if (this.setState.countDown > 0) this.setState({ countDown: 0 })
+  }
+
+  startTalkativeTimeout(limit) {
+    if (this.talkativeTimeout) clearTimeout(this.talkativeTimeout)
+    this.talkativeTimeout = setTimeout(() => this.setState({ talkative: true }), limit * 0.75 * 1000)
   }
 
   onIntroEnd() {
