@@ -128,6 +128,47 @@ function xxxx_xx_xxTommmdd_yyyy(str) {
   return ''
 }
 
+const LogoLinks = ({ classes, logo }) => {
+  const link_image = src => classname => href => (
+    <a target="#" href={href}>
+      <img className={classes[classname]} src={src} />
+    </a>
+  )
+  const makeLink = link => {
+    let link_html = link_image
+    for (const attribute in link) {
+      link_html = link_html(link[attribute])
+    }
+    return link_html
+  }
+  const list_of_links = {
+    enciv: {
+      src: 'https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png',
+      classname: 'enciv-logo',
+      href: 'https://www.EnCiv.org',
+    },
+    undebate: {
+      src: 'https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,h_100/v1585602937/Undebate_Logo.png',
+      classname: 'undebate-logo',
+      href: 'https://enciv.org/undebate',
+    },
+    ballotpedia: {
+      src:
+        'https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png',
+      classname: 'logo',
+      href: 'https://ballotpedia.org/Candidate_Conversations',
+    },
+  }
+  const { enciv, undebate, ballotpedia } = list_of_links
+  return (
+    <>
+      {' '}
+      {makeLink(enciv)}
+      {logo && logo === 'undebate' ? makeLink(undebate) : makeLink(ballotpedia)}
+    </>
+  )
+}
+
 class ConversationHeader extends React.Component {
   state = { isClient: false }
   componentDidMount() {
@@ -136,84 +177,29 @@ class ConversationHeader extends React.Component {
   render() {
     const portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
     const { classes, style, subject, bp_info, logo } = this.props
-    if (portraitMode && this.state.isClient)
-      return (
-        <div className={cx(classes['portrait'], classes['conversation-header-wrapper'])} key="portrait">
-          <div className={cx(classes['portrait'], classes['conversationHeader'])} key="portrait-1">
-            <a target="#" href="https://www.EnCiv.org">
-              <img
-                className={cx(classes['portrait'], classes['enciv-logo'])}
-                src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png"
-              />
-            </a>
-            {logo && logo === 'undebate' ? (
-              <a target="#" href="https://enciv.org/undebate">
-                <img
-                  className={classes['undebate-logo']}
-                  src="https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,h_100/v1585602937/Undebate_Logo.png"
-                />
-              </a>
-            ) : (
-              <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
-                <img
-                  className={classes['logo']}
-                  src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
-                />
-              </a>
-            )}
-          </div>
-          <div className={cx(classes['leftBoxContainer'], portraitMode && classes['portrait'])}>
-            <div className={classes['leftBox']}></div>
-            <span className={classes['conversationTopicContent']}>{subject}</span>
-          </div>
-          <div className={cx(classes['rightBoxContainer'], portraitMode && classes['portrait'])}>
-            <div className={classes['rightBox']}></div>
-            <span className={classes['conversationElectionDate']}>
-              {xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)}
-            </span>
-          </div>
-        </div>
-      )
-    else
-      return (
-        <div className={classes['conversation-header-wrapper']} key="landscape">
-          <div className={classes['conversationHeader']} key="landscape-1">
-            <div style={{ position: 'absolute', left: '1rem' }} key="landscape-2">
-              <div className={cx(classes['leftBoxContainer'], portraitMode && classes['portrait'])}>
-                <div className={classes['leftBox']}></div>
-                <span className={classes['conversationTopicContent']}>{subject}</span>
-              </div>
-              <div className={cx(classes['rightBoxContainer'], portraitMode && classes['portrait'])}>
-                <div className={classes['rightBox']}></div>
-                <span className={classes['conversationElectionDate']}>
-                  {xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)}
-                </span>
-              </div>
-            </div>
-            <a target="#" href="https://www.EnCiv.org">
-              <img
-                className={classes['enciv-logo']}
-                src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png"
-              />
-            </a>
-            {logo && logo === 'undebate' ? (
-              <a target="#" href="https://enciv.org/undebate">
-                <img
-                  className={classes['undebate-logo']}
-                  src="https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,h_100/v1585602937/Undebate_Logo.png"
-                />
-              </a>
-            ) : (
-              <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
-                <img
-                  className={classes['logo']}
-                  src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
-                />
-              </a>
-            )}
-          </div>
-        </div>
-      )
+    const makeBox = boxType => decoratorClass => spanClass => spanContent => (
+      <div className={cx(classes[boxType], portraitMode && classes['portrait'])}>
+        <div className={cx(classes[decoratorClass])}></div>
+        <span className={cx(classes[spanClass])}>{spanContent}</span>
+      </div>
+    )
+    return (
+      <div
+        className={cx(
+          portraitMode && classes['portrait'],
+          classes['conversation-header-wrapper'],
+          !portraitMode && classes['conversationHeader']
+        )}
+      >
+        <LogoLinks classes={classes} logo={logo}></LogoLinks>
+
+        {makeBox('leftBoxContainer')('leftBox')('conversationTopicContent')(subject)}
+        {makeBox('rightBoxContainer')('rightBox')('convsersationElectionDate')(
+          xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)
+        )}
+        {console.log(bp_info)}
+      </div>
+    )
   }
 }
 
