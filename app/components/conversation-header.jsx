@@ -170,16 +170,17 @@ const LogoLinks = ({ classes, logo }) => {
 }
 
 class ConversationHeader extends React.Component {
-  state = { isClient: false, isPortrait: false }
+  state = { isClient: false, portraitMode: false }
   componentDidMount() {
     this.setState({
       isClient: true,
-      portraitMode: typeof window !== 'undefined' && window.innerWidth < window.innerHeight,
+      portraitMode: this.isPortrait(),
     }) // because it will render in landscape more on the server and rehydrate has to find it that way - before you can change it.
   }
+  isPortrait = () => typeof window !== 'undefined' && window.innerWidth < window.innerHeight
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.portraitMode !== prevState.portraitMode) {
-      // this.setState({ portraitMode: this.state.portraitMode })
+    if (this.isPortrait() !== prevState.portraitMode) {
+      this.setState({ portraitMode: this.isPortrait() })
     }
   }
   render() {
