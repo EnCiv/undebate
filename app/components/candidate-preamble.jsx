@@ -9,6 +9,7 @@ import ConversationHeader from './conversation-header'
 
 const styles = {
   Preamble: {
+    fontSize: '1.33rem',
     position: 'absolute',
     top: 0,
     left: 0,
@@ -26,8 +27,8 @@ const styles = {
       left: '-100vw',
     },
     '& ul': {
-      paddingTop: '0.5em',
-      paddingLeft: '2.5em',
+      paddingTop: '0.5em!important',
+      paddingLeft: '2em!important',
     },
     '& li': {
       paddingBottom: '0.75em',
@@ -103,14 +104,14 @@ class CandidatePreamble extends React.Component {
       <div className={cx(classes['Preamble'], agreed && classes['agreed'])}>
         <ConversationHeader subject={this.props.subject} bp_info={this.props.bp_info} />
         <div className={classes['Preamble-inner']}>
-          <p>
+          <h2>
             Welcome{' '}
             {bp_info && bp_info.candidate_name ? (
               <span style={{ fontSize: '150%', fontWeight: 'bold' }}>{bp_info.candidate_name}</span>
             ) : (
               ''
             )}
-          </p>
+          </h2>
           <p>
             Ballotpedia and EnCiv are teaming up to create a better way for candidates to be heard, and voters to learn
             about their candidates.
