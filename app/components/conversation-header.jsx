@@ -204,7 +204,9 @@ class ConversationHeader extends React.Component {
           !portraitMode && classes['conversationHeader']
         )}
       >
-        <LogoLinks classes={classes} logo={logo}></LogoLinks>
+        <div className={portraitMode && classes['conversationHeader']}>
+          <LogoLinks classes={classes} logo={logo}></LogoLinks>
+        </div>
 
         {/* {console.log(typeof document === 'object' ? document.getElementById('spanID0').offsetWidth : null)} */}
         {makeBox('leftBoxContainer')('leftBox')('conversationTopicContent')(subject)}
