@@ -172,15 +172,18 @@ const LogoLinks = ({ classes, logo }) => {
 class ConversationHeader extends React.Component {
   state = { isClient: false, isPortrait: false }
   componentDidMount() {
-    this.setState({ isClient: true, isPortrait: this.props.portraitMode }) // because it will render in landscape more on the server and rehydrate has to find it that way - before you can change it.
+    this.setState({
+      isClient: true,
+      portraitMode: typeof window !== 'undefined' && window.innerWidth < window.innerHeight,
+    }) // because it will render in landscape more on the server and rehydrate has to find it that way - before you can change it.
   }
-  componentDidUpdate(prevProps) {
-    if (this.props.portraitMode !== prevProps.portraitMode) {
-      this.setState({ isPortrait: this.props.portraitMode })
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.portraitMode !== prevState.portraitMode) {
+      // this.setState({ portraitMode: this.state.portraitMode })
     }
   }
   render() {
-    const portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
+    const { portraitMode } = this.state
     const { classes, style, subject, bp_info, logo } = this.props
     const makeBox = boxType => decoratorClass => spanClass => spanContent => (
       <div className={cx(classes[boxType], portraitMode && classes['portrait'])}>
@@ -199,7 +202,6 @@ class ConversationHeader extends React.Component {
           classes['conversation-header-wrapper'],
           !portraitMode && classes['conversationHeader']
         )}
-        key={portraitMode}
       >
         <LogoLinks classes={classes} logo={logo}></LogoLinks>
 
