@@ -5,7 +5,6 @@ import injectSheet from 'react-jss'
 import cx from 'classnames'
 
 import DebugOverlay from '../debug-overlay'
-import ErrorBoundary from '../error-boundary'
 
 import Join from '../join'
 
@@ -40,12 +39,10 @@ class TestJoin extends React.Component {
 
   render() {
     return (
-      <ErrorBoundary>
-        <div style={{ width: '100vw', height: '100vh', textAlign: 'center', verticalAlign: 'middle' }}>
-          <Join className={this.props.classes['join']} onChange={this.onUserLogin.bind(this)}></Join>
-          <div>info: {JSON.stringify(this.state.info)}</div>
-        </div>
-      </ErrorBoundary>
+      <div style={{ width: '100vw', height: '100vh', textAlign: 'center', verticalAlign: 'middle' }}>
+        <Join className={this.props.classes['join']} onChange={this.onUserLogin.bind(this)}></Join>
+        <div>info: {JSON.stringify(this.state.info)}</div>
+      </div>
     )
   }
 }

@@ -6,8 +6,8 @@ import cx from 'classnames'
 import Join from '../join'
 import Input from '../lib/input'
 import SocialShareBtn from '../lib/socialShareBtn'
-import ErrorBoundary from '../error-boundary'
 import { AuthForm } from '../auth-form/index'
+
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep'
 import getYouTubeID from 'get-youtube-id'
@@ -569,11 +569,7 @@ const styles = {
 
 class Undebate extends React.Component {
   render() {
-    return (
-      <ErrorBoundary>
-        <RASPUndebate {...this.props} />
-      </ErrorBoundary>
-    )
+    return <RASPUndebate {...this.props} />
   }
 }
 

@@ -6,7 +6,6 @@ import injectSheet from 'react-jss'
 import cx from 'classnames'
 
 import DebugOverlay from '../debug-overlay'
-import ErrorBoundary from '../error-boundary'
 
 const TransitionTime = 1000
 const TopMargin = '0vh'
@@ -192,11 +191,7 @@ const seatToName = {
 
 class UndebateLine extends React.Component {
   render() {
-    return (
-      <ErrorBoundary>
-        <RASPUndebateLine {...this.props} />
-      </ErrorBoundary>
-    )
+    return <RASPUndebateLine {...this.props} />
   }
 }
 
