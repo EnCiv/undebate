@@ -89,7 +89,7 @@ const PreInject = props => {
       .send(userInfo)
       .end((err, res) => {
         if (err) {
-          console.log(err)
+          logger.error('Join.signup error', err)
         }
         setInfoMessage(null)
 
