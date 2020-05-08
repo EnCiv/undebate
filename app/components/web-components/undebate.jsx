@@ -396,7 +396,10 @@ const styles = {
   },
   name: {
     fontSize: '1.25em',
+    width: '11em',
+    height: '1em',
   },
+
   subOpening: {
     //'font-size': "0.84rem",
     'font-weight': '100',
@@ -2448,29 +2451,30 @@ class RASPUndebate extends React.Component {
                 {this.participants.human && !this.state.uploadComplete && (
                   <>
                     <div style={{ textAlign: 'center' }}>
-                      {!this.props.bp_info || !this.props.bp_info.candidate_name ? (
-                        <div>
-                          <label>
-                            Name
-                            <Input
-                              className={this.props.classes['name']}
-                              block
-                              medium
-                              required
-                              placeholder="Name"
-                              ref="name"
-                              name="name"
-                              onChange={e => this.setState({ name: e.value })}
-                            />
-                          </label>
-                          <span>This will be shown with your video</span>
-                        </div>
-                      ) : null}
+                      {!this.props.bp_info || !this.props.bp_info.candidate_name ? null : null}
                       {!this.newUser || this.state.newUserId ? (
                         <div>
-                          <button className={classes['beginButton']} onClick={this.onUserUpload.bind(this)}>
-                            Post
-                          </button>
+                          <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <label style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                              Name Shown with Video
+                              <Input
+                                className={this.props.classes['name']}
+                                block
+                                medium
+                                required
+                                placeholder="Your Name Tag"
+                                ref="name"
+                                name="name"
+                                onChange={e => this.setState({ name: e.value })}
+                              />
+                            </label>
+                            <span>This will be shown with your video</span>
+                          </div>
+                          <div>
+                            <button className={classes['beginButton']} onClick={this.onUserUpload.bind(this)}>
+                              Post
+                            </button>
+                          </div>
                         </div>
                       ) : (
                         <>
