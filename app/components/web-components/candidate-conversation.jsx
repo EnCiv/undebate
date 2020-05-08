@@ -8,8 +8,6 @@ import Input from '../lib/input'
 import SocialShareBtn from '../lib/socialShareBtn'
 import Icon from '../lib/icon'
 
-import ErrorBoundary from '../error-boundary'
-
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep'
 import getYouTubeID from 'get-youtube-id'
@@ -628,11 +626,7 @@ const styles = {
 
 class CandidateConversation extends React.Component {
   render() {
-    return (
-      <ErrorBoundary>
-        <RASPUndebate {...this.props} />
-      </ErrorBoundary>
-    )
+    return <RASPUndebate {...this.props} />
   }
 }
 
