@@ -398,6 +398,7 @@ const styles = {
     fontSize: '1.25em',
     width: '11em',
     height: '1em',
+    textAlign: 'center',
   },
 
   subOpening: {
