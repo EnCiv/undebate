@@ -31,7 +31,7 @@ const styles = {
       paddingLeft: '2em!important',
     },
     '& li': {
-      paddingBottom: '0.75em',
+      paddingBottom: '0.5em!important',
     },
   },
   agreed: {},
@@ -79,7 +79,6 @@ class CandidateJoin extends Join {
 
 class CandidatePreamble extends React.Component {
   makeQuestions = questions => {
-    console.log(questions)
     return (
       <ul style={{ listStyleType: 'none', padding: '0' }}>
         {questions.map((question, index) =>
