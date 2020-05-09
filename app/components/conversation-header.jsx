@@ -43,13 +43,16 @@ const styles = {
     },
   },
   conversationTopicContent: {
-    fontSize: '2.5rem',
+    fontSize: '2.5em',
     fontWeight: 'bolder',
     paddingLeft: '.2em',
     paddingRight: '.2em',
+    display: 'inline-block',
+    width: 'max-content',
+    height: 'min-content',
     marginTop: '1.25vh',
     '&$portrait': {
-      fontSize: '2rem',
+      fontSize: '2em',
       whiteSpace: 'nowrap',
       marginTop: '.2em',
       marginBottom: '.2em',
@@ -104,6 +107,9 @@ const styles = {
     height: '3.5vh',
     float: 'right',
     paddingTop: '.3em',
+  },
+  boxContainer: {
+    width: 'max-content',
   },
   portrait: {},
 }
@@ -178,11 +184,37 @@ class ConversationHeader extends React.Component {
     }) // because it will render in landscape more on the server and rehydrate has to find it that way - before you can change it.
   }
   isPortrait = () => typeof window !== 'undefined' && window.innerWidth < window.innerHeight
+  fitsWidth = () => document.getElementById('spanID0').offsetWidth > window.innerWidth
   componentDidUpdate(prevProps, prevState) {
     if (this.isPortrait() !== prevState.portraitMode) {
-      this.setState({ portraitMode: this.isPortrait() })
+      let choice = this.isPortrait()
+      this.setState({ portraitMode: choice })
+      this.props.handleOrientationChange(choice)
     }
   }
+  resize = () => {
+    let topicContent = typeof document === 'object' ? document.getElementById('bcon') : null
+    // typeof document === 'object' ? document.getElementById(makeBox.idTag + makeBox.counter) : null
+
+    const splitAtUnits = size => {
+      const indexOfUnits = size.indexOf(/\D/g) - 1
+      const units = size.slice(indexOfUnits)
+      const magnitude = size.slice(0, indexOfUnits)
+      return { magnitude, units }
+    }
+
+    if (topicContent && topicContent.offsetWidth > window.innerWidth * 0.75) {
+      let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
+      font_size = splitAtUnits(font_size)
+      topicContent.style.fontSize = font_size.magnitude * 0.8 + font_size.units
+    }
+    if (topicContent && topicContent.offsetWidth < window.innerWidth * 0.7) {
+      let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
+      font_size = splitAtUnits(font_size)
+      topicContent.style.fontSize = font_size.magnitude * 1.1 + font_size.units
+    }
+  }
+
   render() {
     const { portraitMode } = this.state
     const { classes, style, subject, bp_info, logo } = this.props
@@ -204,15 +236,20 @@ class ConversationHeader extends React.Component {
           !portraitMode && classes['conversationHeader']
         )}
       >
-        <div className={portraitMode && classes['conversationHeader']}>
+        <div className={portraitMode && cx(classes['conversationHeader'], classes['portrait'])}>
           <LogoLinks classes={classes} logo={logo}></LogoLinks>
         </div>
 
-        {/* {console.log(typeof document === 'object' ? document.getElementById('spanID0').offsetWidth : null)} */}
-        {makeBox('leftBoxContainer')('leftBox')('conversationTopicContent')(subject)}
-        {makeBox('rightBoxContainer')('rightBox')('conversationElectionDate')(
-          xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)
-        )}
+        {console.log(typeof document === 'object' ? document.getElementById('spanID0').offsetWidth : null)}
+        {this.resize()}
+
+        <div id="bcon" className={classes['boxContainer']}>
+          {' '}
+          {makeBox('leftBoxContainer')('leftBox')('conversationTopicContent')(subject)}
+          {makeBox('rightBoxContainer')('rightBox')('conversationElectionDate')()
+          // xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)
+          }
+        </div>
       </div>
     )
   }

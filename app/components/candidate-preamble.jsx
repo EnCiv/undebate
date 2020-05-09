@@ -41,6 +41,9 @@ const styles = {
     marginTop: '6vh',
     // need to have someting here for portrait mode - but don't record in portrait mode for now.
   },
+  portrait: {
+    marginTop: '20vh',
+  },
 }
 
 class CandidateJoin extends Join {
@@ -77,12 +80,27 @@ class CandidateJoin extends Join {
 }
 
 class CandidatePreamble extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isPortrait: false,
+    }
+  }
+  togglePortrait(portraitChoice) {
+    console.log(this.state.isPortrait)
+    this.setState({ isPortrait: portraitChoice })
+  }
   render() {
+    const { isPortrait } = this.state
     const { classes, onClick, agreed, bp_info } = this.props
     return (
       <div className={cx(classes['Preamble'], agreed && classes['agreed'])}>
-        <ConversationHeader subject={this.props.subject} bp_info={this.props.bp_info} />
-        <div className={classes['Preamble-inner']}>
+        <ConversationHeader
+          subject={this.props.subject}
+          bp_info={this.props.bp_info}
+          handleOrientationChange={choice => this.togglePortrait(choice)}
+        />
+        <div className={cx(classes['Preamble-inner'], isPortrait && classes['portrait'])}>
           <p>
             Welcome{' '}
             {bp_info && bp_info.candidate_name ? (
