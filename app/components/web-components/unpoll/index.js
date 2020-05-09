@@ -17,16 +17,25 @@ const styles = {
     fontSize: '1.5rem',
     textAlign: 'center',
   },
+  answerList: {},
 }
 
 class PreInject extends React.Component {
   render() {
-    const { classes, question } = this.props
+    const { classes, question, answers } = this.props
 
     return (
       <div className={classes.outer}>
         <div className={classes.title}>Hello World, Meet Unpoll</div>
         <div className={classes.question}>{question}</div>
+        <div className={classes.answerList}>
+          {answers.map(answer => {
+            ;<div className={classes.answer}>
+              <div className={classes.answerText}>{answer.description}</div>
+              <checkBox />
+            </div>
+          })}
+        </div>
       </div>
     )
   }
