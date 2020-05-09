@@ -177,6 +177,9 @@ const LogoLinks = ({ classes, logo }) => {
 
 class ConversationHeader extends React.Component {
   state = { isClient: false, portraitMode: false }
+  static defaultProps = {
+    handleOrientationChange: () => null,
+  }
   componentDidMount() {
     this.setState({
       isClient: true,
@@ -194,7 +197,6 @@ class ConversationHeader extends React.Component {
   }
   resize = () => {
     let topicContent = typeof document === 'object' ? document.getElementById('bcon') : null
-    // typeof document === 'object' ? document.getElementById(makeBox.idTag + makeBox.counter) : null
 
     const splitAtUnits = size => {
       const indexOfUnits = size.indexOf(/\D/g) - 1
@@ -240,7 +242,6 @@ class ConversationHeader extends React.Component {
           <LogoLinks classes={classes} logo={logo}></LogoLinks>
         </div>
 
-        {console.log(typeof document === 'object' ? document.getElementById('spanID0').offsetWidth : null)}
         {this.resize()}
 
         <div id="bcon" className={classes['boxContainer']}>
