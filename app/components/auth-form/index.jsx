@@ -89,13 +89,13 @@ const PreInject = props => {
       .send(userInfo)
       .end((err, res) => {
         if (err) {
-          console.log(err)
+          logger.error('Join.signup error', err)
         }
         setInfoMessage(null)
-        console.log(res)
+
         switch (res.status) {
           case 401:
-            setFormValidationErrors(['This email is already take'])
+            setFormValidationErrors(['This email is already taken'])
             break
           case 200:
             setInfoMessage('Welcome aboard!')
@@ -125,6 +125,9 @@ const PreInject = props => {
         setInfoMessage(null)
         if (err) logger.error('Join.login error', err)
         switch (res.status) {
+          case 429:
+            setLoginErrors(['Too many attempts logging in, try again in 24 hrs'])
+            break
           case 200:
             setInfoMessage('Welcome back')
             if (props.onChange) {

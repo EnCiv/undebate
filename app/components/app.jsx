@@ -6,6 +6,7 @@ import AskWebRTC from './ask-webrtc'
 import WebComponent from '../components/web-components'
 import Footer from './footer'
 import SiteFeedback from './site-feedback'
+import ErrorBoundary from './error-boundary'
 
 class App extends React.Component {
   render() {
@@ -14,19 +15,23 @@ class App extends React.Component {
       var { iota, ...newProps } = this.props
       Object.assign(newProps, this.props.iota)
       return (
-        <div style={{ position: 'relative' }}>
-          <WebComponent webComponent={this.props.iota.webComponent} {...newProps} />
-          <Footer />
-          <SiteFeedback />
-        </div>
+        <ErrorBoundary>
+          <div style={{ position: 'relative' }}>
+            <WebComponent webComponent={this.props.iota.webComponent} {...newProps} />
+            <Footer />
+            <SiteFeedback />
+          </div>
+        </ErrorBoundary>
       )
     } else
       return (
-        <div style={{ position: 'relative' }}>
-          <div>Nothing Here</div>
-          <Footer />
-          <SiteFeedback />
-        </div>
+        <ErrorBoundary>
+          <div style={{ position: 'relative' }}>
+            <div>Nothing Here</div>
+            <Footer />
+            <SiteFeedback />
+          </div>
+        </ErrorBoundary>
       )
   }
 }
