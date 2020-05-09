@@ -79,3 +79,7 @@ yarn.lock
 
 # svgr files are generated from assets/svg using svgr
 app/svgr
+
+# Cypress screenshots and recordings
+cypress/videos
+cypress/screenshots
