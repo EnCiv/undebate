@@ -1896,7 +1896,24 @@
     "description": "a rapid prototype to ask 1000's of voters what question they want to ask the candidates and agree to one",
     "webComponent": {
       "webComponent": "Unpoll",
-      "question": "What are the top questions that we should ask the U.S. Presidential candidates?"
+      "question": "What are the top questions that we should ask the U.S. Presidential candidates?",
+      "answers": [
+        {
+          "_id": "1000",
+          "subject": "Defence",
+          "description": "How much should we spend on defense?"
+        },
+        {
+          "_id": "1001",
+          "subject": "Polarization",
+          "description": "Do you think this country is polarized and should we do something about it?"
+        },
+        {
+          "_id": "1002",
+          "subject": "National Debt",
+          "description": "What are our thoughts about the national debt?"
+        }
+      ]
     }
   }
 ]

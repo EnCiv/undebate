@@ -63,11 +63,12 @@ module.exports = {
       context: () => true,
       '/': 'http://localhost:3012', // this is where the node server of the application is really running
     },
+    compress: true,
   },
   plugins: [
     new webpack.IgnorePlugin(/nodemailer/), // not used in the client side - those should be move outside of the app directory
     new webpack.NormalModuleReplacementPlugin(/.+models\/.+/, '../models/client-side-model'), // do not include models on the client side - the app/api files contain server side and client side code
     new webpack.HotModuleReplacementPlugin(), // DO NOT use --hot in the command line - it will cause a stack overflow on the client
-    new compressionplugin({ deleteOriginalAssets: true }),
+    //new compressionplugin({ deleteOriginalAssets: true }),
   ],
 }
