@@ -87,7 +87,6 @@ class CandidatePreamble extends React.Component {
     }
   }
   togglePortrait(portraitChoice) {
-    console.log(this.state.isPortrait)
     this.setState({ isPortrait: portraitChoice })
   }
   render() {
@@ -97,6 +96,7 @@ class CandidatePreamble extends React.Component {
       <div className={cx(classes['Preamble'], agreed && classes['agreed'])}>
         <ConversationHeader
           subject={this.props.subject}
+          // classes={classes}
           bp_info={this.props.bp_info}
           handleOrientationChange={choice => this.togglePortrait(choice)}
         />

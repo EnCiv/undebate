@@ -2830,6 +2830,7 @@ class RASPUndebate extends React.Component {
               subject={this.props.subject}
               bp_info={this.props.bp_info}
               agreed={this.state.preambleAgreed}
+              classes={classes}
               onClick={() => {
                 logger.info('Undebate preambleAgreed true')
                 this.setState({ preambleAgreed: true })

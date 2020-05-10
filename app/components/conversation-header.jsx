@@ -21,7 +21,7 @@ const styles = {
     left: 0,
     width: '100vw',
     height: '6vh',
-    lineHeight: '6vh',
+    // lineHeight: '6vh',
     'box-shadow': '0px .1vh .1vh rgba(0, 0, 0, 0.25)',
     fontFamily: 'Libre Franklin',
     '&$portrait': {
@@ -29,12 +29,14 @@ const styles = {
     },
   },
   leftBoxContainer: {
+    // padding: '1vh 0',
     display: 'inline-block',
   },
   leftBox: {
     backgroundColor: BLUE,
     width: '0.52vw',
     height: '3.24vh',
+    // height: 'fit-content',
     display: 'inline-block',
     '&$portrait': {
       textOverflow: 'hidden',
@@ -50,7 +52,8 @@ const styles = {
     display: 'inline-block',
     width: 'max-content',
     height: 'min-content',
-    marginTop: '1.25vh',
+    marginTop: '.1em',
+    marginBottom: '.2em',
     '&$portrait': {
       fontSize: '2em',
       whiteSpace: 'nowrap',
@@ -70,13 +73,15 @@ const styles = {
     backgroundColor: YELLOW,
     width: '0.52vw',
     height: '3.24vh',
+    // height: 'fit-content',
+    // height: '100%',
     display: 'inline-block',
   },
   conversationElectionDate: {
     paddingLeft: '.2em',
     fontSize: '2rem',
     fontWeight: 'normal',
-    paddingLeft: '.2em',
+    height: 'min-content',
     '&$portrait': {
       fontSize: '1.5rem',
       whiteSpace: 'nowrap',
@@ -110,6 +115,8 @@ const styles = {
   },
   boxContainer: {
     width: 'max-content',
+    // height: 'max-content',
+    margin: '1vh',
   },
   portrait: {},
 }
@@ -197,26 +204,46 @@ class ConversationHeader extends React.Component {
   }
   resize = () => {
     let topicContent = typeof document === 'object' ? document.getElementById('bcon') : null
+    let topicContentTotalHeight = undefined
+    let outsideContainer =
+      typeof document === 'object'
+        ? document.getElementsByClassName(this.props.classes['conversation-header-wrapper'])
+        : null
 
     const splitAtUnits = size => {
       const indexOfUnits = size.indexOf(/\D/g) - 1
       const units = size.slice(indexOfUnits)
-      const magnitude = size.slice(0, indexOfUnits)
+      const magnitude = parseFloat(size.slice(0, indexOfUnits))
       return { magnitude, units }
     }
 
-    if (topicContent && topicContent.offsetWidth > window.innerWidth * 0.75) {
+    if (typeof window === 'object') {
+      topicContentTotalHeight = window.getComputedStyle(topicContent, null).getPropertyValue('height')
+      topicContentTotalHeight = splitAtUnits(topicContentTotalHeight).magnitude
+      console.log(topicContentTotalHeight, outsideContainer[0].offsetHeight)
+    }
+    if (
+      (topicContent && topicContent.offsetWidth > window.innerWidth * 0.75) ||
+      (outsideContainer && topicContentTotalHeight > outsideContainer[0].offsetHeight * 0.9)
+    ) {
+      //shrink font
       let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
       font_size = splitAtUnits(font_size)
       topicContent.style.fontSize = font_size.magnitude * 0.8 + font_size.units
     }
-    if (topicContent && topicContent.offsetWidth < window.innerWidth * 0.7) {
+
+    if (
+      typeof window === 'object' &&
+      topicContent &&
+      topicContent.offsetWidth < window.innerWidth * 0.7 &&
+      !(outsideContainer && topicContentTotalHeight > outsideContainer[0].offsetHeight * 0.8)
+    ) {
+      //embiggen if you are too narrow or too short
       let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
       font_size = splitAtUnits(font_size)
       topicContent.style.fontSize = font_size.magnitude * 1.1 + font_size.units
     }
   }
-
   render() {
     const { portraitMode } = this.state
     const { classes, style, subject, bp_info, logo } = this.props
@@ -246,6 +273,7 @@ class ConversationHeader extends React.Component {
 
         <div id="bcon" className={classes['boxContainer']}>
           {' '}
+          {console.log('hello')}
           {makeBox('leftBoxContainer')('leftBox')('conversationTopicContent')(subject)}
           {makeBox('rightBoxContainer')('rightBox')('conversationElectionDate')()
           // xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)
