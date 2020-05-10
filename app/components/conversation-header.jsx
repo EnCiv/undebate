@@ -21,7 +21,6 @@ const styles = {
     left: 0,
     width: '100vw',
     height: '6vh',
-    // lineHeight: '6vh',
     'box-shadow': '0px .1vh .1vh rgba(0, 0, 0, 0.25)',
     fontFamily: 'Libre Franklin',
     '&$portrait': {
@@ -29,14 +28,12 @@ const styles = {
     },
   },
   leftBoxContainer: {
-    // padding: '1vh 0',
     display: 'inline-block',
   },
   leftBox: {
     backgroundColor: BLUE,
     width: '0.52vw',
     height: '3.24vh',
-    // height: 'fit-content',
     display: 'inline-block',
     '&$portrait': {
       textOverflow: 'hidden',
@@ -73,8 +70,6 @@ const styles = {
     backgroundColor: YELLOW,
     width: '0.52vw',
     height: '3.24vh',
-    // height: 'fit-content',
-    // height: '100%',
     display: 'inline-block',
   },
   conversationElectionDate: {
@@ -115,7 +110,6 @@ const styles = {
   },
   boxContainer: {
     width: 'max-content',
-    // height: 'max-content',
     margin: '1vh',
   },
   portrait: {},
@@ -226,7 +220,7 @@ class ConversationHeader extends React.Component {
       (topicContent && topicContent.offsetWidth > window.innerWidth * 0.75) ||
       (outsideContainer && topicContentTotalHeight > outsideContainer[0].offsetHeight * 0.9)
     ) {
-      //shrink font
+      //shrink font if the header is too  narrow or it is too tall
       let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
       font_size = splitAtUnits(font_size)
       topicContent.style.fontSize = font_size.magnitude * 0.8 + font_size.units
@@ -238,7 +232,7 @@ class ConversationHeader extends React.Component {
       topicContent.offsetWidth < window.innerWidth * 0.7 &&
       !(outsideContainer && topicContentTotalHeight > outsideContainer[0].offsetHeight * 0.8)
     ) {
-      //embiggen if you are too narrow or too short
+      //embiggen if you are too narrow and not too tall
       let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
       font_size = splitAtUnits(font_size)
       topicContent.style.fontSize = font_size.magnitude * 1.1 + font_size.units
@@ -275,9 +269,9 @@ class ConversationHeader extends React.Component {
           {' '}
           {console.log('hello')}
           {makeBox('leftBoxContainer')('leftBox')('conversationTopicContent')(subject)}
-          {makeBox('rightBoxContainer')('rightBox')('conversationElectionDate')()
-          // xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)
-          }
+          {makeBox('rightBoxContainer')('rightBox')('conversationElectionDate')(
+            xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)
+          )}
         </div>
       </div>
     )
