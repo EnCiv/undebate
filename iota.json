@@ -1889,6 +1889,16 @@
   },
   {
     "_id": {
+      "$oid": "5eb7399ae7179a42f175aa0d"
+    },
+    "subject": "Question",
+    "description": "What are the top questions that we should ask the U.S. Presidential candidates?",
+    "component": {
+      "component": "Question"
+    }
+  },
+  {
+    "_id": {
       "$oid": "5eb5ae7fe7179a42f1756112"
     },
     "path": "/unpoll-demo",
@@ -1896,22 +1906,35 @@
     "description": "a rapid prototype to ask 1000's of voters what question they want to ask the candidates and agree to one",
     "webComponent": {
       "webComponent": "Unpoll",
-      "question": "What are the top questions that we should ask the U.S. Presidential candidates?",
+      "question": {
+        "_id": {
+          "$oid": "5eb7399ae7179a42f175aa0d"
+        },
+        "subject": "Question",
+        "description": "What are the top questions that we should ask the U.S. Presidential candidates?",
+        "component": {
+          "component": "Question"
+        }
+      },
+      "maxVotes": 2,
       "answers": [
         {
           "_id": "1000",
           "subject": "Defence",
-          "description": "How much should we spend on defense?"
+          "description": "How much should we spend on defense?",
+          "parentId": "5eb7399ae7179a42f175aa0d"
         },
         {
           "_id": "1001",
           "subject": "Polarization",
-          "description": "Do you think this country is polarized and should we do something about it?"
+          "description": "Do you think this country is polarized and should we do something about it?",
+          "parentId": "5eb7399ae7179a42f175aa0d"
         },
         {
           "_id": "1002",
           "subject": "National Debt",
-          "description": "What are our thoughts about the national debt?"
+          "description": "What are our thoughts about the national debt?",
+          "parentId": "5eb7399ae7179a42f175aa0d"
         }
       ]
     }

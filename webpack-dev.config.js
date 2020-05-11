@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-const compressionplugin = require('compression-webpack-plugin')
 
 const use = [
   {
@@ -63,7 +62,7 @@ module.exports = {
       context: () => true,
       '/': 'http://localhost:3012', // this is where the node server of the application is really running
     },
-    compress: true,
+    //compress: true,
   },
   plugins: [
     new webpack.IgnorePlugin(/nodemailer/), // not used in the client side - those should be move outside of the app directory
