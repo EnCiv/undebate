@@ -22,7 +22,7 @@ Contributions are accepted under the MIT License without additional conditions. 
 
 You will need a github.com account, and a heroku.com account. Heroku is like a server in the cloud that you can push git repo's to, and after you push, heroku will build and run them. It's also great because they give you free accounts that you can use for development.
 
-The install instructions are **[here](./doc/install.md)**
+The install instructions are **[here](./doc/Install.md)**
 
 # Prettier
 
