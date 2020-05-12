@@ -32,28 +32,20 @@ candidate_questions=[
  */
 
 function CandidatePreamble({ classes, onClick, agreed, bp_info, subject, candidate_questions }) {
-  const makeQuestions = questions => {
-    const showList = (className, question, index) => (
-      <ul className={className}>
-        {question.map((q, i) => (
-          <li key={index + '-' + i}>{q}</li>
-        ))}
-      </ul>
-    )
-
+  const makeQuestions = (className, questions, keyIndex = 'mq') => {
     return (
-      <ul className={classes.questionList}>
+      <ul className={className}>
         {questions.map((question, index) =>
           typeof question === 'string' ? (
-            <li key={index}>{question}</li>
+            <li key={keyIndex + '-' + index}>{question}</li>
           ) : question.length === 1 ? (
-            <li key={index}>{question[0]}</li>
+            <li key={keyIndex + '-' + index}>{question[0]}</li>
           ) : question[0][0] >= '0' && question[0][0] <= '9' ? (
-            <li>{showList(classes.questionListInnerHeadless, question, index)}</li>
+            <li>{makeQuestions(classes.questionListInnerHeadless, question, keyIndex + index)}</li>
           ) : (
             <li>
               {question[0]}
-              {showList(classes.questionListInner, question.slice(1), index)}
+              {makeQuestions(classes.questionListInner, question.slice(1), keyIndex + index)}
             </li>
           )
         )}
@@ -103,6 +95,7 @@ function CandidatePreamble({ classes, onClick, agreed, bp_info, subject, candida
         </ul>
         <h2 style={{ marginBottom: '0.5rem' }}>Questions for Candidates</h2>
         {makeQuestions(
+          classes.questionList,
           candidate_questions && candidate_questions.slice(0, -1)
         ) /* the last thing in the list is the moderators closing remarks*/}
         <div className={classes['center']}>
