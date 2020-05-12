@@ -28,10 +28,10 @@ const styles = {
     },
   },
   PreambleList: {
-    paddingTop: '0.5em!important',
-    paddingLeft: '2em!important',
+    paddingTop: '0.5em',
+    paddingLeft: '2em',
     '& li': {
-      paddingBottom: '0.5em!important',
+      paddingBottom: '0.5em',
     },
   },
   agreed: {},
@@ -44,28 +44,28 @@ const styles = {
   },
   questionList: {
     listStyleType: 'decimal',
-    padding: '0!important',
-    paddingLeft: '2em!important',
+    padding: '0',
+    paddingLeft: '2em',
     '& li': {
       paddingTop: '0.5em',
     },
   },
   questionListInner: {
     listStyleType: 'none',
-    paddingLeft: '0!important',
+    paddingLeft: '0',
     '& li:last-child': {
-      paddingBottom: '0!important',
+      paddingBottom: '0',
     },
   },
   questionListInnerHeadless: {
     listStyleType: 'none',
-    paddingLeft: '0!important',
-    paddingTop: '0!important',
+    paddingLeft: '0',
+    paddingTop: '0',
     '& li:first-child': {
       paddingTop: '0',
     },
     '& li:last-child': {
-      paddingBottom: '0!important',
+      paddingBottom: '0',
     },
   },
 }
