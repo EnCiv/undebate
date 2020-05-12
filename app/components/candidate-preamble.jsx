@@ -26,10 +26,10 @@ const styles = {
     '&$agreed': {
       left: '-100vw',
     },
-    '& ul': {
-      paddingTop: '0.5em!important',
-      paddingLeft: '2em!important',
-    },
+  },
+  PreambleList: {
+    paddingTop: '0.5em!important',
+    paddingLeft: '2em!important',
     '& li': {
       paddingBottom: '0.5em!important',
     },
@@ -41,6 +41,32 @@ const styles = {
   'Preamble-inner': {
     marginTop: '6vh',
     // need to have someting here for portrait mode - but don't record in portrait mode for now.
+  },
+  questionList: {
+    listStyleType: 'decimal',
+    padding: '0!important',
+    paddingLeft: '2em!important',
+    '& li': {
+      paddingTop: '0.5em',
+    },
+  },
+  questionListInner: {
+    listStyleType: 'none',
+    paddingLeft: '0!important',
+    '& li:last-child': {
+      paddingBottom: '0!important',
+    },
+  },
+  questionListInnerHeadless: {
+    listStyleType: 'none',
+    paddingLeft: '0!important',
+    paddingTop: '0!important',
+    '& li:first-child': {
+      paddingTop: '0',
+    },
+    '& li:last-child': {
+      paddingBottom: '0!important',
+    },
   },
 }
 
@@ -79,17 +105,27 @@ class CandidateJoin extends Join {
 
 class CandidatePreamble extends React.Component {
   makeQuestions = questions => {
+    const showList = (className, question, index) => (
+      <ul className={className}>
+        {question.map((q, i) => (
+          <li key={index + '-' + i}>{q}</li>
+        ))}
+      </ul>
+    )
+
     return (
-      <ul style={{ listStyleType: 'none', padding: '0' }}>
+      <ul className={this.props.classes.questionList}>
         {questions.map((question, index) =>
           typeof question === 'string' ? (
             <li key={index}>{question}</li>
           ) : question.length === 1 ? (
             <li key={index}>{question[0]}</li>
+          ) : question[0][0] >= '0' && question[0][0] <= '9' ? (
+            <li>{showList(this.props.classes.questionListInnerHeadless, question, index)}</li>
           ) : (
             <li>
               {question[0]}
-              <ul>{this.makeQuestions(question.slice(1))}</ul>
+              {showList(this.props.classes.questionListInner, question.slice(1), index)}
             </li>
           )
         )}
@@ -119,7 +155,7 @@ class CandidatePreamble extends React.Component {
             You are invited to engage in an application that will include you, as part of a publicly available online
             video conversation.
           </p>
-          <ul>
+          <ul className={classes.PreambleList}>
             <li>
               During the conversation, you will be asked questions, and your video will be recorded and stored on your
               computer.
@@ -140,7 +176,7 @@ class CandidatePreamble extends React.Component {
             </li>
           </ul>
           {/*<CandidateJoin classes={classes} userInfo={{email: (bp_info.candidate_email && bp_info.candidate_email[0]) || (bp_info.person_email && bp_info.person_email[0]), name: bp_info.candidate_name}} onChange={onClick}/>*/}
-          <h2>Questions for candidate</h2>
+          <h2>Questions for Candidates</h2>
           {this.makeQuestions(this.props.candidate_questions)}
           <div className={classes['center']}>
             <Button onClick={onClick}>Next</Button>
