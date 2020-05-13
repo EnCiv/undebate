@@ -211,14 +211,14 @@ class ConversationHeader extends React.Component {
       return { magnitude, units }
     }
 
-    if (typeof window === 'object' && outsideContainer) {
+    if (typeof window === 'object' && outsideContainer && outsideContainer[0]) {
       topicContentTotalHeight = window.getComputedStyle(topicContent, null).getPropertyValue('height')
       topicContentTotalHeight = splitAtUnits(topicContentTotalHeight).magnitude
       // console.log(topicContentTotalHeight, outsideContainer[0].offsetHeight)
     }
     if (
       (topicContent && topicContent.offsetWidth > window.innerWidth * 0.75) ||
-      (outsideContainer && topicContentTotalHeight > outsideContainer[0].offsetHeight * 0.9)
+      (outsideContainer && outsideContainer[0] && topicContentTotalHeight > outsideContainer[0].offsetHeight * 0.9)
     ) {
       //shrink font if the header is too  narrow or it is too tall
       let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
@@ -230,7 +230,7 @@ class ConversationHeader extends React.Component {
       typeof window === 'object' &&
       topicContent &&
       topicContent.offsetWidth < window.innerWidth * 0.7 &&
-      !(outsideContainer && topicContentTotalHeight > outsideContainer[0].offsetHeight * 0.8)
+      !(outsideContainer && outsideContainer[0] && topicContentTotalHeight > outsideContainer[0].offsetHeight * 0.8)
     ) {
       //embiggen if you are too narrow and not too tall
       let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
