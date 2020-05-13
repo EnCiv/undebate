@@ -214,7 +214,7 @@ class ConversationHeader extends React.Component {
     if (typeof window === 'object' && outsideContainer) {
       topicContentTotalHeight = window.getComputedStyle(topicContent, null).getPropertyValue('height')
       topicContentTotalHeight = splitAtUnits(topicContentTotalHeight).magnitude
-      console.log(topicContentTotalHeight, outsideContainer[0].offsetHeight)
+      // console.log(topicContentTotalHeight, outsideContainer[0].offsetHeight)
     }
     if (
       (topicContent && topicContent.offsetWidth > window.innerWidth * 0.75) ||
@@ -267,7 +267,6 @@ class ConversationHeader extends React.Component {
 
         <div id="bcon" className={classes['boxContainer']}>
           {' '}
-          {console.log('hello')}
           {makeBox('leftBoxContainer')('leftBox')('conversationTopicContent')(subject)}
           {makeBox('rightBoxContainer')('rightBox')('conversationElectionDate')(
             xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)
