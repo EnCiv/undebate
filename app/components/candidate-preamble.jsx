@@ -1,6 +1,6 @@
 'use strict'
 import React from 'react'
-import injectSheet from 'react-jss'
+import { createUseStyles } from 'react-jss'
 import Button from './button'
 import cx from 'classnames'
 import ConversationHeader from './conversation-header'
@@ -31,7 +31,8 @@ candidate_questions=[
   ]
  */
 
-function CandidatePreamble({ classes, onClick, agreed, bp_info, subject, candidate_questions }) {
+function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questions }) {
+  const classes = useStyles()
   const makeQuestions = (className, questions, keyIndex = 'mq') => {
     return (
       <ul className={className}>
@@ -106,7 +107,7 @@ function CandidatePreamble({ classes, onClick, agreed, bp_info, subject, candida
   )
 }
 
-const styles = {
+const useStyles = createUseStyles({
   Preamble: {
     fontSize: '1.33rem',
     position: 'absolute',
@@ -169,6 +170,6 @@ const styles = {
       paddingBottom: '0',
     },
   },
-}
+})
 
-export default injectSheet(styles)(CandidatePreamble)
+export default CandidatePreamble
