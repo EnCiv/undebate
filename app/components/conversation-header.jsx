@@ -210,11 +210,12 @@ class ConversationHeader extends React.Component {
       const magnitude = parseFloat(size.slice(0, indexOfUnits))
       return { magnitude, units }
     }
-
+    console.count('resize')
     if (typeof window === 'object' && outsideContainer && outsideContainer[0]) {
       topicContentTotalHeight = window.getComputedStyle(topicContent, null).getPropertyValue('height')
       topicContentTotalHeight = splitAtUnits(topicContentTotalHeight).magnitude
-      // console.log(topicContentTotalHeight, outsideContainer[0].offsetHeight)
+      console.count('resize actually')
+      console.log(topicContentTotalHeight, outsideContainer[0].offsetHeight)
     }
     if (
       (topicContent && topicContent.offsetWidth > window.innerWidth * 0.75) ||
