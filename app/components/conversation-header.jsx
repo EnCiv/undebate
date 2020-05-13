@@ -211,7 +211,7 @@ class ConversationHeader extends React.Component {
       return { magnitude, units }
     }
 
-    if (typeof window === 'object') {
+    if (typeof window === 'object' && outsideContainer) {
       topicContentTotalHeight = window.getComputedStyle(topicContent, null).getPropertyValue('height')
       topicContentTotalHeight = splitAtUnits(topicContentTotalHeight).magnitude
       console.log(topicContentTotalHeight, outsideContainer[0].offsetHeight)
