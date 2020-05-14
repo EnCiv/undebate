@@ -143,7 +143,7 @@ const useStyles = createUseStyles({
     // need to have someting here for portrait mode - but don't record in portrait mode for now.
   },
   questionList: {
-    listStyleType: 'decimal',
+    listStyleType: 'upper-alpha',
     marginTop: 0,
     marginBottom: 0,
     padding: '0',
