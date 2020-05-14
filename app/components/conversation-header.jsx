@@ -199,11 +199,8 @@ class ConversationHeader extends React.Component {
   resize = () => {
     let topicContent = typeof document === 'object' ? document.getElementById('bcon') : null
     let topicContentTotalHeight = undefined
-    let outsideContainer =
-      typeof document === 'object'
-        ? document.getElementsByClassName(this.props.classes['conversation-header-wrapper'])
-        : null
-
+    let outsideContainer = typeof document === 'object' ? document.getElementById('outside-container') : null
+    // ? document.getElementsByClassName(this.props.classes['conversation-header-wrapper'])[0]
     const splitAtUnits = size => {
       const indexOfUnits = size.indexOf(/\D/g) - 1
       const units = size.slice(indexOfUnits)
@@ -212,15 +209,15 @@ class ConversationHeader extends React.Component {
     }
     console.count('resize')
     console.log(topicContent)
-    if (typeof window === 'object' && outsideContainer && outsideContainer[0]) {
+    if (typeof window === 'object' && outsideContainer && outsideContainer) {
       topicContentTotalHeight = window.getComputedStyle(topicContent, null).getPropertyValue('height')
       topicContentTotalHeight = splitAtUnits(topicContentTotalHeight).magnitude
       console.count('resize actually')
-      console.log(topicContentTotalHeight, outsideContainer[0].offsetHeight)
+      console.log(topicContentTotalHeight, outsideContainer.offsetHeight)
     }
     if (
       (topicContent && topicContent.offsetWidth > window.innerWidth * 0.75) ||
-      (outsideContainer && outsideContainer[0] && topicContentTotalHeight > outsideContainer[0].offsetHeight * 0.9)
+      (outsideContainer && outsideContainer && topicContentTotalHeight > outsideContainer.offsetHeight * 0.9)
     ) {
       //shrink font if the header is too  narrow or it is too tall
       let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
@@ -232,7 +229,7 @@ class ConversationHeader extends React.Component {
       typeof window === 'object' &&
       topicContent &&
       topicContent.offsetWidth < window.innerWidth * 0.7 &&
-      !(outsideContainer && outsideContainer[0] && topicContentTotalHeight > outsideContainer[0].offsetHeight * 0.8)
+      !(outsideContainer && outsideContainer && topicContentTotalHeight > outsideContainer.offsetHeight * 0.8)
     ) {
       //embiggen if you are too narrow and not too tall
       let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
@@ -260,6 +257,7 @@ class ConversationHeader extends React.Component {
           classes['conversation-header-wrapper'],
           !portraitMode && classes['conversationHeader']
         )}
+        id="outside-container"
       >
         <div className={portraitMode && cx(classes['conversationHeader'], classes['portrait'])}>
           <LogoLinks classes={classes} logo={logo}></LogoLinks>
