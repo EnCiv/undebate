@@ -1686,6 +1686,8 @@ class RASPUndebate extends React.Component {
   allPause() {
     if (!this.state.begin) {
       this.beginButton()
+    } else if (this.state.warmup) {
+      // do nothing
     } else if (!this.state.allPaused) {
       this.ensurePaused()
     } else {
