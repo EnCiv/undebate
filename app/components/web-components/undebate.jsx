@@ -292,9 +292,6 @@ const styles = {
   talkative: {
     background: 'yellow',
   },
-  warmup: {
-    background: 'red',
-  },
   videoFoot: {
     'text-align': 'center',
     color: '#404',
@@ -425,11 +422,6 @@ const styles = {
       display: 'block',
     },
     '&$talkative': {
-      left: 'calc( 50vw - 1em)',
-      fontSize: '4em',
-      background: 'rgba(128,128,128,0.7)',
-    },
-    '&$warmup': {
       left: 'calc( 50vw - 1em)',
       fontSize: '4em',
       background: 'rgba(128,128,128,0.7)',
@@ -2826,11 +2818,10 @@ class RASPUndebate extends React.Component {
               humanSpeaking &&
                 (this.rerecord || !this.participants.human.speakingObjectURLs[round]) &&
                 classes['counting'],
-              talkative && classes['talkative'],
-              warmup && classes['warmup']
+              talkative && classes['talkative']
             )}
           >
-            {TimeFormat.fromS(Math.round(this.state.countDown), 'mm:ss')}
+            {(warmup ? '-' : '') + TimeFormat.fromS(Math.round(this.state.countDown), 'mm:ss')}
           </div>
           <div style={{ whiteSpace: 'pre-wrap' }}>
             <span>{this.state.errorMsg}</span>
