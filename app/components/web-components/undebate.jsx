@@ -2020,7 +2020,7 @@ class RASPUndebate extends React.Component {
     const counter = sec => {
       if (sec > 0) {
         this.countdownTimeout = setTimeout(() => counter(sec - 1), 1000)
-        this.setState({ countDown: sec - 1 })
+        this.setState({ countDown: sec })
       } else {
         this.countdownTimeout = 0
         finishFunc && setTimeout(finishFunc) // called after timeout to avoid setState collisions
