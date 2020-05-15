@@ -1899,7 +1899,7 @@ class RASPUndebate extends React.Component {
         this.ensureNotRecording(oldChair, newChair, listeningSeat, listeningRound)
         // then see if it needs to be turned on - both might happen at the same transition
         followup.push(() => this.nextMediaState(participant))
-        this.maybeEnableRecording(newChair, listeningSeat, round, listeningRound, followup, timeLimit)
+        followup.push(() => this.maybeEnableRecording(newChair, listeningSeat, round, listeningRound, timeLimit))
       } else if (oldChair === 'speaking' || newChair === 'speaking' || this.state.allPaused) {
         // will be speaking or need to start media again
         followup.push(() => this.nextMediaState(participant))
@@ -1933,14 +1933,14 @@ class RASPUndebate extends React.Component {
     }
   }
 
-  maybeEnableRecording(newChair, listeningSeat, round, listeningRound, followup, timeLimit) {
+  maybeEnableRecording(newChair, listeningSeat, round, listeningRound, timeLimit) {
     if (newChair === listeningSeat && round === listeningRound) {
-      followup.push(() => this.recordFromSpeakersSeat(listeningSeat, timeLimit, round))
+      this.recordFromSpeakersSeat(listeningSeat, timeLimit, round)
     } else if (newChair === 'speaking') {
       if (this.rerecord) {
-        followup.push(() => this.recordWithWarmup(timeLimit, round))
+        this.recordWithWarmup(timeLimit, round)
       } else if (!this.participants.human.speakingObjectURLs[round]) {
-        followup.push(() => this.recordWithCountdown(timeLimit, round))
+        this.recordWithCountdown(timeLimit, round)
       }
     }
   }
