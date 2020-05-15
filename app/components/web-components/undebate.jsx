@@ -1875,12 +1875,6 @@ class RASPUndebate extends React.Component {
     this.setState({ isRecording: false })
   }
 
-  recordWithCountDown(timeLimit, round) {
-    this.startCountDown(timeLimit, () => this.autoNextSpeaker())
-    this.startTalkativeTimeout(timeLimit * 0.75)
-    this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs), true)
-  }
-
   newOrder(seatOffset, round) {
     const { participants } = this.props
 
@@ -1941,24 +1935,33 @@ class RASPUndebate extends React.Component {
 
   maybeEnableRecording(newChair, listeningSeat, round, listeningRound, followup, timeLimit) {
     if (newChair === listeningSeat && round === listeningRound) {
-      followup.push(() => {
-        if (listeningSeat === 'speaking') {
-          // recording the listening segment from the speakers seat
-          this.startCountDown(timeLimit, () => this.autoNextSpeaker())
-        }
-        this.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
-      })
+      followup.push(() => this.recordFromSpeakersSeat(listeningSeat, timeLimit, round))
     } else if (newChair === 'speaking') {
-      if (this.participants.human.speakingObjectURLs[round] && !this.rerecord) {
-      } else {
-        followup.push(() => {
-          const warmupSeconds = 3
-          this.warmupCountDown(warmupSeconds, () => this.recordWithCountDown(timeLimit, round))
-        })
+      if (this.rerecord) {
+        followup.push(() => this.recordWithWarmup(timeLimit, round))
+      } else if (!this.participants.human.speakingObjectURLs[round]) {
+        followup.push(() => this.recordWithCountdown(timeLimit, round))
       }
-    } else {
-      // human just watching
     }
+  }
+
+  recordWithCountdown(timeLimit, round) {
+    this.startCountDown(timeLimit, () => this.autoNextSpeaker())
+    this.startTalkativeTimeout(timeLimit * 0.75)
+    this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs), true)
+  }
+
+  recordWithWarmup(timeLimit, round) {
+    const warmupSeconds = 3
+    this.warmupCountDown(warmupSeconds, () => this.recordWithCountdown(timeLimit, round))
+  }
+
+  recordFromSpeakersSeat(listeningSeat, timeLimit, round) {
+    if (listeningSeat === 'speaking') {
+      // recording the listening segment from the speakers seat
+      this.startCountDown(timeLimit, () => this.autoNextSpeaker())
+    }
+    this.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
   }
 
   finished() {
