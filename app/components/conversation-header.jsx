@@ -209,7 +209,7 @@ class ConversationHeader extends React.Component {
     }
     console.count('resize')
     console.log(topicContent)
-    if (typeof window === 'object' && outsideContainer && outsideContainer) {
+    if (typeof window === 'object' && outsideContainer) {
       topicContentTotalHeight = window.getComputedStyle(topicContent, null).getPropertyValue('height')
       topicContentTotalHeight = splitAtUnits(topicContentTotalHeight).magnitude
       console.count('resize actually')
@@ -222,7 +222,9 @@ class ConversationHeader extends React.Component {
       //shrink font if the header is too  narrow or it is too tall
       let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
       font_size = splitAtUnits(font_size)
-      topicContent.style.fontSize = font_size.magnitude * 0.8 + font_size.units
+      if (font_size.magnitude * 0.8 >= 3.3) {
+        topicContent.style.fontSize = font_size.magnitude * 0.8 + font_size.units
+      }
     }
 
     if (
