@@ -2726,7 +2726,7 @@ class RASPUndebate extends React.Component {
               title={button.title()}
             >
               {button.func ? (
-                <button disabled={!humanSpeaking} onClick={button.func.bind(this)}>
+                <button disabled={!humanSpeaking || this.state.warmup} onClick={button.func.bind(this)}>
                   {button.name()}
                 </button>
               ) : (
