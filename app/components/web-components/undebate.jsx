@@ -1893,6 +1893,7 @@ class RASPUndebate extends React.Component {
       let oldChair = this.seat(i)
       let newChair = this.seat(i, seatOffset)
       logger.trace('rotateOrder', round, seatOffset, participant, oldChair, newChair)
+
       if (participant === 'human') {
         const listeningRound =
           participants.human.listening && typeof participants.human.listening.round !== 'undefined'
@@ -1900,44 +1901,9 @@ class RASPUndebate extends React.Component {
             : Infinity // 0 is a valid round
         const listeningSeat = (participants.human.listening && participants.human.listening.seat) || 'seat2'
         // first see if recording needs to be turned off (do this first)
-        if (oldChair === 'speaking' && newChair === 'speaking' && this.rerecord) {
-          // the user is initiating a rerecord
-        } else if (
-          oldChair === 'speaking' &&
-          (!this.participants.human.speakingObjectURLs[this.state.round] || this.rerecord)
-        ) {
-          // the oldChair and the old round
-          this.rerecord = false
-          this.stopRecording()
-        } else if (oldChair === listeningSeat && this.state.round === listeningRound) {
-          // the oldChair and the old round
-          this.stopRecording()
-        }
+        this.ensureNotRecording(oldChair, newChair, listeningSeat, listeningRound)
         // then see if it needs to be turned on - both might happen at the same transition
-        if (newChair === listeningSeat && round === listeningRound) {
-          followup.push(() => {
-            if (listeningSeat === 'speaking') {
-              // recording the listening segment from the speakers seat
-              let limit = (participants.moderator.timeLimits && participants.moderator.timeLimits[round]) || 60
-              this.startCountDown(limit, () => this.autoNextSpeaker())
-            }
-            this.nextMediaState(participant)
-            this.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
-          })
-        } else if (newChair === 'speaking') {
-          if (this.participants.human.speakingObjectURLs[round] && !this.rerecord) {
-            followup.push(() => this.nextMediaState(participant))
-          } else {
-            followup.push(() => {
-              const { timeLimits } = participants.moderator
-              const warmupSeconds = 3
-              this.warmupCountDown(warmupSeconds, () => this.recordWithCountDown(timeLimits, participant, round))
-            })
-          }
-        } else {
-          // human just watching
-          followup.push(() => this.nextMediaState(participant))
-        }
+        this.maybeEnableRecording(newChair, listeningSeat, round, listeningRound, followup, participants, participant)
       } else if (oldChair === 'speaking' || newChair === 'speaking' || this.state.allPaused) {
         // will be speaking or need to start media again
         followup.push(() => this.nextMediaState(participant))
@@ -1953,6 +1919,49 @@ class RASPUndebate extends React.Component {
       }
       while (followup.length) followup.shift()()
     })
+  }
+
+  ensureNotRecording(oldChair, newChair, listeningSeat, listeningRound) {
+    if (oldChair === 'speaking' && newChair === 'speaking' && this.rerecord) {
+      // the user is initiating a rerecord
+    } else if (
+      oldChair === 'speaking' &&
+      (!this.participants.human.speakingObjectURLs[this.state.round] || this.rerecord)
+    ) {
+      // the oldChair and the old round
+      this.rerecord = false
+      this.stopRecording()
+    } else if (oldChair === listeningSeat && this.state.round === listeningRound) {
+      // the oldChair and the old round
+      this.stopRecording()
+    }
+  }
+
+  maybeEnableRecording(newChair, listeningSeat, round, listeningRound, followup, participants, participant) {
+    if (newChair === listeningSeat && round === listeningRound) {
+      followup.push(() => {
+        if (listeningSeat === 'speaking') {
+          // recording the listening segment from the speakers seat
+          let limit = (participants.moderator.timeLimits && participants.moderator.timeLimits[round]) || 60
+          this.startCountDown(limit, () => this.autoNextSpeaker())
+        }
+        this.nextMediaState(participant)
+        this.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
+      })
+    } else if (newChair === 'speaking') {
+      if (this.participants.human.speakingObjectURLs[round] && !this.rerecord) {
+        followup.push(() => this.nextMediaState(participant))
+      } else {
+        followup.push(() => {
+          const { timeLimits } = participants.moderator
+          const warmupSeconds = 3
+          this.warmupCountDown(warmupSeconds, () => this.recordWithCountDown(timeLimits, participant, round))
+        })
+      }
+    } else {
+      // human just watching
+      followup.push(() => this.nextMediaState(participant))
+    }
   }
 
   finished() {
