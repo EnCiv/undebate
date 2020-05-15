@@ -1875,10 +1875,9 @@ class RASPUndebate extends React.Component {
     this.setState({ isRecording: false })
   }
 
-  recordWithCountDown(timeLimit, participant, round) {
+  recordWithCountDown(timeLimit, round) {
     this.startCountDown(timeLimit, () => this.autoNextSpeaker())
     this.startTalkativeTimeout(timeLimit * 0.75)
-    this.nextMediaState(participant)
     this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs), true)
   }
 
@@ -1905,7 +1904,8 @@ class RASPUndebate extends React.Component {
         // first see if recording needs to be turned off (do this first)
         this.ensureNotRecording(oldChair, newChair, listeningSeat, listeningRound)
         // then see if it needs to be turned on - both might happen at the same transition
-        this.maybeEnableRecording(newChair, listeningSeat, round, listeningRound, followup, participant, timeLimit)
+        followup.push(() => this.nextMediaState(participant))
+        this.maybeEnableRecording(newChair, listeningSeat, round, listeningRound, followup, timeLimit)
       } else if (oldChair === 'speaking' || newChair === 'speaking' || this.state.allPaused) {
         // will be speaking or need to start media again
         followup.push(() => this.nextMediaState(participant))
@@ -1939,28 +1939,25 @@ class RASPUndebate extends React.Component {
     }
   }
 
-  maybeEnableRecording(newChair, listeningSeat, round, listeningRound, followup, participant, timeLimit) {
+  maybeEnableRecording(newChair, listeningSeat, round, listeningRound, followup, timeLimit) {
     if (newChair === listeningSeat && round === listeningRound) {
       followup.push(() => {
         if (listeningSeat === 'speaking') {
           // recording the listening segment from the speakers seat
           this.startCountDown(timeLimit, () => this.autoNextSpeaker())
         }
-        this.nextMediaState(participant)
         this.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
       })
     } else if (newChair === 'speaking') {
       if (this.participants.human.speakingObjectURLs[round] && !this.rerecord) {
-        followup.push(() => this.nextMediaState(participant))
       } else {
         followup.push(() => {
           const warmupSeconds = 3
-          this.warmupCountDown(warmupSeconds, () => this.recordWithCountDown(timeLimit, participant, round))
+          this.warmupCountDown(warmupSeconds, () => this.recordWithCountDown(timeLimit, round))
         })
       }
     } else {
       // human just watching
-      followup.push(() => this.nextMediaState(participant))
     }
   }
 
