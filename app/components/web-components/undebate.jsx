@@ -2260,7 +2260,20 @@ class RASPUndebate extends React.Component {
       introStyle,
       stylesSet,
       conversationTopicStyle,
+      isRecording,
     } = this.state
+
+    console.log(
+      'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque tenetur deserunt expedita in obcaecati, hic accusamus. Minus pariatur eius vitae.'
+    )
+
+    console.log(this.state.isRecording && 'recording now')
+    const portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
+    if (this.props.browserConfig.type === 'phone' && portraitMode && isRecording) {
+      console.count('phonePortrait')
+      this.pauseRecording()
+    }
+    // if(this.props.browserConfig.type==='phone'&& !portraitMode && this.rerecord)
 
     const getIntroStyle = name =>
       Object.assign({}, stylesSet && { transition: IntroTransition }, introStyle[name], intro && introSeatStyle[name])
