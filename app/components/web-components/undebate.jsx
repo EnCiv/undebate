@@ -40,6 +40,7 @@ import supportsVideoType from '../lib/supports-video-type'
 
 import { auto_quality, placeholder_image } from '../lib/cloudinary-urls'
 import createParticipant from '../lib/create-participant'
+import Modal from './Modal'
 
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
@@ -696,6 +697,7 @@ class RASPUndebate extends React.Component {
     begin: false,
     allPaused: true, // so the play button shows
     isRecording: false,
+    isPortraitPhoneRecording: false,
 
     seatStyle: {
       speaking: {
@@ -2272,6 +2274,7 @@ class RASPUndebate extends React.Component {
     if (this.props.browserConfig.type === 'phone' && portraitMode && isRecording) {
       console.count('phonePortrait')
       this.pauseRecording()
+      this.setState({ isPortraitPhoneRecording: true })
     }
     // if(this.props.browserConfig.type==='phone'&& !portraitMode && this.rerecord)
 
@@ -2824,6 +2827,13 @@ class RASPUndebate extends React.Component {
         style={{ fontSize: this.state.fontSize }}
         className={cx(classes['wrapper'], scrollableIframe && classes['scrollableIframe'])}
       >
+        {this.state.isPortraitPhoneRecording ? (
+          <Modal
+            render={() => (
+              <>Please record in a Landscape mode. Recording will resume After switching to a Landscape orientation</>
+            )}
+          ></Modal>
+        ) : null}
         {this.props.participants.human && <ReactCameraRecorder ref={this.getCamera} />}
         <section
           id="syn-ask-webrtc"
