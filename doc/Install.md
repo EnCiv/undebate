@@ -74,7 +74,7 @@ Then, to record your own part in the candidate conversation browser to: localhos
 There are other urls that you can check out in your development environment. To see the latest list do this:
 
 ```
-cat iota.json || grep path
+cat iota.json | grep path
 ```
 
 Here is the list as of the time of this writing:
