@@ -2835,6 +2835,7 @@ class RASPUndebate extends React.Component {
                 this.setState({ preambleAgreed: true })
                 noOverlay && this.beginButton()
               }}
+              candidate_questions={this.props.participants.moderator.agenda}
             />
           )}
           {ending()}
