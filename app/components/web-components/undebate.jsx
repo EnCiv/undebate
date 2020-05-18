@@ -41,6 +41,7 @@ import supportsVideoType from '../lib/supports-video-type'
 import { auto_quality, placeholder_image } from '../lib/cloudinary-urls'
 import createParticipant from '../lib/create-participant'
 import Modal from './Modal'
+import { DownCounter } from './useful-widgets'
 
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
@@ -2270,13 +2271,27 @@ class RASPUndebate extends React.Component {
     )
 
     console.log(this.state.isRecording && 'recording now')
-    const portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
-    if (this.props.browserConfig.type === 'phone' && portraitMode && isRecording) {
+    let portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
+    if (
+      this.props.browserConfig.type === 'phone' &&
+      portraitMode &&
+      isRecording &&
+      !this.state.isPortraitPhoneRecording
+    ) {
       console.count('phonePortrait')
-      this.pauseRecording()
+
+      // this.pauseRecording()
       this.setState({ isPortraitPhoneRecording: true })
     }
-    // if(this.props.browserConfig.type==='phone'&& !portraitMode && this.rerecord)
+    if (
+      this.props.browserConfig.type === 'phone' &&
+      !portraitMode &&
+      // this.rerecord &&
+      this.state.isPortraitPhoneRecording
+    ) {
+      this.setState({ isPortraitPhoneRecording: false })
+      // this.resumeRecording()
+    }
 
     const getIntroStyle = name =>
       Object.assign({}, stylesSet && { transition: IntroTransition }, introStyle[name], intro && introSeatStyle[name])
@@ -2830,7 +2845,10 @@ class RASPUndebate extends React.Component {
         {this.state.isPortraitPhoneRecording ? (
           <Modal
             render={() => (
-              <>Please record in a Landscape mode. Recording will resume After switching to a Landscape orientation</>
+              <>
+                Please switch back to Landscape mode. Recording will pause in{' '}
+                <DownCounter doAfter={() => this.pauseRecording()} seconds={3}></DownCounter>
+              </>
             )}
           ></Modal>
         ) : null}

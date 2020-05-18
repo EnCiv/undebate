@@ -115,9 +115,12 @@ class Modal extends React.Component {
                       background: 'white',
                       boxShadow: '10px 5px 30px lightslategray',
                       maxHeight: '80vh',
+                      height: '80vh',
                       overflow: 'auto',
                       display: 'block',
                       borderRadius: '.2em',
+                      fontSize: '3em',
+                      lineHeight: '2.5em',
                       fontFamily: `'Montserrat', sans-serif`,
                     }}
                   >
