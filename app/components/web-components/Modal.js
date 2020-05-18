@@ -107,6 +107,7 @@ class Modal extends React.Component {
                   <div
                     // id={modalId}
                     style={{
+                      boxSizing: 'border-box',
                       zIndex: 3,
                       pointerEvents: 'auto',
                       width: '70vw',
@@ -119,8 +120,9 @@ class Modal extends React.Component {
                       overflow: 'auto',
                       display: 'block',
                       borderRadius: '.2em',
-                      fontSize: '3em',
-                      lineHeight: '2.5em',
+                      fontSize: '2em',
+                      lineHeight: '2em',
+                      padding: '2em',
                       fontFamily: `'Montserrat', sans-serif`,
                     }}
                   >
