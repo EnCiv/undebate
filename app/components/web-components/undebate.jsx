@@ -2280,17 +2280,43 @@ class RASPUndebate extends React.Component {
     ) {
       console.count('phonePortrait')
 
-      // this.pauseRecording()
       this.setState({ isPortraitPhoneRecording: true })
     }
+    let resumeCountdown
     if (
       this.props.browserConfig.type === 'phone' &&
       !portraitMode &&
       // this.rerecord &&
+      !this.state.isRecording &&
+      this.state.isPortraitPhoneRecording
+    ) {
+      console.log(`the video is${this.state.isRecording ? '' : ' not'} recording`)
+      resumeCountdown = (
+        <Modal
+          render={() => (
+            <>
+              You are back in Landscape mode. Recording will resume in{' '}
+              <DownCounter
+                doAfter={() => {
+                  this.resumeRecording()
+                  this.setState({ isPortraitPhoneRecording: false })
+                }}
+                seconds={3}
+              ></DownCounter>
+            </>
+          )}
+        ></Modal>
+      )
+    } else if (
+      this.props.browserConfig.type === 'phone' &&
+      !portraitMode &&
+      this.state.isRecording &&
       this.state.isPortraitPhoneRecording
     ) {
       this.setState({ isPortraitPhoneRecording: false })
-      // this.resumeRecording()
+      resumeCountdown = null
+    } else {
+      resumeCountdown = null
     }
 
     const getIntroStyle = name =>
@@ -2842,6 +2868,7 @@ class RASPUndebate extends React.Component {
         style={{ fontSize: this.state.fontSize }}
         className={cx(classes['wrapper'], scrollableIframe && classes['scrollableIframe'])}
       >
+        {resumeCountdown}
         {this.state.isPortraitPhoneRecording ? (
           <Modal
             render={() => (
@@ -2852,6 +2879,7 @@ class RASPUndebate extends React.Component {
             )}
           ></Modal>
         ) : null}
+
         {this.props.participants.human && <ReactCameraRecorder ref={this.getCamera} />}
         <section
           id="syn-ask-webrtc"
@@ -2882,6 +2910,20 @@ class RASPUndebate extends React.Component {
           {((this.participants.human && (this.state.preambleAgreed || opening.noPreamble)) ||
             !this.participants.human) &&
             buttonBar(buttonBarStyle)}
+          {/* {this.state.isPortraitPhoneRecording ? (
+            <Modal
+              render={() => (
+                <>
+                  Please switch back to Landscape mode. Recording will pause in{' '}
+                  <DownCounter doAfter={() => this.pauseRecording()} seconds={3}></DownCounter>
+                </>
+              )}
+            ></Modal>
+          ) : (
+            ((this.participants.human && (this.state.preambleAgreed || opening.noPreamble)) ||
+              !this.participants.human) &&
+            buttonBar(buttonBarStyle)
+          )} */}
           {recorderButtonBar(recorderButtonBarStyle)}
           {permissionOverlay()}
           {waitingOnModeratorOverlay()}
