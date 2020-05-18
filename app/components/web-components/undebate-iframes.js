@@ -28,14 +28,14 @@ class UndebateIframes extends React.Component {
           height={height * 0.9}
           width={width}
           name="race1"
-          src="https://cc.enciv.org/san-francisco-district-attorney"
+          src="https://undebate-sandbox.herokuapp.com/candidate-conversation-2"
         />
         <iframe
           className={classes.frame}
           height={height * 0.9}
           width={width}
           name="race2"
-          src="https://cc.enciv.org/country:us/state:wi/office:city-of-onalaska-mayor/2020-4-7"
+          src="https://undebate-sandbox.herokuapp.com/candidate-conversation-7"
         />
       </div>
     )
