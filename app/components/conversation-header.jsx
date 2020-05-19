@@ -136,18 +136,22 @@ function xxxx_xx_xxTommmdd_yyyy(str) {
 }
 
 const LogoLinks = ({ classes, logo }) => {
+  // curried function to make link
   const link_image = src => classname => href => (
     <a target="#" href={href}>
       <img className={classes[classname]} src={src} />
     </a>
   )
   const makeLink = link => {
+    //builds the link one html attribute at a time using currying
     let link_html = link_image
     for (const attribute in link) {
       link_html = link_html(link[attribute])
     }
     return link_html
   }
+
+  // Defines the logo link attribute values for logo links in the header
   const list_of_links = {
     enciv: {
       src: 'https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png',
@@ -167,6 +171,7 @@ const LogoLinks = ({ classes, logo }) => {
     },
   }
   const { enciv, undebate, ballotpedia } = list_of_links
+  // actual layout of different links
   return (
     <>
       {' '}
@@ -196,6 +201,11 @@ class ConversationHeader extends React.Component {
       this.props.handleOrientationChange(choice)
     }
   }
+  /**
+   * resizing function dynamically resizes the header so that it fits in the same line.
+   * currently re-written to use ids 'bcon' short for box-container(housing box children -- left and right) and
+   * 'outside-container' which wraps the entire header.
+   */
   resize = () => {
     let topicContent = typeof document === 'object' ? document.getElementById('bcon') : null
     let topicContentTotalHeight = undefined
@@ -207,10 +217,12 @@ class ConversationHeader extends React.Component {
       return { magnitude, units }
     }
     if (typeof window === 'object' && outsideContainer) {
+      //first calculate the total height and get the pixel value
       topicContentTotalHeight = window.getComputedStyle(topicContent, null).getPropertyValue('height')
       topicContentTotalHeight = splitAtUnits(topicContentTotalHeight).magnitude
     }
     if (topicContent && outsideContainer) {
+      //decide how to change the fontsize
       if (
         topicContent.offsetWidth > window.innerWidth * 0.75 ||
         topicContentTotalHeight > outsideContainer.offsetHeight * 0.9
@@ -219,6 +231,7 @@ class ConversationHeader extends React.Component {
         let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
         font_size = splitAtUnits(font_size)
         if (font_size.magnitude * 0.8 >= 3.3) {
+          //sets a lower limit on the fontsize of the the font in the header
           topicContent.style.fontSize = font_size.magnitude * 0.8 + font_size.units
         }
       }
@@ -238,6 +251,7 @@ class ConversationHeader extends React.Component {
   render() {
     const { portraitMode } = this.state
     const { classes, style, subject, bp_info, logo } = this.props
+    // function that simply makes left and right 'boxes' that house the header title and the election date respectively
     const makeBox = boxType => decoratorClass => spanClass => spanContent => (
       <div className={cx(classes[boxType], portraitMode ? classes['portrait'] : undefined)}>
         <div className={cx(classes[decoratorClass])}></div>
