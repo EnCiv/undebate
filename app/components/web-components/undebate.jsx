@@ -2244,6 +2244,18 @@ class RASPUndebate extends React.Component {
     } else this.setState({ intro: true, stylesSet: true, allPaused: false }, () => this.onIntroEnd())
   }
 
+  renderPortraitRecordingWarning = (browserConfig, isRecording, isPortraitPhoneRecording) => {
+    let portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
+    if (browserConfig.type === 'phone' && !portraitMode && !isRecording && isPortraitPhoneRecording) {
+      this.setState({ isPortraitPhoneRecording: false })
+      this.resumeRecording()
+    }
+    if (browserConfig.type === 'phone' && portraitMode && isRecording) {
+      this.pauseRecording()
+      this.setState({ isPortraitPhoneRecording: true })
+    }
+  }
+
   render() {
     const { className, classes, opening = {}, closing = { thanks: 'Thank You' } } = this.props
     const {
@@ -2264,51 +2276,11 @@ class RASPUndebate extends React.Component {
       stylesSet,
       conversationTopicStyle,
       isRecording,
+      isPortraitPhoneRecording,
     } = this.state
 
-    let portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
-    if (
-      this.props.browserConfig.type === 'phone' &&
-      portraitMode &&
-      isRecording &&
-      !this.state.isPortraitPhoneRecording
-    ) {
-      this.setState({ isPortraitPhoneRecording: true })
-    }
-    let resumeCountdown
-    if (
-      this.props.browserConfig.type === 'phone' &&
-      !portraitMode &&
-      !this.state.isRecording &&
-      this.state.isPortraitPhoneRecording
-    ) {
-      resumeCountdown = (
-        <Modal
-          render={() => (
-            <>
-              You are back in Landscape mode. Recording will resume in{' '}
-              <DownCounter
-                doAfter={() => {
-                  this.resumeRecording()
-                  this.setState({ isPortraitPhoneRecording: false })
-                }}
-                seconds={3}
-              ></DownCounter>
-            </>
-          )}
-        ></Modal>
-      )
-    } else if (
-      this.props.browserConfig.type === 'phone' &&
-      !portraitMode &&
-      this.state.isRecording &&
-      this.state.isPortraitPhoneRecording
-    ) {
-      this.setState({ isPortraitPhoneRecording: false })
-      resumeCountdown = null
-    } else {
-      resumeCountdown = null
-    }
+    // puts a stop to recording with the phone in a portrait orientation
+    this.renderPortraitRecordingWarning(this.props.browserConfig, isRecording, isPortraitPhoneRecording)
 
     const getIntroStyle = name =>
       Object.assign({}, stylesSet && { transition: IntroTransition }, introStyle[name], intro && introSeatStyle[name])
@@ -2859,19 +2831,17 @@ class RASPUndebate extends React.Component {
         style={{ fontSize: this.state.fontSize }}
         className={cx(classes['wrapper'], scrollableIframe && classes['scrollableIframe'])}
       >
-        {resumeCountdown}
-        {this.state.isPortraitPhoneRecording ? (
+        {isPortraitPhoneRecording ? (
           <Modal
             render={() => (
               <>
-                Please switch back to Landscape mode. Recording will pause in{' '}
-                <DownCounter doAfter={() => this.pauseRecording()} seconds={3}></DownCounter>
+                You are back in Portrait mode. Recording will restart from the top after switching back to a Landscape
+                orientation.
               </>
             )}
           ></Modal>
         ) : null}
-
-        {this.props.participants.human && <ReactCameraRecorder ref={this.getCamera} />}
+        /{this.props.participants.human && <ReactCameraRecorder ref={this.getCamera} />}
         <section
           id="syn-ask-webrtc"
           key="began"
