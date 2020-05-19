@@ -2266,11 +2266,6 @@ class RASPUndebate extends React.Component {
       isRecording,
     } = this.state
 
-    console.log(
-      'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque tenetur deserunt expedita in obcaecati, hic accusamus. Minus pariatur eius vitae.'
-    )
-
-    console.log(this.state.isRecording && 'recording now')
     let portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
     if (
       this.props.browserConfig.type === 'phone' &&
@@ -2278,19 +2273,15 @@ class RASPUndebate extends React.Component {
       isRecording &&
       !this.state.isPortraitPhoneRecording
     ) {
-      console.count('phonePortrait')
-
       this.setState({ isPortraitPhoneRecording: true })
     }
     let resumeCountdown
     if (
       this.props.browserConfig.type === 'phone' &&
       !portraitMode &&
-      // this.rerecord &&
       !this.state.isRecording &&
       this.state.isPortraitPhoneRecording
     ) {
-      console.log(`the video is${this.state.isRecording ? '' : ' not'} recording`)
       resumeCountdown = (
         <Modal
           render={() => (
@@ -2911,20 +2902,6 @@ class RASPUndebate extends React.Component {
           {((this.participants.human && (this.state.preambleAgreed || opening.noPreamble)) ||
             !this.participants.human) &&
             buttonBar(buttonBarStyle)}
-          {/* {this.state.isPortraitPhoneRecording ? (
-            <Modal
-              render={() => (
-                <>
-                  Please switch back to Landscape mode. Recording will pause in{' '}
-                  <DownCounter doAfter={() => this.pauseRecording()} seconds={3}></DownCounter>
-                </>
-              )}
-            ></Modal>
-          ) : (
-            ((this.participants.human && (this.state.preambleAgreed || opening.noPreamble)) ||
-              !this.participants.human) &&
-            buttonBar(buttonBarStyle)
-          )} */}
           {recorderButtonBar(recorderButtonBarStyle)}
           {permissionOverlay()}
           {waitingOnModeratorOverlay()}
