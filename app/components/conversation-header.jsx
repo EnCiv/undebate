@@ -200,50 +200,46 @@ class ConversationHeader extends React.Component {
     let topicContent = typeof document === 'object' ? document.getElementById('bcon') : null
     let topicContentTotalHeight = undefined
     let outsideContainer = typeof document === 'object' ? document.getElementById('outside-container') : null
-    // ? document.getElementsByClassName(this.props.classes['conversation-header-wrapper'])[0]
     const splitAtUnits = size => {
       const indexOfUnits = size.indexOf(/\D/g) - 1
       const units = size.slice(indexOfUnits)
       const magnitude = parseFloat(size.slice(0, indexOfUnits))
       return { magnitude, units }
     }
-    console.count('resize')
-    console.log(topicContent)
     if (typeof window === 'object' && outsideContainer) {
       topicContentTotalHeight = window.getComputedStyle(topicContent, null).getPropertyValue('height')
       topicContentTotalHeight = splitAtUnits(topicContentTotalHeight).magnitude
-      console.count('resize actually')
-      console.log(topicContentTotalHeight, outsideContainer.offsetHeight)
     }
-    if (
-      (topicContent && topicContent.offsetWidth > window.innerWidth * 0.75) ||
-      (outsideContainer && outsideContainer && topicContentTotalHeight > outsideContainer.offsetHeight * 0.9)
-    ) {
-      //shrink font if the header is too  narrow or it is too tall
-      let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
-      font_size = splitAtUnits(font_size)
-      if (font_size.magnitude * 0.8 >= 3.3) {
-        topicContent.style.fontSize = font_size.magnitude * 0.8 + font_size.units
+    if (topicContent && outsideContainer) {
+      if (
+        topicContent.offsetWidth > window.innerWidth * 0.75 ||
+        topicContentTotalHeight > outsideContainer.offsetHeight * 0.9
+      ) {
+        //shrink font if the header is too  narrow or it is too tall
+        let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
+        font_size = splitAtUnits(font_size)
+        if (font_size.magnitude * 0.8 >= 3.3) {
+          topicContent.style.fontSize = font_size.magnitude * 0.8 + font_size.units
+        }
       }
-    }
 
-    if (
-      typeof window === 'object' &&
-      topicContent &&
-      topicContent.offsetWidth < window.innerWidth * 0.7 &&
-      !(outsideContainer && outsideContainer && topicContentTotalHeight > outsideContainer.offsetHeight * 0.8)
-    ) {
-      //embiggen if you are too narrow and not too tall
-      let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
-      font_size = splitAtUnits(font_size)
-      topicContent.style.fontSize = font_size.magnitude * 1.1 + font_size.units
+      if (
+        typeof window === 'object' &&
+        topicContent.offsetWidth < window.innerWidth * 0.7 &&
+        !(topicContentTotalHeight > outsideContainer.offsetHeight * 0.8)
+      ) {
+        //embiggen if you are too narrow and not too tall
+        let font_size = window.getComputedStyle(topicContent, null).getPropertyValue('font-size')
+        font_size = splitAtUnits(font_size)
+        topicContent.style.fontSize = font_size.magnitude * 1.1 + font_size.units
+      }
     }
   }
   render() {
     const { portraitMode } = this.state
     const { classes, style, subject, bp_info, logo } = this.props
     const makeBox = boxType => decoratorClass => spanClass => spanContent => (
-      <div className={cx(classes[boxType], portraitMode && classes['portrait'])}>
+      <div className={cx(classes[boxType], portraitMode ? classes['portrait'] : undefined)}>
         <div className={cx(classes[decoratorClass])}></div>
         <span id={makeBox.idTag + makeBox.counter++} className={cx(classes[spanClass])}>
           {spanContent}
@@ -255,13 +251,13 @@ class ConversationHeader extends React.Component {
     return (
       <div
         className={cx(
-          portraitMode && classes['portrait'],
+          portraitMode ? classes['portrait'] : undefined,
           classes['conversation-header-wrapper'],
-          !portraitMode && classes['conversationHeader']
+          !portraitMode ? classes['conversationHeader'] : undefined
         )}
         id="outside-container"
       >
-        <div className={portraitMode && cx(classes['conversationHeader'], classes['portrait'])}>
+        <div className={portraitMode ? cx(classes['conversationHeader'], classes['portrait']) : undefined}>
           <LogoLinks classes={classes} logo={logo}></LogoLinks>
         </div>
 
