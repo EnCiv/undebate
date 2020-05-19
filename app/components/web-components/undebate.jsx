@@ -41,7 +41,6 @@ import supportsVideoType from '../lib/supports-video-type'
 import { auto_quality, placeholder_image } from '../lib/cloudinary-urls'
 import createParticipant from '../lib/create-participant'
 import Modal from './Modal'
-import { DownCounter } from './useful-widgets'
 
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
@@ -2249,8 +2248,7 @@ class RASPUndebate extends React.Component {
     if (browserConfig.type === 'phone' && !portraitMode && !isRecording && isPortraitPhoneRecording) {
       this.setState({ isPortraitPhoneRecording: false })
       this.resumeRecording()
-    }
-    if (browserConfig.type === 'phone' && portraitMode && isRecording) {
+    } else if (browserConfig.type === 'phone' && portraitMode && isRecording) {
       this.pauseRecording()
       this.setState({ isPortraitPhoneRecording: true })
     }
