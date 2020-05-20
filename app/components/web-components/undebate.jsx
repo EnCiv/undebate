@@ -2830,14 +2830,7 @@ class RASPUndebate extends React.Component {
         className={cx(classes['wrapper'], scrollableIframe && classes['scrollableIframe'])}
       >
         {isPortraitPhoneRecording ? (
-          <Modal
-            render={() => (
-              <>
-                You are back in Portrait mode. Recording will restart from the top after switching back to a Landscape
-                orientation.
-              </>
-            )}
-          ></Modal>
+          <Modal render={() => <>Recording will start from the top after switching to landscape orientation</>}></Modal>
         ) : null}
         /{this.props.participants.human && <ReactCameraRecorder ref={this.getCamera} />}
         <section

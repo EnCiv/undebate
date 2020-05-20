@@ -49,9 +49,10 @@ class Modal extends React.Component {
                       overflow: 'auto',
                       display: 'block',
                       borderRadius: '.2em',
-                      fontSize: '2em',
-                      lineHeight: '2em',
-                      padding: '2em',
+                      fontSize: '5vmax',
+                      textAlign: 'center',
+                      lineHeight: '5.6vmax',
+                      padding: '2vmax',
                       fontFamily: `'Montserrat', sans-serif`,
                     }}
                   >
