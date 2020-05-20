@@ -82,7 +82,7 @@ class HttpServer extends EventEmitter {
   set() {
     this.app.set('port', +(process.env.PORT || 3012))
     this.app.use(compression())
-    this.app.use(helmet())
+    this.app.use(helmet({ frameguard: false }))
     this.app.use(helmet.hidePoweredBy({ setTo: 'Powered by Ruby on Rails.' }))
   }
 
