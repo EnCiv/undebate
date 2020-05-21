@@ -41,6 +41,7 @@ import supportsVideoType from '../lib/supports-video-type'
 import { auto_quality, placeholder_image } from '../lib/cloudinary-urls'
 import createParticipant from '../lib/create-participant'
 import Modal from './Modal'
+import Icon from '../lib/icon'
 
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
@@ -2830,7 +2831,16 @@ class RASPUndebate extends React.Component {
         className={cx(classes['wrapper'], scrollableIframe && classes['scrollableIframe'])}
       >
         {isPortraitPhoneRecording ? (
-          <Modal render={() => <>Recording will start from the top after switching to landscape orientation</>}></Modal>
+          <Modal
+            render={() => (
+              <>
+                <div>
+                  <Icon style={{ padding: '15% 0' }} icon={'redo'} flip={'horizontal'}></Icon>
+                </div>
+                Recording will start from the top after switching to landscape orientation
+              </>
+            )}
+          ></Modal>
         ) : null}
         /{this.props.participants.human && <ReactCameraRecorder ref={this.getCamera} />}
         <section
