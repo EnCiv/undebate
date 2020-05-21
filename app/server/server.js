@@ -19,6 +19,7 @@ import serverReactRender from './routes/server-react-render'
 
 import User from '../models/user'
 import Iota from '../models/iota'
+import Transcribe from '../models/transcribe'
 import helmet from 'helmet'
 import compression from 'compression'
 
