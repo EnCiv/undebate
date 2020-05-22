@@ -579,7 +579,14 @@ const styles = {
       fontWeight: 'bolder',
     },
   },
-  reviewing: {},
+  reviewing: {
+    '& button': {
+      background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
+    },
+  },
+  reviewIt: {
+    marginBottom: '2em',
+  },
 }
 
 class Undebate extends React.Component {
@@ -1360,14 +1367,14 @@ class RASPUndebate extends React.Component {
     logger.trace(`nextMediaState part:${part}`)
     //if (part === 'human') return;
     // humans won't get here
-    const { round, reviewing, rerecord } = this.state
+    const { round, reviewing } = this.state
 
     let speaking = this.seatOfParticipant(part) === 'speaking'
 
     var objectURL
     if (speaking) {
       if (part === 'human') {
-        if (this.participants.human && this.participants.human.speakingObjectURLs[round] && !rerecord) {
+        if (this.participants.human && this.participants.human.speakingObjectURLs[round] && !this.rerecord) {
           objectURL = this.participants.human.speakingObjectURLs[round]
         } else {
           objectURL = 'cameraStream' // set it to something - but this.camera.cameraStream should really be used
@@ -1378,7 +1385,7 @@ class RASPUndebate extends React.Component {
         logger.error('Undebate.nextMediaState need to do something about stallWatch with preFetch')
       }
     } else {
-      if (part === 'human' && (!reviewing || (reviewing && rerecord))) objectURL = 'cameraStream'
+      if (part === 'human' && (!reviewing || (reviewing && this.rerecord))) objectURL = 'cameraStream'
       //set it to something - but this.camera.cameraStream should really be used
       else if (!(objectURL = this.participants[part].listeningObjectURL))
         if (this.props.participants[part].listening) {
@@ -1556,7 +1563,7 @@ class RASPUndebate extends React.Component {
       } else if (
         part === 'human' &&
         speaking &&
-        (!this.participants.human.speakingObjectURLs[this.state.round] || this.state.rerecord)
+        (!this.participants.human.speakingObjectURLs[this.state.round] || this.rerecord)
       ) {
         // human is speaking (not playing back what was spoken)
         element.src = ''
@@ -1702,11 +1709,21 @@ class RASPUndebate extends React.Component {
   ]
 
   recorderButtons = [
-    { name: () => 'Redo', func: this.rerecordButton, title: () => 'Re-record' },
+    {
+      name: () => 'Redo',
+      func: this.rerecordButton,
+      title: () => 'Re-record',
+      disabled: () => this.speakingNow() !== 'human',
+    },
     { name: () => 'key1', func: null, title: () => '' }, // keyN because react keys have to have unigue names
     { name: () => 'key2', func: null, title: () => '' },
     { name: () => 'key3', func: null, title: () => '' },
-    { name: () => 'Finished Speaking', func: this.finishedSpeaking, title: () => 'Done Speaking' },
+    {
+      name: () => 'Finished Speaking',
+      func: this.finishedSpeaking,
+      title: () => 'Done Speaking',
+      disabled: () => this.speakingNow() !== 'human' || (this.state.reviewing && !this.rerecord),
+    },
   ]
 
   allPause() {
@@ -1716,7 +1733,7 @@ class RASPUndebate extends React.Component {
       this.ensurePaused()
     } else {
       this.allPlay()
-      if (this.state.rerecord) this.resumeRecording()
+      if (this.rerecord) this.resumeRecording()
       this.setState({ allPaused: false })
     }
   }
@@ -1791,7 +1808,7 @@ class RASPUndebate extends React.Component {
     seatOffset = 0
     round -= 1
     if (round < 0) round = 0
-    if (this.state.isRecording) this.stopRecording(false)
+    this.stopRecording(false)
     this.newOrder(seatOffset, round)
   }
 
@@ -1816,7 +1833,7 @@ class RASPUndebate extends React.Component {
         seatOffset = 0
       } else seatOffset += 1
     }
-    if (this.state.isRecording) this.stopRecording(false)
+    this.stopRecording(false)
     this.newOrder(seatOffset, round)
   }
 
@@ -1831,7 +1848,7 @@ class RASPUndebate extends React.Component {
       seatOffset = 0
       if (!this.props.participants.moderator.speaking[round]) return this.finished()
     }
-    if (this.state.isRecording) this.stopRecording(false)
+    this.stopRecording(false)
     this.newOrder(seatOffset, round)
   }
 
@@ -1850,7 +1867,7 @@ class RASPUndebate extends React.Component {
         else return this.finished()
       }
     }
-    if (this.state.isRecording) this.stopRecording(false)
+    this.stopRecording(false)
     this.newOrder(seatOffset, round)
   }
 
@@ -1869,7 +1886,7 @@ class RASPUndebate extends React.Component {
         else return this.finished()
       }
     }
-    if (this.state.isRecording) this.stopRecording(false)
+    this.stopRecording(false)
     this.newOrder(seatOffset, round)
   }
 
@@ -1879,14 +1896,32 @@ class RASPUndebate extends React.Component {
     if (this.seatOfParticipant('human') === 'speaking') return this.autoNextSpeaker()
   }
 
+  // return the property of this.props.participants who is speaking now
+  speakingNow() {
+    const participantList = Object.keys(this.props.participants)
+    return this.state.seatOffset ? participantList[participantList.length - this.state.seatOffset] : participantList[0]
+  }
+
+  rerecordPlaceHolderButton() {
+    logger.info('Undebate.rerecordPlaceHolderButton')
+    this.pauseRecording() // it might be recording when the user hits rerecord
+    this.rerecord = true // this is not in state - because newOrder needs to see this value now, and setstate won't change it if we call that here, until after this sequece of functions returns
+    this.resumeRecording()
+    let speakingNow = this.speakingNow()
+    if (speakingNow !== 'human')
+      // if you are rerecording the placeholder while watching someone else, we want that to start over
+      this.participants[speakingNow].element.current.currentTime = 0
+  }
+
   rerecordButton() {
     logger.info('Undebate.rerecordButton')
     this.pauseRecording() // it might be recording when the user hits rerecord
+    this.rerecord = true // this is not in state - because newOrder needs to see this value now, and setstate won't change it if we call that here, until after this sequece of functions returns
     this.resumeRecording()
   }
 
   pauseRecording() {
-    this.stopRecording(true) // true=>rerecord
+    this.stopRecording() // true=>rerecord
   }
 
   resumeRecording() {
@@ -1899,10 +1934,11 @@ class RASPUndebate extends React.Component {
     if (visible) this.setState({ isRecording: true })
   }
 
-  stopRecording(rerecord) {
+  stopRecording() {
+    this.rerecord = false
     this.stopCountDown()
-    this.camera && this.camera.stopRecording(false)
-    this.setState({ isRecording: false, rerecord })
+    this.camera && this.camera.stopRecording(true) // true=don't generate error messages if called when not recording
+    this.setState({ isRecording: false })
   }
 
   listening() {
@@ -1928,11 +1964,11 @@ class RASPUndebate extends React.Component {
       logger.trace('rotateOrder', round, seatOffset, participant, oldChair, newChair)
       if (participant === 'human') {
         const { listeningRound, listeningSeat } = this.listening()
-        if (oldChair === 'speaking' && newChair === 'speaking' && this.state.rerecord) {
+        if (oldChair === 'speaking' && newChair === 'speaking' && this.rerecord) {
           // the user is initiating a rerecord
         } else if (
           oldChair === 'speaking' &&
-          (!this.participants.human.speakingObjectURLs[this.state.round] || this.state.rerecord)
+          (!this.participants.human.speakingObjectURLs[this.state.round] || this.rerecord)
         ) {
           // the oldChair and the old round
           //this.rerecord = false
@@ -1956,7 +1992,7 @@ class RASPUndebate extends React.Component {
             this.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
           })
         } else if (newChair === 'speaking') {
-          if (this.participants.human.speakingObjectURLs[round] && !this.state.rerecord) {
+          if (this.participants.human.speakingObjectURLs[round] && !this.rerecord) {
             followup.push(() => this.nextMediaState(participant))
           } else {
             followup.push(() => {
@@ -2305,6 +2341,7 @@ class RASPUndebate extends React.Component {
     const getIntroStyle = name =>
       Object.assign({}, stylesSet && { transition: IntroTransition }, introStyle[name], intro && introSeatStyle[name])
     const innerWidth = typeof window !== 'undefined' ? window.innerWidth : 1920
+    const humanSpeaking = this.speakingNow() === 'human'
 
     //const scrollableIframe=done && !this.state.hungUp && closing.iframe && (!this.participants.human || (this.participants.human && this.state.uploadComplete));
     const scrollableIframe =
@@ -2339,13 +2376,14 @@ class RASPUndebate extends React.Component {
       if (this.props.participants.human) {
         const { listeningRound, listeningSeat } = this.listening()
         if (listeningRound === round && listeningSeat === this.seatOfParticipant('human')) {
+          const reviewingAndNotReRecording = reviewing && !this.rerecord
           return (
             <div
               title={'Look into the camera as your placeholder video is being recorded'}
-              className={cx(classes.recordingPlaceholderBar, reviewing && classes.reviewing)}
+              className={cx(classes.recordingPlaceholderBar, reviewingAndNotReRecording && classes.reviewing)}
             >
-              <button onClick={() => this.rerecordButton()}>
-                {reviewing ? 'Rerecord Placeholder' : 'Recording Placeholder'}
+              <button onClick={() => this.rerecordPlaceHolderButton()}>
+                {reviewingAndNotReRecording ? 'Rerecord Placeholder' : 'Recording Placeholder'}
               </button>
             </div>
           )
@@ -2497,7 +2535,7 @@ class RASPUndebate extends React.Component {
                 <span className={cx(classes['thanks'], scrollableIframe && classes['scrollableIframe'])}>
                   {closing.thanks}
                 </span>
-                <div>
+                <div className={classes.reviewIt}>
                   <button
                     className={classes['beginButton']}
                     onClick={() =>
@@ -2585,12 +2623,9 @@ class RASPUndebate extends React.Component {
         </div>
       )
 
-    let humanSpeaking = false
-
     var videoBox = (participant, i, seatStyle) => {
       if (!this.participants[participant].element) return null // we don't have room for this participant
       let chair = this.seat(i)
-      if (participant === 'human' && this.seat(i) === 'speaking') humanSpeaking = true
       const style =
         noOverlay || bot || intro ? seatStyle[chair] : Object.assign({}, seatStyle[chair], introSeatStyle[chair])
       let participant_name
@@ -2767,7 +2802,7 @@ class RASPUndebate extends React.Component {
               title={button.title()}
             >
               {button.func ? (
-                <button disabled={!humanSpeaking} onClick={button.func.bind(this)}>
+                <button disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
                   {button.name()}
                 </button>
               ) : (
@@ -2866,7 +2901,7 @@ class RASPUndebate extends React.Component {
             className={cx(
               classes['countdown'],
               humanSpeaking &&
-                (this.state.rerecord || !this.participants.human.speakingObjectURLs[round]) &&
+                (this.rerecord || !this.participants.human.speakingObjectURLs[round]) &&
                 classes['counting'],
               talkative && classes['talkative']
             )}
