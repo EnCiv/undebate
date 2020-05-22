@@ -38,7 +38,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -84,7 +85,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -119,7 +121,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         },
@@ -182,7 +185,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         },
@@ -253,7 +257,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         },
@@ -534,7 +539,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -936,7 +942,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -1143,7 +1150,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         },
@@ -1217,7 +1225,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -1305,7 +1314,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -1414,7 +1424,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -1543,7 +1554,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -1714,7 +1726,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -1866,5 +1879,37 @@
       }
     },
     "userId": "5e7a952d6039e7001781146a"
+  },
+  {
+    "_id": {
+      "$oid": "5d56e411e7179a084eefb365"
+    },
+    "path": "/test-join",
+    "subject": "Test Join",
+    "description": "A test for the Join component",
+    "webComponent": "TestJoin"
+  },
+  {
+    "_id": {
+      "$oid": "5e87c095e7179a7912b6acfe"
+    },
+    "path": "/iframe-demo",
+    "subject": "Iframe demo",
+    "description": "a quick prototype of a page showing multiple undebates in separate iframes",
+    "webComponent": {
+      "webComponent": "UndebateIframes"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5eb5ae7fe7179a42f1756112"
+    },
+    "path": "/unpoll-demo",
+    "subject": "Unpoll on the question: What Question should we ask the presidential candidates?",
+    "description": "a rapid prototype to ask 1000's of voters what question they want to ask the candidates and agree to one",
+    "webComponent": {
+      "webComponent": "Unpoll",
+      "question": "What are the top questions that we should ask the U.S. Presidential candidates?"
+    }
   }
 ]
