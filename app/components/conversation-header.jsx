@@ -32,8 +32,8 @@ const styles = {
   },
   leftBox: {
     backgroundColor: BLUE,
-    width: '0.52vw',
-    height: '3.24vh',
+    width: '.5em',
+    height: '1.8em',
     display: 'inline-block',
     '&$portrait': {
       textOverflow: 'hidden',
@@ -42,7 +42,7 @@ const styles = {
     },
   },
   conversationTopicContent: {
-    fontSize: '2.5em',
+    fontSize: '2em',
     fontWeight: 'bolder',
     paddingLeft: '.2em',
     paddingRight: '.2em',
@@ -68,13 +68,13 @@ const styles = {
   },
   rightBox: {
     backgroundColor: YELLOW,
-    width: '0.52vw',
-    height: '3.24vh',
+    width: '.5em',
+    height: '1.8em',
     display: 'inline-block',
   },
   conversationElectionDate: {
     paddingLeft: '.2em',
-    fontSize: '2rem',
+    fontSize: '2em',
     fontWeight: 'normal',
     height: 'min-content',
     '&$portrait': {
