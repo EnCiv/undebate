@@ -2041,7 +2041,6 @@ class RASPUndebate extends React.Component {
       clearTimeout(this.talkativeTimeout)
       this.talkativeTimeout = 0
     }
-    if (this.state.countDown > 0) this.setState({ countDown: 0 })
     this.setState({ warmup: false })
   }
 
@@ -2051,7 +2050,7 @@ class RASPUndebate extends React.Component {
   }
 
   warmupCountDown(seconds, finishFunc) {
-    this.setState({ warmup: true })
+    this.setState({ warmup: true, countDown: seconds })
     this.startCountDown(seconds, () => {
       finishFunc()
       this.setState({ warmup: false })
