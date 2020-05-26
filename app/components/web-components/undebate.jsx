@@ -292,6 +292,7 @@ const styles = {
   talkative: {
     background: 'yellow',
   },
+  warmup: {},
   videoFoot: {
     'text-align': 'center',
     color: '#404',
@@ -425,6 +426,9 @@ const styles = {
       left: 'calc( 50vw - 1em)',
       fontSize: '4em',
       background: 'rgba(128,128,128,0.7)',
+    },
+    '&$warmup': {
+      color: 'lime',
     },
   },
   buttonBar: {
@@ -2829,7 +2833,8 @@ class RASPUndebate extends React.Component {
               humanSpeaking &&
                 (this.rerecord || !this.participants.human.speakingObjectURLs[round]) &&
                 classes['counting'],
-              talkative && classes['talkative']
+              talkative && classes['talkative'],
+              warmup && classes['warmup']
             )}
           >
             {(warmup ? '-' : '') + TimeFormat.fromS(Math.round(this.state.countDown), 'mm:ss')}
