@@ -296,6 +296,7 @@ const styles = {
   talkative: {
     background: 'yellow',
   },
+  warmup: {},
   videoFoot: {
     'text-align': 'center',
     color: '#404',
@@ -433,6 +434,9 @@ const styles = {
       left: 'calc( 50vw - 1em)',
       fontSize: '4em',
       background: 'rgba(128,128,128,0.7)',
+    },
+    '&$warmup': {
+      color: 'lime',
     },
   },
   buttonBar: {
@@ -725,6 +729,7 @@ class RASPUndebate extends React.Component {
     intro: false,
     begin: false,
     allPaused: true, // so the play button shows
+    warmup: false,
     isRecording: false,
 
     seatStyle: {
@@ -1717,7 +1722,7 @@ class RASPUndebate extends React.Component {
       name: () => 'Redo',
       func: this.rerecordButton,
       title: () => 'Re-record',
-      disabled: () => this.speakingNow() !== 'human',
+      disabled: () => this.speakingNow() !== 'human' || this.state.warmup,
     },
     { name: () => 'key1', func: null, title: () => '' }, // keyN because react keys have to have unigue names
     { name: () => 'key2', func: null, title: () => '' },
@@ -1733,6 +1738,8 @@ class RASPUndebate extends React.Component {
   allPause() {
     if (!this.state.begin) {
       this.beginButton()
+    } else if (this.state.warmup) {
+      // do nothing
     } else if (!this.state.allPaused) {
       this.ensurePaused()
     } else {
@@ -1960,13 +1967,18 @@ class RASPUndebate extends React.Component {
   }
 
   newOrder(seatOffset, round) {
+    const { participants } = this.props
+
     this.clearStallWatch()
     var followup = []
-    Object.keys(this.props.participants).forEach((participant, i) => {
+    Object.keys(participants).forEach((participant, i) => {
       let oldChair = this.seat(i)
       let newChair = this.seat(i, seatOffset)
       logger.trace('rotateOrder', round, seatOffset, participant, oldChair, newChair)
+
       if (participant === 'human') {
+        const { timeLimits } = participants.moderator
+        const timeLimit = (timeLimits && timeLimits[round]) || 60
         const { listeningRound, listeningSeat } = this.listening()
         if (oldChair === 'speaking' && newChair === 'speaking' && this.rerecord) {
           // the user is initiating a rerecord
@@ -1983,36 +1995,8 @@ class RASPUndebate extends React.Component {
           //this.stopRecording()
         }
         // then see if it needs to be turned on - both might happen at the same transition
-        if (newChair === listeningSeat && round === listeningRound) {
-          followup.push(() => {
-            if (listeningSeat === 'speaking') {
-              // recording the listening segment from the speakers seat
-              let limit =
-                (this.props.participants.moderator.timeLimits && this.props.participants.moderator.timeLimits[round]) ||
-                60
-              this.startCountDown(limit, () => this.autoNextSpeaker())
-            }
-            this.nextMediaState(participant)
-            this.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
-          })
-        } else if (newChair === 'speaking') {
-          if (this.participants.human.speakingObjectURLs[round] && !this.rerecord) {
-            followup.push(() => this.nextMediaState(participant))
-          } else {
-            followup.push(() => {
-              let limit =
-                (this.props.participants.moderator.timeLimits && this.props.participants.moderator.timeLimits[round]) ||
-                60
-              this.startCountDown(limit, () => this.autoNextSpeaker())
-              this.talkativeTimeout = setTimeout(() => this.setState({ talkative: true }), limit * 0.75 * 1000)
-              this.nextMediaState(participant)
-              this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs), true)
-            })
-          }
-        } else {
-          // human just watching
-          followup.push(() => this.nextMediaState(participant))
-        }
+        followup.push(() => this.nextMediaState(participant))
+        followup.push(() => this.maybeEnableRecording(newChair, listeningSeat, round, listeningRound, timeLimit))
       } else if (oldChair === 'speaking' || newChair === 'speaking' || this.state.allPaused) {
         // will be speaking or need to start media again
         followup.push(() => this.nextMediaState(participant))
@@ -2028,6 +2012,53 @@ class RASPUndebate extends React.Component {
       }
       while (followup.length) followup.shift()()
     })
+  }
+
+  ensureNotRecording(oldChair, newChair, listeningSeat, listeningRound) {
+    if (oldChair === 'speaking' && newChair === 'speaking' && this.rerecord) {
+      // the user is initiating a rerecord
+    } else if (
+      oldChair === 'speaking' &&
+      (!this.participants.human.speakingObjectURLs[this.state.round] || this.rerecord)
+    ) {
+      // the oldChair and the old round
+      this.rerecord = false
+      this.stopRecording()
+    } else if (oldChair === listeningSeat && this.state.round === listeningRound) {
+      // the oldChair and the old round
+      this.stopRecording()
+    }
+  }
+
+  maybeEnableRecording(newChair, listeningSeat, round, listeningRound, timeLimit) {
+    if (newChair === listeningSeat && round === listeningRound) {
+      this.recordFromSpeakersSeat(listeningSeat, timeLimit, round)
+    } else if (newChair === 'speaking') {
+      if (this.rerecord) {
+        this.recordWithWarmup(timeLimit, round)
+      } else if (!this.participants.human.speakingObjectURLs[round]) {
+        this.recordWithCountdown(timeLimit, round)
+      }
+    }
+  }
+
+  recordWithCountdown(timeLimit, round) {
+    this.startCountDown(timeLimit, () => this.autoNextSpeaker())
+    this.startTalkativeTimeout(timeLimit * 0.75)
+    this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs), true)
+  }
+
+  recordWithWarmup(timeLimit, round) {
+    const warmupSeconds = 3
+    this.warmupCountDown(warmupSeconds, () => this.recordWithCountdown(timeLimit, round))
+  }
+
+  recordFromSpeakersSeat(listeningSeat, timeLimit, round) {
+    if (listeningSeat === 'speaking') {
+      // recording the listening segment from the speakers seat
+      this.startCountDown(timeLimit, () => this.autoNextSpeaker())
+    }
+    this.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
   }
 
   finished() {
@@ -2083,30 +2114,44 @@ class RASPUndebate extends React.Component {
   }
 
   startCountDown(seconds, finishFunc) {
-    if (this.recordTimeout) clearTimeout(this.recordTimeout)
     const counter = sec => {
       if (sec > 0) {
-        this.recordTimeout = setTimeout(() => counter(sec - 1), 1000)
-        this.setState({ countDown: sec - 1 })
+        this.countdownTimeout = setTimeout(() => counter(sec - 1), 1000)
+        this.setState({ countDown: sec })
       } else {
-        this.recordTimeout = 0
+        this.countdownTimeout = 0
         finishFunc && setTimeout(finishFunc) // called after timeout to avoid setState collisions
         if (this.state.countDown !== 0) this.setState({ countDown: 0 })
       }
     }
-    this.recordTimeout = setTimeout(() => counter(seconds), TransitionTime) // can't call setState from here because it will collide with the setstate of the parent event handler
+
+    if (this.countdownTimeout) clearTimeout(this.countdownTimeout)
+    this.countdownTimeout = setTimeout(() => counter(seconds), TransitionTime) // can't call setState from here because it will collide with the setstate of the parent event handler
   }
 
   stopCountDown() {
-    if (this.recordTimeout) {
-      clearTimeout(this.recordTimeout)
-      this.recordTimeout = 0
+    if (this.countdownTimeout) {
+      clearTimeout(this.countdownTimeout)
+      this.countdownTimeout = 0
     }
     if (this.talkativeTimeout) {
       clearTimeout(this.talkativeTimeout)
       this.talkativeTimeout = 0
     }
-    if (this.setState.countDown > 0) this.setState({ countDown: 0 })
+    this.setState({ warmup: false })
+  }
+
+  startTalkativeTimeout(seconds) {
+    if (this.talkativeTimeout) clearTimeout(this.talkativeTimeout)
+    this.talkativeTimeout = setTimeout(() => this.setState({ talkative: true }), seconds * 1000)
+  }
+
+  warmupCountDown(seconds, finishFunc) {
+    this.setState({ warmup: true, countDown: seconds })
+    this.startCountDown(seconds, () => {
+      finishFunc()
+      this.setState({ warmup: false })
+    })
   }
 
   onIntroEnd() {
@@ -2329,6 +2374,7 @@ class RASPUndebate extends React.Component {
       begin,
       requestPermission,
       talkative,
+      warmup,
       moderatorReadyToStart,
       intro,
       seatStyle,
@@ -2950,10 +2996,11 @@ class RASPUndebate extends React.Component {
               humanSpeaking &&
                 (this.rerecord || !this.participants.human.speakingObjectURLs[round]) &&
                 classes['counting'],
-              talkative && classes['talkative']
+              talkative && classes['talkative'],
+              warmup && classes['warmup']
             )}
           >
-            {TimeFormat.fromS(Math.round(this.state.countDown), 'mm:ss')}
+            {(warmup ? '-' : '') + TimeFormat.fromS(Math.round(this.state.countDown), 'mm:ss')}
           </div>
           <div style={{ whiteSpace: 'pre-wrap' }}>
             <span>{this.state.errorMsg}</span>
