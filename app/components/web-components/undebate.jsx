@@ -6,6 +6,7 @@ import cx from 'classnames'
 import Join from '../join'
 import Input from '../lib/input'
 import SocialShareBtn from '../lib/socialShareBtn'
+import { AuthForm } from '../auth-form/index'
 
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep'
@@ -227,6 +228,10 @@ const styles = {
     'font-size': '1.25em',
     padding: '1em',
     'margin-top': '1em',
+    '&:disabled': {
+      'text-decoration': 'none',
+      background: 'lightgray',
+    },
   },
   hangUpButton: {
     width: '12vw',
@@ -395,7 +400,11 @@ const styles = {
   },
   name: {
     fontSize: '1.25em',
+    width: '11em',
+    height: '1em',
+    textAlign: 'center',
   },
+
   subOpening: {
     //'font-size': "0.84rem",
     'font-weight': '100',
@@ -2060,8 +2069,8 @@ class RASPUndebate extends React.Component {
   onUserLogin(info) {
     logger.info('Undebate.onUserLogin')
     logger.trace('onUserLogin', info)
-    const { userId } = info
-    this.setState({ newUserId: userId })
+    const { userId, firstName, lastName } = info
+    this.setState({ newUserId: userId, firstName, lastName })
   }
 
   onUserUpload() {
@@ -2312,7 +2321,7 @@ class RASPUndebate extends React.Component {
   }
 
   render() {
-    const { className, classes, opening = {}, closing = { thanks: 'Thank You' } } = this.props
+    const { className, classes, opening = {}, closing = { thanks: 'Thank You' }, bp_info = {} } = this.props
     const {
       round,
       finishUp,
@@ -2339,13 +2348,14 @@ class RASPUndebate extends React.Component {
     const humanSpeaking = this.speakingNow() === 'human'
 
     //const scrollableIframe=done && !this.state.hungUp && closing.iframe && (!this.participants.human || (this.participants.human && this.state.uploadComplete));
-    const scrollableIframe =
+    const scrollableIframe = done && this.props.participants.human
+    /*
       (done &&
         !this.state.hungUp &&
         closing.iframe &&
         (!this.participants.human || (this.participants.human && this.state.uploadComplete))) ||
       (done && this.state.hungUp && closing.iframe && this.participants.human)
-
+*/
     const bot = this.props.browserConfig.type === 'bot'
     const noOverlay = this.noOverlay
 
@@ -2525,88 +2535,118 @@ class RASPUndebate extends React.Component {
         </div>
       )
 
+    const thanks = () => (
+      <span className={cx(classes['thanks'], scrollableIframe && classes['scrollableIframe'])}>{closing.thanks}</span>
+    )
+
+    const reviewButton = () =>
+      this.participants.human &&
+      !this.state.uploadComplete && (
+        <div className={classes.reviewIt}>
+          <button
+            className={classes['beginButton']}
+            onClick={() =>
+              this.setState(
+                {
+                  intro: true,
+                  stylesSet: true,
+                  allPaused: false,
+                  round: 0,
+                  seatOffset: 0,
+                  done: 0,
+                  finishUp: 0,
+                  reviewing: 1,
+                },
+                () => this.onIntroEnd()
+              )
+            }
+          >
+            Review It
+          </button>
+        </div>
+      )
+
+    const nameInput = () =>
+      !bp_info.candidate_name &&
+      (this.state.newUserId || this.props.user) && (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <label style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            Name Shown with Video
+            <Input
+              className={this.props.classes['name']}
+              block
+              medium
+              required
+              placeholder="Your Name Tag"
+              ref="name"
+              name="name"
+              defaultValue={
+                this.state.name ||
+                (this.state.firstName && this.state.lastName && this.state.firstName + ' ' + this.state.lastName)
+              }
+              onChange={e => this.setState({ name: e.value })}
+            />
+          </label>
+          <span>This will be shown under your video</span>
+        </div>
+      )
+
+    const postButton = () =>
+      this.participants.human &&
+      !this.state.uploadComplete && (
+        <>
+          <div>
+            <button
+              disabled={this.newUser && !this.state.newUserId}
+              className={classes['beginButton']}
+              onClick={this.onUserUpload.bind(this)}
+            >
+              Post
+            </button>
+          </div>
+          {this.state.progress && <div>{'uploading: ' + this.state.progress}</div>}
+        </>
+      )
+
+    const authForm = () =>
+      this.participants.human &&
+      !this.state.uploadComplete &&
+      this.newUser &&
+      !this.state.newUserId && (
+        <>
+          <div style={{ textAlign: 'center' }}>
+            <span>Join and your recorded videos will be uploaded and shared</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <AuthForm
+              userInfo={{
+                name: this.state.name || bp_info.candidate_name,
+                firstName: this.state.firstName || bp_info.first_name,
+                lastName: this.state.lastName || bp_info.last_name,
+              }}
+              onChange={this.onUserLogin.bind(this)}
+            />
+          </div>
+        </>
+      )
+
     const ending = () =>
       done &&
       !this.state.hungUp && (
-        <React.Fragment>
+        <>
           <div className={cx(classes['outerBox'], scrollableIframe && classes['scrollableIframe'])} key="ending">
             <div style={{ width: '100%', height: '100%', display: 'table' }}>
               <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-                <span className={cx(classes['thanks'], scrollableIframe && classes['scrollableIframe'])}>
-                  {closing.thanks}
-                </span>
-                <div className={classes.reviewIt}>
-                  <button
-                    className={classes['beginButton']}
-                    onClick={() =>
-                      this.setState(
-                        {
-                          intro: true,
-                          stylesSet: true,
-                          allPaused: false,
-                          round: 0,
-                          seatOffset: 0,
-                          done: 0,
-                          finishUp: 0,
-                          reviewing: 1,
-                        },
-                        () => this.onIntroEnd()
-                      )
-                    }
-                  >
-                    Review It
-                  </button>
-                </div>
+                {thanks()}
+                {reviewButton()}
+                {authForm()}
+                {nameInput()}
+                {postButton()}
                 {surveyForm()}
-                {this.participants.human && !this.state.uploadComplete && (
-                  <>
-                    <div style={{ textAlign: 'center' }}>
-                      {!this.props.bp_info || !this.props.bp_info.candidate_name ? (
-                        <div>
-                          <label>
-                            Name
-                            <Input
-                              className={this.props.classes['name']}
-                              block
-                              medium
-                              required
-                              placeholder="Name"
-                              ref="name"
-                              name="name"
-                              onChange={e => this.setState({ name: e.value })}
-                            />
-                          </label>
-                          <span>This will be shown with your video</span>
-                        </div>
-                      ) : null}
-                      {!this.newUser || this.state.newUserId ? (
-                        <div>
-                          <button className={classes['beginButton']} onClick={this.onUserUpload.bind(this)}>
-                            Post
-                          </button>
-                        </div>
-                      ) : (
-                        <>
-                          <div style={{ textAlign: 'center' }}>
-                            <span>Join and your recorded videos will be uploaded and shared</span>
-                          </div>
-                          <div>
-                            <Join
-                              className={this.props.classes['join']}
-                              userInfo={{ name: this.state.name }}
-                              onChange={this.onUserLogin.bind(this)}
-                            ></Join>
-                          </div>
-                        </>
-                      )}
-                      {this.state.progress && <div>{'uploading: ' + this.state.progress}</div>}
-                    </div>
-                  </>
-                )}
               </div>
             </div>
           </div>
-        </React.Fragment>
+        </>
       )
 
     const hungUp = () =>
@@ -2629,9 +2669,12 @@ class RASPUndebate extends React.Component {
       const style =
         noOverlay || bot || intro ? seatStyle[chair] : Object.assign({}, seatStyle[chair], introSeatStyle[chair])
       let participant_name
-      if (participant === 'human' && this.props.bp_info && this.props.bp_info.candidate_name)
-        participant_name = this.props.bp_info.candidate_name
-      else participant_name = this.props.participants[participant].name
+      if (participant === 'human') {
+        if (bp_info.candidate_name) participant_name = bp_info.candidate_name
+        else if (this.state.name) participant_name = this.state.name
+        else if (this.state.firstName || this.state.lastName)
+          participant_name = this.state.firstName + ' ' + this.state.lastName
+      } else participant_name = this.props.participants[participant].name
       /*src={"https://www.youtube.com/embed/"+getYouTubeID(this.participants[participant].listeningObjectURL)+"?enablejsapi=1&autoplay=1&loop=1&controls=0&disablekb=1&fs=0&modestbranding=1&rel=0"}*/
       return (
         <div
@@ -2651,6 +2694,7 @@ class RASPUndebate extends React.Component {
                 path: this.props.path,
                 subject: this.props.subject,
               }}
+              fontSize={this.state.fontSize}
             />
           ) : null}
           <div
@@ -2939,7 +2983,7 @@ class RASPUndebate extends React.Component {
           {this.participants.human && !opening.noPreamble && !intro && !begin && !done && (
             <CandidatePreamble
               subject={this.props.subject}
-              bp_info={this.props.bp_info}
+              bp_info={bp_info}
               agreed={this.state.preambleAgreed}
               onClick={() => {
                 logger.info('Undebate preambleAgreed true')
