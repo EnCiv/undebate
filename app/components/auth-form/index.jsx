@@ -13,8 +13,8 @@ const PreInject = props => {
     email: '',
     password: '',
     confirmPassword: '',
-    firstName: '',
-    lastName: '',
+    firstName: props.userInfo.firstName || '',
+    lastName: props.userInfo.lastName || '',
   })
   const [isDisabled, setIsDisabled] = useState(true)
   const [infoMessage, setInfoMessage] = useState(null)
