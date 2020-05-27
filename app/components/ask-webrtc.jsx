@@ -6,7 +6,6 @@ import injectSheet from 'react-jss'
 import cx from 'classnames'
 
 import DebugOverlay from './debug-overlay'
-import ErrorBoundary from './error-boundary'
 
 const TransitionTime = 500
 const TopMargin = '0vh'
@@ -225,11 +224,7 @@ const seatToName = {
 
 class AskWebRTC extends React.Component {
   render() {
-    return (
-      <ErrorBoundary>
-        <RASPAskWebRTC {...this.props} />
-      </ErrorBoundary>
-    )
+    return <RASPAskWebRTC {...this.props} />
   }
 }
 

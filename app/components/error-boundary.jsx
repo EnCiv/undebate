@@ -24,7 +24,20 @@ export default class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
+      if (process.env.NODE_ENV === 'development') {
+        return (
+          <div>
+            <h2>Something went wrong.</h2>
+            <details style={{ whiteSpace: 'pre-wrap' }}>
+              {this.state.error && this.state.error.toString()}
+              <br />
+              {this.state.info.componentStack}
+            </details>
+          </div>
+        )
+      }
       // You can render any custom fallback UI
+      // return this if we are in production
       return (
         <div style={{ height: '100vh', width: '100vw' }}>
           <h1>Something went wrong.</h1>
