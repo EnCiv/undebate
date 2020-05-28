@@ -7,6 +7,7 @@ import { EventEmitter } from 'events'
 import express from 'express'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
+import expressRateLimit from 'express-rate-limit'
 
 import printIt from './util/express-pretty'
 
@@ -47,7 +48,7 @@ class HttpServer extends EventEmitter {
 
       .on('request', printIt)
 
-      .on('response', function (res) {
+      .on('response', function(res) {
         printIt(res.req, res)
       })
 
@@ -81,7 +82,7 @@ class HttpServer extends EventEmitter {
   set() {
     this.app.set('port', +(process.env.PORT || 3012))
     this.app.use(compression())
-    this.app.use(helmet())
+    this.app.use(helmet({ frameguard: false }))
     this.app.use(helmet.hidePoweredBy({ setTo: 'Powered by Ruby on Rails.' }))
   }
 
@@ -123,7 +124,15 @@ class HttpServer extends EventEmitter {
       })
     }
 
-    this.app.post('/sign/in', signInRoute, this.setUserCookie, sendUserId)
+    const apiLimiter = expressRateLimit({
+      windowMs: 60 * 1000,
+      max: 2,
+      message: 'Too many attempts logging in, please try again after 24 hours.',
+    })
+    //will need trust proxy for production
+    this.app.set('trust proxy', 'loopback')
+
+    this.app.post('/sign/in', apiLimiter, signInRoute, this.setUserCookie, sendUserId)
 
     this.app.all('/sign/up', signUpRoute, this.setUserCookie, sendUserId)
 
@@ -234,13 +243,13 @@ class HttpServer extends EventEmitter {
     this.app.get('/doc/:mddoc', (req, res, next) => {
       fs.createReadStream(req.params.mddoc)
         .on('error', next)
-        .on('data', function (data) {
+        .on('data', function(data) {
           if (!this.data) {
             this.data = ''
           }
           this.data += data.toString()
         })
-        .on('end', function () {
+        .on('end', function() {
           res.header({ 'Content-Type': 'text/markdown; charset=UTF-8' })
           res.send(this.data)
         })

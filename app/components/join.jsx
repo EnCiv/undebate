@@ -184,6 +184,10 @@ class Join extends React.Component {
         if (err) logger.error('Join.login error', err)
         var errorMsg = ''
         switch (res.status) {
+          case 429:
+            errorMsg = 'Too many attempts logging in, try again in 24 hrs'
+            break
+
           case 404:
             errorMsg = "Email / Password Don't Match" // email not found but don't say that to the user
             break
