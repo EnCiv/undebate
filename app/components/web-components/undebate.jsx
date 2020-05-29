@@ -41,8 +41,6 @@ import supportsVideoType from '../lib/supports-video-type'
 
 import { auto_quality, placeholder_image } from '../lib/cloudinary-urls'
 import createParticipant from '../lib/create-participant'
-import Modal from './Modal'
-import Icon from '../lib/icon'
 
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
@@ -728,7 +726,6 @@ class Undebate extends React.Component {
     allPaused: true, // so the play button shows
     warmup: false,
     isRecording: false,
-    isPortraitPhoneRecording: false,
 
     seatStyle: {
       speaking: {
@@ -2366,17 +2363,6 @@ class Undebate extends React.Component {
     } else this.setState({ intro: true, stylesSet: true, allPaused: false }, () => this.onIntroEnd())
   }
 
-  renderPortraitRecordingWarning = (browserConfig, isRecording, isPortraitPhoneRecording) => {
-    let portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
-    if (browserConfig.type === 'phone' && !portraitMode && !isRecording && isPortraitPhoneRecording) {
-      this.setState({ isPortraitPhoneRecording: false })
-      this.resumeRecording()
-    } else if (browserConfig.type === 'phone' && portraitMode && isRecording) {
-      this.pauseRecording()
-      this.setState({ isPortraitPhoneRecording: true })
-    }
-  }
-
   render() {
     const {
       className,
@@ -2412,7 +2398,6 @@ class Undebate extends React.Component {
       stylesSet,
       conversationTopicStyle,
       isRecording,
-      isPortraitPhoneRecording,
       reviewing,
       uploadComplete,
       hungUp,
@@ -3042,18 +3027,6 @@ class Undebate extends React.Component {
         style={{ fontSize: fontSize }}
         className={cx(classes['wrapper'], scrollableIframe && classes['scrollableIframe'])}
       >
-        {isPortraitPhoneRecording ? (
-          <Modal
-            render={() => (
-              <>
-                <div>
-                  <Icon style={{ padding: '15% 0' }} icon={'redo'} flip={'horizontal'}></Icon>
-                </div>
-                Recording will start from the top after switching to landscape orientation
-              </>
-            )}
-          ></Modal>
-        ) : null}
         {participants.human && <ReactCameraRecorder ref={this.getCamera} />}
         <section
           id="syn-ask-webrtc"
