@@ -13,6 +13,7 @@ const WebComponents = {
   UndebateLine: require('./undebate-line'),
   UndebateIframes: require('./undebate-iframes'),
   Unpoll: require('./unpoll'),
+  HartfordVotes: require('./HartfordVotes'),
 }
 
 import React from 'react'

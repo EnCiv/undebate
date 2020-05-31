@@ -1911,5 +1911,13 @@
       "webComponent": "Unpoll",
       "question": "What are the top questions that we should ask the U.S. Presidential candidates?"
     }
+  },
+  {
+    "path": "/hartford",
+    "subject": "City election in Hartford CT",
+    "description": "A prototype Candidate Conversation for schoolboard, using Youtube video",
+    "webComponent": {
+      "webComponent": "HartfordVotes"
+    }
   }
 ]
