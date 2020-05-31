@@ -22,8 +22,8 @@ class User extends MongoModels {
             ko(new Error(error))
           } else {
             user.password = hash
-            const doc = new User(user)
             try {
+              const doc = new User(user)
               const result = await this.insertOne(doc)
               if (result && result.length === 1) ok(result[0])
               else {
@@ -31,7 +31,9 @@ class User extends MongoModels {
                 ko(new Error(error))
               }
             } catch (err) {
-              ko(err)
+              error = `User.create returned error. ` + err
+              logger.error(error)
+              ko(new Error(error))
             }
           }
         })
@@ -55,6 +57,28 @@ class User extends MongoModels {
           ok(res)
         }
       })
+    })
+  }
+  static findOne(...args) {
+    return new Promise(async (ok, ko) => {
+      const suser = await await MongoModels.dbs['default'].collection('users').findOne(...args)
+      var doc = new User()
+      doc.name = suser.name
+      doc.email = suser.email
+      doc.password = suser.password
+      if (suser.length > 3) logger.error('User.findone(): unexpected field in User DB')
+      ok(doc)
+    })
+  }
+  static findOneAndDelete(...args) {
+    return new Promise(async (ok, ko) => {
+      const suser = await await MongoModels.dbs['default'].collection('users').findOneAndDelete(...args)
+      var doc = new User()
+      doc.name = suser.name
+      doc.email = suser.email
+      doc.password = suser.password
+      if (suser.length > 3) logger.error('User.findOneAndDelete(): unexpected field in User DB')
+      ok(doc)
     })
   }
 }
