@@ -2032,26 +2032,26 @@ class Undebate extends React.Component {
       if (this.rerecord) {
         this.recordWithWarmup(timeLimit, round)
       } else if (!this.participants.human.speakingObjectURLs[round]) {
-        this.recordWithCountdown(timeLimit, round)
+        this.recordWithCountdown(timeLimit, round, TransitionTime)
       }
     }
   }
 
-  recordWithCountdown(timeLimit, round) {
-    this.startCountDown(timeLimit, () => this.autoNextSpeaker())
+  recordWithCountdown(timeLimit, round, delay) {
+    this.startCountDown(timeLimit, () => this.autoNextSpeaker(), delay)
     this.startTalkativeTimeout(timeLimit * 0.75)
     this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs), true)
   }
 
   recordWithWarmup(timeLimit, round) {
     const warmupSeconds = 3
-    this.warmupCountDown(warmupSeconds, () => this.recordWithCountdown(timeLimit, round))
+    this.warmupCountDown(warmupSeconds, () => this.recordWithCountdown(timeLimit, round, 0))
   }
 
   recordFromSpeakersSeat(listeningSeat, timeLimit, round) {
     if (listeningSeat === 'speaking') {
       // recording the listening segment from the speakers seat
-      this.startCountDown(timeLimit, () => this.autoNextSpeaker())
+      this.startCountDown(timeLimit, () => this.autoNextSpeaker(), TransitionTime)
     }
     this.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
   }
@@ -2111,20 +2111,21 @@ class Undebate extends React.Component {
     )
   }
 
-  startCountDown(seconds, finishFunc) {
+  startCountDown(seconds, finishFunc, startDelay = TransitionTime) {
+    // startDelay is used to allow the moving windows to move into position before recording starts, but when rerecording there is no need
     const counter = sec => {
       if (sec > 0) {
         this.countdownTimeout = setTimeout(() => counter(sec - 1), 1000)
-        this.setState({ countDown: sec })
+        this.setState({ warmup: false, countDown: sec })
       } else {
         this.countdownTimeout = 0
         finishFunc && setTimeout(finishFunc) // called after timeout to avoid setState collisions
-        if (this.state.countDown !== 0) this.setState({ countDown: 0 })
+        if (this.state.countDown !== 0) this.setState({ warmup: false, countDown: 0 })
       }
     }
 
     if (this.countdownTimeout) clearTimeout(this.countdownTimeout)
-    this.countdownTimeout = setTimeout(() => counter(seconds), TransitionTime) // can't call setState from here because it will collide with the setstate of the parent event handler
+    this.countdownTimeout = setTimeout(() => counter(seconds), startDelay) // can't call setState from here because it will collide with the setstate of the parent event handler
   }
 
   stopCountDown() {
@@ -2145,11 +2146,20 @@ class Undebate extends React.Component {
   }
 
   warmupCountDown(seconds, finishFunc) {
-    this.setState({ warmup: true, countDown: seconds })
-    this.startCountDown(seconds, () => {
-      finishFunc()
-      this.setState({ warmup: false })
-    })
+    // for warmUp it should be 3..2..1..60...59
+    const stopAt = 1
+    const counter = sec => {
+      if (sec > stopAt) {
+        this.countdownTimeout = setTimeout(() => counter(sec - 1), 1000)
+        this.setState({ warmup: true, countDown: sec })
+      } else {
+        this.countdownTimeout = 0
+        this.setState({ warmup: true, countDown: sec })
+        setTimeout(finishFunc, 1000) // do the finish on the next tick
+      }
+    }
+    if (this.countdownTimeout) clearTimeout(this.countdownTimeout) // if users clicks again on the redo button within the coundown time
+    counter(seconds)
   }
 
   onIntroEnd() {
@@ -2416,9 +2426,6 @@ class Undebate extends React.Component {
       left,
       preambleAgreed,
     } = this.state
-
-    // puts a stop to recording with the phone in a portrait orientation
-    this.renderPortraitRecordingWarning(browserConfig, isRecording, isPortraitPhoneRecording)
 
     const getIntroStyle = name =>
       Object.assign({}, stylesSet && { transition: IntroTransition }, introStyle[name], intro && introSeatStyle[name])
