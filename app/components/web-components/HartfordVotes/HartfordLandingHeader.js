@@ -6,7 +6,7 @@ const styles = {
   header: {
     width: '100vw',
     backgroundColor: 'pink',
-    height: '88vh',
+    height: 'calc( 100vh - 3em )',
     borderBox: 'box-sizing',
 
     //grid stuff

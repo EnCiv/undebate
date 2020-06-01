@@ -1,23 +1,98 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import injectSheet from 'react-jss'
 import cx from 'classnames'
+import Icon from '../../lib/icon'
 
 const styles = {
   menu: {
     width: '100vw',
+    fontSize: '1em',
+    color: 'white',
+    boxSizing: 'border-box',
     textAlign: 'center',
     backgroundColor: 'blue',
-    height: '12vh',
-    '@media only screen and (max-width:600px)': {
-      width: '12vh',
+    paddingTop: '1em',
+    height: '3em',
+    //phones
+    '@media only screen and (max-device-width:600px)': {
+      width: '3em',
+      backgroundColor: 'white',
+    },
+  },
+  links: {
+    listStyle: 'none',
+    padding: '0px',
+    margin: '0px',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+
+    //phones
+    '@media only screen and (max-device-width:600px)': {
+      color: 'black',
+      flexDirection: 'column',
+      textAlign: 'left',
+      position: 'absolute',
+      left: '0px',
+      top: '3em',
+      backgroundColor: 'white',
+    },
+  },
+  linkContents: {
+    '&+&': {
+      marginLeft: '6em',
+      '@media only screen and (max-device-width:600px)': {
+        marginLeft: '1em',
+      },
+    },
+    '@media only screen and (max-device-width:600px)': {
+      margin: '1em',
+    },
+  },
+  hamburger: {
+    fontSize: '1em',
+    border: 'none',
+    background: 'none',
+    color: 'black',
+    height: '1em',
+  },
+  smallscreen: {
+    display: 'none',
+    //phones
+    '@media only screen and (max-device-width:600px)': {
+      display: 'block',
+    },
+  },
+  largescreen: {
+    display: 'none',
+    //phones
+    '@media (min-device-width:601px)': {
+      display: 'block',
     },
   },
 }
 //include logos in here for portrait mode rendering as well
 let HartfordLandingMenu = ({ classes }) => {
+  const [isOpen, toggleMenu] = useState(false)
+
+  const links = (
+    <ul className={classes.links}>
+      <li className={classes.linkContents}>Find your district</li>
+      <li className={classes.linkContents}>FAQs</li>
+      <li className={classes.linkContents}>How & Where To Vote</li>
+      <li className={classes.linkContents}>Contact Us</li>
+    </ul>
+  )
   return (
     <>
-      <nav className={classes.menu}></nav>
+      <nav className={cx(classes.menu, classes.smallscreen)}>
+        <button className={classes.hamburger} onClick={() => toggleMenu(!isOpen)}>
+          <Icon icon={'bars'} />
+        </button>
+        {isOpen && links}
+      </nav>
+
+      <nav className={cx(classes.menu, classes.largescreen)}>{links}</nav>
     </>
   )
 }
