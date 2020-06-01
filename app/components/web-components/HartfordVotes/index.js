@@ -3,9 +3,11 @@ import injectSheet from 'react-jss'
 import cx from 'classnames'
 import HartfordLandingHeader from './HartfordLandingHeader'
 import HartfordCandidatesConversations from './HartfordCandidatesConversations'
+import HartfordLandingMenu from './HartfordLandingMenu'
 
 const styles = {
   landingPage: {
+    fontSize: '1.5rem',
     width: '100vw',
     textAlign: 'center',
     height: '200vh',
@@ -15,6 +17,7 @@ const styles = {
 let HartfordVotes = ({ classes }) => {
   return (
     <div className={classes.landingPage}>
+      <HartfordLandingMenu />
       <HartfordLandingHeader />
       <HartfordCandidatesConversations />
     </div>

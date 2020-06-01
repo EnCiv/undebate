@@ -12,7 +12,11 @@ const styles = {
 }
 
 let HartfordCandidatesConversations = ({ classes }) => {
-  return <main className={classes.candidatesConversations}></main>
+  return (
+    <>
+      <main className={classes.candidatesConversations}></main>
+    </>
+  )
 }
 HartfordCandidatesConversations = injectSheet(styles)(HartfordCandidatesConversations)
 export default HartfordCandidatesConversations
