@@ -6,7 +6,7 @@ const styles = {
   header: {
     width: '100vw',
     backgroundColor: 'pink',
-    height: 'calc( 100vh - 3em )',
+    height: 'calc( 100vh - 3.5em )',
     borderBox: 'box-sizing',
 
     //grid stuff
@@ -20,12 +20,14 @@ const styles = {
     ". questions questions questions questions"`,
   },
   pageTitle: {
+    fontSize: '3em',
     gridArea: 'page-title',
     textAlign: 'left',
     margin: 0,
     padding: '1em 0em 0em 1em',
   },
   subTitle: {
+    fontSize: '2.5em',
     gridArea: 'sub-title',
     paddingRight: '1em',
     textAlign: 'right',
@@ -43,6 +45,7 @@ const styles = {
     border: '2px solid red',
   },
   questions: {
+    fontSize: '2em',
     textAlign: 'right',
     border: '2px solid blue',
     boxSizing: 'border-box',

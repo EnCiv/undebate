@@ -12,10 +12,10 @@ const styles = {
     textAlign: 'center',
     backgroundColor: 'blue',
     paddingTop: '1em',
-    height: '3em',
+    height: '3.5em',
     //phones
     '@media only screen and (max-device-width:600px)': {
-      width: '3em',
+      width: '3.5em',
       backgroundColor: 'white',
     },
   },
@@ -29,12 +29,14 @@ const styles = {
 
     //phones
     '@media only screen and (max-device-width:600px)': {
+      fontSize: '2em',
       color: 'black',
       flexDirection: 'column',
+      width: '100vw',
       textAlign: 'left',
       position: 'absolute',
       left: '0px',
-      top: '3em',
+      top: '1.75em',
       backgroundColor: 'white',
     },
   },
@@ -50,7 +52,7 @@ const styles = {
     },
   },
   hamburger: {
-    fontSize: '1em',
+    fontSize: '1.5em',
     border: 'none',
     background: 'none',
     color: 'black',
