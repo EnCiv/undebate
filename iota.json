@@ -145,6 +145,7 @@
     },
     "webComponent": {
       "webComponent": "Undebate",
+      "instructionLink": "https://docs.google.com/document/d/1fORs9PlLss9azlsnf0A0lxFoOzDQJ9RJ-zNRZ583SVo/edit?usp=sharing",
       "participants": {},
       "opening": {
         "line1": "Thank you for helping us create a mock candidate conversation.",
