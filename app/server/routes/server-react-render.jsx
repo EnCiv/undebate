@@ -46,10 +46,9 @@ function serverReactRender(req, res, next) {
             <html>
                 <head>
                     <meta charSet="UTF-8"/>
-                    <title>Candidate Conversation</title>
+                    <title>${props.iota.subject || 'Candidate Conversations'}</title>
                     <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
                     <meta name='viewport' content='width=device-width, maximum-scale=1.0, initial-scale=1.0' />
-
                     <link rel='icon' type='image.png' href='/assets/images/favicon-16x16.png' sizes='16x16'/>
                     <link rel='icon' type='image/png' href='/assets/images/favicon-32x32.png' sizes='32x32'/>
                     <link rel="apple-touch-icon" sizes="180x180"  href="/assets/images/apple-touch-icon.png" />
