@@ -7,7 +7,10 @@ import HartfordLandingMenu from './HartfordLandingMenu'
 
 const styles = {
   landingPage: {
+    fontFamily: 'Libre Franklin',
     fontSize: '1.5rem',
+    wordSpacing: '0.3em',
+    letterSpacing: '0.05em',
     width: '100vw',
     textAlign: 'center',
     height: '200vh',

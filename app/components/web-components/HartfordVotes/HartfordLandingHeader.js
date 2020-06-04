@@ -65,8 +65,7 @@ let HartfordLandingHeader = ({ classes }) => {
       <div className={classes.headerImages}>{/* header images*/}</div>
       <h2 className={classes.subTitle}>Connecticut State Senators and State Representatives for the Hartford area</h2>
       <h3 className={classes.questions}>
-        Have questions for the candidates? {'->'}
-        <button>Click here to ask Questions</button>
+        Have questions for the candidates? → <button>Click here to ask Questions</button>
       </h3>
     </header>
   )
