@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
-import injectSheet from 'react-jss'
+import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
 const container_width = '100%'
 
-const styles = {
+const useStyles = createUseStyles({
   tabbedContainer: {
     width: container_width,
   },
@@ -66,7 +66,7 @@ const styles = {
     },
   },
   //TODO define styles that make certain things display none if in mobile and vice versa for tab labels
-}
+})
 
 /**
  * tabs and contents is an array of objects
@@ -103,7 +103,8 @@ const makeTabs = (tabs_and_contents, action, classes) => {
   return { drop_down_menu, tab_label_buttons }
 }
 
-let TabbedContainer = ({ classes, tabs }) => {
+const TabbedContainer = ({ tabs }) => {
+  const classes = useStyles()
   let [selectedTab, changeTab] = useState(0)
   let tabRow = makeTabs(tabs, changeTab, classes)
   //TODO make it so that both options are returned for tabRow
@@ -131,5 +132,5 @@ let TabbedContainer = ({ classes, tabs }) => {
     </div>
   )
 }
-TabbedContainer = injectSheet(styles)(TabbedContainer)
+
 export default TabbedContainer

@@ -1,23 +1,23 @@
 import React from 'react'
-import injectSheet from 'react-jss'
+import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
 import HartfordLandingHeader from './HartfordLandingHeader'
 import HartfordCandidatesConversations from './HartfordCandidatesConversations'
 import HartfordLandingMenu from './HartfordLandingMenu'
 
-const styles = {
+const useStyles = createUseStyles({
   landingPage: {
     fontFamily: 'Libre Franklin',
     fontSize: '1.5rem',
     wordSpacing: '0.3em',
-    letterSpacing: '0.05em',
+    letterSpacing: '0.01em',
     width: '100vw',
     textAlign: 'center',
-    height: '200vh',
   },
-}
+})
 
-let HartfordVotes = ({ classes }) => {
+const HartfordVotes = () => {
+  const classes = useStyles()
   return (
     <div className={classes.landingPage}>
       <HartfordLandingMenu />
@@ -27,5 +27,4 @@ let HartfordVotes = ({ classes }) => {
   )
 }
 
-HartfordVotes = injectSheet(styles)(HartfordVotes)
 export default HartfordVotes

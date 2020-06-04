@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import injectSheet from 'react-jss'
+import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
 import Icon from '../../lib/icon'
 
-const styles = {
+const useStyles = createUseStyles({
   menu: {
     width: '100vw',
     fontSize: '1em',
@@ -72,9 +72,10 @@ const styles = {
       display: 'block',
     },
   },
-}
+})
 //include logos in here for portrait mode rendering as well
-let HartfordLandingMenu = ({ classes }) => {
+const HartfordLandingMenu = () => {
+  const classes = useStyles()
   const [isOpen, toggleMenu] = useState(false)
 
   const links = (
@@ -98,5 +99,5 @@ let HartfordLandingMenu = ({ classes }) => {
     </>
   )
 }
-HartfordLandingMenu = injectSheet(styles)(HartfordLandingMenu)
+
 export default HartfordLandingMenu
