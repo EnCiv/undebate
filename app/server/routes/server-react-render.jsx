@@ -46,7 +46,7 @@ function serverReactRender(req, res, next) {
             <html>
                 <head>
                     <meta charSet="UTF-8"/>
-                    <title>${props.iota.subject || 'Candidate Conversations'}</title>
+                    <title>${(props.iota && props.iota.subject) || 'Candidate Conversations'}</title>
                     <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
                     <meta name='viewport' content='width=device-width, maximum-scale=1.0, initial-scale=1.0' />
                     <link rel='icon' type='image.png' href='/assets/images/favicon-16x16.png' sizes='16x16'/>
