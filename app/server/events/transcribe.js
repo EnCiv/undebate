@@ -1,13 +1,12 @@
-import Transcribe from '../../models/transcribe'
+import Transcribe from '../../models/iota'
 import serverEvents from './index'
 import speech from '@google-cloud/speech'
 import https from 'https'
 import fs from 'fs'
-
-async function notifyOfNewRecording(transcribe) {
-  logger.info('~~~~~~~~~~~~~~~~', transcribe)
-  const piece = await Transcribe.findOne({ _id: Transcribe.ObjectID(transcribe._id) })
-  let bite = piece.component.participant.speaking[1]
+// add insert
+async function notifyOfNewRecording(participantIota) {
+  logger.info('~~~~~~~~~~~~~~~~', participantIota)
+  let bite = participantIota.component.participant.speaking[1]
   let conv = bite.replace('.mp4', '.wav')
   let file = fs.createWriteStream('file.wav', 'base64')
   let request = https.get(conv, function(resp) {
@@ -41,9 +40,12 @@ async function notifyOfNewRecording(transcribe) {
         logger.info(`Transcription: ${transcription}`);
         let info = response.results
             .map(result => result.alternatives[0].words)*/
-    let info2 = JSON.stringify(response.results[0].alternatives[0])
+    let info2 = response.results[0].alternatives[0]
     logger.info('info2', info2)
-    await Transcribe.updateOne({ _id: Transcribe.ObjectID(transcribe._id) }, { $set: { words: info2 } })
+
+    //TODO:
+    //create a new iota and add the words object vvv
+    await Transcribe.create({ _id: Transcribe.ObjectID(participantIota._id) }, { $set: { words: info2 } })
   }
 }
-serverEvents.on(serverEvents.eNames.RecordingCreated, notifyOfNewRecording)
+serverEvents.on(serverEvents.eNames.ParticipantCreated, notifyOfNewRecording)
