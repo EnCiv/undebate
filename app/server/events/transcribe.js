@@ -13,12 +13,12 @@ async function notifyOfNewRecording(participantIota) {
   logger.info('~~~~~~~~~~~~~~~~', participantIota)
   let bite = participantIota.component.participant.speaking[1]
   let conv = bite.replace('.mp4', '.wav')
-  let file = fs.createWriteStream('../../../file.wav', 'base64')
+  let file = fs.createWriteStream('file.wav', 'base64')
   let request = https.get(conv, function(resp) {
     logger.info('Status code is:' + Object.getOwnPropertyNames(resp))
     resp.pipe(file)
     file.on('finish', function() {
-      const file2 = fs.readFileSync('../../../file.wav')
+      const file2 = fs.readFileSync('file.wav')
       let audioBase = file2.toString('base64')
       main(audioBase).catch(console.error)
     })
