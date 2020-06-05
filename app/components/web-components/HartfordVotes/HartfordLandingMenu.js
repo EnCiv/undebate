@@ -78,25 +78,46 @@ const HartfordLandingMenu = () => {
   const classes = useStyles()
   const [isOpen, toggleMenu] = useState(false)
 
+  const arrayOfLinks = [
+    {
+      display: 'Find your district',
+      key: 'hartford-find-district',
+    },
+    {
+      display: 'FAQs',
+      key: 'hartford-faq',
+    },
+    {
+      display: 'How & Where To Vote',
+      key: 'hartford-how-where-vote',
+    },
+    {
+      display: 'Contact Us',
+      key: 'hartford-contact',
+    },
+  ]
   const links = (
     <ul className={classes.links}>
-      <li className={classes.linkContents}>Find your district</li>
-      <li className={classes.linkContents}>FAQs</li>
-      <li className={classes.linkContents}>How & Where To Vote</li>
-      <li className={classes.linkContents}>Contact Us</li>
+      {arrayOfLinks.map(link => (
+        <li key={link.key} className={classes.linkContents}>
+          <a>{link.display}</a>
+        </li>
+      ))}
     </ul>
   )
   return (
-    <>
-      <nav className={cx(classes.menu, classes.smallscreen)}>
+    <div>
+      <nav key="smallscreen-hartford-nav" className={cx(classes.menu, classes.smallscreen)}>
         <button className={classes.hamburger} onClick={() => toggleMenu(!isOpen)}>
           <Icon icon={'bars'} />
         </button>
         {isOpen && links}
       </nav>
 
-      <nav className={cx(classes.menu, classes.largescreen)}>{links}</nav>
-    </>
+      <nav key="largescreen-hartford-nav" className={cx(classes.menu, classes.largescreen)}>
+        {links}
+      </nav>
+    </div>
   )
 }
 

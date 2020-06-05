@@ -19,10 +19,10 @@ const useStyles = createUseStyles({
 const HartfordVotes = () => {
   const classes = useStyles()
   return (
-    <div className={classes.landingPage}>
-      <HartfordLandingMenu />
-      <HartfordLandingHeader />
-      <HartfordCandidatesConversations />
+    <div key="hartfordLanding" className={classes.landingPage}>
+      <HartfordLandingMenu key="hartford-menu" />
+      <HartfordLandingHeader key="hartford-header" />
+      <HartfordCandidatesConversations key="hartford-candidate-conversations" />
     </div>
   )
 }
