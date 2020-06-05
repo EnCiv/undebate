@@ -75,21 +75,23 @@ const useStyles = createUseStyles({
 const HartfordLandingHeader = () => {
   const classes = useStyles()
   return (
-    <header className={classes.header}>
-      <div className={classes.logos_hartford}>{/*logos*/}</div>
-      <h1 className={classes.pageTitle}>Hartford Votes ~ Vota Coalition</h1>
-      <h2 className={classes.subTitle}>
-        Meet the Candidates for CT State Senator and State Representative for Hartford
-      </h2>
-      {/* TODO make it so that the logos disappear in mobile view and/or go up to Hartford landing menu*/}
-      <div className={classes.logos_enciv}>{/*logos*/}</div>
-      <div className={classes.headerImages}>
-        {/* header images*/}
-        <h3 className={classes.questions}>
-          Have questions for the candidates? → <button>Click here to ask Questions</button>
-        </h3>
-      </div>
-    </header>
+    <>
+      <header className={classes.header}>
+        <div className={classes.logos_hartford}>{/*logos*/}</div>
+        <h1 className={classes.pageTitle}>Hartford Votes ~ Vota Coalition</h1>
+        <h2 className={classes.subTitle}>
+          Meet the Candidates for CT State Senator and State Representative for Hartford
+        </h2>
+        {/* TODO make it so that the logos disappear in mobile view and/or go up to Hartford landing menu*/}
+        <div className={classes.logos_enciv}>{/*logos*/}</div>
+        <div className={classes.headerImages}>
+          {/* header images*/}
+          <h3 className={classes.questions}>
+            Have questions for the candidates? → <button>Click here to ask Questions</button>
+          </h3>
+        </div>
+      </header>
+    </>
   )
 }
 
