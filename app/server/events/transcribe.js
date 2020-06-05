@@ -5,7 +5,10 @@ import https from 'https'
 import fs from 'fs'
 // add insert
 async function notifyOfNewRecording(participantIota) {
+  participantIota._id = Iota.ObjectID()
   participantIota.subject = 'Speech to text for: ' + participantIota.subject
+  participantIota.description = 'Transcription for: ' + participantIota.description
+  participantIota.component.component = 'Transcription'
   participantIota.component.transcription = []
   logger.info('~~~~~~~~~~~~~~~~', participantIota)
   let bite = participantIota.component.participant.speaking[1]
@@ -40,7 +43,10 @@ async function notifyOfNewRecording(participantIota) {
     logger.info('info2', info2)
 
     participantIota.component.transcription.push(info2)
-    await Iota.create(participantIota)
+    logger.info('testing push', participantIota)
+    //the two lines below will be executed after looping
+    delete participantIota.component.participant
+    await Iota.insertOne(participantIota)
   }
 }
 serverEvents.on(serverEvents.eNames.ParticipantCreated, notifyOfNewRecording)
