@@ -118,7 +118,6 @@ const TabbedContainer = ({ tabs }) => {
     prevSelectedTabRef.current = selectedTab
   }, [selectedTab])
   const prevSelectedTab = prevSelectedTabRef.current
-  console.info('render')
   return (
     <div>
       {tabRow.tab_label_buttons}
