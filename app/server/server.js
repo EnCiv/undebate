@@ -19,7 +19,6 @@ import serverReactRender from './routes/server-react-render'
 
 import User from '../models/user'
 import Iota from '../models/iota'
-import Transcribe from '../models/transcribe'
 import helmet from 'helmet'
 import compression from 'compression'
 
@@ -48,7 +47,7 @@ class HttpServer extends EventEmitter {
 
       .on('request', printIt)
 
-      .on('response', function (res) {
+      .on('response', function(res) {
         printIt(res.req, res)
       })
 
@@ -235,13 +234,13 @@ class HttpServer extends EventEmitter {
     this.app.get('/doc/:mddoc', (req, res, next) => {
       fs.createReadStream(req.params.mddoc)
         .on('error', next)
-        .on('data', function (data) {
+        .on('data', function(data) {
           if (!this.data) {
             this.data = ''
           }
           this.data += data.toString()
         })
-        .on('end', function () {
+        .on('end', function() {
           res.header({ 'Content-Type': 'text/markdown; charset=UTF-8' })
           res.send(this.data)
         })
