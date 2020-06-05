@@ -4,6 +4,7 @@ import cx from 'classnames'
 import HartfordLandingHeader from './HartfordLandingHeader'
 import HartfordCandidatesConversations from './HartfordCandidatesConversations'
 import HartfordLandingMenu from './HartfordLandingMenu'
+import ReactShadowRoot from 'react-shadow-root'
 
 const useStyles = createUseStyles({
   landingPage: {
@@ -19,11 +20,13 @@ const useStyles = createUseStyles({
 const HartfordVotes = () => {
   const classes = useStyles()
   return (
-    <div key="hartfordLanding" className={classes.landingPage}>
-      <HartfordLandingMenu key="hartford-menu" />
-      <HartfordLandingHeader key="hartford-header" />
-      <HartfordCandidatesConversations key="hartford-candidate-conversations" />
-    </div>
+    <hartford-dom key="hartfordLanding" className={classes.landingPage}>
+      <ReactShadowRoot>
+        <HartfordLandingMenu key="hartford-menu" />
+        <HartfordLandingHeader key="hartford-header" />
+        <HartfordCandidatesConversations key="hartford-candidate-conversations" />
+      </ReactShadowRoot>
+    </hartford-dom>
   )
 }
 
