@@ -11,10 +11,6 @@ const useStyles = createUseStyles({
     fontSize: '1.5rem',
     wordSpacing: '0.3em',
     letterSpacing: '0.01em',
-    boxSizing: 'border-box',
-    '& *': {
-      boxSizing: 'border-box',
-    },
     width: '100vw',
     textAlign: 'center',
   },
@@ -22,7 +18,6 @@ const useStyles = createUseStyles({
 
 const HartfordVotes = () => {
   const classes = useStyles()
-
   return (
     <hartford-dom key="hartfordLanding">
       <div className={classes.landingPage}>

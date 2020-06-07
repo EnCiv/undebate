@@ -8,22 +8,23 @@ const useStyles = createUseStyles({
     backgroundColor: 'pink',
     height: 'calc( 100vh - 3.5em )',
     boxSizing: 'border-box',
+    padding: '1em 0em',
 
     //grid stuff
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
-    gridTemplateRows: '1fr 1fr 5fr',
+    gridTemplateColumns: '1fr 2fr 1fr 2fr 1fr',
+    gridTemplateRows: '1fr 1fr 10fr',
     gridTemplateAreas: `
     "logos-hartford page-title page-title page-title logos-enciv"
     "logos-hartford sub-title sub-title sub-title logos-enciv"
-    "images images images images images"`,
+    ". images images images ."`,
   },
   pageTitle: {
+    alignSelf: 'center',
     fontSize: '3em',
     gridArea: 'page-title',
     textAlign: 'center',
     margin: '0px',
-    padding: '0.8em 0.2em 0em 0.2em',
   },
   subTitle: {
     fontSize: '1.5em',
@@ -51,7 +52,7 @@ const useStyles = createUseStyles({
     //for overlaying questions
     display: 'grid',
     gridTemplateColumns: '1fr 3fr 3fr',
-    gridTemplateRows: '3fr 3fr 1fr',
+    gridTemplateRows: '1fr 3fr 1fr',
     gridTemplateAreas: `
     ". . ."
     ". . ."
@@ -62,9 +63,11 @@ const useStyles = createUseStyles({
     border: '2px solid red',
   },
   questions: {
-    fontSize: '2em',
+    alignSelf: 'center',
+    fontSize: '1.3em',
     textAlign: 'right',
     border: '2px solid blue',
+    margin: '0px',
     boxSizing: 'border-box',
     gridArea: 'questions',
     width: '100%',

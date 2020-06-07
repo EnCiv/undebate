@@ -14,23 +14,54 @@ const useStyles = createUseStyles({
 
     height: 'min-content',
     '& h3': {
-      margin: '1em',
-      fontSize: '3.5em',
+      margin: 'auto 0',
+      fontSize: '2.5em',
     },
   },
   conversationsHeader: {
+    padding: 0,
     display: 'flex',
+    border: '2px solid blue',
+    '& > *': {
+      border: '2px solid blue',
+    },
     boxSizing: 'border-box',
     margin: '0px',
-    width: '90vw',
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   electionDates: {
-    width: 'max-content',
+    margin: 'auto 1rem auto auto',
   },
   findDistrict: {
-    marginBottom: '1em',
+    border: '2px solid blue',
+    width: '100%',
+    padding: '1em',
+    margin: '2em 0',
+    '& > *': {
+      boxShadow: '0.14em 0.15em .2em rgba(0,0,0,0.2)',
+    },
+    '& > #votersAddress': {
+      height: '2.3em',
+      border: 'none',
+      marginRight: '1em',
+      width: '60vw',
+      '@media only screen and (max-device-width: 600px)': {
+        width: '100%',
+        marginBottom: '0.3em',
+      },
+    },
+    '& > button': {
+      height: '2.3em',
+      border: '3px solid white',
+      width: '30vw',
+      padding: '0.4em',
+      margin: 0,
+      '@media only screen and (max-device-width: 600px)': {
+        width: '100%',
+      },
+    },
   },
 })
 
@@ -46,10 +77,14 @@ const HartfordCandidatesConversations = () => {
             <h4>General Election: 11/03/2020</h4>
           </div>
         </div>
+
+        {/* search for district */}
         <form className={classes.findDistrict}>
           <input type="text" name="votersAddress" id="votersAddress" />
           <button> Find your district</button>
         </form>
+
+        {/* districts in tabs */}
         <TabbedContainer
           tabs={[
             {

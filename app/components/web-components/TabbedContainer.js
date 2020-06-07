@@ -110,6 +110,7 @@ const TabbedContainer = ({ tabs }) => {
   //TODO make it so that both options are returned for tabRow
   const renderedTab = tabs[selectedTab].contents
   const prevSelectedTabRef = useRef(selectedTab + 1)
+
   useEffect(() => {
     console.log(document.getElementById(`label_for_tab_${selectedTab}`))
     console.log(document.getElementById(`label_for_tab_${prevSelectedTab}`))
@@ -118,6 +119,7 @@ const TabbedContainer = ({ tabs }) => {
     prevSelectedTabRef.current = selectedTab
   }, [selectedTab])
   const prevSelectedTab = prevSelectedTabRef.current
+  console.info('render')
   return (
     <div>
       {tabRow.tab_label_buttons}
