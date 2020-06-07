@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import ReactDOM from 'react-dom'
 import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
+import { useMode } from './phone-portrait-context'
 
 const useStyles = createUseStyles({
   header: {
@@ -18,6 +20,16 @@ const useStyles = createUseStyles({
     "logos-hartford page-title page-title page-title logos-enciv"
     "logos-hartford sub-title sub-title sub-title logos-enciv"
     ". images images images ."`,
+
+    '@media only screen and (max-device-width: 600px)': {
+      gridTemplateColumns: '1fr 2fr 1fr 2fr 1fr',
+      gridTemplateRows: '1fr 1fr 6fr 4fr',
+      gridTemplateAreas: `
+    "logos-hartford page-title page-title page-title logos-enciv"
+    "logos-hartford sub-title sub-title sub-title logos-enciv"
+    "images images images images images"
+    "questions questions questions questions questions"`,
+    },
   },
   pageTitle: {
     alignSelf: 'center',
@@ -57,6 +69,13 @@ const useStyles = createUseStyles({
     ". . ."
     ". . ."
     ". questions questions"`,
+    '@media only screen and (max-device-width: 600px)': {
+      position: 'relative',
+      display: 'block',
+      gridTemplateColumns: 0,
+      gridTemplateRows: 0,
+      gridTemplateAreas: 0,
+    },
 
     boxSizing: 'border-box',
     width: '100%',
@@ -77,22 +96,29 @@ const useStyles = createUseStyles({
 
 const HartfordLandingHeader = () => {
   const classes = useStyles()
+  let isPortrait = useMode()
+
+  const question = (
+    <h3 className={classes.questions}>
+      Have questions for the candidates? → <button>Click here to ask Questions</button>
+    </h3>
+  )
+  const enciv_logos = <div className={classes.logos_enciv}>{/*logos*/}</div>
+  const hartford_logos = <div className={classes.logos_hartford}>{/*logos*/}</div>
   return (
     <>
-      <header className={classes.header}>
-        <div className={classes.logos_hartford}>{/*logos*/}</div>
+      <header className={classes.header} id="landing-header">
+        {isPortrait ? null : hartford_logos}
         <h1 className={classes.pageTitle}>Hartford Votes ~ Vota Coalition</h1>
         <h2 className={classes.subTitle}>
           Meet the Candidates for CT State Senator and State Representative for Hartford
         </h2>
-        {/* TODO make it so that the logos disappear in mobile view and/or go up to Hartford landing menu*/}
-        <div className={classes.logos_enciv}>{/*logos*/}</div>
+        {isPortrait ? null : enciv_logos}
         <div className={classes.headerImages}>
           {/* header images*/}
-          <h3 className={classes.questions}>
-            Have questions for the candidates? → <button>Click here to ask Questions</button>
-          </h3>
+          {isPortrait ? null : question}
         </div>
+        {isPortrait ? question : null}
       </header>
     </>
   )

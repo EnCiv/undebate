@@ -13,10 +13,6 @@ const useStyles = createUseStyles({
     backgroundColor: 'lightgray',
 
     height: 'min-content',
-    '& h3': {
-      margin: 'auto 0',
-      fontSize: '2.5em',
-    },
   },
   conversationsHeader: {
     padding: 0,
@@ -24,15 +20,28 @@ const useStyles = createUseStyles({
     border: '2px solid blue',
     '& > *': {
       border: '2px solid blue',
+      '@media only screen and (max-device-width: 600px)': { textAlign: 'left', paddingLeft: '4vw' },
+    },
+    '& h3': {
+      margin: 'auto 0',
+      fontSize: '2.5em',
     },
     boxSizing: 'border-box',
     margin: '0px',
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    '@media only screen and (max-device-width: 600px)': {
+      flexDirection: 'column',
+    },
   },
   electionDates: {
+    fontSize: '1.2em',
+    fontWeight: '100',
     margin: 'auto 1rem auto auto',
+    '@media only screen and (max-device-width: 600px)': {
+      margin: 0,
+    },
   },
   findDistrict: {
     border: '2px solid blue',

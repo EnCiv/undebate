@@ -4,6 +4,7 @@ import cx from 'classnames'
 import HartfordLandingHeader from './HartfordLandingHeader'
 import HartfordCandidatesConversations from './HartfordCandidatesConversations'
 import HartfordLandingMenu from './HartfordLandingMenu'
+import { ModeProvider } from './phone-portrait-context'
 
 const useStyles = createUseStyles({
   landingPage: {
@@ -25,11 +26,13 @@ const HartfordVotes = () => {
 
   return (
     <hartford-dom key="hartfordLanding">
-      <div className={classes.landingPage}>
-        <HartfordLandingMenu key="hartford-menu" />
-        <HartfordLandingHeader key="hartford-header" />
-        <HartfordCandidatesConversations key="hartford-candidate-conversations" />
-      </div>
+      <ModeProvider>
+        <div className={classes.landingPage}>
+          <HartfordLandingMenu key="hartford-menu" />
+          <HartfordLandingHeader key="hartford-header" />
+          <HartfordCandidatesConversations key="hartford-candidate-conversations" />
+        </div>
+      </ModeProvider>
     </hartford-dom>
   )
 }

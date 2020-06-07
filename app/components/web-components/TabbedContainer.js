@@ -74,7 +74,7 @@ const useStyles = createUseStyles({
  * action is reserved for a hook or other function
  * that allows the display of the contents
  */
-const makeTabs = (tabs_and_contents, action, classes) => {
+const makeTabs = (tabs_and_contents, action, classes, style) => {
   //TODO make it so that it returns both this and a version that is a drop down menu
   const drop_down_menu = (
     <form className={cx(classes.drop_down_menu, classes.smallscreen)}>
@@ -93,7 +93,12 @@ const makeTabs = (tabs_and_contents, action, classes) => {
     <div className={cx(classes.tab_label_bar, classes.largescreen)}>
       {tabs_and_contents.map((tab, index) => {
         return (
-          <button id={`label_for_tab_${index}`} className={classes.tab_label} onClick={() => action(index)}>
+          <button
+            id={`label_for_tab_${index}`}
+            className={classes.tab_label}
+            onClick={() => action(index)}
+            style={{ width: `calc(100%/${tabs_and_contents.length})` }}
+          >
             {tab.name}
           </button>
         )
@@ -124,12 +129,6 @@ const TabbedContainer = ({ tabs }) => {
     <div>
       {tabRow.tab_label_buttons}
       {tabRow.drop_down_menu}
-      {document.getElementsByClassName(classes.tab_label).forEach(element => {
-        element.style.width = `calc(100% / ${tabs.length})`
-      })}
-      {document.getElementsByClassName(classes.selectedTab).forEach(element => {
-        element.style.width = `calc(100% / ${tabs.length})`
-      })}
       <div className={classes.tabContents}>{renderedTab}</div>
     </div>
   )
