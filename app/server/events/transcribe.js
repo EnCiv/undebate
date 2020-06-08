@@ -3,7 +3,7 @@ import serverEvents from './index'
 import speech from '@google-cloud/speech'
 import https from 'https'
 import fs from 'fs'
-// add insert
+
 async function notifyOfNewRecording(participantIota) {
   participantIota._id = Iota.ObjectID()
   participantIota.subject = 'Speech to text for: ' + participantIota.subject
