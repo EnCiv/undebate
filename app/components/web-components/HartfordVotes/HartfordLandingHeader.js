@@ -144,7 +144,10 @@ const HartfordLandingHeader = () => {
           Meet the Candidates for CT State Senator and State Representative for Hartford
         </h2>
         {isPortrait ? null : <EncivLogo />}
-        <div className={classes.headerImages}>
+        <div
+          title="banner depicting flag of Hartford CT in center straddled by pictures of two government buildings"
+          className={classes.headerImages}
+        >
           <div>{isPortrait ? null : question}</div>
         </div>
         {isPortrait ? question : null}
