@@ -26,8 +26,8 @@ const useStyles = createUseStyles({
       gridTemplateColumns: '1fr 2fr 1fr 2fr 1fr',
       gridTemplateRows: '1fr 1fr 6fr 4fr',
       gridTemplateAreas: `
-    "logos-hartford page-title page-title page-title logos-enciv"
-    "logos-hartford sub-title sub-title sub-title logos-enciv"
+    "page-title page-title page-title page-title page-title"
+    "sub-title sub-title sub-title sub-title sub-title"
     "images images images images images"
     "questions questions questions questions questions"`,
     },
@@ -71,11 +71,16 @@ const useStyles = createUseStyles({
         height: '100%',
         width: '100%',
       },
+      // TODO media query for tall aspect ratios that are not in max width 600px
       border: '2px solid red',
       justifyContent: 'center',
       margin: 'auto',
-      width: 'calc(( 83vh - 3.5em ) * 1.8)',
-      height: 'calc(83vh - 3.5em)',
+      '@media (min-aspect-ratio: 19/13)': {
+        width: 'calc(( 83vh - 3.5em ) * 1.8)',
+        height: 'calc(83vh - 3.5em)',
+      },
+      width: '100%',
+      height: 'calc(100vw * 0.55)',
     },
     border: '2px solid green',
     '& img': {
@@ -84,12 +89,14 @@ const useStyles = createUseStyles({
       zIndex: 2,
     },
     background:
-      'url(https://public-v2links.adobecc.com/10d56feb-0e4d-49df-772d-f0f2dc06d4c3/component?params=component_id%3Af204ba19-3e7d-4525-b84b-0713ef816196&params=version%3A0&token=1591719228_da39a3ee_1661a618f83196c652d57925c916ceff7f4e6f0a&api_key=CometServer1) top center no-repeat',
+      'url(https://public-v2links.adobecc.com/10d56feb-0e4d-49df-772d-f0f2dc06d4c3/component?params=component_id%3Af204ba19-3e7d-4525-b84b-0713ef816196&params=version%3A0&token=1591810205_da39a3ee_5e57139f87321207b07b73435e961bba2cc0e132&api_key=CometServer1) top center no-repeat',
     backgroundSize: 'contain',
     position: 'relative',
   },
   questions: {
     alignSelf: 'center',
+    color: 'white',
+    fontWeight: '200',
     fontSize: '1.3em',
     textAlign: 'right',
     border: '2px solid blue',
