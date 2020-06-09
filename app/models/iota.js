@@ -43,18 +43,39 @@ async function init() {
   try {
     await Iota.createIndexes([
       { key: { path: 1 }, name: 'path', unique: true, partialFilterExpression: { path: { $exists: true } } },
+      {
+        key: { parentId: 1, 'component.component': 1, _id: -1 },
+        name: 'children',
+        partialFilterExpression: { parentId: { $exists: true }, 'component.component': { $exists: true } },
+      },
     ])
     var count = await Iota.count()
     logger.info('Iota.init count', count)
-    if (!count && iota && iota.length) {
+    if (iota && iota.length) {
+      // convert object _id's to objects
       iota.forEach(i => {
         i._id = Iota.ObjectID(i._id.$oid)
-      }) // converge object _id's to objects
-      var writeResult = await Iota.insertMany(iota)
-      if (!writeResult || !writeResult.length) {
-        logger.error('Iota.init error initializing collection')
-      } else {
-        logger.info('Iota.init collection initialized with', writeResult.length, 'documents')
+      })
+      if (!count) {
+        var writeResult = await Iota.insertMany(iota)
+        if (!writeResult || !writeResult.length) {
+          logger.error('Iota.init error initializing collection')
+        } else {
+          logger.info('Iota.init collection initialized with', writeResult.length, 'documents')
+        }
+      } else if (process.env.NODE_ENV !== 'production') {
+        logger.info('Iota.init updating for development')
+        for await (const doc of iota) {
+          try {
+            const result = await Iota.replaceOne({ _id: doc._id }, doc, { upsert: true })
+            if (typeof result !== 'object' || result.length !== 1) {
+              logger.error('Iota.init result not ok', result, 'for', doc)
+            }
+          } catch (err) {
+            logger.error('Iota.init caught error trying to replaceOne for', err, 'doc was', doc)
+            throw err
+          }
+        }
       }
     }
   } catch (err) {

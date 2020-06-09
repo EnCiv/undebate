@@ -38,7 +38,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -53,7 +54,7 @@
     "subject": "Candidate Conversation",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -84,7 +85,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -119,7 +121,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         },
@@ -182,7 +185,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         },
@@ -253,7 +257,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         },
@@ -534,7 +539,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -936,7 +942,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -1143,7 +1150,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         },
@@ -1217,7 +1225,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -1305,7 +1314,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -1414,7 +1424,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -1543,7 +1554,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -1714,7 +1726,8 @@
               "4- What office you are running for"
             ],
             ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"]
+            ["Closing Remarks"],
+            ["Thank you"]
           ],
           "timeLimits": [10, 60, 60]
         }
@@ -1898,5 +1911,234 @@
       "webComponent": "Unpoll",
       "question": "What are the top questions that we should ask the U.S. Presidential candidates?"
     }
+  },
+  {
+    "_id": {
+      "$oid": "5ecd55eb7c213e044cbeebdf"
+    },
+    "component": {
+      "component": "MergeParticipants"
+    },
+    "webComponent": {
+      "webComponent": "CandidateConversation",
+      "closing": {
+        "thanks": "Thank You.",
+        "iframe": {
+          "src": "https://docs.google.com/forms/d/e/1FAIpQLSeh7kAVWpyjnSYmHhjfpjfalgznfDA_AF2xmrFB8ZzQj75Vyw/viewform?embedded=true",
+          "width": "640",
+          "height": "1511"
+        }
+      },
+      "shuffle": "bp_info_alphabetize",
+      "participants": {
+        "moderator": {
+          "name": "Sarah Rosier",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804991/5dfbd2cade08bc00174be9c2-0-speaking20191220T012308880Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804992/5dfbd2cade08bc00174be9c2-1-speaking20191220T012311425Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804993/5dfbd2cade08bc00174be9c2-2-speaking20191220T012312246Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804993/5dfbd2cade08bc00174be9c2-3-speaking20191220T012312981Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804995/5dfbd2cade08bc00174be9c2-4-speaking20191220T012313581Z.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804997/5dfbd2cade08bc00174be9c2-5-speaking20191220T012315245Z.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Name",
+              "2- City and State",
+              "3- One word to describe yourself",
+              "4- What office are you running for?"
+            ],
+            ["What do you love most about where you live?"],
+            ["What inspired you to run for office?"],
+            ["If elected, how will you know you that you've succeeded in this position?"],
+            ["Thank you!"]
+          ],
+          "timeLimits": [15, 30, 30, 30]
+        }
+      }
+    },
+    "path": "/country:us/state:us/president-of-the-world/2020-12-31",
+    "subject": "President of the World",
+    "description": "A Candidate Conversation President of the World, Election Date:2020-12-31",
+    "bp_info": {
+      "stage_id": "000001",
+      "election_date": "2020-12-31"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5ecd56347c213e044cbeebf3"
+    },
+    "component": {
+      "component": "UndebateCreator",
+      "participants": {
+        "moderator": {
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356978/5dfbd2cade08bc00174be9c2-0-speaking20200408T144249408Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356979/5dfbd2cade08bc00174be9c2-1-speaking20200408T144257711Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356980/5dfbd2cade08bc00174be9c2-2-speaking20200408T144259342Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356982/5dfbd2cade08bc00174be9c2-3-speaking20200408T144300057Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356985/5dfbd2cade08bc00174be9c2-4-speaking20200408T144302312Z.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356987/5dfbd2cade08bc00174be9c2-5-speaking20200408T144305156Z.mp4",
+          "name": "Sarah Rosier",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Name",
+              "2- City and State",
+              "3- One word to describe yourself",
+              "4- What office are you running for?"
+            ],
+            ["What do you love most about where you live?"],
+            ["What inspired you to run for office?"],
+            [
+              "1- Look into the camera while listening to the example speaker as your placeholder video is recorded",
+              "2- If elected, how will you know you that you've succeeded in this position?"
+            ],
+            ["Thank you!"]
+          ],
+          "timeLimits": [15, 30, 30, 30]
+        },
+        "audience1": {
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385606/5e41e44a19c15800177fad8b-0-speaking20200210T231647860Z_osr2mn.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385627/5e41e44a19c15800177fad8b-1-speaking20200210T231648772Z_c8kowz.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385643/5e41e44a19c15800177fad8b-2-speaking20200210T231649635Z_jaagja.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385666/5e41e44a19c15800177fad8b-3-speaking20200210T231650542Z_afvnxr.mp4"
+          ],
+          "name": "Adolf Gundersen",
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto,so_0,eo_6/v1581385689/5e41e44a19c15800177fad8b-0-listening20200210T231652250Z_fwq1dq.mp4"
+        },
+        "human": {
+          "listening": {
+            "round": 3,
+            "seat": "nextUp"
+          }
+        }
+      }
+    },
+    "webComponent": {
+      "webComponent": "Undebate",
+      "participants": {},
+      "opening": {
+        "line1": "Thank you for taking the lead in this <strong>new</strong> way to engage with voters",
+        "line2": "We want voters to learn about candidates in a more personal way, and candidates to have an easy way to reach voters",
+        "line3": "And we want to host Candidate Conversations for every election, every election season",
+        "line4": "So, we invite you to speak in this Candidate Conversation about:",
+        "subLine": "After you hit Begin, your browser may ask you to authorize the camera and mic for use by this application."
+      },
+      "closing": {
+        "thanks": "Thank You.",
+        "link": {
+          "name": "Your feedback would help us make this even better",
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeMNX1zEUAVuI3aZY9qreBfqMaXsS-yMLf7WYiylqVjHvoP2g/viewform"
+        },
+        "iframe": {
+          "src": "https://docs.google.com/forms/d/e/1FAIpQLSeMNX1zEUAVuI3aZY9qreBfqMaXsS-yMLf7WYiylqVjHvoP2g/viewform?embedded=true",
+          "width": 700,
+          "height": 1122
+        }
+      }
+    },
+    "path": "/country:us/state:us/president-of-the-world/2020-12-31-recorder-000001",
+    "subject": "President of the World",
+    "description": "A Candidate Conversation Recorder for: President of the World, Election Date:2020-12-31",
+    "bp_info": {
+      "office": "President of the World",
+      "party": null,
+      "candidate_stage_result_id": "000002",
+      "election_date": "2020-12-31",
+      "candidate_name": "John Doe",
+      "last_name": "Doe",
+      "first_name": "John",
+      "bp_url": null,
+      "profession": null,
+      "candidate_emails": ["john_doe@enciv.org"],
+      "person_emails": []
+    },
+    "parentId": "5ecd55eb7c213e044cbeebdf"
+  },
+  {
+    "_id": {
+      "$oid": "5ecd9c497c213e044cbf00fa"
+    },
+    "component": {
+      "component": "UndebateCreator",
+      "participants": {
+        "moderator": {
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356978/5dfbd2cade08bc00174be9c2-0-speaking20200408T144249408Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356979/5dfbd2cade08bc00174be9c2-1-speaking20200408T144257711Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356980/5dfbd2cade08bc00174be9c2-2-speaking20200408T144259342Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356982/5dfbd2cade08bc00174be9c2-3-speaking20200408T144300057Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356985/5dfbd2cade08bc00174be9c2-4-speaking20200408T144302312Z.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356987/5dfbd2cade08bc00174be9c2-5-speaking20200408T144305156Z.mp4",
+          "name": "Sarah Rosier",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Name",
+              "2- City and State",
+              "3- One word to describe yourself",
+              "4- What office are you running for?"
+            ],
+            ["What do you love most about where you live?"],
+            ["What inspired you to run for office?"],
+            [
+              "1- Look into the camera while listening to the example speaker as your placeholder video is recorded",
+              "2- If elected, how will you know you that you've succeeded in this position?"
+            ],
+            ["Thank you!"]
+          ],
+          "timeLimits": [15, 30, 30, 30]
+        },
+        "audience1": {
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385606/5e41e44a19c15800177fad8b-0-speaking20200210T231647860Z_osr2mn.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385627/5e41e44a19c15800177fad8b-1-speaking20200210T231648772Z_c8kowz.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385643/5e41e44a19c15800177fad8b-2-speaking20200210T231649635Z_jaagja.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385666/5e41e44a19c15800177fad8b-3-speaking20200210T231650542Z_afvnxr.mp4"
+          ],
+          "name": "Adolf Gundersen",
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto,so_0,eo_6/v1581385689/5e41e44a19c15800177fad8b-0-listening20200210T231652250Z_fwq1dq.mp4"
+        },
+        "human": {
+          "listening": {
+            "round": 3,
+            "seat": "nextUp"
+          }
+        }
+      }
+    },
+    "webComponent": {
+      "webComponent": "Undebate",
+      "participants": {},
+      "opening": {
+        "line1": "Thank you for taking the lead in this <strong>new</strong> way to engage with voters",
+        "line2": "We want voters to learn about candidates in a more personal way, and candidates to have an easy way to reach voters",
+        "line3": "And we want to host Candidate Conversations for every election, every election season",
+        "line4": "So, we invite you to speak in this Candidate Conversation about:",
+        "subLine": "After you hit Begin, your browser may ask you to authorize the camera and mic for use by this application."
+      },
+      "closing": {
+        "thanks": "Thank You.",
+        "link": {
+          "name": "Your feedback would help us make this even better",
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeMNX1zEUAVuI3aZY9qreBfqMaXsS-yMLf7WYiylqVjHvoP2g/viewform"
+        },
+        "iframe": {
+          "src": "https://docs.google.com/forms/d/e/1FAIpQLSeMNX1zEUAVuI3aZY9qreBfqMaXsS-yMLf7WYiylqVjHvoP2g/viewform?embedded=true",
+          "width": 700,
+          "height": 1122
+        }
+      }
+    },
+    "path": "/country:us/state:us/president-of-the-world/2020-12-31-recorder",
+    "subject": "President of the World",
+    "description": "A Candidate Conversation Recorder for: President of the World, Election Date:2020-12-31",
+    "parentId": "5ecd55eb7c213e044cbeebdf"
   }
 ]
