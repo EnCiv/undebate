@@ -10,13 +10,12 @@ const useStyles = createUseStyles({
     display: 'flex',
     flexDirection: 'row',
     '& img': {
-      height: '5vh',
+      height: '5vmin',
     },
     '& :nth-child(2)': {
       marginLeft: '2em',
     },
     '& :first-child': {
-      marginLeft: '-7em',
       marginTop: '2vh',
     },
   },
@@ -25,7 +24,7 @@ const useStyles = createUseStyles({
     width: '100%',
     height: '100%',
     '& img': {
-      height: '13vh',
+      height: '10vmin',
     },
   },
 })
@@ -48,9 +47,7 @@ const HartfordLogo = () => {
   return (
     <div className={classes.hartford_logos}>
       <img
-        src={
-          'https://public-v2links.adobecc.com/10d56feb-0e4d-49df-772d-f0f2dc06d4c3/component?params=component_id%3A100f8488-95b7-4b66-bb86-1fa0242fc044&params=version%3A0&token=1591719228_da39a3ee_1661a618f83196c652d57925c916ceff7f4e6f0a&api_key=CometServer1'
-        }
+        src={'https://res.cloudinary.com/hf6mryjpf/image/upload/v1591726798/assets/HVC_Logo-1.png'}
         alt="Hartford Votes. Hartford Vota. Coalition. Logo."
       ></img>
     </div>

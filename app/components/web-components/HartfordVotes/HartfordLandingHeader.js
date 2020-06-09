@@ -9,7 +9,7 @@ import OrangeButton from '../../OrangeButton'
 const useStyles = createUseStyles({
   header: {
     width: '100vw',
-    backgroundColor: 'rgb(250,250,250)',
+    backgroundColor: 'white',
     height: 'calc( 100vh - 3.5em )',
     padding: '1em 0em',
 
@@ -44,6 +44,9 @@ const useStyles = createUseStyles({
     fontWeight: '200',
     color: 'grey',
     padding: '0px 5em',
+    '@media only screen and (max-device-width: 900px)': {
+      padding: '0px 0em',
+    },
     margin: '0px',
     gridArea: 'sub-title',
     textAlign: 'center',
@@ -89,7 +92,11 @@ const useStyles = createUseStyles({
       zIndex: 2,
     },
     background:
-      'url(https://public-v2links.adobecc.com/10d56feb-0e4d-49df-772d-f0f2dc06d4c3/component?params=component_id%3Af204ba19-3e7d-4525-b84b-0713ef816196&params=version%3A0&token=1591810205_da39a3ee_5e57139f87321207b07b73435e961bba2cc0e132&api_key=CometServer1) top center no-repeat',
+      'url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1200/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) top center no-repeat',
+    '@media only screen and (max-device-width: 600px)': {
+      background:
+        'url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_600/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) top center no-repeat',
+    },
     backgroundSize: 'contain',
     position: 'relative',
   },
@@ -104,6 +111,14 @@ const useStyles = createUseStyles({
     gridArea: 'questions',
     width: '100%',
     paddingRight: '1em',
+    '@media only screen and (max-device-width: 600px)': {
+      color: 'black',
+    },
+    '@media only screen and (max-device-width: 415px)': {
+      '& button': {
+        width: '100%',
+      },
+    },
   },
 })
 
