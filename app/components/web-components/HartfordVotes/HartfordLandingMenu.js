@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
 import Icon from '../../lib/icon'
+import { useMode } from './phone-portrait-context'
+import { EncivLogo, HartfordLogo } from './logos'
 
 const useStyles = createUseStyles({
   menu: {
@@ -21,6 +23,7 @@ const useStyles = createUseStyles({
   },
   links: {
     listStyle: 'none',
+    zIndex: 10,
     padding: '0px',
     margin: '0px',
     display: 'flex',
@@ -36,7 +39,7 @@ const useStyles = createUseStyles({
       textAlign: 'left',
       position: 'absolute',
       left: '0px',
-      top: '1.75em',
+      top: '10vh',
       backgroundColor: 'white',
     },
   },
@@ -52,31 +55,30 @@ const useStyles = createUseStyles({
     },
   },
   hamburger: {
-    fontSize: '1.5em',
+    gridArea: 'ham',
+    fontSize: '4vh',
     border: 'none',
     background: 'none',
     color: 'black',
     height: '1em',
   },
   smallscreen: {
-    display: 'none',
-    //phones
-    '@media only screen and (max-device-width:600px)': {
-      display: 'block',
-    },
+    height: '10vh',
+    display: 'grid',
+    gridTemplateColumns: '1fr 2fr 1fr 1fr',
+    gridTemplateRows: '1fr',
+    gridTemplateAreas: `"ham . logos-hartford logos-enciv"`,
+    boxShadow: '0em 0.25em 0.2em rgba(0,0,0,0.1)',
+    position: 'relative',
+    zIndex: 2,
   },
-  largescreen: {
-    display: 'none',
-    //phones
-    '@media (min-device-width:601px)': {
-      display: 'block',
-    },
-  },
+  largescreen: {},
 })
 //include logos in here for portrait mode rendering as well
 const HartfordLandingMenu = () => {
   const classes = useStyles()
   const [isOpen, toggleMenu] = useState(false)
+  let isPortrait = useMode()
 
   const arrayOfLinks = [
     {
@@ -106,17 +108,25 @@ const HartfordLandingMenu = () => {
     </ul>
   )
   return (
-    <div>
-      <nav key="smallscreen-hartford-nav" className={cx(classes.menu, classes.smallscreen)}>
-        <button className={classes.hamburger} onClick={() => toggleMenu(!isOpen)}>
-          <Icon icon={'bars'} />
-        </button>
-        {isOpen && links}
-      </nav>
-
-      <nav key="largescreen-hartford-nav" className={cx(classes.menu, classes.largescreen)}>
-        {links}
-      </nav>
+    <div className={cx(isPortrait ? classes.smallscreen : classes.largescreen)}>
+      {isPortrait ? (
+        <nav key="smallscreen-hartford-nav" className={classes.menu}>
+          <button className={classes.hamburger} onClick={() => toggleMenu(!isOpen)}>
+            <Icon icon={'bars'} />
+          </button>
+          {isOpen && links}
+        </nav>
+      ) : (
+        <nav key="largescreen-hartford-nav" className={classes.menu}>
+          {links}
+        </nav>
+      )}
+      {isPortrait ? (
+        <>
+          <EncivLogo />
+          <HartfordLogo />
+        </>
+      ) : null}
     </div>
   )
 }

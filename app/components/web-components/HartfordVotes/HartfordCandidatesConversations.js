@@ -1,6 +1,7 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
+import OrangeButton from '../../OrangeButton'
 
 import TabbedContainer from '../TabbedContainer'
 
@@ -37,7 +38,7 @@ const useStyles = createUseStyles({
   },
   electionDates: {
     fontSize: '1.2em',
-    fontWeight: '100',
+    fontWeight: '200',
     margin: 'auto 1rem auto auto',
     '@media only screen and (max-device-width: 600px)': {
       margin: 0,
@@ -62,11 +63,7 @@ const useStyles = createUseStyles({
       },
     },
     '& > button': {
-      height: '2.3em',
-      border: '3px solid white',
       width: '30vw',
-      padding: '0.4em',
-      margin: 0,
       '@media only screen and (max-device-width: 600px)': {
         width: '100%',
       },
@@ -90,7 +87,7 @@ const HartfordCandidatesConversations = () => {
         {/* search for district */}
         <form className={classes.findDistrict}>
           <input type="text" name="votersAddress" id="votersAddress" />
-          <button> Find your district</button>
+          <OrangeButton> Find your district</OrangeButton>
         </form>
 
         {/* districts in tabs */}

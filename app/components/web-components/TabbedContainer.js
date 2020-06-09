@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
+import { useMode } from './HartfordVotes/phone-portrait-context'
 const container_width = '100%'
 
 const useStyles = createUseStyles({
@@ -51,20 +52,8 @@ const useStyles = createUseStyles({
     },
     width: '100%',
   },
-  smallscreen: {
-    display: 'none',
-    //phones
-    '@media only screen and (max-device-width:600px)': {
-      display: 'block',
-    },
-  },
-  largescreen: {
-    display: 'none',
-    //phones
-    '@media (min-device-width:601px)': {
-      display: 'block',
-    },
-  },
+  smallscreen: {},
+  largescreen: {},
   //TODO define styles that make certain things display none if in mobile and vice versa for tab labels
 })
 
@@ -74,30 +63,34 @@ const useStyles = createUseStyles({
  * action is reserved for a hook or other function
  * that allows the display of the contents
  */
-const makeTabs = (tabs_and_contents, action, classes, style) => {
-  //TODO make it so that it returns both this and a version that is a drop down menu
-  const drop_down_menu = (
-    <form className={cx(classes.drop_down_menu, classes.smallscreen)}>
-      <select name="select_tab" onChange={event => action(event.target.value)}>
-        {tabs_and_contents.map((tab, index) => {
-          return (
-            <option value={index} className={classes.tab_label_select_option}>
-              {tab.name}
-            </option>
-          )
-        })}
-      </select>
-    </form>
-  )
-  const tab_label_buttons = (
+const TabButtons = ({ prev_selected_tab, selected_tab, tabs, action }) => {
+  const classes = useStyles()
+  const isPortrait = useMode()
+
+  const highlightTab = () => {
+    if (document) {
+      document.getElementById(`label_for_tab_${selected_tab}`).className = classes.selectedTab
+      document.getElementById(`label_for_tab_${prev_selected_tab}`).className = classes.tab_label
+    }
+  }
+
+  useEffect(() => {
+    highlightTab()
+  }, [selected_tab])
+
+  useEffect(() => {
+    document.getElementById(`label_for_tab_${selected_tab}`).className = classes.selectedTab
+  }, [isPortrait])
+
+  return (
     <div className={cx(classes.tab_label_bar, classes.largescreen)}>
-      {tabs_and_contents.map((tab, index) => {
+      {tabs.map((tab, index) => {
         return (
           <button
             id={`label_for_tab_${index}`}
             className={classes.tab_label}
             onClick={() => action(index)}
-            style={{ width: `calc(100%/${tabs_and_contents.length})` }}
+            style={{ width: `calc(100%/${tabs.length})` }}
           >
             {tab.name}
           </button>
@@ -105,30 +98,49 @@ const makeTabs = (tabs_and_contents, action, classes, style) => {
       })}
     </div>
   )
-  return { drop_down_menu, tab_label_buttons }
+}
+const makeTabs = (tabs_and_contents, action, classes) => {
+  const drop_down_menu = (
+    <form className={cx(classes.drop_down_menu, classes.smallscreen)}>
+      <select name="select_tab" onChange={event => action(event.target.value)}>
+        {tabs_and_contents.map((tab, index) => {
+          return (
+            <option id={`label_for_tab_${index}`} value={index} className={classes.tab_label_select_option}>
+              {tab.name}
+            </option>
+          )
+        })}
+      </select>
+    </form>
+  )
+  return drop_down_menu
 }
 
 const TabbedContainer = ({ tabs }) => {
+  const isPortrait = useMode()
   const classes = useStyles()
   let [selectedTab, changeTab] = useState(0)
   let tabRow = makeTabs(tabs, changeTab, classes)
-  //TODO make it so that both options are returned for tabRow
-  const renderedTab = tabs[selectedTab].contents
   const prevSelectedTabRef = useRef(selectedTab + 1)
 
   useEffect(() => {
-    console.log(document.getElementById(`label_for_tab_${selectedTab}`))
-    console.log(document.getElementById(`label_for_tab_${prevSelectedTab}`))
-    document.getElementById(`label_for_tab_${selectedTab}`).className = classes.selectedTab
-    document.getElementById(`label_for_tab_${prevSelectedTab}`).className = classes.tab_label
     prevSelectedTabRef.current = selectedTab
   }, [selectedTab])
+
+  useEffect(() => {
+    document.getElementById(`label_for_tab_${selectedTab}`).selected = true
+  }, [isPortrait])
+
   const prevSelectedTab = prevSelectedTabRef.current
-  console.info('render')
+  const renderedTab = tabs[selectedTab].contents
+
   return (
     <div>
-      {tabRow.tab_label_buttons}
-      {tabRow.drop_down_menu}
+      {isPortrait ? (
+        tabRow
+      ) : (
+        <TabButtons selected_tab={selectedTab} prev_selected_tab={prevSelectedTab} tabs={tabs} action={changeTab} />
+      )}
       <div className={classes.tabContents}>{renderedTab}</div>
     </div>
   )
