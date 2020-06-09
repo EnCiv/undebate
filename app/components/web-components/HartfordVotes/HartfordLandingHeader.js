@@ -11,6 +11,7 @@ const useStyles = createUseStyles({
     width: '100vw',
     backgroundColor: 'white',
     height: 'calc( 100vh - 3.5em )',
+    minHeight: '375px',
     padding: '1em 0em',
 
     //grid stuff
@@ -54,6 +55,7 @@ const useStyles = createUseStyles({
   logos_enciv: {},
   logos_hartford: {},
   headerImages: {
+    minHeight: '250px',
     gridArea: 'images',
     //for overlaying questions
 
@@ -71,10 +73,7 @@ const useStyles = createUseStyles({
         gridTemplateColumns: 0,
         gridTemplateRows: 0,
         gridTemplateAreas: 0,
-        height: '100%',
-        width: '100%',
       },
-      // TODO media query for tall aspect ratios that are not in max width 600px
       border: '2px solid red',
       justifyContent: 'center',
       margin: 'auto',
@@ -118,6 +117,11 @@ const useStyles = createUseStyles({
       '& button': {
         width: '100%',
       },
+      paddingLeft: '1em',
+      textAlign: 'center',
+      fontSize: '2em',
+      fontWeight: '600',
+      letterSpacing: '0.06em',
     },
   },
 })
