@@ -1,6 +1,7 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
+import { useMode } from './phone-portrait-context'
 
 const useStyles = createUseStyles({
   enciv_logos: {
@@ -11,6 +12,11 @@ const useStyles = createUseStyles({
     flexDirection: 'row',
     '& img': {
       height: '5vmin',
+      minHeight: '5vw',
+      '@media (min-width: 2780px)': {
+        height: '118px',
+        minHeight: '0',
+      },
     },
     '& :nth-child(2)': {
       marginLeft: '2em',
@@ -24,21 +30,37 @@ const useStyles = createUseStyles({
     width: '100%',
     height: '100%',
     '& img': {
-      height: '10vmin',
+      height: '12vmin',
+      minHeight: '9vw',
+      '@media (min-width: 2780px)': {
+        height: '213px',
+        minHeight: '0',
+      },
     },
   },
 })
 const EncivLogo = () => {
   const classes = useStyles()
+  const isPortrait = useMode()
   return (
     <div className={classes.enciv_logos}>
-      <img
-        src={
-          'https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png'
-        }
-        alt="Candidate Conversations by ballotpedia and ENCIV logo"
-      ></img>
-      <img src={'https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png'} alt="enciv logo"></img>
+      {isPortrait ? (
+        <img
+          src={
+            'https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png'
+          }
+        />
+      ) : (
+        <>
+          <img
+            src={
+              'https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png'
+            }
+            alt="Candidate Conversations by ballotpedia and ENCIV logo"
+          ></img>
+          <img src={'https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png'} alt="enciv logo"></img>
+        </>
+      )}
     </div>
   )
 }

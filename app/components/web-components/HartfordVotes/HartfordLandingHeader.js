@@ -8,10 +8,13 @@ import OrangeButton from '../../OrangeButton'
 
 const useStyles = createUseStyles({
   header: {
+    '@media (min-aspect-ratio: 1/3)': {
+      maxHeight: '900px',
+    },
     width: '100vw',
     backgroundColor: 'white',
     height: 'calc( 100vh - 3.5em )',
-    minHeight: '375px',
+    minHeight: '500px',
     padding: '1em 0em',
 
     //grid stuff
@@ -55,11 +58,15 @@ const useStyles = createUseStyles({
   logos_enciv: {},
   logos_hartford: {},
   headerImages: {
-    minHeight: '250px',
+    minHeight: '310px',
     gridArea: 'images',
     //for overlaying questions
 
     '& > div': {
+      maxHeight: '719px',
+      maxWidth: '1350px',
+      minHeight: '310px',
+      minWidth: '530px',
       display: 'grid',
       gridTemplateColumns: '1fr 3fr 3fr',
       gridTemplateRows: '1fr 3fr 1fr',
@@ -68,6 +75,8 @@ const useStyles = createUseStyles({
     ". . ."
     ". questions questions"`,
       '@media only screen and (max-device-width: 600px)': {
+        minWidth: '0',
+        minHeight: '0',
         position: 'relative',
         display: 'block',
         gridTemplateColumns: 0,
@@ -81,8 +90,15 @@ const useStyles = createUseStyles({
         width: 'calc(( 83vh - 3.5em ) * 1.8)',
         height: 'calc(83vh - 3.5em)',
       },
+      '@media (min-height: 490px) and not (min-device-height: 490px)': {
+        minHeight: '368px',
+      },
+      '@media (min-aspect-ratio: 40/27)': {
+        minHeight: '360px',
+        minWidth: '560px',
+      },
       width: '100%',
-      height: 'calc(100vw * 0.55)',
+      height: 'calc(100vw * 0.53)',
     },
     border: '2px solid green',
     '& img': {
@@ -119,7 +135,7 @@ const useStyles = createUseStyles({
       },
       paddingLeft: '1em',
       textAlign: 'center',
-      fontSize: '2em',
+      fontSize: '1.2em',
       fontWeight: '600',
       letterSpacing: '0.06em',
     },

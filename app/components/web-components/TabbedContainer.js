@@ -38,6 +38,7 @@ const useStyles = createUseStyles({
     borderBottom: 0,
     backgroundColor: 'white',
   },
+  tab_label_select_option: {},
   tab_label_bar: {
     boxSizing: 'border-box',
     display: 'flex',

@@ -9,10 +9,12 @@ import { ModeProvider } from './phone-portrait-context'
 const useStyles = createUseStyles({
   landingPage: {
     fontFamily: 'Libre Franklin',
-    fontSize: '1.5rem',
+    fontSize: '10px',
     wordSpacing: '0.3em',
     letterSpacing: '0.01em',
     boxSizing: 'border-box',
+    '@media (min-width: 1000px) and (min-height: 1000px)': { fontSize: '16px' },
+
     '& *': {
       boxSizing: 'border-box',
     },

@@ -14,6 +14,11 @@ const useStyles = createUseStyles({
     backgroundColor: 'lightgray',
 
     height: 'min-content',
+    '& > *': {
+      maxWidth: '1300px',
+
+      '@media (min-width: 1300px)': { margin: '0px auto !important' },
+    },
   },
   conversationsHeader: {
     padding: 0,
@@ -57,12 +62,16 @@ const useStyles = createUseStyles({
       border: 'none',
       marginRight: '1em',
       width: '60vw',
+      maxWidth: '850px',
+
       '@media only screen and (max-device-width: 600px)': {
         width: '100%',
         marginBottom: '0.3em',
       },
     },
+
     '& > button': {
+      maxWidth: '390px',
       width: '30vw',
       '@media only screen and (max-device-width: 600px)': {
         width: '100%',
@@ -106,6 +115,14 @@ const HartfordCandidatesConversations = () => {
               contents: (
                 <div>
                   <p>hello universe</p>
+                </div>
+              ),
+            },
+            {
+              name: 'third',
+              contents: (
+                <div>
+                  <p>hello galaxy</p>
                 </div>
               ),
             },
