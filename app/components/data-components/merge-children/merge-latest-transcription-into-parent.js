@@ -11,8 +11,6 @@ export default function mergeLatestTranscriptionIntoParent(childIotas, parentIot
     if (!parentIota.webComponent.metaTags) parentIota.webComponent.metaTags = []
     else
       parentIota.webComponent.metaTags = parentIota.webComponent.metaTags.filter(tag => !/og:transcription/.test(tag)) // filter out any image tags
-    parentIota.webComponent.metaTags.push(
-      `property="og:transcription" content="${transcribe.component.transcriptionl}"`
-    )
+    parentIota.webComponent.metaTags.push(`property="og:transcription" content="${transcribe.component.transcription}"`)
   }
 }
