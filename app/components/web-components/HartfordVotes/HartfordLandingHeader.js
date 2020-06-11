@@ -93,10 +93,10 @@ const useStyles = createUseStyles({
       '@media (min-height: 490px) and not (min-device-height: 490px)': {
         minHeight: '368px',
       },
-      '@media (min-aspect-ratio: 40/27)': {
-        minHeight: '360px',
-        minWidth: '560px',
-      },
+      //'@media (min-aspect-ratio: 40/27)': {
+      //minHeight: '360px',
+      //minWidth: '560px',
+      //},
       width: '100%',
       height: 'calc(100vw * 0.53)',
     },
