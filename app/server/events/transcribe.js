@@ -10,20 +10,18 @@ async function notifyOfNewRecording(participantIota) {
   participantIota.description = 'Transcription for: ' + participantIota.description
   participantIota.component.component = 'Transcription'
   participantIota.component.transcription = []
-  logger.info('~~~~~~~~~~~~~~~~', participantIota)
-  let bite = participantIota.component.participant.speaking[1]
-  let conv = bite.replace('.mp4', '.wav')
-  let file = fs.createWriteStream('file.wav', 'base64')
-  let request = https.get(conv, function(resp) {
+  let speakingFile = participantIota.component.participant.speaking[1]
+  let convertedFile = speakingFile.replace('.mp4', '.wav')
+  let chunkedFile = fs.createWriteStream('chunkedFile.wav', 'base64')
+  let request = https.get(convertedFile, function(resp) {
     logger.info('Status code is:' + Object.getOwnPropertyNames(resp))
-    resp.pipe(file)
-    file.on('finish', function() {
-      const file2 = fs.readFileSync('file.wav')
-      let audioBase = file2.toString('base64')
-      main(audioBase).catch(console.error)
+    resp.pipe(chunkedFile)
+    chunkedFile.on('finish', function() {
+      const chunkedFile2 = fs.readFileSync('chunkedFile.wav')
+      let audioString = chunkedFile2.toString('base64')
+      main(audioString).catch(console.error)
     })
   })
-  logger.info('~~~~~~~~', conv)
   async function main(audioByte) {
     const client = new speech.SpeechClient()
     const audio = {
@@ -39,11 +37,10 @@ async function notifyOfNewRecording(participantIota) {
       config: config,
     }
     const [response] = await client.recognize(request)
-    let info2 = response.results[0].alternatives[0]
-    logger.info('info2', info2)
+    let transcribeData = response.results[0].alternatives[0]
 
-    participantIota.component.transcription.push(info2)
-    logger.info('testing push', participantIota)
+    participantIota.component.transcription.push(transcribeData)
+
     //the two lines below will be executed after looping
     delete participantIota.component.participant
     await Iota.insertOne(participantIota)
