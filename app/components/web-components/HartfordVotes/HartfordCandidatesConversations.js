@@ -21,6 +21,8 @@ const useStyles = createUseStyles({
     },
   },
   conversationsHeader: {
+    background:
+      'url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1200/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat',
     padding: 0,
     display: 'flex',
     border: '2px solid blue',

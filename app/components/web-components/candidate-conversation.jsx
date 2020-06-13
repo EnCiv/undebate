@@ -1110,7 +1110,7 @@ class RASPUndebate extends React.Component {
       let seatWidthRatio = 0.4
       const seatWidth = () => seatWidthRatio * width
       const seatHeight = () => seatWidthRatio * width * HDRatio
-      const navBarHeight = 0.06 * height + 3 * fontSize + 2 * fontSize
+      const navBarHeight = 0.09 * height + 3 * fontSize + 2 * fontSize
       let rows = 2
       let seat = 1
       let rowLeftEdge = hGap

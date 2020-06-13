@@ -15,6 +15,7 @@ const useStyles = createUseStyles({
     backgroundColor: 'blue',
     paddingTop: '1em',
     height: '3.5em',
+    maxHeight: '10vh',
     //phones
     '@media only screen and (max-device-width:600px)': {
       width: '3.5em',
@@ -39,7 +40,7 @@ const useStyles = createUseStyles({
       textAlign: 'left',
       position: 'absolute',
       left: '0px',
-      top: '10vh',
+      top: '2.45em',
       backgroundColor: 'white',
     },
   },
@@ -52,19 +53,21 @@ const useStyles = createUseStyles({
     },
     '@media only screen and (max-device-width:600px)': {
       margin: '1em',
+      marginTop: 'calc((100vh - (9 * 1em)) / 18 )',
+      marginBottom: 'calc((100vh - (9 * 1em)) / 18 )',
     },
   },
   hamburger: {
     gridArea: 'ham',
-    fontSize: '4vh',
+    fontSize: '2em',
     border: 'none',
     background: 'none',
     color: 'black',
     height: '1em',
   },
   smallscreen: {
-    height: '10vh',
     display: 'grid',
+    height: '4.9em',
     gridTemplateColumns: '1fr 2fr 1fr 1fr',
     gridTemplateRows: '1fr',
     gridTemplateAreas: `"ham . logos-hartford logos-enciv"`,
@@ -96,6 +99,14 @@ const HartfordLandingMenu = () => {
     {
       display: 'Contact Us',
       key: 'hartford-contact',
+    },
+    {
+      display: 'About this Site',
+      key: 'about',
+    },
+    {
+      display: 'Score Card',
+      key: 'score',
     },
   ]
   const links = (
