@@ -8,30 +8,61 @@ import TabbedContainer from '../TabbedContainer'
 const useStyles = createUseStyles({
   candidatesConversations: {
     width: '100vw',
-    padding: '1em',
     boxSizing: 'border-box',
     textAlign: 'center',
-    backgroundColor: 'lightgray',
 
     height: 'min-content',
     '& > *': {
-      maxWidth: '1300px',
+      maxWidth: '1600px',
 
-      '@media (min-width: 1300px)': { margin: '0px auto !important' },
+      '@media (min-width: 1300px)': {
+        marginLeft: 'auto !important',
+        marginRight: 'auto !important',
+      },
     },
   },
   conversationsHeader: {
-    background:
-      'url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1200/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat',
+    position: 'relative',
+    background: 'none',
+    '&:before': {
+      position: 'absolute',
+      content: '" "',
+      backgroundColor: '#29316E',
+      zIndex: 2,
+      top: '0',
+      bottom: '0',
+      width: '1.5em',
+    },
+    // sets a background that has transparency
+    '&:after': {
+      content: '" "',
+      position: 'absolute',
+      right: '0',
+      left: '0',
+      bottom: '0',
+      display: 'block',
+      top: '0',
+      zIndex: '1',
+      opacity: '0.14',
+      background:
+        'url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1200/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat',
+    },
     padding: 0,
     display: 'flex',
-    border: '2px solid blue',
     '& > *': {
-      border: '2px solid blue',
-      '@media only screen and (max-device-width: 600px)': { textAlign: 'left', paddingLeft: '4vw' },
+      color: '#29316E',
+      // required to make text show above transparent background
+      position: 'relative',
+      zIndex: 2,
+
+      '@media only screen and (max-device-width: 600px)': {
+        textAlign: 'left',
+        paddingLeft: '4vw',
+        marginLeft: '0 !important',
+      },
     },
     '& h3': {
-      margin: 'auto 0',
+      margin: 'auto 0 auto 1.5em',
       fontSize: '2.5em',
     },
     boxSizing: 'border-box',
@@ -52,9 +83,9 @@ const useStyles = createUseStyles({
     },
   },
   findDistrict: {
-    border: '2px solid blue',
+    backgroundColor: '#EBEAEA',
     width: '100%',
-    padding: '1em',
+    padding: '1.5em',
     margin: '2em 0',
     '& > *': {
       boxShadow: '0.14em 0.15em .2em rgba(0,0,0,0.2)',
@@ -63,7 +94,7 @@ const useStyles = createUseStyles({
       height: '2.3em',
       border: 'none',
       marginRight: '1em',
-      width: '60vw',
+      width: '60%',
       maxWidth: '850px',
 
       '@media only screen and (max-device-width: 600px)': {

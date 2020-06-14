@@ -39,14 +39,16 @@ const useStyles = createUseStyles({
   pageTitle: {
     alignSelf: 'center',
     fontSize: '3em',
+    color: '#333333',
     gridArea: 'page-title',
     textAlign: 'center',
     margin: '0px',
   },
   subTitle: {
-    fontSize: '1.5em',
-    fontWeight: '200',
-    color: 'grey',
+    fontSize: '1.6em',
+    fontFamily: 'Helvetica Neue, Regular !important',
+    color: '#707070',
+    fontWeight: 500,
     padding: '0px 5em',
     '@media only screen and (max-device-width: 900px)': {
       padding: '0px 0em',
@@ -83,7 +85,6 @@ const useStyles = createUseStyles({
         gridTemplateRows: 0,
         gridTemplateAreas: 0,
       },
-      border: '2px solid red',
       justifyContent: 'center',
       margin: 'auto',
       '@media (min-aspect-ratio: 19/13)': {
@@ -103,7 +104,6 @@ const useStyles = createUseStyles({
       width: '100%',
       height: 'calc(100vw * 0.53)',
     },
-    border: '2px solid green',
     '& img': {
       height: '100%',
       position: 'relative',
@@ -124,7 +124,6 @@ const useStyles = createUseStyles({
     fontWeight: '200',
     fontSize: '1.3em',
     textAlign: 'right',
-    border: '2px solid blue',
     margin: '0px',
     gridArea: 'questions',
     width: '100%',

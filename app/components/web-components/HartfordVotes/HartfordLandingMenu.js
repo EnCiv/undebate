@@ -12,7 +12,7 @@ const useStyles = createUseStyles({
     color: 'white',
     boxSizing: 'border-box',
     textAlign: 'center',
-    backgroundColor: 'blue',
+    backgroundColor: '#29316E',
     paddingTop: '1em',
     height: '3.5em',
     maxHeight: '10vh',
