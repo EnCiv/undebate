@@ -9,6 +9,9 @@ const useStyles = createUseStyles({
     width: container_width,
   },
   tabContents: {
+    '@media only screen and (max-device-width: 600px)': {
+      border: 'none',
+    },
     boxSizing: 'border-box',
     width: container_width,
     border: '2px solid #D5D3D3B7',
@@ -17,8 +20,30 @@ const useStyles = createUseStyles({
     textAlign: 'center',
     backgroundColor: 'white',
     position: 'relative',
-    zIndex: 3,
-    height: '500px',
+    zIndex: 1,
+    height: '100%',
+    '&>div': {
+      width: 'calc(100% - 2em)',
+      minHeight: '500px',
+      height: '90vh',
+      marginLeft: '1em',
+      marginRight: '1em',
+      marginBottom: '1em',
+      padding: '1em',
+      backgroundColor: '#29316E',
+      '& h3': {
+        color: 'white',
+        fontSize: '1.5em',
+        textAlign: 'left',
+        margin: 0,
+        marginBottom: '.75em',
+        fontWeight: 100,
+      },
+      '& iframe': {
+        border: 'none',
+        height: 'calc(100% - 3em)',
+      },
+    },
     '& h3': {
       margin: '1em',
       fontSize: '3.5em',
@@ -27,7 +52,6 @@ const useStyles = createUseStyles({
   tab_label: {
     fontSize: '1.7em',
     border: '2px solid #D5D3D3B7',
-    borderBottom: 0,
     backgroundColor: '#EBEAEA',
     color: '#4C6286',
     '& + &': {
@@ -58,7 +82,14 @@ const useStyles = createUseStyles({
   },
   drop_down_menu: {
     '& select': {
-      width: '100%',
+      backgroundColor: 'white',
+      color: '#333333',
+      textIndent: '47%',
+      width: 'calc( 100% - 3em )',
+      border: '6px solid #29316E',
+      height: '3em',
+      marginLeft: '1.5em',
+      marginRight: '1.5em',
     },
     width: '100%',
   },

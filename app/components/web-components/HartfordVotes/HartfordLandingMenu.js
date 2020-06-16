@@ -8,16 +8,17 @@ import { EncivLogo, HartfordLogo } from './logos'
 const useStyles = createUseStyles({
   menu: {
     width: '100vw',
-    fontSize: '1em',
+    fontSize: '1.3vw',
     color: 'white',
     boxSizing: 'border-box',
     textAlign: 'center',
     backgroundColor: '#29316E',
-    paddingTop: '1em',
+    paddingTop: '1.2em',
     height: '3.5em',
     maxHeight: '10vh',
     //phones
     '@media only screen and (max-device-width:600px)': {
+      fontSize: '1em',
       width: '3.5em',
       backgroundColor: 'white',
     },
@@ -34,43 +35,59 @@ const useStyles = createUseStyles({
     //phones
     '@media only screen and (max-device-width:600px)': {
       fontSize: '2em',
-      color: 'black',
+      color: '#333333',
       flexDirection: 'column',
-      width: '100vw',
+      width: '60vw',
+      minWidth: '200px',
       textAlign: 'left',
       position: 'absolute',
-      left: '0px',
+      right: '2em',
+      zIndex: 2,
+      boxShadow: '0em 1em 0.9em 1em rgba(0,0,0,0.1)',
       top: '2.45em',
       backgroundColor: 'white',
+      '& :last-child': {
+        paddingBottom: 'calc((100vh - (9 * 1em)) / 18 )',
+        border: 'none',
+      },
     },
   },
   linkContents: {
+    lineHeight: 1,
+    borderBottom: '1px dotted rgba(0,0,0,0.1)',
+    '@media only screen and (max-device-width:600px)': {
+      paddingTop: 'calc((100vh - (9 * 1em)) / 18 )',
+      paddingBottom: 'calc((100vh - (9 * 1em)) / 18 )',
+      paddingLeft: '1em',
+      marginLeft: 0,
+      marginRight: 0,
+    },
     '&+&': {
       marginLeft: '6em',
       '@media only screen and (max-device-width:600px)': {
-        marginLeft: '1em',
+        paddingLeft: '1em',
+        marginLeft: 0,
+        marginRight: 0,
       },
-    },
-    '@media only screen and (max-device-width:600px)': {
-      margin: '1em',
-      marginTop: 'calc((100vh - (9 * 1em)) / 18 )',
-      marginBottom: 'calc((100vh - (9 * 1em)) / 18 )',
     },
   },
   hamburger: {
+    position: 'absolute',
+    top: '.5em',
+    right: '.5em',
+    color: '#333333',
     gridArea: 'ham',
     fontSize: '2em',
     border: 'none',
     background: 'none',
-    color: 'black',
     height: '1em',
   },
   smallscreen: {
-    display: 'grid',
+    //display: 'grid',
     height: '4.9em',
-    gridTemplateColumns: '1fr 2fr 1fr 1fr',
-    gridTemplateRows: '1fr',
-    gridTemplateAreas: `"ham . logos-hartford logos-enciv"`,
+    //gridTemplateColumns: '1fr 1fr 2fr 1fr',
+    //gridTemplateRows: '1fr',
+    //gridTemplateAreas: `"logos-hartford logos-enciv . . ham"`,
     boxShadow: '0em 0.25em 0.2em rgba(0,0,0,0.1)',
     position: 'relative',
     zIndex: 2,
@@ -101,7 +118,7 @@ const HartfordLandingMenu = () => {
       key: 'hartford-contact',
     },
     {
-      display: 'About this Site',
+      display: 'About',
       key: 'about',
     },
     {
@@ -121,6 +138,12 @@ const HartfordLandingMenu = () => {
   return (
     <div className={cx(isPortrait ? classes.smallscreen : classes.largescreen)}>
       {isPortrait ? (
+        <>
+          <EncivLogo />
+          <HartfordLogo />
+        </>
+      ) : null}
+      {isPortrait ? (
         <nav key="smallscreen-hartford-nav" className={classes.menu}>
           <button className={classes.hamburger} onClick={() => toggleMenu(!isOpen)}>
             <Icon icon={'bars'} />
@@ -132,12 +155,6 @@ const HartfordLandingMenu = () => {
           {links}
         </nav>
       )}
-      {isPortrait ? (
-        <>
-          <EncivLogo />
-          <HartfordLogo />
-        </>
-      ) : null}
     </div>
   )
 }

@@ -22,13 +22,14 @@ const useStyles = createUseStyles({
     },
   },
   conversationsHeader: {
+    marginTop: '2em',
     position: 'relative',
     background: 'none',
     '&:before': {
       position: 'absolute',
       content: '" "',
       backgroundColor: '#29316E',
-      zIndex: 2,
+      zIndex: 1,
       top: '0',
       bottom: '0',
       width: '1.5em',
@@ -42,10 +43,10 @@ const useStyles = createUseStyles({
       bottom: '0',
       display: 'block',
       top: '0',
-      zIndex: '1',
+      zIndex: -1,
       opacity: '0.14',
       background:
-        'url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1200/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat',
+        'url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat',
     },
     padding: 0,
     display: 'flex',
@@ -53,12 +54,13 @@ const useStyles = createUseStyles({
       color: '#29316E',
       // required to make text show above transparent background
       position: 'relative',
-      zIndex: 2,
+      zIndex: 1,
 
       '@media only screen and (max-device-width: 600px)': {
         textAlign: 'left',
-        paddingLeft: '4vw',
+        paddingLeft: '6.5vw',
         marginLeft: '0 !important',
+        marginTop: '1em !important',
       },
     },
     '& h3': {
@@ -83,7 +85,7 @@ const useStyles = createUseStyles({
     },
   },
   findDistrict: {
-    backgroundColor: '#EBEAEA',
+    backgroundColor: '#BABABA',
     width: '100%',
     padding: '1.5em',
     margin: '2em 0',
@@ -91,6 +93,10 @@ const useStyles = createUseStyles({
       boxShadow: '0.14em 0.15em .2em rgba(0,0,0,0.2)',
     },
     '& > #votersAddress': {
+      '&::placeholder': {
+        color: '#515989',
+      },
+      paddingLeft: '.5em',
       height: '2.3em',
       border: 'none',
       marginRight: '1em',
@@ -110,6 +116,9 @@ const useStyles = createUseStyles({
         width: '100%',
       },
     },
+    '@media only screen and (max-device-width: 600px)': {
+      marginTop: 0,
+    },
   },
 })
 
@@ -128,7 +137,7 @@ const HartfordCandidatesConversations = () => {
 
         {/* search for district */}
         <form className={classes.findDistrict}>
-          <input type="text" name="votersAddress" id="votersAddress" />
+          <input type="text" name="votersAddress" placeholder="1234 Main St. Hartford CT" id="votersAddress" />
           <OrangeButton> Find your district</OrangeButton>
         </form>
 
@@ -136,15 +145,21 @@ const HartfordCandidatesConversations = () => {
         <TabbedContainer
           tabs={[
             {
-              name: 'first',
+              name: 'District 1',
               contents: (
                 <div>
-                  <p>hello world</p>
+                  <h3>San Francisco District Attorney</h3>
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src="https://cc.enciv.org/san-francisco-district-attorney"
+                    title="San Francisco District Attorney"
+                  />
                 </div>
               ),
             },
             {
-              name: 'second',
+              name: 'District 3',
               contents: (
                 <div>
                   <p>hello universe</p>
@@ -152,7 +167,40 @@ const HartfordCandidatesConversations = () => {
               ),
             },
             {
-              name: 'third',
+              name: 'District 4',
+              contents: (
+                <div>
+                  <p>hello galaxy</p>
+                </div>
+              ),
+            },
+            {
+              name: 'District 5',
+              contents: (
+                <div>
+                  <p>hello galaxy</p>
+                </div>
+              ),
+            },
+
+            {
+              name: 'District 6',
+              contents: (
+                <div>
+                  <p>hello galaxy</p>
+                </div>
+              ),
+            },
+            {
+              name: 'District 7',
+              contents: (
+                <div>
+                  <p>hello galaxy</p>
+                </div>
+              ),
+            },
+            {
+              name: 'District 8',
               contents: (
                 <div>
                   <p>hello galaxy</p>

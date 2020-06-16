@@ -19,7 +19,7 @@ const useStyles = createUseStyles({
     wordSpacing: '0.3em',
     letterSpacing: '0.01em',
     boxSizing: 'border-box',
-    '@media (min-width: 1000px) and (min-height: 1000px)': { fontSize: '16px' },
+    '@media (min-width: 1250px) and (min-height: 1000px)': { fontSize: '16px' },
 
     '& *': {
       boxSizing: 'border-box',

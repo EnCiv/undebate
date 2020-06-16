@@ -9,32 +9,33 @@ import OrangeButton from '../../OrangeButton'
 const useStyles = createUseStyles({
   header: {
     '@media (min-aspect-ratio: 1/3)': {
-      maxHeight: '900px',
+      //maxHeight: '900px',
+      // make a constant height
     },
     width: '100vw',
     backgroundColor: 'white',
-    height: 'calc( 100vh - 3.5em )',
-    minHeight: '500px',
+    //height: 'calc( 100vh - 3.5em )',
+    //minHeight: '500px',
     padding: '1em 0em',
 
     //grid stuff
     display: 'grid',
-    gridTemplateColumns: '1fr 2fr 1fr 2fr 1fr',
-    gridTemplateRows: '1fr 1fr 10fr',
+    gridTemplateColumns: '1fr 4fr 1fr 4fr 1fr',
+    gridTemplateRows: '1fr 1fr',
     gridTemplateAreas: `
     "logos-hartford page-title page-title page-title logos-enciv"
-    "logos-hartford sub-title sub-title sub-title logos-enciv"
-    "images images images images images"`,
+    "logos-hartford sub-title sub-title sub-title logos-enciv"`,
+    //"images images images images images"`,
 
-    '@media only screen and (max-device-width: 600px)': {
-      gridTemplateColumns: '1fr 2fr 1fr 2fr 1fr',
-      gridTemplateRows: '1fr 1fr 6fr 4fr',
-      gridTemplateAreas: `
-    "page-title page-title page-title page-title page-title"
-    "sub-title sub-title sub-title sub-title sub-title"
-    "images images images images images"
-    "questions questions questions questions questions"`,
-    },
+    //'@media only screen and (max-device-width: 600px)': {
+    //gridTemplateColumns: '1fr 2fr 1fr 2fr 1fr',
+    //gridTemplateRows: '1fr 1fr 6fr 4fr',
+    //gridTemplateAreas: `
+    //"page-title page-title page-title page-title page-title"
+    //"sub-title sub-title sub-title sub-title sub-title"
+    //"images images images images images"
+    //"questions questions questions questions questions"`,
+    //},
   },
   pageTitle: {
     alignSelf: 'center',
@@ -45,6 +46,7 @@ const useStyles = createUseStyles({
     margin: '0px',
   },
   subTitle: {
+    marginBottom: '1em',
     fontSize: '1.6em',
     fontFamily: 'Helvetica Neue, Regular !important',
     color: '#707070',
@@ -129,18 +131,28 @@ const useStyles = createUseStyles({
     width: '100%',
     paddingRight: '1em',
     '@media only screen and (max-device-width: 600px)': {
-      color: 'black',
-    },
-    '@media only screen and (max-device-width: 415px)': {
+      color: '#333333',
       '& button': {
         width: '100%',
       },
+      marginTop: '1em',
+      marginBottom: '1em',
       paddingLeft: '1em',
       textAlign: 'center',
       fontSize: '1.2em',
       fontWeight: '600',
       letterSpacing: '0.06em',
     },
+    //'@media only screen and (max-device-width: 415px)': {
+    //'& button': {
+    //width: '100%',
+    //},
+    //paddingLeft: '1em',
+    //textAlign: 'center',
+    //fontSize: '1.2em',
+    //fontWeight: '600',
+    //letterSpacing: '0.06em',
+    //},
   },
 })
 
@@ -162,14 +174,14 @@ const HartfordLandingHeader = () => {
           Meet the Candidates for CT State Senator and State Representative for Hartford
         </h2>
         {isPortrait ? null : <EncivLogo />}
-        <div
-          title="banner depicting flag of Hartford CT in center straddled by pictures of two government buildings"
-          className={classes.headerImages}
-        >
-          <div>{isPortrait ? null : question}</div>
-        </div>
-        {isPortrait ? question : null}
       </header>
+      <div
+        title="banner depicting flag of Hartford CT in center straddled by pictures of two government buildings"
+        className={classes.headerImages}
+      >
+        <div>{isPortrait ? null : question}</div>
+      </div>
+      {isPortrait ? question : null}
     </>
   )
 }

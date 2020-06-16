@@ -6,27 +6,16 @@ import { useMode } from './phone-portrait-context'
 const useStyles = createUseStyles({
   enciv_logos: {
     gridArea: 'logos-enciv',
-    width: '100%',
-    height: 'min-content',
     marginTop: 'auto',
     marginBottom: '9px',
-    display: 'flex',
-    flexDirection: 'row',
-    '& :nth-child(2)': {
-      marginLeft: '2em',
-    },
-    '& :first-child': {
-      marginTop: '2vh',
-    },
     '& img': {
-      height: '5vmin',
-      minHeight: '5vw',
+      height: '12vmin',
+      minHeight: '9vw',
       '@media only screen and (max-device-width: 600px)': {
-        minHeight: '30px',
-      },
-      '@media (min-width: 2780px)': {
-        height: '118px',
-        minHeight: '0',
+        maxHeight: '2.7em',
+        position: 'absolute',
+        top: '0',
+        left: '10em',
       },
     },
   },
@@ -39,37 +28,25 @@ const useStyles = createUseStyles({
       marginTop: '0px',
       height: '12vmin',
       minHeight: '9vw',
+      paddingRight: '2vw',
+      paddingLeft: '2vw',
       '@media only screen and (max-device-width: 600px)': {
-        minHeight: '40px',
-        height: '40px',
+        maxHeight: '1.7em',
+        position: 'absolute',
+        top: '.2em',
+        left: '1em',
       },
-      '@media (min-width: 2780px)': {
-        height: '213px',
-        minHeight: '0',
-      },
+      '@media (min-width: 2780px)': {},
     },
   },
 })
 const EncivLogo = () => {
   const classes = useStyles()
-  const isPortrait = useMode()
   return (
     <div className={classes.enciv_logos}>
-      {isPortrait ? (
-        <img
-          src={'https://res.cloudinary.com/hf6mryjpf/image/upload/v1591846510/assets/EnCivCandidateConversations.svg'}
-        />
-      ) : (
-        <>
-          <img
-            src={
-              'https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png'
-            }
-            alt="Candidate Conversations by ballotpedia and ENCIV logo"
-          ></img>
-          <img src={'https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png'} alt="enciv logo"></img>
-        </>
-      )}
+      <img
+        src={'https://res.cloudinary.com/hf6mryjpf/image/upload/v1591846510/assets/EnCivCandidateConversations.svg'}
+      />
     </div>
   )
 }
