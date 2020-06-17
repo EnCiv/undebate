@@ -20,7 +20,7 @@ const useStyles = createUseStyles({
     textAlign: 'center',
     backgroundColor: 'white',
     position: 'relative',
-    zIndex: 1,
+    zIndex: 2,
     height: '100%',
     '&>div': {
       width: 'calc(100% - 2em)',

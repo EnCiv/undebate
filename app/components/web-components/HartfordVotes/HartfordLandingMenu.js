@@ -62,6 +62,10 @@ const useStyles = createUseStyles({
       marginLeft: 0,
       marginRight: 0,
     },
+    '& a': {
+      textDecoration: 'none',
+      color: 'inherit',
+    },
     '&+&': {
       marginLeft: '6em',
       '@media only screen and (max-device-width:600px)': {
@@ -104,33 +108,41 @@ const HartfordLandingMenu = () => {
     {
       display: 'Find your district',
       key: 'hartford-find-district',
+      href: 'http://www.hartford.gov/images/registrar/SenatorialAssemblyandVotingDistrictwithPollingLocations.pdf',
     },
     {
       display: 'FAQs',
       key: 'hartford-faq',
+      href: '',
     },
     {
       display: 'How & Where To Vote',
       key: 'hartford-how-where-vote',
+      href: '',
     },
     {
       display: 'Contact Us',
       key: 'hartford-contact',
+      href: 'mailto:noreply@enciv.org',
     },
     {
       display: 'About',
       key: 'about',
+      href: '',
     },
     {
       display: 'Score Card',
       key: 'score',
+      href: '',
     },
   ]
   const links = (
     <ul className={classes.links}>
       {arrayOfLinks.map(link => (
         <li key={link.key} className={classes.linkContents}>
-          <a>{link.display}</a>
+          <a href={link.href} target="_blank">
+            {link.display}
+          </a>
         </li>
       ))}
     </ul>

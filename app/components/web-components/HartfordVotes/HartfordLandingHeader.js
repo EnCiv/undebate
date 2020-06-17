@@ -70,7 +70,7 @@ const useStyles = createUseStyles({
       maxHeight: '719px',
       maxWidth: '1350px',
       minHeight: '310px',
-      minWidth: '530px',
+      minWidth: '600px',
       display: 'grid',
       gridTemplateColumns: '1fr 3fr 3fr',
       gridTemplateRows: '1fr 3fr 1fr',
@@ -96,7 +96,8 @@ const useStyles = createUseStyles({
       '@media (min-height: 490px) and not (min-device-height: 490px)': {
         minHeight: '368px',
       },
-      '@media (max-height: 540px) and (max-width: 750px)': {
+      //'@media (max-height: 540px) and (max-width: 750px)': {
+      '@media (max-width: 600px)': {
         minHeight: '100%',
         minWidth: '100%',
         '@media (max-width: 660px)': {
@@ -130,9 +131,13 @@ const useStyles = createUseStyles({
     gridArea: 'questions',
     width: '100%',
     paddingRight: '1em',
+    //lineHeight: '4.3em',
     '@media only screen and (max-device-width: 600px)': {
       color: '#333333',
-      '& button': {
+      '& div a, & div': {
+        height: '3em',
+        lineHeight: '1.7em',
+        display: 'inline-block',
         width: '100%',
       },
       marginTop: '1em',
