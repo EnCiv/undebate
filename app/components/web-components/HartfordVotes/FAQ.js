@@ -1,9 +1,8 @@
-
-import {useState} React from 'react'
+import React, { useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
 import { ModeProvider } from './phone-portrait-context'
-import Icon from './app/components/lib/icon'
+import Icon from '../../lib/icon'
 
 const useStyles = createUseStyles({
   hartfordfaq: {
@@ -28,32 +27,31 @@ const useStyles = createUseStyles({
   },
 })
 
-
-const AccordionButton = ({isOpen}) =>{
-
+const AccordionButton = ({ isOpen }) => {
   const classes = useStyles()
   return (
-  <button className={classes.AccordionButton}>{ isOpen?
-    <Icon icon={"fa-chevron-up"}/> 
-    :<Icon icon={"fa-chevron-down"}/>
-  }</button>)
+    <button className={classes.AccordionButton}>
+      {isOpen ? <Icon icon={'fa-chevron-up'} /> : <Icon icon={'fa-chevron-down'} />}
+    </button>
+  )
 }
 
-const Question = ({ questionAndAnswer: {question:question, answer:answer} }) =>{
-let [isExpanded, toggleQuestion] = useState(false)
+const Question = ({ questionAndAnswer: { question: question, answer: answer } }) => {
+  let [isExpanded, toggleQuestion] = useState(false)
 
-  return ( <div className={classes.question}>
-    {toggleQuestion()}
-    {question}
-    {isExpanded? <Answer answer={answer}/> : null}
-    <AccordionButton isOpen={isExpanded }/>
-    </div> )
+  return (
+    <div className={classes.question}>
+      {toggleQuestion()}
+      {question}
+      {isExpanded ? <Answer answer={answer} /> : null}
+      <AccordionButton isOpen={isExpanded} />
+    </div>
+  )
 }
 
-const Answer = ({answer}) =>{
-
+const Answer = ({ answer }) => {
   const classes = useStyles()
-  return ( <div className={ classes.answer }>{answer}</div> )
+  return <div className={classes.answer}>{answer}</div>
 }
 
 const FAQ = () => {
@@ -61,8 +59,7 @@ const FAQ = () => {
 
   return (
     <faq-dom key="hartfordFAQ">
-      <ModeProvider>
-      </ModeProvider>
+      <ModeProvider></ModeProvider>
     </faq-dom>
   )
 }

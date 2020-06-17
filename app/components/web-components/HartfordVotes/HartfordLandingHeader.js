@@ -162,7 +162,10 @@ const HartfordLandingHeader = () => {
 
   const question = (
     <h3 className={classes.questions}>
-      Have questions for the candidates? → <OrangeButton>Click here to ask Questions</OrangeButton>
+      Have questions for the candidates? →{' '}
+      <OrangeButton href="https://forms.gle/HgDH7TpewvBeecLe9" target="_blank">
+        Click here to ask Questions
+      </OrangeButton>
     </h3>
   )
   return (
