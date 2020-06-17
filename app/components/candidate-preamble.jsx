@@ -31,7 +31,7 @@ candidate_questions=[
   ]
  */
 
-function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questions }) {
+function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questions, instructionLink }) {
   const classes = useStyles()
   const makeQuestions = (className, questions, keyIndex = 'mq') => {
     return (
@@ -93,6 +93,14 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
             Or, hitting the <b>Hang Up</b> button or closing this window any time before hitting the <b>Post</b> button
             will cause any recordings to be discarded.
           </li>
+          {instructionLink && (
+            <li>
+              You can continue and each step will be explained one at a time, or you can review written instructions{' '}
+              <a target="#" href={instructionLink}>
+                here
+              </a>
+            </li>
+          )}
         </ul>
         <h2 style={{ marginBottom: '0.5rem' }}>Questions for Candidates</h2>
         {makeQuestions(
@@ -128,10 +136,10 @@ const useStyles = createUseStyles({
     },
   },
   PreambleList: {
-    paddingTop: '0.5em',
+    paddingTop: '0.4em',
     paddingLeft: '2em',
     '& li': {
-      paddingBottom: '0.5em',
+      paddingBottom: '0.4em',
     },
   },
   agreed: {},
@@ -149,7 +157,7 @@ const useStyles = createUseStyles({
     padding: '0',
     paddingLeft: '2em',
     '& li': {
-      paddingTop: '0.5em',
+      paddingTop: '0.4em',
     },
   },
   questionListInner: {
