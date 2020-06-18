@@ -1,24 +1,14 @@
 {
-  "dbDefaults":{
+  "dbDefaults": {
     "limit": 10,
     "bigLimit": 20
   },
-
   "WebRTCMediaRecordPeriod": 100,
-
   "MongoLogsCappedSize": 10485760,
-
   "navigator batch size": 10,
-
-  "google analytics": {
-    "key": "UA-55807209-3"
-  },
-
   "sendEmailFrom": "no-reply@enciv.org",
   "sendFeedbackTo": "davidfridley@enciv.org",
-
   "default item image": "https://res.cloudinary.com/hscbexf6a/image/upload/e_grayscale,r_8/a_0/v1415921565/xommyldfefjjvetenviv.jpg",
-
   "itemVisualGap": "0.5em",
   "timeouts": {
     "slowAnimation": 750,

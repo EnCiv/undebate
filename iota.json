@@ -54,7 +54,7 @@
     "subject": "Candidate Conversation",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
