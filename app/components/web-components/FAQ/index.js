@@ -10,7 +10,7 @@ const useStyles = createUseStyles({
     color: '#333333',
     fontWeight: 700,
     fontFamily: 'Libre Franklin',
-    fontSize: '10px',
+    fontSize: '16px',
     wordSpacing: '0.3em',
     letterSpacing: '0.01em',
     boxSizing: 'border-box',
@@ -26,7 +26,7 @@ const useStyles = createUseStyles({
     '& h1, & h2, & h3, & h4': {
       fontFamily: 'Libre Franklin, Bold',
     },
-    '@media (min-width: 1000px) and (min-height: 1000px)': { fontSize: '16px' },
+    '@media (min-width: 1000px) and (min-height: 1000px)': { fontSize: '20px' },
 
     '& *': {
       boxSizing: 'border-box',
@@ -47,6 +47,7 @@ const useStyles = createUseStyles({
   question: {
     borderBottom: '1px solid #707070',
     width: '70%',
+    maxWidth: '1400px',
     paddingBottom: '1em',
     margin: '1.3em auto',
 

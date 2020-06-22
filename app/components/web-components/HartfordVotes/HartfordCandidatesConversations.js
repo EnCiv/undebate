@@ -2,6 +2,7 @@ import React from 'react'
 import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
 import OrangeButton from '../../OrangeButton'
+//import listOffices from '../../../api/hartford-address-lookup.js'
 
 import TabbedContainer from '../TabbedContainer'
 
@@ -136,7 +137,14 @@ const HartfordCandidatesConversations = () => {
         </div>
 
         {/* search for district */}
-        <form className={classes.findDistrict}>
+        <form
+          className={classes.findDistrict}
+          onSubmit={event => {
+            event.preventDefault()
+            //listOffices(event.target.votersAddress.value)
+            window.socket.emit('hartford address lookup', event.target.votersAddress.value)
+          }}
+        >
           <input type="text" name="votersAddress" placeholder="1234 Main St. Hartford CT" id="votersAddress" />
           <OrangeButton> Find your district</OrangeButton>
         </form>

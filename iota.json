@@ -1925,6 +1925,29 @@
   },
   {
     "_id": {
+      "$oid": "5eeb08c07c213e044cc5a719"
+    },
+    "path": "/hartford/faq",
+    "subject": "Frequently asked questions for the city election in Hartford CT",
+    "description": "An FAQ that answers common questions for voters participating in conversations with Candidates who vote in Hartford CT",
+    "webComponent": {
+      "webComponent": "FAQ",
+      "banner": "url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat",
+      "homelink": "/hartford",
+      "questions_and_answers": [
+        {
+          "q": "Is this a question?",
+          "a": "Please make sure your device is plugged into the wall."
+        },
+        {
+          "q": "Who should I vote for?",
+          "a": "The first rule of voting is that you don't talk about it."
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
       "$oid": "5ecd55eb7c213e044cbeebdf"
     },
     "component": {
