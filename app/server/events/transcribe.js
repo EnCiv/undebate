@@ -22,10 +22,10 @@ async function notifyOfNewRecording(participantIota) {
       main(audioString).catch(console.error)
     })
   })
-  async function main(audioByte) {
+  async function main(audioBytes) {
     const client = new speech.SpeechClient()
     const audio = {
-      content: audioByte,
+      content: audioBytes,
     }
     const config = {
       encoding: 'LINEAR16',
