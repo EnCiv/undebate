@@ -54,7 +54,7 @@
     "subject": "Candidate Conversation",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -145,6 +145,7 @@
     },
     "webComponent": {
       "webComponent": "Undebate",
+      "instructionLink": "https://docs.google.com/document/d/1fORs9PlLss9azlsnf0A0lxFoOzDQJ9RJ-zNRZ583SVo/edit?usp=sharing",
       "participants": {},
       "opening": {
         "line1": "Thank you for helping us create a mock candidate conversation.",
@@ -399,6 +400,15 @@
     "webComponent": {
       "opening": {
         "noPreamble": true
+      },
+      "logo": "none",
+      "instructionLink": "https://docs.google.com/document/d/1rTk1d7EP2SJxiXDJCG7opCO0-yNnVXhyiobwVoqo2is/edit?usp=sharing",
+      "metaTags": [
+        "property=\"og:title\" content=\"What is Democracy\"",
+        "property=\"og:image\" content=\"https://res.cloudinary.com/hf6mryjpf/image/upload/v1587412519/what-is-democracy-preview-2020Apr20_cl3ziv.png\""
+      ],
+      "hangupButton": {
+        "name": "Exit"
       },
       "maxParticipants": 5,
       "webComponent": "Undebate",
