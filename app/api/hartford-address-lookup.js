@@ -8,7 +8,7 @@ const https = require('https')
 const geocodeRootURL = 'https://maps.googleapis.com/maps/api/geocode/json?address=' // must be followed by a '+' separated string where + is space
 const key = `&key=${process.env.GOOGLE_MAPS_API_KEY}`
 
-const getOfficials = (long, lat) => {
+const getOfficials = (long, lat, doOnSuccess) => {
   https
     .get(`${process.env.ELECTED_OFFICIALS_URL}?long=${long}&lat=${lat}`, resp => {
       let data = ''
@@ -48,6 +48,7 @@ const getOfficials = (long, lat) => {
           officeNames.forEach(office => {
             console.log(parseInt(office.name[office.name.length - 1]))
           })
+          doOnSuccess(officeNames)
         }
       })
     })
@@ -56,7 +57,7 @@ const getOfficials = (long, lat) => {
     })
 }
 
-export default async function listOffices(address) {
+export default async function listOffices(address, doOnSuccess) {
   const query = address.trim().replace(/\s+/g, '+') // removes trailing whitespace and replaces inner spaces with '+'
 
   console.log(query)
@@ -72,7 +73,7 @@ export default async function listOffices(address) {
         const geo = JSON.parse(data).results[0].geometry
         const lng = geo.location.lng
         const lat = geo.location.lat
-        getOfficials(lng, lat)
+        getOfficials(lng, lat, doOnSuccess)
       })
     })
     .on('error', err => {

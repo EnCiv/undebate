@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
 import OrangeButton from '../../OrangeButton'
@@ -125,6 +125,8 @@ const useStyles = createUseStyles({
 
 const HartfordCandidatesConversations = () => {
   const classes = useStyles()
+  let [candidates, setCandidates] = useState([])
+  console.log(candidates)
   return (
     <>
       <main className={classes.candidatesConversations}>
@@ -142,7 +144,7 @@ const HartfordCandidatesConversations = () => {
           onSubmit={event => {
             event.preventDefault()
             //listOffices(event.target.votersAddress.value)
-            window.socket.emit('hartford address lookup', event.target.votersAddress.value)
+            window.socket.emit('hartford address lookup', event.target.votersAddress.value, setCandidates)
           }}
         >
           <input type="text" name="votersAddress" placeholder="1234 Main St. Hartford CT" id="votersAddress" />
