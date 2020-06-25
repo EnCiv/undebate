@@ -7,6 +7,7 @@ import Join from '../join'
 import Input from '../lib/input'
 import SocialShareBtn from '../lib/socialShareBtn'
 import Icon from '../lib/icon'
+import { Agenda } from '../agenda'
 
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep'
@@ -2501,49 +2502,6 @@ class RASPUndebate extends React.Component {
       )
     }
 
-    var agenda = agendaStyle => {
-      const style = agendaStyle //finishUp ? {} :  noOverlay || bot || intro ? agendaStyle : Object.assign({},agendaStyle,introSeatStyle['agenda']);
-      return (
-        <div
-          style={style}
-          className={cx(
-            classes['agenda'],
-            stylesSet && classes['stylesSet'],
-            finishUp && classes['finishUp'],
-            begin && classes['begin'],
-            !intro && classes['intro']
-          )}
-          key={'agenda' + round + agendaStyle.left}
-        >
-          <div className={classes['innerAgenda']}>
-            {this.props.participants.moderator.agenda[round] && (
-              <>
-                <div className={classes['agendaItem']}>
-                  <div className={classes['agendaTitle']}>
-                    <button className={classes['agenda-icon-left']} onClick={this.prevSection.bind(this)}>
-                      <Icon icon="chevron-left" size="1.5" name="previous-section" />
-                    </button>
-                    Agenda
-                    <button className={classes['agenda-icon-right']} onClick={this.nextSection.bind(this)}>
-                      <Icon icon="chevron-right" size="1.5" name="previous-section" />
-                    </button>
-                  </div>
-                  <ul className={classes['agendaList']}>
-                    {this.props.participants.moderator.agenda[round] &&
-                      this.props.participants.moderator.agenda[round].map((item, i) => (
-                        <li className={classes['item']} key={item + i}>
-                          {item}
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )
-    }
-
     const buttonBar = buttonBarStyle =>
       (bot || ((noOverlay || (begin && intro)) && !finishUp && !done)) && (
         <div style={buttonBarStyle} className={classes['buttonBar']} key="buttonBar">
@@ -2653,7 +2611,13 @@ class RASPUndebate extends React.Component {
           <ConversationHeader subject={this.props.subject} bp_info={this.props.bp_info} logo={this.props.logo} />
           <div className={classes['outerBox']}>
             {Object.keys(this.props.participants).map((participant, i) => videoBox(participant, i, seatStyle))}
-            {agenda(agendaStyle)}
+            <Agenda
+              styles={{ finishUp, begin, intro, stylesSet, agendaStyle, classes }}
+              round={round}
+              prevSection={this.prevSection.bind(this)}
+              nextSection={this.nextSection.bind(this)}
+              agenda={this.props.participants.moderator.agenda}
+            />
           </div>
           <div
             className={cx(
