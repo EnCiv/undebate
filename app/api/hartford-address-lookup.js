@@ -40,7 +40,7 @@ const getOfficials = (long, lat, doOnSuccess) => {
               //district.type === 'State' ||
             ) {
               district.offices.forEach(office => {
-                officeNames.push({ name: office.name, type: district.type })
+                officeNames.push({ id: office.id, name: office.name, type: district.type })
               })
             }
           })

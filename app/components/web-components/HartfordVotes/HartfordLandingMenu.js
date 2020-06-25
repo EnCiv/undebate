@@ -118,7 +118,7 @@ const HartfordLandingMenu = () => {
     {
       display: 'How & Where To Vote',
       key: 'hartford-how-where-vote',
-      href: '',
+      href: 'https://portaldir.ct.gov/sots/LookUp.aspx',
     },
     {
       display: 'Contact Us',

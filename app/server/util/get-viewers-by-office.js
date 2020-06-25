@@ -5,10 +5,10 @@ export default function getViewersByOffice(office_id) {
   return new Promise(async (ok, ko) => {
     try {
       const viewers = await Iota.find({ 'bp_info.race.office.id': { $eq: office_id } })
-      viewers.map(
+      const urls = viewers.map(
         v => `${process.env.HOSTNAME === 'localhost:3011' ? 'http' : 'https'}://${process.env.HOSTNAME}${v.path}`
       )
-      ok(viewers)
+      ok(urls)
     } catch (error) {
       logger.error('caught error trying to getViewersByOffice', office_id, error.message)
       ko(error)
