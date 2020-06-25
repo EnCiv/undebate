@@ -5,6 +5,7 @@ import OrangeButton from '../../OrangeButton'
 //import listOffices from '../../../api/hartford-address-lookup.js'
 
 import TabbedContainer from '../TabbedContainer'
+import { useMode } from './phone-portrait-context'
 
 const useStyles = createUseStyles({
   candidatesConversations: {
@@ -123,10 +124,25 @@ const useStyles = createUseStyles({
   },
 })
 
+//{
+//name: 'District 1',
+//contents: (
+//<div>
+//<h3>San Francisco District Attorney</h3>
+//<iframe
+//width="100%"
+//height="100%"
+//src="https://cc.enciv.org/san-francisco-district-attorney"
+//title="San Francisco District Attorney"
+///>
+//</div>
+//),
+//},
 const HartfordCandidatesConversations = () => {
   const classes = useStyles()
   let [candidates, setCandidates] = useState([])
   console.log(candidates)
+  let isPortrait = useMode()
   return (
     <>
       <main className={classes.candidatesConversations}>
@@ -157,14 +173,36 @@ const HartfordCandidatesConversations = () => {
             {
               name: 'District 1',
               contents: (
-                <div>
-                  <h3>San Francisco District Attorney</h3>
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src="https://cc.enciv.org/san-francisco-district-attorney"
-                    title="San Francisco District Attorney"
-                  />
+                <div
+                  style={{
+                    border: '1em solid #6D6889',
+                    background: `url(
+        'https://public-v2links.adobecc.com/10d56feb-0e4d-49df-772d-f0f2dc06d4c3/component?params=component_id%3A4658210e-530e-458d-aff1-1aff2fe84e01&params=version%3A0&token=1593185349_da39a3ee_1f78828f8f60fb9826df5e4c77884176e7e559be&api_key=CometServer1'
+      ) center center no-repeat`,
+                    backgroundSize: '70vmax',
+                    maxHeight: '53.5em',
+                    height: '50vh',
+                    margin: isPortrait ? '1em' : '4em',
+                    width: isPortrait ? 'calc(100% - 2em)' : 'calc(100% - 8em)',
+                    position: 'relative',
+                  }}
+                  className="coming_soon"
+                >
+                  <h3
+                    style={{
+                      fontSize: '2.5em',
+                      fontWeight: 700,
+                      position: 'absolute',
+                      backgroundColor: 'white',
+                      color: '#6D6889',
+                      height: 'max-content',
+                      bottom: '-1.8em',
+                      right: isPortrait ? 'calc(50% - 1em)' : 'calc(50% - 2em)',
+                      padding: '0.25em 0.3em',
+                    }}
+                  >
+                    2020
+                  </h3>
                 </div>
               ),
             },

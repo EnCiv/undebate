@@ -30,10 +30,9 @@ const useStyles = createUseStyles({
       marginRight: '1em',
       marginBottom: '1em',
       padding: '1em',
-      backgroundColor: '#29316E',
-
+      //backgroundColor: '#29316E',
       '& h3': {
-        color: 'white',
+        //color: 'white',
         fontSize: '1.5em',
         textAlign: 'left',
         margin: 0,
@@ -41,6 +40,7 @@ const useStyles = createUseStyles({
         fontWeight: 100,
       },
       '& iframe': {
+        opacity: 0.1,
         border: 'none',
         height: 'calc(100% - 3em)',
       },
