@@ -8,6 +8,7 @@ import Input from '../lib/input'
 import SocialShareBtn from '../lib/socialShareBtn'
 import Icon from '../lib/icon'
 import { Agenda } from '../agenda'
+import TabbedContainer from '../TabbedContainer'
 
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep'
@@ -355,6 +356,7 @@ const styles = {
   },
   innerAgenda: {
     display: 'table-cell',
+    width: '10000px',
   },
   agendaTitle: {
     fontFamily: 'Libre Franklin',
@@ -370,8 +372,13 @@ const styles = {
     textAlign: 'left',
     padding: '0',
     listStyleType: 'none',
+    textAlign: 'center',
     '& li:first-child': {
       fontWeight: 'bold',
+    },
+    '& li': {
+      paddingTop: '.5em',
+      paddingBottom: '.5em',
     },
   },
   agendaItem: {
@@ -401,7 +408,7 @@ const styles = {
     fontSize: '100%',
   },
   item: {
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
     fontSize: '2rem',
     fontWeight: 'normal',
     backgroundColor: 'white',
@@ -2611,13 +2618,34 @@ class RASPUndebate extends React.Component {
           <ConversationHeader subject={this.props.subject} bp_info={this.props.bp_info} logo={this.props.logo} />
           <div className={classes['outerBox']}>
             {Object.keys(this.props.participants).map((participant, i) => videoBox(participant, i, seatStyle))}
-            <Agenda
-              styles={{ finishUp, begin, intro, stylesSet, agendaStyle, classes }}
-              round={round}
-              prevSection={this.prevSection.bind(this)}
-              nextSection={this.nextSection.bind(this)}
-              agenda={this.props.participants.moderator.agenda}
-            />
+            <div
+              style={{ ...agendaStyle, border: '5px solid #1d3491' }}
+              className={cx(
+                classes['agenda'],
+                stylesSet && classes['stylesSet'],
+                finishUp && classes['finishUp'],
+                begin && classes['begin'],
+                !intro && classes['intro']
+              )}
+            >
+              <TabbedContainer
+                tabs={[
+                  {
+                    name: 'Agenda',
+                    contents: (
+                      <Agenda
+                        styles={{ finishUp, begin, intro, stylesSet, classes }}
+                        round={round}
+                        prevSection={this.prevSection.bind(this)}
+                        nextSection={this.nextSection.bind(this)}
+                        agenda={this.props.participants.moderator.agenda}
+                      />
+                    ),
+                  },
+                  { name: 'Transcript', contents: <div>SOMETHING WORK</div> },
+                ]}
+              />
+            </div>
           </div>
           <div
             className={cx(
