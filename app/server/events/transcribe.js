@@ -28,10 +28,12 @@ function googleRecognize(audioBytes) {
 
 async function notifyOfNewRecording(participantIota) {
   const transcriptionIota = {
+    parentId: participantIota.parentId,
     subject: 'Speech to text for: ' + participantIota.subject,
     description: 'Transcription for: ' + participantIota.description,
     component: {
       component: 'Transcription',
+      participantId: participantIota._id.toString(),
       transcriptions: [],
     },
   }

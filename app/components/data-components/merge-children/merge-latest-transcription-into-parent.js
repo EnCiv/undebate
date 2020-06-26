@@ -7,11 +7,11 @@ export default function mergeLatestTranscriptionIntoParent(childIotas, parentIot
     iota.component && iota.component.component === 'Transcription' ? (transcribe = iota) : false
   ) // .some to stop after finding the first one
   if (transcribe) {
-    if (!parentIota.webComponent) parentIota.webComponent = {}
-    if (!parentIota.webComponent.metaTags) parentIota.webComponent.metaTags = []
-    else
-      parentIota.webComponent.metaTags = parentIota.webComponent.metaTags.filter(tag => !/og:transcription/.test(tag)) // filter out any image tags
-    parentIota.webComponent.metaTags.push(`property="og:transcription" content="${transcribe.component.transcription}"`)
+    Object.keys(parentIota.webComponent.participants).forEach(participant => {
+      if (parentIota.webComponent.participants[participant].participantId === transcribe.component.participantId) {
+        parentIota.webComponent.participants[participant].transcriptions = transcribe.component.transcriptions
+      }
+    })
   }
 }
 
