@@ -6,6 +6,7 @@ global.logger = {
   warn: jest.fn(),
   error: jest.fn(),
 }
+jest.setTimeout(30000)
 
 describe('get-viewers-by-office', () => {
   beforeAll(async () => {
@@ -24,14 +25,23 @@ describe('get-viewers-by-office', () => {
     console.info('disconnected')
   })
 
-  it('should find a viewer', async () => {
+  test('should find a viewer', async () => {
+    const expected = [
+      expect.stringContaining(
+        '/country:us/state:ct/state-legislative-upper:connecticut-state-senate-district-2/stage:primary/party:democratic-party/2020-08-11-qa'
+      ),
+    ]
+
     const viewers = await getViewersByOffice('8218')
+    console.log(viewers, viewers.length)
     expect(viewers.length).toEqual(1)
-    expect(viewers[0].bp_info.race.office.id).toEqual('8218')
+    expect(viewers).toEqual(expect.arrayContaining(expected))
+    return
   })
 
-  it('should not find a viewer', async () => {
+  test('should not find a viewer', async () => {
     const viewers = await getViewersByOffice('9999999999')
     expect(viewers.length).toEqual(0)
+    return
   })
 })

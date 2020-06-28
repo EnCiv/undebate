@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
 import OrangeButton from '../../OrangeButton'
@@ -127,22 +127,69 @@ const useStyles = createUseStyles({
 //{
 //name: 'District 1',
 //contents: (
-//<div>
-//<h3>San Francisco District Attorney</h3>
-//<iframe
-//width="100%"
-//height="100%"
-//src="https://cc.enciv.org/san-francisco-district-attorney"
-//title="San Francisco District Attorney"
-///>
-//</div>
 //),
 //},
 const HartfordCandidatesConversations = () => {
   const classes = useStyles()
   let [candidates, setCandidates] = useState([])
-  console.log(candidates)
+  let [error, setError] = useState('')
+
   let isPortrait = useMode()
+
+  console.log(candidates)
+  const tabContentsComingSoon = (
+    <div
+      style={{
+        border: '1em solid #6D6889',
+        background: `url(
+        'https://public-v2links.adobecc.com/10d56feb-0e4d-49df-772d-f0f2dc06d4c3/component?params=component_id%3A4658210e-530e-458d-aff1-1aff2fe84e01&params=version%3A0&token=1593185349_da39a3ee_1f78828f8f60fb9826df5e4c77884176e7e559be&api_key=CometServer1'
+      ) center center no-repeat`,
+        backgroundSize: '70vmax',
+        maxHeight: '53.5em',
+        height: '50vh',
+        margin: isPortrait ? '1em' : '4em',
+        width: isPortrait ? 'calc(100% - 2em)' : 'calc(100% - 8em)',
+        position: 'relative',
+      }}
+      className="coming_soon"
+    >
+      <h3
+        style={{
+          fontSize: '2.5em',
+          fontWeight: 700,
+          position: 'absolute',
+          backgroundColor: 'white',
+          color: '#6D6889',
+          height: 'max-content',
+          bottom: '-1.8em',
+          right: isPortrait ? 'calc(50% - 1em)' : 'calc(50% - 2em)',
+          padding: '0.25em 0.3em',
+        }}
+      >
+        2020
+      </h3>
+    </div>
+  )
+  const tabContentsExample = (
+    <div>
+      <h3>San Francisco District Attorney</h3>
+      <iframe
+        width="100%"
+        height="100%"
+        src="https://cc.enciv.org/san-francisco-district-attorney"
+        title="San Francisco District Attorney"
+      />
+    </div>
+  )
+  // TODO use useEffect in the case where candidates gets set to either some sort of usable set of offices or returns an error from one of the api calls.
+  useEffect(() => {
+    if (candidates.ok) {
+      //change the tab you are in
+    } else {
+      //display error and recommend action
+    }
+  }, [candidates, error])
+  // if a offices are returned then call viewers by office to get viewers URLS
   return (
     <>
       <main className={classes.candidatesConversations}>
@@ -159,7 +206,8 @@ const HartfordCandidatesConversations = () => {
           className={classes.findDistrict}
           onSubmit={event => {
             event.preventDefault()
-            //listOffices(event.target.votersAddress.value)
+            //TODO validation here use setError if the user inputs a bad string.
+            // const valid_zip_codes=[06101,06105,06114,06126,06141,06145,06151,06156,06176,06102,06106,06115,06132,06142,06146,06152,06160,06180,06103,06108,06120,06134,06143,06147,06154,06161,06183,06104,06112,06123,06140,06144,06150,06155,06167]
             window.socket.emit('hartford address lookup', event.target.votersAddress.value, setCandidates)
           }}
         >
@@ -172,39 +220,7 @@ const HartfordCandidatesConversations = () => {
           tabs={[
             {
               name: 'District 1',
-              contents: (
-                <div
-                  style={{
-                    border: '1em solid #6D6889',
-                    background: `url(
-        'https://public-v2links.adobecc.com/10d56feb-0e4d-49df-772d-f0f2dc06d4c3/component?params=component_id%3A4658210e-530e-458d-aff1-1aff2fe84e01&params=version%3A0&token=1593185349_da39a3ee_1f78828f8f60fb9826df5e4c77884176e7e559be&api_key=CometServer1'
-      ) center center no-repeat`,
-                    backgroundSize: '70vmax',
-                    maxHeight: '53.5em',
-                    height: '50vh',
-                    margin: isPortrait ? '1em' : '4em',
-                    width: isPortrait ? 'calc(100% - 2em)' : 'calc(100% - 8em)',
-                    position: 'relative',
-                  }}
-                  className="coming_soon"
-                >
-                  <h3
-                    style={{
-                      fontSize: '2.5em',
-                      fontWeight: 700,
-                      position: 'absolute',
-                      backgroundColor: 'white',
-                      color: '#6D6889',
-                      height: 'max-content',
-                      bottom: '-1.8em',
-                      right: isPortrait ? 'calc(50% - 1em)' : 'calc(50% - 2em)',
-                      padding: '0.25em 0.3em',
-                    }}
-                  >
-                    2020
-                  </h3>
-                </div>
-              ),
+              contents: tabContentsComingSoon,
             },
             {
               name: 'District 3',

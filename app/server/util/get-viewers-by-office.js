@@ -1,19 +1,19 @@
 'use strict'
 import Iota from '../../models/iota'
 
-export default function getViewersByOffice(office_id) {
-  return new Promise(async (ok, ko) => {
-    try {
-      const viewers = await Iota.find({ 'bp_info.race.office.id': { $eq: office_id } })
-      const urls = viewers.map(
-        v => `${process.env.HOSTNAME === 'localhost:3011' ? 'http' : 'https'}://${process.env.HOSTNAME}${v.path}`
-      )
-      ok(urls)
-    } catch (error) {
-      logger.error('caught error trying to getViewersByOffice', office_id, error.message)
-      ko(error)
-    }
-  })
+export default async function getViewersByOffice(office_id) {
+  try {
+    const viewers = await Iota.find({ 'bp_info.race.office.id': { $eq: office_id } })
+    console.log(viewers, office_id)
+    const urls = await viewers.map(
+      v => `${process.env.HOSTNAME === 'localhost:3011' ? 'http' : 'https'}://${process.env.HOSTNAME}${v.path}`
+    )
+    console.log(urls)
+    return urls
+  } catch (error) {
+    logger.error('caught error trying to getViewersByOffice', office_id, error.message)
+    return error
+  }
 }
 
 /* This is the structure of a viewer Iota
