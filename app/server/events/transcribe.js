@@ -9,10 +9,10 @@ function googleRecognize(audioBytes) {
   return new Promise(async (ok, ko) => {
     const client = new speech.SpeechClient({
       credentials: {
-        client_email: process.env.GOOGLE_APPLICATION_CLIENT_EMAIL,
-        private_key: process.env.GOOGLE_APPLICATION_PRIVATE_KEY.replace(/\\n/gm, '\n'),
+        client_email: process.env.TRANSCRIPTION_CLIENT_EMAIL,
+        private_key: process.env.TRANSCRIPTION_PRIVATE_KEY.replace(/\\n/gm, '\n'),
       },
-      projectId: process.env.GOOGLE_APPLICATION_PROJECT_ID,
+      projectId: process.env.TRANSCRIPTION_PROJECT_ID,
     })
     const audio = {
       content: audioBytes,
