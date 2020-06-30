@@ -208,7 +208,7 @@ const HartfordCandidatesConversations = () => {
       style={{
         border: '1em solid #6D6889',
         background: `url(
-        'https://public-v2links.adobecc.com/10d56feb-0e4d-49df-772d-f0f2dc06d4c3/component?params=component_id%3A4658210e-530e-458d-aff1-1aff2fe84e01&params=version%3A0&token=1593185349_da39a3ee_1f78828f8f60fb9826df5e4c77884176e7e559be&api_key=CometServer1'
+        'https://res.cloudinary.com/hf6mryjpf/image/upload/v1593540680/assets/connecticut_flag.png'
       ) center center no-repeat`,
         backgroundSize: '70vmax',
         //maxHeight: '53.5em',
@@ -249,8 +249,11 @@ const HartfordCandidatesConversations = () => {
           COMING SOON
         </h3>
         <a
+          href="https://forms.gle/HgDH7TpewvBeecLe9"
+          target="_blank"
           style={{
             boxShadow: '0.14em 0.15em .2em rgba(0,0,0,0.2)',
+            textDecoration: 'none',
             height: '2.3em',
             lineHeight: 0,
             background: '#29316E',
@@ -300,7 +303,7 @@ const HartfordCandidatesConversations = () => {
     if (candidates.ok) {
       //confirm that the string matches Conneticut House of Representatives \d
       candidates.officeNames.forEach((office, index) => {
-        office.names.match(/^Connecticut House of Representatives District \d/)
+        office.name.match(/^Connecticut House of Representatives District \d/)
         //get the index to get viewers of the same index
       })
       //change the tab you are in
@@ -328,6 +331,11 @@ const HartfordCandidatesConversations = () => {
           onSubmit={event => {
             event.preventDefault()
             //TODO validation here use setError if the user inputs a bad string.
+            const votersAddress = event.target.votersAddress.value
+
+            console.log('validation: ', votersAddress.match(/hartford/gi))
+            console.log('validation: ', votersAddress.match(/ct/gi))
+            console.log('validation: ', votersAddress.match(/ct/gi))
             window.socket.emit('hartford address lookup', event.target.votersAddress.value, setCandidates)
           }}
         >
@@ -377,14 +385,6 @@ const HartfordCandidatesConversations = () => {
             },
             {
               name: 'District 7',
-              contents: (
-                <div>
-                  <p>hello galaxy</p>
-                </div>
-              ),
-            },
-            {
-              name: 'District 8',
               contents: (
                 <div>
                   <p>hello galaxy</p>

@@ -113,7 +113,7 @@ const HartfordLandingMenu = () => {
     {
       display: 'FAQs',
       key: 'hartford-faq',
-      href: '',
+      href: '/hartford/faq',
     },
     {
       display: 'How & Where To Vote',
@@ -130,11 +130,11 @@ const HartfordLandingMenu = () => {
       key: 'about',
       href: '',
     },
-    {
-      display: 'Score Card',
-      key: 'score',
-      href: '',
-    },
+    //{
+    //display: 'Score Card',
+    //key: 'score',
+    //href: '',
+    //},
   ]
   const links = (
     <ul className={classes.links}>
