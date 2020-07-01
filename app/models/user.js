@@ -62,19 +62,23 @@ class User extends MongoModels {
 User.collectionName = 'users' // the mongodb collection name
 User.schema = schema
 
-async function init() {
-  try {
-    await User.createIndexes([
-      {
-        key: { email: 1 },
-        name: 'email',
-        unique: true,
-        partialFilterExpression: { email: { $exists: true } },
-      },
-    ])
-  } catch (err) {
-    logger.error('User.createIndexes error:', err)
-  }
+function init() {
+  return new Promise(async (ok, ko) => {
+    try {
+      await User.createIndexes([
+        {
+          key: { email: 1 },
+          name: 'email',
+          unique: true,
+          partialFilterExpression: { email: { $exists: true } },
+        },
+      ])
+      return ok()
+    } catch (err) {
+      logger.error('User.createIndexes error:', err)
+      return ko(err)
+    }
+  })
 }
 
 if (MongoModels.dbs['default']) init()

@@ -175,6 +175,10 @@ export default function mergeParticipantsIntoParent(childIotas, parentIota) {
     })
   }
   limitedLatestParticipants.forEach(participantDoc => {
-    parentIota.webComponent.participants[audience + nextIndex++] = participantDoc.component.participant
+    parentIota.webComponent.participants[audience + nextIndex++] = {
+      participantId: participantDoc._id.toString(),
+      userId: participantDoc.userId,
+      ...participantDoc.component.participant,
+    }
   })
 }
