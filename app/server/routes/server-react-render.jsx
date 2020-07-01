@@ -4,7 +4,6 @@ import React from 'react' // needed by render to string
 import { renderToString } from 'react-dom/server'
 import App from '../../components/app'
 import { JssProvider, SheetsRegistry, createGenerateId } from 'react-jss'
-import publicConfig from '../../../public.json'
 import cloneDeep from 'lodash/cloneDeep'
 
 function serverReactRender(req, res, next) {
@@ -41,61 +40,70 @@ function serverReactRender(req, res, next) {
       </JssProvider>
     )
 
+    // extract meta tags from the web component
+    const metaTags = () =>
+      (props.iota &&
+        props.iota.webComponent &&
+        props.iota.webComponent.metaTags &&
+        props.iota.webComponent.metaTags.reduce((acc, meta) => acc + `<meta ${meta}>\n`, '')) ||
+      ''
+
+    // figure out if browsers supports ES6 or not.
+    const ifES6 = () =>
+      props.browserConfig &&
+      ((props.browserConfig.browser.name == 'chrome' && props.browserConfig.browser.version[0] >= 54) ||
+        (props.browserConfig.browser.name == 'safari' && props.browserConfig.browser.version[0] >= 11) ||
+        (props.browserConfig.browser.name == 'opera' && props.browserConfig.browser.version[0] >= 41) ||
+        (props.browserConfig.browser.name == 'firefox' && props.browserConfig.browser.version[0] >= 50) ||
+        (props.browserConfig.browser.name == 'edge' && props.browserConfig.browser.version[0] >= 15))
+        ? (logger.info('index browser supports ES6'), '')
+        : (logger.info('index browser does not support ES6'), '')
+
+    // add google analitics code if env is set - usually only set in production
+    const googleAnalytics = () =>
+      process.env.GOOGLE_ANALYTICS
+        ? `<!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-158107083-2"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '${process.env.GOOGLE_ANALYTICS}');
+      </script>`
+        : ''
+
     return res.send(
       `<!doctype html>
             <html>
                 <head>
                     <meta charSet="UTF-8"/>
-                    <title>Candidate Conversation</title>
+                    <title>${(props.iota && props.iota.subject) || 'Candidate Conversations'}</title>
                     <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
                     <meta name='viewport' content='width=device-width, maximum-scale=1.0, initial-scale=1.0' />
-
                     <link rel='icon' type='image.png' href='/assets/images/favicon-16x16.png' sizes='16x16'/>
                     <link rel='icon' type='image/png' href='/assets/images/favicon-32x32.png' sizes='32x32'/>
                     <link rel="apple-touch-icon" sizes="180x180"  href="/assets/images/apple-touch-icon.png" />
                     <link rel="manifest"  href="/assets/images/site.webmanifest"/>
                     <link rel="shortcut icon" href="/assets/images/favicon.ico" />
                     <meta name="theme-color" content="#ffffff"/>
-                    ${(props.iota &&
-        props.iota.webComponent &&
-        props.iota.webComponent.metaTags &&
-        props.iota.webComponent.metaTags.reduce((acc, meta) => acc + `<meta ${meta}>\n`, '')) ||
-      ''}
+                    ${metaTags()}
                     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
                     <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:400,800&display=swap" rel="stylesheet">
-
                     <style type="text/css">
                         ${sheets.toString()}
                     </style>
-
                     <script>window.reactProps=${JSON.stringify(props) + ''}</script>
                     <script>window.env="${props.env}"</script>
                     <script src="https://kit.fontawesome.com/7258b64f3b.js" crossorigin="anonymous" async></script>
                     <script>function setFontSize(){document.getElementsByTagName("html")[0].style.fontSize=Math.round(Math.min(window.innerWidth,window.innerHeight))/100*(15/(1080/100))+'px'}; window.onresize=setFontSize; setFontSize();</script>
-
                 </head>
                 <body style="margin: 0; padding: 0">
                     <div id="synapp">${body}</div>
-                    ${
-      props.browserConfig &&
-        ((props.browserConfig.browser.name == 'chrome' && props.browserConfig.browser.version[0] >= 54) ||
-          (props.browserConfig.browser.name == 'safari' &&
-            props.browserConfig.browser.version[0] >= 11) ||
-          (props.browserConfig.browser.name == 'opera' && props.browserConfig.browser.version[0] >= 41) ||
-          (props.browserConfig.browser.name == 'firefox' &&
-            props.browserConfig.browser.version[0] >= 50) ||
-          (props.browserConfig.browser.name == 'edge' && props.browserConfig.browser.version[0] >= 15))
-        ? (logger.info('index browser supports ES6'), '')
-        : (logger.info('index browser does not support ES6'), '')
-      }
+                    ${ifES6()}
                     <script src='/socket.io/socket.io.js' ></script>
                     <script src='/assets/webpack/main.js' ></script>
                     <script src='/assets/js/socket.io-stream.js'></script>
-                    ${
-      dev === 'production'
-        ? `<script>{(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', "${publicConfig['google analytics'].key}", 'auto'); ga('send', 'pageview');}</script>`
-        : ''
-      }
+                    ${googleAnalytics()}
                     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
                 </body>
             </html>`

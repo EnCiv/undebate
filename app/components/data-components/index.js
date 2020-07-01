@@ -10,6 +10,7 @@ const Components = {
   CafeParticipants: require('./cafe-participants'),
   MergeParticipants: require('./merge-participants'),
   UndebateCreator: require('./undebate-creator'),
+  MergeChildren: require('./merge-children'),
 }
 
 export class DataComponent {
