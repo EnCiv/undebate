@@ -123,7 +123,7 @@ const HartfordLandingMenu = () => {
     {
       display: 'Contact Us',
       key: 'hartford-contact',
-      href: 'mailto:noreply@enciv.org',
+      href: 'HartfordVota@gmail.com',
     },
     {
       display: 'About',
