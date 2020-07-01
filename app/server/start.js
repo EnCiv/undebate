@@ -58,9 +58,9 @@ async function asyncStart(emitter) {
       throw new Error('Missing MONGODB_URI')
     }
     await MongoModels.connect({ uri: process.env.MONGODB_URI }, {})
-    while (MongoModels.toInit && MongoModels.toInit.length) {
-      // any models that need to createIndexes will push their init function
-      MongoModels.toInit.shift()()
+    // any models that need to createIndexes will push their init function
+    for await (const init of MongoModels.toInit) {
+      await init()
     }
 
     await new Promise((ok, ko) => {
