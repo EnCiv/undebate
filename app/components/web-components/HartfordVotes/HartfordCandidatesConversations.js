@@ -133,6 +133,8 @@ const HartfordCandidatesConversations = () => {
   let [candidates, setCandidates] = useState([])
   let [error, setError] = useState('')
   let [district, setDistrict] = useState(null)
+  let [tab, selectTab] = useState(0)
+
   let isPortrait = useMode()
 
   // TODO need to get viewers by office to populate the tabs
@@ -307,12 +309,12 @@ const HartfordCandidatesConversations = () => {
   useEffect(() => {
     if (candidates.ok) {
       //confirm that the string matches Conneticut House of Representatives \d
-      candidates.officeNames.forEach((office, index) => {
-        office.name.match(/^Connecticut House of Representatives District \d/)
-        //get the index to get viewers of the same index
-      })
+      const office = candidates.officeNames[0]
+      //office.name.match(/^Connecticut House of Representatives District \d/)
+      //get the index to get viewers of the same index
+      let tab_index = representatives_office_ids.findIndex(element => element.district === office.district_number)
       //change the tab you are in
-
+      selectTab(tab_index)
       //prominently display what address_found
     } else {
       //display error and recommend action
@@ -349,7 +351,7 @@ const HartfordCandidatesConversations = () => {
         </form>
 
         {/* districts in tabs */}
-        <TabbedContainer tabs={hartfordTabs} />
+        <TabbedContainer tabs={hartfordTabs} selected_tab={tab} />
       </main>
     </>
   )

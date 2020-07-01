@@ -106,7 +106,7 @@ const HartfordLandingMenu = () => {
 
   const arrayOfLinks = [
     {
-      display: 'Find your District',
+      display: 'Find Your District',
       key: 'hartford-find-district',
       href: 'http://www.hartford.gov/images/registrar/SenatorialAssemblyandVotingDistrictwithPollingLocations.pdf',
     },

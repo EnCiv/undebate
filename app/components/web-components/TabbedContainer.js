@@ -158,13 +158,17 @@ const makeTabs = (tabs_and_contents, action, classes) => {
   return drop_down_menu
 }
 
-const TabbedContainer = ({ tabs }) => {
+const TabbedContainer = ({ tabs, selected_tab = 0 }) => {
   const isPortrait = useMode()
   const classes = useStyles()
-  let [selectedTab, changeTab] = useState(0)
+  let [selectedTab, changeTab] = useState(selected_tab)
   let tabRow = makeTabs(tabs, changeTab, classes)
-  const prevSelectedTabRef = useRef(selectedTab + 1)
+  //make sure that the previously selected tab isn't undefined. prevSelectedTab is used to ensure that there is always a highlightTab in the UI
+  const prevSelectedTabRef = useRef(selected_tab === tabs.length - 1 ? selectedTab - 1 : selectedTab + 1)
 
+  useEffect(() => {
+    changeTab(selected_tab)
+  }, [selected_tab])
   useEffect(() => {
     prevSelectedTabRef.current = selectedTab
   }, [selectedTab])
