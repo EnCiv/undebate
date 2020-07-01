@@ -7,7 +7,7 @@
     "subject": "Candidate Conversation with 5 participants",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -54,7 +54,7 @@
     "subject": "Candidate Conversation",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -145,6 +145,7 @@
     },
     "webComponent": {
       "webComponent": "Undebate",
+      "instructionLink": "https://docs.google.com/document/d/1fORs9PlLss9azlsnf0A0lxFoOzDQJ9RJ-zNRZ583SVo/edit?usp=sharing",
       "participants": {},
       "opening": {
         "line1": "Thank you for helping us create a mock candidate conversation.",
@@ -400,6 +401,15 @@
       "opening": {
         "noPreamble": true
       },
+      "logo": "none",
+      "instructionLink": "https://docs.google.com/document/d/1rTk1d7EP2SJxiXDJCG7opCO0-yNnVXhyiobwVoqo2is/edit?usp=sharing",
+      "metaTags": [
+        "property=\"og:title\" content=\"What is Democracy\"",
+        "property=\"og:image\" content=\"https://res.cloudinary.com/hf6mryjpf/image/upload/v1587412519/what-is-democracy-preview-2020Apr20_cl3ziv.png\""
+      ],
+      "hangupButton": {
+        "name": "Exit"
+      },
       "maxParticipants": 5,
       "webComponent": "Undebate",
       "participants": {
@@ -508,7 +518,7 @@
     "subject": "School Board Candidate Conversation - Candidate Conversation using Youtube Video",
     "description": "A prototype Candidate Conversation for schoolboard, using Youtube video",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "Undebate",
@@ -572,7 +582,7 @@
     "subject": "HackForLA Projects",
     "description": "HackForLA Projects",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -912,7 +922,7 @@
     "subject": "School Board Candidate Conversation",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "Undebate",
@@ -1194,7 +1204,7 @@
     "subject": "Candidate Conversation with 2 participants",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -1283,7 +1293,7 @@
     "subject": "Candidate Conversation with 3 participants",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -1393,7 +1403,7 @@
     "subject": "Candidate Conversation with 4 participants",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -1523,7 +1533,7 @@
     "subject": "Candidate Conversation with 6 participants",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -1695,7 +1705,7 @@
     "subject": "Candidate Conversation with 7 participants",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -1914,10 +1924,44 @@
   },
   {
     "_id": {
+      "$oid": "5ed325ee7c213e044cc03a46"
+    },
+    "path": "/hartford",
+    "subject": "City election in Hartford CT",
+    "description": "A prototype Candidate Conversation for schoolboard, using Youtube video",
+    "webComponent": {
+      "webComponent": "HartfordVotes"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5eeb08c07c213e044cc5a719"
+    },
+    "path": "/hartford/faq",
+    "subject": "Frequently asked questions for the city election in Hartford CT",
+    "description": "An FAQ that answers common questions for voters participating in conversations with Candidates who vote in Hartford CT",
+    "webComponent": {
+      "webComponent": "FAQ",
+      "banner": "url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat",
+      "homelink": "/hartford",
+      "questions_and_answers": [
+        {
+          "q": "Is this a question?",
+          "a": "Please make sure your device is plugged into the wall."
+        },
+        {
+          "q": "Who should I vote for?",
+          "a": "The first rule of voting is that you don't talk about it."
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
       "$oid": "5ecd55eb7c213e044cbeebdf"
     },
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -2140,5 +2184,76 @@
     "subject": "President of the World",
     "description": "A Candidate Conversation Recorder for: President of the World, Election Date:2020-12-31",
     "parentId": "5ecd55eb7c213e044cbeebdf"
+  },
+  {
+    "_id": {
+      "$oid": "5ef28004e7179a4006925fb4"
+    },
+    "component": {
+      "component": "MergeChildren"
+    },
+    "webComponent": {
+      "webComponent": "CandidateConversation",
+      "closing": {
+        "thanks": "Thank You.",
+        "iframe": {
+          "src": "https://docs.google.com/forms/d/e/1FAIpQLSeh7kAVWpyjnSYmHhjfpjfalgznfDA_AF2xmrFB8ZzQj75Vyw/viewform?embedded=true",
+          "width": "640",
+          "height": "1511"
+        }
+      },
+      "shuffle": "bp_info_alphabetize",
+      "participants": {
+        "moderator": {
+          "name": "Sarah Rosier",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804991/5dfbd2cade08bc00174be9c2-0-speaking20191220T012308880Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804992/5dfbd2cade08bc00174be9c2-1-speaking20191220T012311425Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804993/5dfbd2cade08bc00174be9c2-2-speaking20191220T012312246Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804993/5dfbd2cade08bc00174be9c2-3-speaking20191220T012312981Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804995/5dfbd2cade08bc00174be9c2-4-speaking20191220T012313581Z.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804997/5dfbd2cade08bc00174be9c2-5-speaking20191220T012315245Z.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Name",
+              "2- City and State",
+              "3- One word to describe yourself",
+              "4- What office are you running for?"
+            ],
+            ["What do you love most about where you live?"],
+            ["What inspired you to run for office?"],
+            ["If elected, how will you know you that you've succeeded in this position?"],
+            ["Thank you!"]
+          ],
+          "timeLimits": [15, 30, 30, 30]
+        }
+      }
+    },
+    "path": "/country:us/state:ct/state-legislative-upper:connecticut-state-senate-district-2/stage:primary/party:democratic-party/2020-08-11-qa",
+    "subject": "Connecticut State Senate District 2",
+    "bp_info": {
+      "stage_id": "123456789",
+      "election_date": "2020-08-11",
+      "race": {
+        "id": "123456789",
+        "year": 2020,
+        "type": "Regular",
+        "office": {
+          "id": "8218",
+          "name": "Connecticut State Senate District 2",
+          "level": "State",
+          "branch": "Legislative",
+          "district": {
+            "id": "771",
+            "name": "Connecticut State Senate District 2",
+            "type": "State Legislative (Upper)",
+            "state": "CT"
+          }
+        }
+      }
+    },
+    "description": "A Candidate Conversation for: Connecticut State Senate District 2 Election Date:2020-08-11. This is a manually build record for QA testing"
   }
 ]

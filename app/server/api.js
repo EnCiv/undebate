@@ -10,6 +10,15 @@ import ss from 'socket.io-stream'
 import cloudinary from 'cloudinary'
 import User from '../models/user'
 
+// this is not catching the errors from hartford-address-lookup when there is not MAPS Api set - but still maybe it will catch some other error
+function handlerWrapper(handler, ...args) {
+  try {
+    handler.apply(this, args)
+  } catch (error) {
+    logger.error('caught error from api handler', handler.name, error.message, 'continuing', error)
+  }
+}
+
 class API extends EventEmitter {
   constructor(server) {
     super()
@@ -176,7 +185,10 @@ class API extends EventEmitter {
     try {
       this.sockets.push(socket)
 
-      socket.on('error', error => this.emit('error', error))
+      socket.on('error', error => {
+        console.error('socket got error event')
+        this.emit('error', error)
+      })
       socket.on('connect_timeout', error => logger.error('socket connected timeout', error))
       socket.on('connect_error', error => logger.error('socket connect_error', error))
 
@@ -209,7 +221,7 @@ class API extends EventEmitter {
       }
 
       for (let handler in this.handlers) {
-        socket.on(handler, this.handlers[handler].bind(socket))
+        socket.on(handler, handlerWrapper.bind(socket, this.handlers[handler]))
       }
 
       this.stream(socket)
