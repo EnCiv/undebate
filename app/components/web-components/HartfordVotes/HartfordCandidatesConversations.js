@@ -286,6 +286,11 @@ const HartfordCandidatesConversations = () => {
       </h3>
     </div>
   )
+
+  const hartfordTabs = representatives_office_ids.map(office => {
+    return { name: `District ${office.district}`, contents: tabContentsComingSoon }
+  })
+
   const tabContentsExample = (
     <div>
       <h3>San Francisco District Attorney</h3>
@@ -344,55 +349,7 @@ const HartfordCandidatesConversations = () => {
         </form>
 
         {/* districts in tabs */}
-        <TabbedContainer
-          tabs={[
-            {
-              name: 'District 1',
-              contents: tabContentsComingSoon,
-            },
-            {
-              name: 'District 3',
-              contents: (
-                <div>
-                  <p>hello universe</p>
-                </div>
-              ),
-            },
-            {
-              name: 'District 4',
-              contents: (
-                <div>
-                  <p>hello galaxy</p>
-                </div>
-              ),
-            },
-            {
-              name: 'District 5',
-              contents: (
-                <div>
-                  <p>hello galaxy</p>
-                </div>
-              ),
-            },
-
-            {
-              name: 'District 6',
-              contents: (
-                <div>
-                  <p>hello galaxy</p>
-                </div>
-              ),
-            },
-            {
-              name: 'District 7',
-              contents: (
-                <div>
-                  <p>hello galaxy</p>
-                </div>
-              ),
-            },
-          ]}
-        />
+        <TabbedContainer tabs={hartfordTabs} />
       </main>
     </>
   )
