@@ -123,7 +123,7 @@ const HartfordLandingMenu = () => {
     {
       display: 'Contact Us',
       key: 'hartford-contact',
-      href: 'HartfordVota@gmail.com',
+      href: 'mailto:HartfordVota@gmail.com',
     },
     {
       display: 'About',
