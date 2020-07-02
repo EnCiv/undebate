@@ -44,6 +44,7 @@ import supportsVideoType from '../lib/supports-video-type'
 import { auto_quality, placeholder_image } from '../lib/cloudinary-urls'
 import createParticipant from '../lib/create-participant'
 import BeginButton from '../begin-button'
+import Transcription from '../transcription'
 
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
@@ -2642,7 +2643,10 @@ class RASPUndebate extends React.Component {
                       />
                     ),
                   },
-                  { name: 'Transcript', contents: <div>SOMETHING WORK</div> },
+                  {
+                    name: 'Transcript',
+                    contents: <Transcription transcriptionJson={this.props.participants} />,
+                  },
                 ]}
               />
             </div>
