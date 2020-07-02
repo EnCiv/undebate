@@ -150,7 +150,7 @@ export default async function listOffices(address, doOnSuccess) {
           const jsonData = JSON.parse(data)
           const { result } = jsonData
           console.log(jsonData)
-          if (result && result.addressMatches.length >= 0) {
+          if (result && result.addressMatches.length > 0) {
             const matches = result.addressMatches[0]
             const address_found = matches.matchedAddress
             const lng = matches.coordinates.x

@@ -342,7 +342,11 @@ const HartfordCandidatesConversations = () => {
 
             console.log('validation: ', votersAddress.match(/hartford/gi))
             console.log('validation: ', votersAddress.match(/ct/gi))
-            console.log('validation: ', votersAddress.match(/ct/gi))
+            console.log(
+              'validation: ',
+              valid_zip_codes.find(element => element === votersAddress.match(/\b\d{5}\b/gi)[0])
+            )
+            console.log('validation: ', votersAddress.match(/\bct\s+\d{5}(-\d{4})?/gi))
             window.socket.emit('hartford address lookup', event.target.votersAddress.value, setCandidates)
           }}
         >
