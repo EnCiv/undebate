@@ -89,6 +89,8 @@
     "react-hot-loader": "^4.12.10",
     "react-html-parser": "^2.0.2",
     "react-jss": "^10.1.1",
+    "react-router-dom": "^5.2.0",
+    "react-shadow-root": "^5.0.2",
     "regenerator-runtime": "^0.13.3",
     "shuffle-array": "^1.0.1",
     "sib-api-v3-sdk": "^7.2.2",

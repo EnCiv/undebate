@@ -31,20 +31,24 @@ class Log extends MongoModels {
 Log.collectionName = 'logs' // the mongodb collection name
 Log.schema = Joi.object() // and object with anything in it
 
-async function init() {
-  try {
-    // find out if the collection exists without creating the collection
-    var collections = await MongoModels.dbs['default'].listCollections({ name: Log.collectionName }).toArray()
-    if (collections && collections.length === 1) return
-    console.info('Log.init creating collection')
-    var result = await MongoModels.dbs['default'].createCollection(Log.collectionName, {
-      capped: true,
-      size: publicConfig.MongoLogsCappedSize,
-    })
-    if (!result) console.error('Log.init result failed')
-  } catch (err) {
-    console.error('Log.init error:', err)
-  }
+function init() {
+  return new Promise(async (ok, ko) => {
+    try {
+      // find out if the collection exists without creating the collection
+      var collections = await MongoModels.dbs['default'].listCollections({ name: Log.collectionName }).toArray()
+      if (collections && collections.length === 1) return ok()
+      console.info('Log.init creating collection')
+      var result = await MongoModels.dbs['default'].createCollection(Log.collectionName, {
+        capped: true,
+        size: publicConfig.MongoLogsCappedSize,
+      })
+      if (!result) console.error('Log.init result failed')
+      return ok()
+    } catch (err) {
+      console.error('Log.init error:', err)
+      return ko(err)
+    }
+  })
 }
 
 if (MongoModels.dbs['default']) init()

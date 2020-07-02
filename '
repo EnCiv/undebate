@@ -1,0 +1,50 @@
+import React from 'react'
+import injectSheet from 'react-jss'
+import cx from 'classnames'
+
+const styles = {
+  menu: {
+    width: '100vw',
+    fontSize: '1em',
+    color: 'white',
+    boxSizing: 'border-box',
+    textAlign: 'center',
+    backgroundColor: 'blue',
+    paddingTop: '1em',
+    height: '3em',
+    //phones
+    '@media only screen and (max-width:600px) and (-webkit-device-pixel-ratio: 3) and (-webkit-device-pixel-ratio: 2)  and (orientation:portrait)': {
+      width: '3em',
+    },
+  },
+  links: {
+    listStyle: 'none',
+    padding: '0px',
+    margin: '0px',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  linkContents: {
+    '&+&': {
+      marginLeft: '6em',
+    },
+  },
+}
+//include logos in here for portrait mode rendering as well
+let HartfordLandingMenu = ({ classes }) => {
+  return (
+    <>
+      <nav className={classes.menu}>
+        <ul className={classes.links}>
+          <li className={classes.linkContents}>Find your district</li>
+          <li className={classes.linkContents}>FAQs</li>
+          <li className={classes.linkContents}>How & Where To Vote</li>
+          <li className={classes.linkContents}>Contact Us</li>
+        </ul>
+      </nav>
+    </>
+  )
+}
+HartfordLandingMenu = injectSheet(styles)(HartfordLandingMenu)
+export default HartfordLandingMenu

@@ -1,5 +1,5 @@
 'use strict'
-import React from 'react'
+import React, { useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import Button from './button'
 import cx from 'classnames'
@@ -33,6 +33,7 @@ candidate_questions=[
 
 function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questions, instructionLink }) {
   const classes = useStyles()
+  const [isPortrait, togglePortrait] = useState(false)
   const makeQuestions = (className, questions, keyIndex = 'mq') => {
     return (
       <ul className={className}>
@@ -56,8 +57,12 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
 
   return (
     <div className={cx(classes['Preamble'], agreed && classes['agreed'])}>
-      <ConversationHeader subject={subject} bp_info={bp_info} />
-      <div className={classes['Preamble-inner']}>
+      <ConversationHeader
+        subject={subject}
+        bp_info={bp_info}
+        handleOrientationChange={choice => togglePortrait(choice)}
+      />
+      <div className={cx(classes['Preamble-inner'], isPortrait ? classes['portrait'] : undefined)}>
         <h2>
           Welcome{' '}
           {bp_info && bp_info.candidate_name ? (
@@ -149,6 +154,9 @@ const useStyles = createUseStyles({
   'Preamble-inner': {
     marginTop: '6vh',
     // need to have someting here for portrait mode - but don't record in portrait mode for now.
+  },
+  portrait: {
+    marginTop: '20vh',
   },
   questionList: {
     listStyleType: 'upper-alpha',
