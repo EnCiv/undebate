@@ -57,4 +57,13 @@ async function notifyOfNewRecording(participantIota) {
 
   await Iota.insertOne(transcriptionIota)
 }
-serverEvents.on(serverEvents.eNames.ParticipantCreated, notifyOfNewRecording)
+if (
+  ['TRANSCRIPTION_CLIENT_EMAIL', 'TRANSCRIPTION_PRIVATE_KEY', 'TRANSCRIPTION_PROJECT_ID'].reduce((allExist, name) => {
+    if (!process.env[name]) {
+      logger.error('env ', name, 'not set. Transcription not enabled')
+      return false
+    } else return allExist
+  }, true)
+) {
+  serverEvents.on(serverEvents.eNames.ParticipantCreated, notifyOfNewRecording)
+}
