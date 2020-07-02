@@ -6,21 +6,7 @@ import serverEvents from './index.js'
 import sendEmail from '../util/send-email'
 import Config from '../../../public.json'
 
-if (!process.env.SENDINBLUE_API_KEY) {
-  console.error('SENDINBLUE_API_KEY not set in env')
-}
-if (!process.env.SENDINBLUE_TEMPLATE_ID) {
-  console.error('SENDINBLUE_TEMPLATE_ID not set in env')
-}
-
 var SibApiV3Sdk = require('sib-api-v3-sdk')
-SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = process.env.SENDINBLUE_API_KEY
-
-var SibSMTPApi = new SibApiV3Sdk.SMTPApi()
-
-if (!process.env.NOTIFY_OF_NEW_PARTICIPANT_TO) {
-  console.error('NOTIFY_OF_NEW_PARTICIPANT_TO not set in env')
-}
 
 async function notifyOfNewParticipant(iota) {
   const viewer = await Iota.findOne({ _id: Iota.ObjectID(iota.parentId) })
@@ -124,5 +110,17 @@ async function notifyOfNewParticipant(iota) {
     )
   }
 }
-
-serverEvents.on(serverEvents.eNames.ParticipantCreated, notifyOfNewParticipant)
+if (
+  ['SENDINBLUE_API_KEY', 'SENDINBLUE_TEMPLATE_ID', 'NOTIFY_OF_NEW_PARTICIPANT_TO'].reduce((allExist, name) => {
+    if (!process.env[name]) {
+      logger.error('env ', name, 'not set. Notification of New Participants not enabled')
+      return false
+    } else return allExist
+  }, true)
+) {
+  // initialize the sending blue keys
+  SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = process.env.SENDINBLUE_API_KEY
+  var SibSMTPApi = new SibApiV3Sdk.SMTPApi()
+  // register for the events
+  serverEvents.on(serverEvents.eNames.ParticipantCreated, notifyOfNewParticipant)
+}

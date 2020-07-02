@@ -3,27 +3,17 @@ import serverEvents from './index'
 import speech from '@google-cloud/speech'
 import https from 'https'
 import fs from 'fs'
+import superagent from 'superagent'
 
-async function notifyOfNewRecording(participantIota) {
-  participantIota._id = Iota.ObjectID()
-  participantIota.subject = 'Speech to text for: ' + participantIota.subject
-  participantIota.description = 'Transcription for: ' + participantIota.description
-  participantIota.component.component = 'Transcription'
-  participantIota.component.transcription = []
-  let speakingFile = participantIota.component.participant.speaking[1]
-  let convertedFile = speakingFile.replace('.mp4', '.wav')
-  let chunkedFile = fs.createWriteStream('chunkedFile.wav', 'base64')
-  let request = https.get(convertedFile, function(resp) {
-    logger.info('Status code is:' + Object.getOwnPropertyNames(resp))
-    resp.pipe(chunkedFile)
-    chunkedFile.on('finish', function() {
-      const chunkedFile2 = fs.readFileSync('chunkedFile.wav')
-      let audioString = chunkedFile2.toString('base64')
-      main(audioString).catch(console.error)
+function googleRecognize(audioBytes) {
+  return new Promise(async (ok, ko) => {
+    const client = new speech.SpeechClient({
+      credentials: {
+        client_email: process.env.TRANSCRIPTION_CLIENT_EMAIL,
+        private_key: process.env.TRANSCRIPTION_PRIVATE_KEY.replace(/\\n/gm, '\n'),
+      },
+      projectId: process.env.TRANSCRIPTION_PROJECT_ID,
     })
-  })
-  async function main(audioBytes) {
-    const client = new speech.SpeechClient()
     const audio = {
       content: audioBytes,
     }
@@ -38,12 +28,42 @@ async function notifyOfNewRecording(participantIota) {
     }
     const [response] = await client.recognize(request)
     let transcribeData = response.results[0].alternatives[0]
-
-    participantIota.component.transcription.push(transcribeData)
-
-    //the two lines below will be executed after looping
-    delete participantIota.component.participant
-    await Iota.insertOne(participantIota)
-  }
+    ok(transcribeData)
+  })
 }
-serverEvents.on(serverEvents.eNames.ParticipantCreated, notifyOfNewRecording)
+
+async function notifyOfNewRecording(participantIota) {
+  const transcriptionIota = {
+    parentId: participantIota.parentId,
+    subject: 'Speech to text for: ' + participantIota.subject,
+    description: 'Transcription for: ' + participantIota.description,
+    component: {
+      component: 'Transcription',
+      participantId: participantIota._id.toString(),
+      transcriptions: [],
+    },
+  }
+  for await (const speakingFile of participantIota.component.participant.speaking) {
+    try {
+      let convertedFile = speakingFile.replace('.mp4', '.wav')
+      const resp = await superagent.get(convertedFile)
+      let audioString = resp.body.toString('base64')
+      const transcribeData = await googleRecognize(audioString)
+      transcriptionIota.component.transcriptions.push(transcribeData)
+    } catch (err) {
+      logger.error('notify of new recording caught error', speakingFile, err)
+    }
+  }
+
+  await Iota.insertOne(transcriptionIota)
+}
+if (
+  ['TRANSCRIPTION_CLIENT_EMAIL', 'TRANSCRIPTION_PRIVATE_KEY', 'TRANSCRIPTION_PROJECT_ID'].reduce((allExist, name) => {
+    if (!process.env[name]) {
+      logger.error('env ', name, 'not set. Transcription not enabled')
+      return false
+    } else return allExist
+  }, true)
+) {
+  serverEvents.on(serverEvents.eNames.ParticipantCreated, notifyOfNewRecording)
+}
