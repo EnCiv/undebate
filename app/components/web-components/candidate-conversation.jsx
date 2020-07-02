@@ -8,23 +8,17 @@ import Input from '../lib/input'
 import SocialShareBtn from '../lib/socialShareBtn'
 import Icon from '../lib/icon'
 import { Agenda } from '../agenda'
-import TabbedContainer from '../TabbedContainer'
 
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep'
 import getYouTubeID from 'get-youtube-id'
 import Preamble from '../preamble'
-import Config from '../../../public.json'
-
-const ResolutionToFontSizeTable = require('../../../resolution-to-font-size-table').default
 
 const TransitionTime = 500
 const TopMargin = 0
 const IntroTransition = 'all 5s ease'
 const HDRatio = 1080 / 1920 //0.5625
 const ShadowBox = 10
-
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser'
 
 import IconPrevSpeaker from '../../svgr/icon-prev-speaker'
 import IconPrevSection from '../../svgr/icon-prev-session'
@@ -354,59 +348,6 @@ const styles = {
       top: `calc( -1 * 25vw *  ${HDRatio} -${TopMargin})`,
       left: '100vw',
     },
-  },
-  innerAgenda: {
-    display: 'table-cell',
-    width: '10000px',
-  },
-  agendaTitle: {
-    fontFamily: 'Libre Franklin',
-    textAlign: 'center',
-    'font-size': '3rem',
-    lineHeight: '3rem',
-    backgroundColor: `${YELLOW}`,
-    paddingTop: '1rem',
-    paddingBottom: '1rem',
-    'font-weight': 'bold',
-  },
-  agendaList: {
-    textAlign: 'left',
-    padding: '0',
-    listStyleType: 'none',
-    textAlign: 'center',
-    '& li:first-child': {
-      fontWeight: 'bold',
-    },
-    '& li': {
-      paddingTop: '.5em',
-      paddingBottom: '.5em',
-    },
-  },
-  agendaItem: {
-    'margin-block-start': '0',
-    textAlign: 'left',
-    lineHeight: '2rem',
-    'font-weight': '200',
-    'list-style-type': 'none',
-    paddingLeft: '0',
-  },
-  'agenda-icon-left': {
-    border: 'none',
-    backgroundColor: 'transparent',
-    marginLeft: '0.5rem',
-    display: 'inline-block',
-    float: 'left',
-    cursor: 'pointer',
-    fontSize: '100%',
-  },
-  'agenda-icon-right': {
-    border: 'none',
-    backgroundColor: 'transparent',
-    marginRight: '0.5rem',
-    display: 'inline-block',
-    float: 'right',
-    cursor: 'pointer',
-    fontSize: '100%',
   },
   item: {
     // fontFamily: 'Roboto',
@@ -2619,8 +2560,7 @@ class RASPUndebate extends React.Component {
           <ConversationHeader subject={this.props.subject} bp_info={this.props.bp_info} logo={this.props.logo} />
           <div className={classes['outerBox']}>
             {Object.keys(this.props.participants).map((participant, i) => videoBox(participant, i, seatStyle))}
-            <div
-              style={{ ...agendaStyle, border: '5px solid #1d3491' }}
+            <Agenda
               className={cx(
                 classes['agenda'],
                 stylesSet && classes['stylesSet'],
