@@ -2568,28 +2568,13 @@ class RASPUndebate extends React.Component {
                 begin && classes['begin'],
                 !intro && classes['intro']
               )}
-            >
-              <TabbedContainer
-                tabs={[
-                  {
-                    name: 'Agenda',
-                    contents: (
-                      <Agenda
-                        styles={{ finishUp, begin, intro, stylesSet, classes }}
-                        round={round}
-                        prevSection={this.prevSection.bind(this)}
-                        nextSection={this.nextSection.bind(this)}
-                        agenda={this.props.participants.moderator.agenda}
-                      />
-                    ),
-                  },
-                  {
-                    name: 'Transcript',
-                    contents: <Transcription transcriptionJson={this.props.participants} />,
-                  },
-                ]}
-              />
-            </div>
+              style={agendaStyle}
+              prevSection={this.prevSection.bind(this)}
+              nextSection={this.nextSection.bind(this)}
+              agenda={this.props.participants.moderator.agenda}
+              round={round}
+              participants={this.props.participants}
+            />
           </div>
           <div
             className={cx(

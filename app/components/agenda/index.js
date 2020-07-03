@@ -3,6 +3,7 @@ import React from 'react'
 import Icon from '../lib/icon'
 import { createUseStyles } from 'react-jss'
 import TabbedContainer from '../TabbedContainer'
+import Transcription from '../transcription'
 
 const AgendaItem = ({ agenda, prevSection, nextSection, round }) => {
   const classes = useStyles()
@@ -35,7 +36,7 @@ const AgendaItem = ({ agenda, prevSection, nextSection, round }) => {
   )
 }
 
-export const Agenda = ({ className, style, agenda, prevSection, nextSection, round }) => {
+export const Agenda = ({ className, style, agenda, prevSection, nextSection, round, participants }) => {
   return (
     <div style={{ ...style, border: '5px solid #1d3491' }} className={className}>
       <TabbedContainer
@@ -44,7 +45,7 @@ export const Agenda = ({ className, style, agenda, prevSection, nextSection, rou
             name: 'Agenda',
             contents: <AgendaItem round={round} prevSection={prevSection} nextSection={nextSection} agenda={agenda} />,
           },
-          { name: 'Transcript', contents: <div>SOMETHING WORK</div> },
+          { name: 'Transcript', contents: <Transcription transcriptionJson={participants.moderator} /> },
         ]}
       />
     </div>
