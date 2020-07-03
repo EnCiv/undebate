@@ -2255,5 +2255,978 @@
       }
     },
     "description": "A Candidate Conversation for: Connecticut State Senate District 2 Election Date:2020-08-11. This is a manually build record for QA testing"
+  },
+  {
+    "_id": {
+      "$oid": "5efe80e7cec3871e8acefdc8"
+    },
+    "parentId": "5e7e88a67c213e3443f11dbf",
+    "subject": "Participant:Candidate Recorder for Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hvi2k2swg/video/upload/q_auto/v1593737421/5ed587e53bfd4f38408669da-0-speaking20200703T005018613Z.mp4",
+          "https://res.cloudinary.com/hvi2k2swg/video/upload/q_auto/v1593737438/5ed587e53bfd4f38408669da-1-speaking20200703T005019744Z.mp4",
+          "https://res.cloudinary.com/hvi2k2swg/video/upload/q_auto/v1593737443/5ed587e53bfd4f38408669da-2-speaking20200703T005038363Z.mp4"
+        ],
+        "name": "firstvictim",
+        "listening": "https://res.cloudinary.com/hvi2k2swg/video/upload/q_auto/v1593737446/5ed587e53bfd4f38408669da-0-listening20200703T005044397Z.mp4"
+      }
+    },
+    "userId": "5ed587e53bfd4f38408669da"
+  },
+  {
+    "_id": {
+      "$oid": "5efe8104cec3871e8acefdc9"
+    },
+    "parentId": "5e7e88a67c213e3443f11dbf",
+    "subject": "Speech to text for: Participant:Candidate Recorder for Candidate Conversation",
+    "description": "Transcription for: A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "Transcription",
+      "participantId": "5efe80e7cec3871e8acefdc8",
+      "transcriptions": [
+        {
+          "transcript": "1 2 3 4 5 6",
+          "confidence": 0.9090145230293274,
+          "words": [
+            {
+              "startTime": {
+                "seconds": "1",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "2",
+                "nanos": 700000000
+              },
+              "word": "1"
+            },
+            {
+              "startTime": {
+                "seconds": "2",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "2",
+                "nanos": 900000000
+              },
+              "word": "2"
+            },
+            {
+              "startTime": {
+                "seconds": "2",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "3",
+                "nanos": 200000000
+              },
+              "word": "3"
+            },
+            {
+              "startTime": {
+                "seconds": "3",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "3",
+                "nanos": 400000000
+              },
+              "word": "4"
+            },
+            {
+              "startTime": {
+                "seconds": "3",
+                "nanos": 400000000
+              },
+              "endTime": {
+                "seconds": "3",
+                "nanos": 700000000
+              },
+              "word": "5"
+            },
+            {
+              "startTime": {
+                "seconds": "3",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "4"
+              },
+              "word": "6"
+            }
+          ]
+        },
+        {
+          "transcript": "in theatres a monologue is a speech presented by Single Character most often to express in mental thoughts aloud those sometimes also directly against another character or the is monologues are common across the range of dramatic media as well as in not dramatic media such as poetry monologue share much in common with several other literary devices including soliloquies apostrophe and a sides there are however distinctions between each of these devices",
+          "confidence": 0.9306946992874146,
+          "words": [
+            {
+              "startTime": {
+                "seconds": "3",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "4",
+                "nanos": 400000000
+              },
+              "word": "in"
+            },
+            {
+              "startTime": {
+                "seconds": "4",
+                "nanos": 400000000
+              },
+              "endTime": {
+                "seconds": "4",
+                "nanos": 800000000
+              },
+              "word": "theatres"
+            },
+            {
+              "startTime": {
+                "seconds": "4",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "5"
+              },
+              "word": "a"
+            },
+            {
+              "startTime": {
+                "seconds": "5"
+              },
+              "endTime": {
+                "seconds": "5",
+                "nanos": 600000000
+              },
+              "word": "monologue"
+            },
+            {
+              "startTime": {
+                "seconds": "5",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "6",
+                "nanos": 200000000
+              },
+              "word": "is"
+            },
+            {
+              "startTime": {
+                "seconds": "6",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "6",
+                "nanos": 300000000
+              },
+              "word": "a"
+            },
+            {
+              "startTime": {
+                "seconds": "6",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "6",
+                "nanos": 600000000
+              },
+              "word": "speech"
+            },
+            {
+              "startTime": {
+                "seconds": "6",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "6",
+                "nanos": 800000000
+              },
+              "word": "presented"
+            },
+            {
+              "startTime": {
+                "seconds": "6",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "7",
+                "nanos": 200000000
+              },
+              "word": "by"
+            },
+            {
+              "startTime": {
+                "seconds": "7",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "7",
+                "nanos": 700000000
+              },
+              "word": "Single"
+            },
+            {
+              "startTime": {
+                "seconds": "7",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "8",
+                "nanos": 200000000
+              },
+              "word": "Character"
+            },
+            {
+              "startTime": {
+                "seconds": "8",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "8",
+                "nanos": 700000000
+              },
+              "word": "most"
+            },
+            {
+              "startTime": {
+                "seconds": "8",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "9"
+              },
+              "word": "often"
+            },
+            {
+              "startTime": {
+                "seconds": "9"
+              },
+              "endTime": {
+                "seconds": "9",
+                "nanos": 200000000
+              },
+              "word": "to"
+            },
+            {
+              "startTime": {
+                "seconds": "9",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "9",
+                "nanos": 400000000
+              },
+              "word": "express"
+            },
+            {
+              "startTime": {
+                "seconds": "9",
+                "nanos": 400000000
+              },
+              "endTime": {
+                "seconds": "9",
+                "nanos": 600000000
+              },
+              "word": "in"
+            },
+            {
+              "startTime": {
+                "seconds": "9",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "10"
+              },
+              "word": "mental"
+            },
+            {
+              "startTime": {
+                "seconds": "10"
+              },
+              "endTime": {
+                "seconds": "10",
+                "nanos": 200000000
+              },
+              "word": "thoughts"
+            },
+            {
+              "startTime": {
+                "seconds": "10",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "10",
+                "nanos": 500000000
+              },
+              "word": "aloud"
+            },
+            {
+              "startTime": {
+                "seconds": "10",
+                "nanos": 500000000
+              },
+              "endTime": {
+                "seconds": "11",
+                "nanos": 500000000
+              },
+              "word": "those"
+            },
+            {
+              "startTime": {
+                "seconds": "11",
+                "nanos": 500000000
+              },
+              "endTime": {
+                "seconds": "12"
+              },
+              "word": "sometimes"
+            },
+            {
+              "startTime": {
+                "seconds": "12"
+              },
+              "endTime": {
+                "seconds": "12",
+                "nanos": 300000000
+              },
+              "word": "also"
+            },
+            {
+              "startTime": {
+                "seconds": "12",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "12",
+                "nanos": 900000000
+              },
+              "word": "directly"
+            },
+            {
+              "startTime": {
+                "seconds": "12",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "13",
+                "nanos": 300000000
+              },
+              "word": "against"
+            },
+            {
+              "startTime": {
+                "seconds": "13",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "13",
+                "nanos": 600000000
+              },
+              "word": "another"
+            },
+            {
+              "startTime": {
+                "seconds": "13",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "13",
+                "nanos": 800000000
+              },
+              "word": "character"
+            },
+            {
+              "startTime": {
+                "seconds": "13",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "14",
+                "nanos": 200000000
+              },
+              "word": "or"
+            },
+            {
+              "startTime": {
+                "seconds": "14",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "14",
+                "nanos": 500000000
+              },
+              "word": "the"
+            },
+            {
+              "startTime": {
+                "seconds": "14",
+                "nanos": 500000000
+              },
+              "endTime": {
+                "seconds": "14",
+                "nanos": 800000000
+              },
+              "word": "is"
+            },
+            {
+              "startTime": {
+                "seconds": "14",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "16"
+              },
+              "word": "monologues"
+            },
+            {
+              "startTime": {
+                "seconds": "16"
+              },
+              "endTime": {
+                "seconds": "16",
+                "nanos": 100000000
+              },
+              "word": "are"
+            },
+            {
+              "startTime": {
+                "seconds": "16",
+                "nanos": 100000000
+              },
+              "endTime": {
+                "seconds": "16",
+                "nanos": 500000000
+              },
+              "word": "common"
+            },
+            {
+              "startTime": {
+                "seconds": "16",
+                "nanos": 500000000
+              },
+              "endTime": {
+                "seconds": "16",
+                "nanos": 700000000
+              },
+              "word": "across"
+            },
+            {
+              "startTime": {
+                "seconds": "16",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "17"
+              },
+              "word": "the"
+            },
+            {
+              "startTime": {
+                "seconds": "17"
+              },
+              "endTime": {
+                "seconds": "17",
+                "nanos": 200000000
+              },
+              "word": "range"
+            },
+            {
+              "startTime": {
+                "seconds": "17",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "17",
+                "nanos": 200000000
+              },
+              "word": "of"
+            },
+            {
+              "startTime": {
+                "seconds": "17",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "17",
+                "nanos": 700000000
+              },
+              "word": "dramatic"
+            },
+            {
+              "startTime": {
+                "seconds": "17",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "18",
+                "nanos": 100000000
+              },
+              "word": "media"
+            },
+            {
+              "startTime": {
+                "seconds": "18",
+                "nanos": 100000000
+              },
+              "endTime": {
+                "seconds": "18",
+                "nanos": 600000000
+              },
+              "word": "as"
+            },
+            {
+              "startTime": {
+                "seconds": "18",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "18",
+                "nanos": 800000000
+              },
+              "word": "well"
+            },
+            {
+              "startTime": {
+                "seconds": "18",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "19",
+                "nanos": 200000000
+              },
+              "word": "as"
+            },
+            {
+              "startTime": {
+                "seconds": "19",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "19",
+                "nanos": 400000000
+              },
+              "word": "in"
+            },
+            {
+              "startTime": {
+                "seconds": "19",
+                "nanos": 400000000
+              },
+              "endTime": {
+                "seconds": "19",
+                "nanos": 700000000
+              },
+              "word": "not"
+            },
+            {
+              "startTime": {
+                "seconds": "19",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "20",
+                "nanos": 100000000
+              },
+              "word": "dramatic"
+            },
+            {
+              "startTime": {
+                "seconds": "20",
+                "nanos": 100000000
+              },
+              "endTime": {
+                "seconds": "20",
+                "nanos": 400000000
+              },
+              "word": "media"
+            },
+            {
+              "startTime": {
+                "seconds": "20",
+                "nanos": 400000000
+              },
+              "endTime": {
+                "seconds": "20",
+                "nanos": 700000000
+              },
+              "word": "such"
+            },
+            {
+              "startTime": {
+                "seconds": "20",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "20",
+                "nanos": 700000000
+              },
+              "word": "as"
+            },
+            {
+              "startTime": {
+                "seconds": "20",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "21",
+                "nanos": 300000000
+              },
+              "word": "poetry"
+            },
+            {
+              "startTime": {
+                "seconds": "21",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "22",
+                "nanos": 800000000
+              },
+              "word": "monologue"
+            },
+            {
+              "startTime": {
+                "seconds": "22",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "23"
+              },
+              "word": "share"
+            },
+            {
+              "startTime": {
+                "seconds": "23"
+              },
+              "endTime": {
+                "seconds": "23",
+                "nanos": 300000000
+              },
+              "word": "much"
+            },
+            {
+              "startTime": {
+                "seconds": "23",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "23",
+                "nanos": 400000000
+              },
+              "word": "in"
+            },
+            {
+              "startTime": {
+                "seconds": "23",
+                "nanos": 400000000
+              },
+              "endTime": {
+                "seconds": "23",
+                "nanos": 600000000
+              },
+              "word": "common"
+            },
+            {
+              "startTime": {
+                "seconds": "23",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "23",
+                "nanos": 900000000
+              },
+              "word": "with"
+            },
+            {
+              "startTime": {
+                "seconds": "23",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "24",
+                "nanos": 500000000
+              },
+              "word": "several"
+            },
+            {
+              "startTime": {
+                "seconds": "24",
+                "nanos": 500000000
+              },
+              "endTime": {
+                "seconds": "24",
+                "nanos": 700000000
+              },
+              "word": "other"
+            },
+            {
+              "startTime": {
+                "seconds": "24",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "25",
+                "nanos": 100000000
+              },
+              "word": "literary"
+            },
+            {
+              "startTime": {
+                "seconds": "25",
+                "nanos": 100000000
+              },
+              "endTime": {
+                "seconds": "25",
+                "nanos": 600000000
+              },
+              "word": "devices"
+            },
+            {
+              "startTime": {
+                "seconds": "25",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "26",
+                "nanos": 100000000
+              },
+              "word": "including"
+            },
+            {
+              "startTime": {
+                "seconds": "26",
+                "nanos": 100000000
+              },
+              "endTime": {
+                "seconds": "26",
+                "nanos": 700000000
+              },
+              "word": "soliloquies"
+            },
+            {
+              "startTime": {
+                "seconds": "26",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "27",
+                "nanos": 900000000
+              },
+              "word": "apostrophe"
+            },
+            {
+              "startTime": {
+                "seconds": "27",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "28",
+                "nanos": 800000000
+              },
+              "word": "and"
+            },
+            {
+              "startTime": {
+                "seconds": "28",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "28",
+                "nanos": 900000000
+              },
+              "word": "a"
+            },
+            {
+              "startTime": {
+                "seconds": "28",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "29",
+                "nanos": 400000000
+              },
+              "word": "sides"
+            },
+            {
+              "startTime": {
+                "seconds": "29",
+                "nanos": 400000000
+              },
+              "endTime": {
+                "seconds": "30",
+                "nanos": 300000000
+              },
+              "word": "there"
+            },
+            {
+              "startTime": {
+                "seconds": "30",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "30",
+                "nanos": 500000000
+              },
+              "word": "are"
+            },
+            {
+              "startTime": {
+                "seconds": "30",
+                "nanos": 500000000
+              },
+              "endTime": {
+                "seconds": "31",
+                "nanos": 100000000
+              },
+              "word": "however"
+            },
+            {
+              "startTime": {
+                "seconds": "31",
+                "nanos": 100000000
+              },
+              "endTime": {
+                "seconds": "32",
+                "nanos": 200000000
+              },
+              "word": "distinctions"
+            },
+            {
+              "startTime": {
+                "seconds": "32",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "32",
+                "nanos": 300000000
+              },
+              "word": "between"
+            },
+            {
+              "startTime": {
+                "seconds": "32",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "32",
+                "nanos": 800000000
+              },
+              "word": "each"
+            },
+            {
+              "startTime": {
+                "seconds": "32",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "32",
+                "nanos": 900000000
+              },
+              "word": "of"
+            },
+            {
+              "startTime": {
+                "seconds": "32",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "33",
+                "nanos": 100000000
+              },
+              "word": "these"
+            },
+            {
+              "startTime": {
+                "seconds": "33",
+                "nanos": 100000000
+              },
+              "endTime": {
+                "seconds": "33",
+                "nanos": 600000000
+              },
+              "word": "devices"
+            }
+          ]
+        },
+        {
+          "transcript": "testing testing 1 2 3 test",
+          "confidence": 0.9929308295249939,
+          "words": [
+            {
+              "startTime": {
+                "seconds": "1",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "2",
+                "nanos": 600000000
+              },
+              "word": "testing"
+            },
+            {
+              "startTime": {
+                "seconds": "2",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "2",
+                "nanos": 900000000
+              },
+              "word": "testing"
+            },
+            {
+              "startTime": {
+                "seconds": "2",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "3",
+                "nanos": 200000000
+              },
+              "word": "1"
+            },
+            {
+              "startTime": {
+                "seconds": "3",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "3",
+                "nanos": 300000000
+              },
+              "word": "2"
+            },
+            {
+              "startTime": {
+                "seconds": "3",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "3",
+                "nanos": 500000000
+              },
+              "word": "3"
+            },
+            {
+              "startTime": {
+                "seconds": "3",
+                "nanos": 500000000
+              },
+              "endTime": {
+                "seconds": "4",
+                "nanos": 300000000
+              },
+              "word": "test"
+            }
+          ]
+        }
+      ]
+    }
   }
 ]
