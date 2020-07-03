@@ -17,6 +17,7 @@ import Iota from '../../../models/iota'
 const Components = {
   mergeParticipantsIntoParent: require('./merge-participants-into-parent').default,
   mergeLatestSocialpreviewIntoParent: require('./merge-latest-socialpreview-into-parent').default,
+  mergeLatestTranscriptionIntoParent: require('./merge-latest-transcription-into-parent').default,
 }
 
 export default class MergeChildren {
