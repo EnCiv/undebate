@@ -97,10 +97,7 @@ const getOfficials = (long, lat, doOnSuccess, address_found) => {
             let officeNames = []
             districts.forEach(district => {
               // the upper legislative body is being used for testing
-              if (
-                (district.offices && district.type === 'State Legislative (Upper)') ||
-                district.type === 'State Legislative (Lower)'
-              ) {
+              if (district.offices && district.type === 'State Legislative (Lower)') {
                 district.offices.forEach(office => {
                   officeNames.push({
                     id: office.id,
