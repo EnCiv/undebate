@@ -3052,6 +3052,7 @@ class Undebate extends React.Component {
               subject={subject}
               bp_info={bp_info}
               agreed={preambleAgreed}
+              classes={classes}
               onClick={() => {
                 logger.info('Undebate preambleAgreed true')
                 this.setState({ preambleAgreed: true })
