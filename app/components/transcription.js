@@ -3,8 +3,12 @@ import cx from 'classnames'
 import { createUseStyles } from 'react-jss'
 
 const useStyles = createUseStyles({
-  litWord: {},
-  word: {},
+  litWord: {
+    color: 'pink',
+  },
+  word: {
+    color: '#333333',
+  },
   transcription: {},
 })
 
