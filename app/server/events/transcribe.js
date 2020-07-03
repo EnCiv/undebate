@@ -22,11 +22,21 @@ function googleRecognize(audioBytes) {
       languageCode: 'en-US',
       enableWordTimeOffsets: true,
     }
-    const request = {
+    const transcribeRequest = {
       audio: audio,
       config: config,
     }
-    const [response] = await client.recognize(request)
+    const [operation] = await client.longRunningRecognize(transcribeRequest)
+    const [response] = await operation.promise()
+    if (
+      !response.results ||
+      !response.results[0] ||
+      !response.results[0].alternatives ||
+      !response.results[0].alternatives[0]
+    ) {
+      logger.error('missing data from google speech to text api', response)
+      ko()
+    }
     let transcribeData = response.results[0].alternatives[0]
     ok(transcribeData)
   })
@@ -54,8 +64,11 @@ async function notifyOfNewRecording(participantIota) {
       logger.error('notify of new recording caught error', speakingFile, err)
     }
   }
-
-  await Iota.insertOne(transcriptionIota)
+  try {
+    await Iota.create(JSON.parse(JSON.stringify(transcriptionIota)))
+  } catch (err) {
+    logger.error('notify of mongo insert caught error', err)
+  }
 }
 if (
   ['TRANSCRIPTION_CLIENT_EMAIL', 'TRANSCRIPTION_PRIVATE_KEY', 'TRANSCRIPTION_PROJECT_ID'].reduce((allExist, name) => {
