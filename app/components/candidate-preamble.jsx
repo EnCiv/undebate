@@ -42,13 +42,16 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
             <li key={keyIndex + '-' + index}>{question}</li>
           ) : question.length === 1 ? (
             <li key={keyIndex + '-' + index}>
-              {question[0]} <strong>{timeLimits[index]} seconds</strong>
+              <strong>[ {timeLimits[index]} seconds ]</strong> {question[0]}
             </li>
           ) : question[0][0] >= '0' && question[0][0] <= '9' ? (
-            <li>{makeQuestions(classes.questionListInnerHeadless, question, keyIndex + index)}</li>
+            <li>
+              <strong>[ {timeLimits[index]} seconds ]</strong>
+              {makeQuestions(classes.questionListInnerHeadless, question, keyIndex + index)}
+            </li>
           ) : (
             <li>
-              {question[0]} <strong>{timeLimits[index]} seconds</strong>
+              <strong>[ {timeLimits[index]} seconds ]</strong> {question[0]}
               {makeQuestions(classes.questionListInner, question.slice(1), keyIndex + index)}
             </li>
           )
