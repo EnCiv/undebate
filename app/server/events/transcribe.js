@@ -1,10 +1,10 @@
 import Iota from '../../models/iota'
 import serverEvents from './index'
-import speech from '@google-cloud/speech'
+import cloudinary from 'cloudinary'
 import https from 'https'
 import fs from 'fs'
 import superagent from 'superagent'
-
+/*
 function googleRecognize(audioBytes) {
   return new Promise(async (ok, ko) => {
     const client = new speech.SpeechClient({
@@ -41,7 +41,7 @@ function googleRecognize(audioBytes) {
     ok(transcribeData)
   })
 }
-
+*/
 async function notifyOfNewRecording(participantIota) {
   const transcriptionIota = {
     parentId: participantIota.parentId,
@@ -55,20 +55,24 @@ async function notifyOfNewRecording(participantIota) {
   }
   for await (const speakingFile of participantIota.component.participant.speaking) {
     try {
-      let convertedFile = speakingFile.replace('.mp4', '.wav')
+      cloudinary.v2.uploader.upload(speakingFile, {
+        resource_type: 'video',
+        raw_convert: 'google_speech',
+      })
+      /*let convertedFile = speakingFile.replace('.mp4', '.wav')
       const resp = await superagent.get(convertedFile)
       let audioString = resp.body.toString('base64')
       const transcribeData = await googleRecognize(audioString)
-      transcriptionIota.component.transcriptions.push(transcribeData)
+      transcriptionIota.component.transcriptions.push(transcribeData)*/
     } catch (err) {
       logger.error('notify of new recording caught error', speakingFile, err)
     }
   }
-  try {
+  /*try {
     await Iota.create(JSON.parse(JSON.stringify(transcriptionIota)))
   } catch (err) {
     logger.error('notify of mongo insert caught error', err)
-  }
+  }*/
 }
 if (
   ['TRANSCRIPTION_CLIENT_EMAIL', 'TRANSCRIPTION_PRIVATE_KEY', 'TRANSCRIPTION_PROJECT_ID'].reduce((allExist, name) => {
