@@ -4,6 +4,7 @@ import cx from 'classnames'
 import { ModeProvider } from '../HartfordVotes/phone-portrait-context'
 import Icon from '../../lib/icon'
 import HartfordLandingMenu from '../HartfordVotes/HartfordLandingMenu'
+import ReactHtmlParser from 'react-html-parser'
 
 const useStyles = createUseStyles({
   hartfordfaq: {
@@ -115,7 +116,7 @@ const Question = ({ questionAndAnswer }) => {
   return (
     <div className={classes.question}>
       <div className={classes.question + '__qbar'}>
-        <div className={classes.question + '__q'}>{question}</div>
+        <div className={classes.question + '__q'}>{ReactHtmlParser(question)}</div>
         <AccordionButton isOpen={isExpanded} toggleAccordion={() => toggleAnswer(!isExpanded)} />
       </div>
       {isExpanded ? <Answer answer={answer} /> : null}
@@ -125,7 +126,7 @@ const Question = ({ questionAndAnswer }) => {
 
 const Answer = ({ answer }) => {
   const classes = useStyles()
-  return <div className={classes.answer}>{answer}</div>
+  return <div className={classes.answer}>{ReactHtmlParser(answer)}</div>
 }
 
 const FAQHeader = ({ homelink, background }) => {

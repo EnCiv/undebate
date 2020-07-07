@@ -1946,12 +1946,28 @@
       "homelink": "/hartford",
       "questions_and_answers": [
         {
-          "q": "Is this a question?",
-          "a": "Please make sure your device is plugged into the wall."
+          "q": "Who will be on the August 11 ballot for those living in Hartford?",
+          "a": "<div><h3>Congressional District1</h3><ul><li>Incumbent John Larson (D)</li><li>Mary Fay (R)</li><li>Betty Dang</li></ul> <h3>Senate District 2</h3><ul><li>Incumbent Douglas McCrory (D)</li></ul></div>"
         },
         {
-          "q": "Who should I vote for?",
-          "a": "The first rule of voting is that you don't talk about it."
+          "q": "If the presidential nominees have already been selected by the major political parties, why should I still cast your vote in the August 11 Primary?",
+          "a": "..."
+        },
+        {
+          "q": "Can I register to vote online?",
+          "a": "<p>Yes you can if you have a current and valid driver's license, learner's permit or non-dirver photo identification card issued by the CT Department of Motor Vehivles (DMV) and a signature on file with the DMV.</p><p>You may use the online system to <ol><li>register to vote in Connecticut,</li> <li> change your name and/or address on your current registration record, or </li> <li> enroll in a political party or change party enrollment (changing parties may result in losing rights in all parties for three months), </li> <li> change your address if you move within your current town of residence</li></ol></p><p>The link: <a href=\"https://voterregistration.ct.gov/OLVR/welcome.do\" target=\"_blank\">https://voterregistration.ct.gov/OLVR/welcome.do</a></p>"
+        },
+        {
+          "q": "If I move out of town, am I still registered to vote?",
+          "a": "<p>If you move you must re-register to vote in your now town of residence.</p><section> <h3>Deadlines for New Registrations</h3><p><strong>Primary Elections:</strong> If new registrants choose to apply by mail, the deadline for forms to be completed and mailed and either postmarked or recieved by the Registrar of Voters' office or a voter registration agency is five days before a primary election. If a new registrant chooses to register in person, the registration must be completed by 12:00PM the day before the primary election at Hartford's Registrar of Voter's or Town Clerk's office.</p><p><strong>General Elections:</strong> The deadline is 14 days before a general election by mail, or seven days before in person. Your application must be postmarked or received by the Registrar of Voters' office or a voter registration agency by the 14th day before a general election. You may apply in person at the Registrars' office or at the Town Clerk's office by the seventh day before a general election.</p></section>"
+        },
+        {
+          "q": "How do I know if I am eligible to vote in the August Primary?",
+          "a": "<p>You may vote in the pripary in Connecticut if you will be at least 18 years old on or before the date of the election, if you are a resident of Connecticut and if you have not been convicted of a disenfranchising felony. Registered Republicans will be able to vote in the Republican primary ballot and Registered Democrats will be able to vote int the Democrat primary ballot. <strong>If you are an Independent or unaffiliated, you will NOT be eligible to vote in the Primary Elections.</strong></p>"
+        },
+        {
+          "q": "Where do I go to vote in Hartford?",
+          "a": "Find your polling place: <a href=\"http://www.hartford.gov/registrar-of-voters/polling-places\" target=\"_blank\">http://www.hartford.gov/registrar-of-voters/polling-places</a>"
         }
       ]
     }
