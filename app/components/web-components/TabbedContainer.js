@@ -94,6 +94,29 @@ const useStyles = createUseStyles({
     },
     width: '100%',
   },
+  '@keyframes colorFlash': {
+    from: { backgroundColor: 'white' },
+    to: { backgroundColor: '#29316E' },
+  },
+  '@keyframes colorFlash2': {
+    to: { backgroundColor: 'white' },
+    from: { backgroundColor: '#29316E' },
+  },
+  transitionedSelect: {
+    '& select': {
+      backgroundColor: 'white',
+      animationName: '$colorFlash2',
+      animationDuration: '0.8s',
+      animationDelay: '0s',
+      animationTimingFunction: 'cubicBezier(0.25,0.1, 0.23, 1)',
+    },
+  },
+  transitionedTab: {
+    animationName: '$colorFlash',
+    animationDuration: '0.8s',
+    animationDelay: '0s',
+    animationTimingFunction: 'cubicBezier(0.25,0.1, 0.23, 1)',
+  },
   smallscreen: {},
   largescreen: {},
   //TODO define styles that make certain things display none if in mobile and vice versa for tab labels
@@ -105,7 +128,7 @@ const useStyles = createUseStyles({
  * action is reserved for a hook or other function
  * that allows the display of the contents
  */
-const TabButtons = ({ prev_selected_tab, selected_tab, tabs, action }) => {
+const TabButtons = ({ prev_selected_tab, selected_tab, tabs, action, transition }) => {
   const classes = useStyles()
   const isPortrait = useMode()
 
@@ -113,6 +136,11 @@ const TabButtons = ({ prev_selected_tab, selected_tab, tabs, action }) => {
     if (document) {
       document.getElementById(`label_for_tab_${selected_tab}`).className = classes.selectedTab
       document.getElementById(`label_for_tab_${prev_selected_tab}`).className = classes.tab_label
+      if (transition) {
+        document.getElementById(
+          `label_for_tab_${selected_tab}`
+        ).className = `${classes.transitionedTab} ${classes.selectedTab}`
+      }
     }
   }
 
@@ -141,13 +169,21 @@ const TabButtons = ({ prev_selected_tab, selected_tab, tabs, action }) => {
     </div>
   )
 }
-const makeTabs = (tabs_and_contents, action, classes) => {
+
+const TabSelect = ({ selected_tab = 0, tabs, action, transition }) => {
+  const classes = useStyles()
+
   const drop_down_menu = (
-    <form className={cx(classes.drop_down_menu, classes.smallscreen)}>
+    <form className={cx(classes.drop_down_menu, transition ? classes.transitionedSelect : '')}>
       <select name="select_tab" onChange={event => action(event.target.value)}>
-        {tabs_and_contents.map((tab, index) => {
+        {tabs.map((tab, index) => {
           return (
-            <option id={`label_for_tab_${index}`} value={index} className={classes.tab_label_select_option}>
+            <option
+              id={`label_for_tab_${index}`}
+              selected={selected_tab === index}
+              value={index}
+              className={classes.tab_label_select_option}
+            >
               {tab.name}
             </option>
           )
@@ -158,17 +194,17 @@ const makeTabs = (tabs_and_contents, action, classes) => {
   return drop_down_menu
 }
 
-const TabbedContainer = ({ tabs, selected_tab = 0 }) => {
+const TabbedContainer = ({ tabs, selected_tab = 0, transition = false }) => {
   const isPortrait = useMode()
   const classes = useStyles()
   let [selectedTab, changeTab] = useState(selected_tab)
-  let tabRow = makeTabs(tabs, changeTab, classes)
   //make sure that the previously selected tab isn't undefined. prevSelectedTab is used to ensure that there is always a highlightTab in the UI
   const prevSelectedTabRef = useRef(selected_tab === tabs.length - 1 ? selectedTab - 1 : selectedTab + 1)
 
   useEffect(() => {
     changeTab(selected_tab)
   }, [selected_tab])
+
   useEffect(() => {
     prevSelectedTabRef.current = selectedTab
   }, [selectedTab])
@@ -183,9 +219,15 @@ const TabbedContainer = ({ tabs, selected_tab = 0 }) => {
   return (
     <div>
       {isPortrait ? (
-        tabRow
+        <TabSelect selected_tab={selectedTab} tabs={tabs} action={changeTab} transition={transition} />
       ) : (
-        <TabButtons selected_tab={selectedTab} prev_selected_tab={prevSelectedTab} tabs={tabs} action={changeTab} />
+        <TabButtons
+          selected_tab={selectedTab}
+          prev_selected_tab={prevSelectedTab}
+          tabs={tabs}
+          action={changeTab}
+          transition={transition}
+        />
       )}
       <div className={classes.tabContents}>{renderedTab}</div>
     </div>

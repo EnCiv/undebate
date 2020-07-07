@@ -86,7 +86,8 @@ const useStyles = createUseStyles({
     },
   },
   findDistrict: {
-    backgroundColor: '#BABABA',
+    //backgroundColor: '#BABABA',
+    backgroundColor: '#E0E2E8',
     width: '100%',
     padding: '1.5em',
     margin: '2em 0',
@@ -121,19 +122,64 @@ const useStyles = createUseStyles({
       marginTop: 0,
     },
   },
+  notificationBox: {
+    boxShadow: 'none !important',
+    padding: '.6em 0 1em 6vw',
+    textAlign: 'left',
+    width: '90vw',
+
+    '@media only screen and (max-device-width: 600px)': {
+      padding: '.6em 2vw',
+    },
+  },
+  '@keyframes progress': {
+    to: { color: '#515989' },
+    from: { color: '#E0E2E8' },
+  },
+  '@keyframes progress2': {
+    from: { marginLeft: '-20%' },
+    to: { marginLeft: '100%' },
+  },
+  workingBackground: {
+    // loading bar animation
+    content: '" "',
+    position: 'absolute',
+    top: 0,
+    zIndex: '2',
+    color: '#E0E2E8',
+    backgroundColor: '#515989',
+    backgroundImage:
+      ' linear-gradient(to right, rgba(224, 226, 232, .99) 25%, rgba(224, 226, 232,.1) 50%, rgba(224, 226, 232,.99) 75%)',
+    height: '100%',
+    width: '20%',
+    animationName: '$progress2',
+    animationDuration: '0.7s',
+    animationTimingFunction: 'ease-out',
+    animationDirection: 'alternate',
+    animationIterationCount: 'infinite',
+  },
+  working: {
+    maxWidth: '600px',
+    position: 'relative',
+    overflow: 'hidden',
+    animationName: '$progress',
+    animationDuration: '0.5s',
+    animationTimingFunction: 'ease-out',
+    animationDirection: 'alternate',
+    animationIterationCount: 'infinite',
+  },
 })
 
-//{
-//name: 'District 1',
-//contents: (
-//),
-//},
 const HartfordCandidatesConversations = () => {
   const classes = useStyles()
   let [candidates, setCandidates] = useState([])
   let [error, setError] = useState('')
   let [district, setDistrict] = useState(null)
   let [tab, selectTab] = useState(0)
+  let [animateTab, makeTabAnimate] = useState(false)
+  let [notification, setNotification] = useState(
+    'Enter full address to see candidates running in your assembly district'
+  )
 
   let isPortrait = useMode()
 
@@ -213,9 +259,10 @@ const HartfordCandidatesConversations = () => {
         'https://res.cloudinary.com/hf6mryjpf/image/upload/v1593540680/assets/connecticut_flag.png'
       ) center center no-repeat`,
         backgroundSize: '70vmax',
-        //maxHeight: '53.5em',
+        maxHeight: '53.5em',
         height: 'max-content',
         paddingBottom: '3vh',
+        paddingTop: isPortrait ? '30%' : 'calc(30% - 21vmax)',
         margin: isPortrait ? '1em' : '4em',
         width: isPortrait ? 'calc(100% - 2em)' : 'calc(100% - 8em)',
         position: 'relative',
@@ -233,7 +280,7 @@ const HartfordCandidatesConversations = () => {
             margin: '0 auto 3vh auto',
             width: 'max-content',
             width: 'max-content',
-            fontSize: '4vmin',
+            fontSize: isPortrait ? '4vw' : '4vmin',
             fontWeight: '700',
           }}
         >
@@ -244,7 +291,7 @@ const HartfordCandidatesConversations = () => {
             color: '#29316E',
             margin: '0 auto 9vh auto',
             width: 'max-content',
-            fontSize: '6.6vmin',
+            fontSize: isPortrait ? '6.6vw' : '6.6vmin',
             fontWeight: '700',
           }}
         >
@@ -256,7 +303,7 @@ const HartfordCandidatesConversations = () => {
           style={{
             boxShadow: '0.14em 0.15em .2em rgba(0,0,0,0.2)',
             textDecoration: 'none',
-            height: '2.3em',
+            height: '2.3e',
             lineHeight: 0,
             background: '#29316E',
             color: 'white',
@@ -265,7 +312,7 @@ const HartfordCandidatesConversations = () => {
             paddingRight: '13vmin',
             margin: 0,
             borderRadius: '.5em .5em',
-            fontSize: '4vmin',
+            fontSize: isPortrait ? '4vw' : '4vmin',
           }}
         >
           Get Notified
@@ -278,10 +325,15 @@ const HartfordCandidatesConversations = () => {
           position: 'absolute',
           backgroundColor: 'white',
           color: '#6D6889',
-          height: 'max-content',
-          bottom: '-1.8em',
-          right: isPortrait ? 'calc(50% - 1em)' : 'calc(50% - 2em)',
+          bottom: '-1.15em',
+          right: isPortrait ? 'calc(40% - 1em)' : 'calc(50% - 1em)',
+          left: isPortrait ? 'calc(40% - 1em)' : '',
           padding: '0.25em 0.3em',
+          height: '.4em',
+          minWidth: isPortrait ? '' : '4em',
+          lineHeight: '0.4',
+          padding: '-0.55em 0.6em',
+          textAlign: 'center',
         }}
       >
         2020
@@ -315,11 +367,30 @@ const HartfordCandidatesConversations = () => {
       let tab_index = representatives_office_ids.findIndex(element => element.district === office.district_number)
       //change the tab you are in
       selectTab(tab_index)
+      makeTabAnimate(true)
+      setTimeout(() => makeTabAnimate(false), 4000)
       //prominently display what address_found
-    } else {
+      setNotification(
+        <>
+          {candidates.address_found} matched with your entry.
+          <br />
+          <strong>YOU ARE IN DISTRICT {candidates.officeNames[0].district_number}.</strong>
+          <br />
+          We have changed the tab below.
+        </>
+      )
+    } else if (!Array.isArray(candidates)) {
+      console.log('candidates=', candidates)
       //display error and recommend action
+      setNotification(
+        <div style={{ color: '#9d0000' }}>
+          Sorry, we cannot find your address, Please enter a valid Hartford address. You must enter city, state and zip
+          code.
+        </div>
+      )
+      setError('something happened on the server')
     }
-  }, [candidates, error])
+  }, [candidates])
 
   return (
     <>
@@ -337,15 +408,18 @@ const HartfordCandidatesConversations = () => {
           className={classes.findDistrict}
           onSubmit={event => {
             event.preventDefault()
+            setError(false)
             //TODO validation here use setError if the user inputs a bad string.
+            setNotification(
+              <div className={classes.working}>
+                Working to find your candidates. . .<div className={classes.workingBackground}></div>
+              </div>
+            )
             const votersAddress = event.target.votersAddress.value
 
             console.log('validation: ', votersAddress.match(/hartford/gi))
             console.log('validation: ', votersAddress.match(/ct/gi))
-            //console.log(
-            //'validation: ',
-            //valid_zip_codes.find(element => element === votersAddress.match(/\b\d{5}\b/gi)[0])
-            //)
+
             console.log('validation: ', votersAddress.match(/\bct\s+\d{5}(-\d{4})?/gi))
             const state_and_zip = votersAddress.match(/\bct\s+\d{5}(-\d{4})?/gi)
             if (state_and_zip) {
@@ -353,16 +427,31 @@ const HartfordCandidatesConversations = () => {
                 element => element === state_and_zip[0].match(/\b\d{5}\b/gi)[0]
               )
               console.log('validation: ', `${has_valid_zip ? 'has' : "doesn't have"} a valid zip`)
+              window.socket.emit('hartford address lookup', event.target.votersAddress.value, setCandidates)
+            } else {
+              setNotification(
+                <div style={{ color: '#9d0000' }}>
+                  Sorry, we cannot find your address, Please enter a valid Hartford address. You must enter city, state
+                  and zip code.
+                </div>
+              )
+              setError('invalid address')
             }
-            window.socket.emit('hartford address lookup', event.target.votersAddress.value, setCandidates)
           }}
         >
-          <input type="text" name="votersAddress" placeholder="1234 Main St. Hartford CT" id="votersAddress" />
+          <input
+            style={{ border: error ? '3px solid #9d0000' : '' }}
+            type="text"
+            name="votersAddress"
+            placeholder="1234 Main St. Hartford CT"
+            id="votersAddress"
+          />
           <OrangeButton> Find your district</OrangeButton>
+          <div className={classes.notificationBox}>{notification}</div>
         </form>
 
         {/* districts in tabs */}
-        <TabbedContainer tabs={hartfordTabs} selected_tab={tab} />
+        <TabbedContainer tabs={hartfordTabs} selected_tab={tab} transition={animateTab} />
       </main>
     </>
   )
