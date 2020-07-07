@@ -3060,6 +3060,7 @@ class Undebate extends React.Component {
               }}
               candidate_questions={participants.moderator.agenda}
               instructionLink={instructionLink}
+              timeLimits={participants.moderator.timeLimits}
             />
           )}
           {ending()}
