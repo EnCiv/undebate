@@ -20,6 +20,20 @@ const useStyles = createUseStyles({
     gridTemplateRows: '1fr min-content',
     textAlign: 'left',
     minHeight: '100vh',
+    '& article': {
+      maxWidth: '64em',
+      width: '80vw',
+      margin: '0 auto',
+      fontWeight: 100,
+      '& h3': {
+        wordSpacing: '.35em',
+        letterSpacing: '.08em',
+        '& + p': {
+          marginLeft: '1em',
+          marginBottom: '2em',
+        },
+      },
+    },
     '& button, & a': {
       fontFamily: 'Libre Franklin, SemiBold',
       fontWeight: 500,
@@ -95,7 +109,7 @@ const About = ({ content, banner, homelink }) => {
         <div className={classes.hartfordabout}>
           <HartfordLandingMenu />
           <FAQHeader background={banner} homelink={homelink} />
-          <div>{ReactHtmlParser(content)}</div>
+          <article className={classes.article}>{ReactHtmlParser(content)}</article>
         </div>
       </ModeProvider>
     </about-dom>
