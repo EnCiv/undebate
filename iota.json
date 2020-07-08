@@ -2271,5 +2271,19 @@
       }
     },
     "description": "A Candidate Conversation for: Connecticut State Senate District 2 Election Date:2020-08-11. This is a manually build record for QA testing"
+  },
+  {
+    "_id": {
+      "$oid": "5f0512f67c213e16a464d66c"
+    },
+    "path": "/hartford/about",
+    "subject": "Important information regarding relevant organizations and general information for the city election in Hartford CT",
+    "description": "About page for elections in the city of Hartford CT",
+    "webComponent": {
+      "webComponent": "About",
+      "banner": "url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat",
+      "homelink": "/hartford",
+      "content": "<p><i>In response to the current pandemic, the following organizations have collaborated to develop this site to keep Hartford’s residents and their candidates for elected office safe and informed</i></p><h3>Hartford Votes~Hartford Vota Coalition</h3><p>The Hartford Votes/Hartford Vota Coalition includes thirteen organizations and agencies that work together to increase voter engagement in Hartford CT. The Coalition is nonpartisan.</p> <h3> EnCiv</h3> <p>EnCiv is a non-profit, transpartisan organization that develops online tools for citizen engagement. EnCiv's Candidate Conversation tool is being made available on Ballotpedia's website. </p> <h3> Ballotpedia</h3> <p>Ballotpedia is the digital encyclopedia of American politics and elections. Ballotpedia connects people with politics by changing the way they access the information they need to be informed about federal, state, and local politics. Ballotpedia currently has over 303,000 encyclopedic articles and offers daily, weekly, and monthly email newsletters on a variety of specialized topics.</p><p>Questions: <a href=\"HartfordVota@gmail.com\" target=\"_blank\">HartfordVota@gmail.com</a></p>"
+    }
   }
 ]

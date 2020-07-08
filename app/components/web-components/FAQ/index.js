@@ -53,6 +53,10 @@ const useStyles = createUseStyles({
     margin: '1.3em auto',
 
     '&__qbar': {
+      width: '100%',
+      border: '0',
+      background: '0',
+      textAlign: 'left',
       display: 'grid',
       gridTemplateRows: '1fr',
       gridTemplateColumns: '20fr 3fr',
@@ -100,12 +104,12 @@ const useHeaderStyles = createUseStyles({
   }),
 })
 
-const AccordionButton = ({ isOpen, toggleAccordion }) => {
+const AccordionButton = ({ isOpen }) => {
   const classes = useStyles()
   return (
-    <button className={classes.AccordionButton} onClick={() => toggleAccordion()}>
+    <div className={classes.AccordionButton}>
       {isOpen ? <Icon icon={'chevron-up'} /> : <Icon icon={'chevron-down'} />}
-    </button>
+    </div>
   )
 }
 
@@ -115,10 +119,10 @@ const Question = ({ questionAndAnswer }) => {
   const classes = useStyles()
   return (
     <div className={classes.question}>
-      <div className={classes.question + '__qbar'}>
+      <button className={classes.question + '__qbar'} onClick={() => toggleAnswer(!isExpanded)}>
         <div className={classes.question + '__q'}>{ReactHtmlParser(question)}</div>
-        <AccordionButton isOpen={isExpanded} toggleAccordion={() => toggleAnswer(!isExpanded)} />
-      </div>
+        <AccordionButton isOpen={isExpanded} />
+      </button>
       {isExpanded ? <Answer answer={answer} /> : null}
     </div>
   )
@@ -150,7 +154,7 @@ const FAQ = ({ questions_and_answers, banner, homelink }) => {
   const classes = useStyles()
 
   return (
-    <faq-dom key="hartfordFAQ">
+    <faq-dom key="siteFAQ">
       <ModeProvider>
         <div className={classes.hartfordfaq}>
           <HartfordLandingMenu />
