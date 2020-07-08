@@ -109,26 +109,31 @@ const HartfordLandingMenu = () => {
       display: 'Find Your District',
       key: 'hartford-find-district',
       href: 'http://www.hartford.gov/images/registrar/SenatorialAssemblyandVotingDistrictwithPollingLocations.pdf',
+      target: '_blank',
     },
     {
       display: 'FAQs',
       key: 'hartford-faq',
       href: '/hartford/faq',
+      target: '',
     },
     {
       display: 'How & Where To Vote',
       key: 'hartford-how-where-vote',
       href: 'https://portaldir.ct.gov/sots/LookUp.aspx',
+      target: '_blank',
     },
     {
       display: 'Contact Us',
       key: 'hartford-contact',
       href: 'mailto:HartfordVota@gmail.com',
+      target: '_blank',
     },
     {
       display: 'About',
       key: 'about',
-      href: '',
+      href: '/hartford/about',
+      target: '',
     },
     //{
     //display: 'Score Card',
@@ -140,7 +145,7 @@ const HartfordLandingMenu = () => {
     <ul className={classes.links}>
       {arrayOfLinks.map(link => (
         <li key={link.key} className={classes.linkContents}>
-          <a href={link.href} target="_blank">
+          <a href={link.href} target={link.target}>
             {link.display}
           </a>
         </li>
