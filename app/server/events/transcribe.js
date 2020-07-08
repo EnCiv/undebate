@@ -54,19 +54,27 @@ async function notifyOfNewRecording(participantIota) {
     },
   }
   for await (const speakingFile of participantIota.component.participant.speaking) {
-    try {
-      cloudinary.v2.uploader.upload(speakingFile, {
-        resource_type: 'video',
-        raw_convert: 'google_speech',
-      })
-      /*let convertedFile = speakingFile.replace('.mp4', '.wav')
-      const resp = await superagent.get(convertedFile)
-      let audioString = resp.body.toString('base64')
-      const transcribeData = await googleRecognize(audioString)
-      transcriptionIota.component.transcriptions.push(transcribeData)*/
-    } catch (err) {
-      logger.error('notify of new recording caught error', speakingFile, err)
-    }
+    //let convertedFile = speakingFile.replace('.mp4', '.transcript').replace('video', 'raw')
+    let convertedFile =
+      'https://res.cloudinary.com/hvi2k2swg/raw/upload/v1594133701/5ed587e53bfd4f38408669da-2-speaking20200707T145452626Z.transcript'
+    logger.info(convertedFile)
+    const resp = await superagent.get(convertedFile)
+    fs.readFile(convertedFile, { encoding: 'utf8' }, (err, data) => logger.info(data))
+    //logger.info(JSON.stringify(resp))
+    //logger.info(resp.body.toString())
+
+    /*
+    cloudinary.v2.uploader.upload(speakingFile, {
+      resource_type: 'video',
+      raw_convert: 'google_speech',
+      notification_url: '/hook',
+    },
+      function (error, result) { logger.info(JSON.stringify(result.info.raw_convert), error) })
+    /*let convertedFile = speakingFile.replace('.mp4', '.wav')
+    const resp = await superagent.get(convertedFile)
+    let audioString = resp.body.toString('base64')
+    const transcribeData = await googleRecognize(audioString)
+    transcriptionIota.component.transcriptions.push(transcribeData)*/
   }
   /*try {
     await Iota.create(JSON.parse(JSON.stringify(transcriptionIota)))
