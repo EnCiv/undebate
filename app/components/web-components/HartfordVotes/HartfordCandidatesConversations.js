@@ -86,8 +86,7 @@ const useStyles = createUseStyles({
     },
   },
   findDistrict: {
-    //backgroundColor: '#BABABA',
-    backgroundColor: '#E0E2E8',
+    backgroundColor: '#EBEAEA',
     width: '100%',
     padding: '1.5em',
     margin: '2em 0',
