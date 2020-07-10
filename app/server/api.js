@@ -247,6 +247,7 @@ class API extends EventEmitter {
             resource_type: 'video',
             public_id,
             eager_async: true,
+            //raw_convert => "google_speech",
             eager: [
               { quality: 'auto:good', format: 'mp4' },
               { start_offset: 0, format: 'png' },

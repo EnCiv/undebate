@@ -57,9 +57,10 @@ async function notifyOfNewRecording(participantIota) {
     //let convertedFile = speakingFile.replace('.mp4', '.transcript').replace('video', 'raw')
     let convertedFile =
       'https://res.cloudinary.com/hvi2k2swg/raw/upload/v1594133701/5ed587e53bfd4f38408669da-2-speaking20200707T145452626Z.transcript'
-    logger.info(convertedFile)
+    //logger.info(convertedFile)
     const resp = await superagent.get(convertedFile)
     fs.readFile(convertedFile, { encoding: 'utf8' }, (err, data) => logger.info(data))
+    logger.info(resp)
     //logger.info(JSON.stringify(resp))
     //logger.info(resp.body.toString())
 
