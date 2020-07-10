@@ -5,6 +5,7 @@ import OrangeButton from '../../OrangeButton'
 
 import TabbedContainer from '../TabbedContainer'
 import { useMode } from './phone-portrait-context'
+import { useCandidates, useError, useDistrict, useTab } from './user-address-context'
 
 const useStyles = createUseStyles({
   candidatesConversations: {
@@ -171,10 +172,11 @@ const useStyles = createUseStyles({
 
 const HartfordCandidatesConversations = () => {
   const classes = useStyles()
-  let [candidates, setCandidates] = useState([])
-  let [error, setError] = useState('')
-  let [district, setDistrict] = useState(null)
-  let [tab, selectTab] = useState(0)
+  const { candidates, setCandidates } = useCandidates()
+  const { error, setError } = useError()
+  const { district, setDistrict } = useDistrict()
+  const { tab, selectTab } = useTab()
+
   let [animateTab, makeTabAnimate] = useState(false)
   let [notification, setNotification] = useState(
     'Enter full address to see candidates running in your assembly district'
