@@ -48,6 +48,7 @@ const useStyles = createUseStyles({
     margin: '0 auto',
     textAlign: 'left',
     width: '90vw',
+    maxWidth: '1240px',
 
     '@media only screen and (max-device-width: 600px)': {
       padding: '.6em 2vw',

@@ -72,6 +72,7 @@ const useStyles = createUseStyles({
   answer: {
     fontWeight: 500,
     marginBottom: '1.3em',
+    paddingLeft: '1em',
     paddingTop: '1em',
     opacity: '0',
 
@@ -87,7 +88,7 @@ const useStyles = createUseStyles({
     maxWidth: '1400px',
     '&__closed': {
       transition: 'max-height 0.5s cubicBezier(0,1,0,1)',
-      maxHeight: '3em',
+      maxHeight: '5em',
     },
     paddingBottom: '1em',
     margin: '1.3em auto',
@@ -108,6 +109,8 @@ const useStyles = createUseStyles({
       "q acc"`,
     },
     '&__q': {
+      fontSize: '1.5em',
+      fontWeight: 'bold',
       backgroundColor: 'white',
       gridArea: 'q',
     },
