@@ -10,7 +10,7 @@ const useStyles = createUseStyles({
     backgroundColor: '#EBEAEA',
     width: '100%',
     padding: '1.5em',
-    margin: '2em 0',
+    margin: '0 0 1em',
     '& > *': {
       boxShadow: '0.14em 0.15em .2em rgba(0,0,0,0.2)',
     },
@@ -44,7 +44,8 @@ const useStyles = createUseStyles({
   },
   notificationBox: {
     boxShadow: 'none !important',
-    padding: '.6em 0 1em 6vw',
+    padding: '.5em',
+    margin: '0 auto',
     textAlign: 'left',
     width: '90vw',
 

@@ -105,12 +105,12 @@ const HartfordLandingMenu = () => {
   let isPortrait = useMode()
 
   const arrayOfLinks = [
-    {
-      display: 'Find Your District',
-      key: 'hartford-find-district',
-      href: 'http://www.hartford.gov/images/registrar/SenatorialAssemblyandVotingDistrictwithPollingLocations.pdf',
-      target: '_blank',
-    },
+    //{
+    //display: 'Find Your District',
+    //key: 'hartford-find-district',
+    //href: 'http://www.hartford.gov/images/registrar/SenatorialAssemblyandVotingDistrictwithPollingLocations.pdf',
+    //target: '_blank',
+    //},
     {
       display: 'FAQs',
       key: 'hartford-faq',

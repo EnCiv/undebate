@@ -23,6 +23,7 @@ const useStyles = createUseStyles({
   },
   conversationsHeader: {
     marginTop: '2em',
+    marginBottom: '1em',
     position: 'relative',
     background: 'none',
     '&:before': {
