@@ -4,6 +4,7 @@ import cx from 'classnames'
 import { ModeProvider } from '../HartfordVotes/phone-portrait-context'
 import Icon from '../../lib/icon'
 import HartfordLandingMenu from '../HartfordVotes/HartfordLandingMenu'
+import ReactHtmlParser from 'react-html-parser'
 
 const useStyles = createUseStyles({
   hartfordfaq: {
@@ -39,19 +40,68 @@ const useStyles = createUseStyles({
     gridArea: 'acc',
     textAlign: 'right',
   },
+  '@keyframes spin': {
+    '0%': { transform: 'rotate(0deg)' },
+    '100%': { transform: 'rotate(-180deg)' },
+  },
+  '@keyframes spinback': {
+    '0%': { transform: 'rotate(0deg)' },
+    '100%': { transform: 'rotate(-180deg)' },
+  },
+  rotateChevron: {
+    '&>i': {
+      animationName: '$spin',
+      animationDuration: '0.3s',
+      animationDelay: '0s',
+      animationTimingFunction: 'ease-out',
+      animationFillMode: 'forwards',
+    },
+    '&--reverse': {
+      '&>i': {
+        animationName: '$spinback',
+        animationDuration: '0.3s',
+        animationDelay: '0s',
+        animationTimingFunction: 'ease-out',
+        animationDirection: 'reverse',
+      },
+    },
+  },
+  '@keyframes appear': {
+    to: { opacity: '1' },
+  },
   answer: {
     fontWeight: 500,
     marginBottom: '1.3em',
+    paddingLeft: '1em',
     paddingTop: '1em',
+    opacity: '0',
+
+    animationName: '$appear',
+    animationDuration: '0.1s',
+    animationDelay: '0.5s',
+    animationTimingFunction: 'ease-out',
+    animationFillMode: 'forwards',
   },
   question: {
     borderBottom: '1px solid #707070',
     width: '70%',
     maxWidth: '1400px',
+    '&__closed': {
+      transition: 'max-height 0.5s cubicBezier(0,1,0,1)',
+      maxHeight: '5em',
+    },
     paddingBottom: '1em',
     margin: '1.3em auto',
+    '&__full': {
+      maxHeight: '1000px',
+      transition: 'max-height 1s ease-in-out',
+    },
 
     '&__qbar': {
+      width: '100%',
+      border: '0',
+      background: '0',
+      textAlign: 'left',
       display: 'grid',
       gridTemplateRows: '1fr',
       gridTemplateColumns: '20fr 3fr',
@@ -59,6 +109,8 @@ const useStyles = createUseStyles({
       "q acc"`,
     },
     '&__q': {
+      fontSize: '1.5em',
+      fontWeight: 'bold',
       backgroundColor: 'white',
       gridArea: 'q',
     },
@@ -99,12 +151,17 @@ const useHeaderStyles = createUseStyles({
   }),
 })
 
-const AccordionButton = ({ isOpen, toggleAccordion }) => {
+const AccordionButton = ({ isOpen }) => {
   const classes = useStyles()
+  let [reverse, setReverse] = useState('')
+  useEffect(() => {
+    if (isOpen) setReverse(classes.rotateChevron + '--reverse')
+  }, [isOpen])
   return (
-    <button className={classes.AccordionButton} onClick={() => toggleAccordion()}>
-      {isOpen ? <Icon icon={'chevron-up'} /> : <Icon icon={'chevron-down'} />}
-    </button>
+    <div className={cx(classes.AccordionButton, isOpen ? classes.rotateChevron : reverse)}>
+      {/*isOpen ? <Icon icon={'chevron-up'} /> : <Icon icon={'chevron-down'} />*/}
+      <Icon icon={'chevron-down'} />
+    </div>
   )
 }
 
@@ -113,11 +170,11 @@ const Question = ({ questionAndAnswer }) => {
   let [isExpanded, toggleAnswer] = useState(false)
   const classes = useStyles()
   return (
-    <div className={classes.question}>
-      <div className={classes.question + '__qbar'}>
-        <div className={classes.question + '__q'}>{question}</div>
-        <AccordionButton isOpen={isExpanded} toggleAccordion={() => toggleAnswer(!isExpanded)} />
-      </div>
+    <div className={cx(classes.question, isExpanded ? classes.question + '__full' : classes.question + '__closed')}>
+      <button className={classes.question + '__qbar'} onClick={() => toggleAnswer(!isExpanded)}>
+        <div className={classes.question + '__q'}>{ReactHtmlParser(question)}</div>
+        <AccordionButton isOpen={isExpanded} />
+      </button>
       {isExpanded ? <Answer answer={answer} /> : null}
     </div>
   )
@@ -125,12 +182,11 @@ const Question = ({ questionAndAnswer }) => {
 
 const Answer = ({ answer }) => {
   const classes = useStyles()
-  return <div className={classes.answer}>{answer}</div>
+  return <div className={classes.answer}>{ReactHtmlParser(answer)}</div>
 }
 
 const FAQHeader = ({ homelink, background }) => {
   const classes = useHeaderStyles(background)
-  console.log(useStyles)
   return (
     <div className={classes.faqheader} style={{}}>
       <div>
@@ -149,7 +205,7 @@ const FAQ = ({ questions_and_answers, banner, homelink }) => {
   const classes = useStyles()
 
   return (
-    <faq-dom key="hartfordFAQ">
+    <faq-dom key="siteFAQ">
       <ModeProvider>
         <div className={classes.hartfordfaq}>
           <HartfordLandingMenu />

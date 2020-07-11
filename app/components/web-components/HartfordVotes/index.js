@@ -5,6 +5,8 @@ import HartfordLandingHeader from './HartfordLandingHeader'
 import HartfordCandidatesConversations from './HartfordCandidatesConversations'
 import HartfordLandingMenu from './HartfordLandingMenu'
 import { ModeProvider } from './phone-portrait-context'
+import { AddressProvider } from './user-address-context'
+import FindDistrict from './FindDistrict'
 
 const useStyles = createUseStyles({
   landingPage: {
@@ -45,10 +47,13 @@ const HartfordVotes = () => {
   return (
     <hartford-dom key="hartfordLanding">
       <ModeProvider>
-        <div className={classes.landingPage}>
-          <HartfordLandingMenu key="hartford-menu" />
-          <HartfordLanding />
-        </div>
+        <AddressProvider>
+          <div className={classes.landingPage}>
+            <HartfordLandingMenu key="hartford-menu" />
+            <FindDistrict />
+            <HartfordLanding />
+          </div>
+        </AddressProvider>
       </ModeProvider>
     </hartford-dom>
   )
