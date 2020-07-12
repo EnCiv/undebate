@@ -181,7 +181,7 @@ const FindDistrict = () => {
         placeholder="1234 Main St. Hartford CT"
         id="votersAddress"
       />
-      <OrangeButton> Find your district</OrangeButton>
+      <OrangeButton> Find your District</OrangeButton>
       <div className={classes.notificationBox}>{notification}</div>
     </form>
   )
