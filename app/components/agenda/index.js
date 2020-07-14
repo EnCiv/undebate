@@ -36,7 +36,17 @@ const AgendaItem = ({ agenda, prevSection, nextSection, round }) => {
   )
 }
 
-export const Agenda = ({ className, style, agenda, prevSection, nextSection, round, participants }) => {
+export const Agenda = ({
+  className,
+  style,
+  agenda,
+  prevSection,
+  nextSection,
+  round,
+  participants,
+  speakingNow,
+  thisParticipants,
+}) => {
   return (
     <div style={{ ...style, border: '5px solid #1d3491' }} className={className}>
       <TabbedContainer
@@ -45,7 +55,10 @@ export const Agenda = ({ className, style, agenda, prevSection, nextSection, rou
             name: 'Agenda',
             contents: <AgendaItem round={round} prevSection={prevSection} nextSection={nextSection} agenda={agenda} />,
           },
-          { name: 'Transcript', contents: <Transcription transcriptionJson={participants.moderator} /> },
+          {
+            name: 'Transcript',
+            contents: <Transcription round={round} transcriptions={participants[speakingNow].transcriptions} />,
+          },
         ]}
       />
     </div>

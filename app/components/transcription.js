@@ -10,6 +10,11 @@ const useStyles = createUseStyles({
     color: '#333333',
   },
   transcription: {},
+  word: {
+    padding: '0.1em',
+    fontWeight: 'normal',
+    display: 'inline-block',
+  },
 })
 
 const word = ({ isLit, children }) => {
@@ -18,12 +23,18 @@ const word = ({ isLit, children }) => {
   return <span className={isLit ? cx(word, litWord) : word}>{children}</span>
 }
 
-const Transcription = ({ transcriptionJson }) => {
+const Transcription = ({ round, transcriptions }) => {
   const classes = useStyles()
   const { transcription } = classes
-  //let words = transcriptionJson.map(w)
-  console.log(transcriptionJson)
-  return <div className={transcription}>hello</div>
+  console.log(transcriptions)
+  return (
+    <div className={transcription}>
+      {transcriptions &&
+        transcriptions[round] &&
+        transcriptions[round].words &&
+        transcriptions[round].words.map(wordObj => <div className={classes.word}>{wordObj.word}</div>)}
+    </div>
+  )
 }
 
 export default Transcription

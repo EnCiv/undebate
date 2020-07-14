@@ -1719,6 +1719,12 @@ class RASPUndebate extends React.Component {
     if (this.seat(Object.keys(this.props.participants).indexOf('human')) === 'speaking') return this.autoNextSpeaker()
   }
 
+  // return the property of this.props.participants who is speaking now
+  speakingNow() {
+    const participantList = Object.keys(this.props.participants)
+    return this.state.seatOffset ? participantList[participantList.length - this.state.seatOffset] : participantList[0]
+  }
+
   rerecordButton() {
     logger.info('Undebate.rerecordButton')
     this.camera && this.camera.stopRecording() // it might be recording when the user hit's rerecord
@@ -2574,6 +2580,8 @@ class RASPUndebate extends React.Component {
               agenda={this.props.participants.moderator.agenda}
               round={round}
               participants={this.props.participants}
+              speakingNow={this.speakingNow()}
+              thisParticipants={this.participants}
             />
           </div>
           <div
