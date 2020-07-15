@@ -2575,13 +2575,12 @@ class RASPUndebate extends React.Component {
                 !intro && classes['intro']
               )}
               style={agendaStyle}
-              prevSection={this.prevSection.bind(this)}
-              nextSection={this.nextSection.bind(this)}
-              agenda={this.props.participants.moderator.agenda}
-              round={round}
-              participants={this.props.participants}
-              speakingNow={this.speakingNow()}
-              thisParticipants={this.participants}
+              agendaItem={this.props.participants.moderator.agenda[round]}
+              transcript={
+                this.props.participants[this.speakingNow()].transcriptions &&
+                this.props.participants[this.speakingNow()].transcriptions[round]
+              }
+              element={this.participants[this.speakingNow()].element.current}
             />
           </div>
           <div

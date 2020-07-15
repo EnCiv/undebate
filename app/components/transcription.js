@@ -2,39 +2,57 @@ import React, { useState, useEffect } from 'react'
 import cx from 'classnames'
 import { createUseStyles } from 'react-jss'
 
-const useStyles = createUseStyles({
-  litWord: {
-    color: 'pink',
-  },
-  word: {
-    color: '#333333',
-  },
-  transcription: {},
-  word: {
-    padding: '0.1em',
-    fontWeight: 'normal',
-    display: 'inline-block',
-  },
-})
-
-const word = ({ isLit, children }) => {
-  const classes = useStyles()
-  const { word, litWord } = classes
-  return <span className={isLit ? cx(word, litWord) : word}>{children}</span>
+function getSeconds(wordTimeObj) {
+  return parseFloat(wordTimeObj.seconds + '.' + wordTimeObj.nanos)
 }
 
-const Transcription = ({ round, transcriptions }) => {
+function withinTime(wordObj, currentTime) {
+  let startTime = getSeconds(wordObj.startTime)
+  let endTime = getSeconds(wordObj.endTime)
+  return currentTime >= startTime && currentTime <= endTime
+}
+
+const Transcription = ({ transcript, element }) => {
   const classes = useStyles()
   const { transcription } = classes
-  console.log(transcriptions)
+  const [currentTime, setCurrentTime] = useState(0)
+
+  useEffect(() => {
+    var timer
+    const onPlay = e => {
+      timer = setInterval(() => setCurrentTime(element.currentTime), 100)
+      setCurrentTime(element.currentTime)
+    }
+    element && element.addEventListener('play', onPlay)
+    return () => {
+      clearInterval(timer)
+      element.removeEventListener('play', onPlay)
+    }
+  }, [transcript, element])
+
   return (
     <div className={transcription}>
-      {transcriptions &&
-        transcriptions[round] &&
-        transcriptions[round].words &&
-        transcriptions[round].words.map(wordObj => <div className={classes.word}>{wordObj.word}</div>)}
+      {transcript &&
+        transcript.words &&
+        transcript.words.map(wordObj => (
+          <div className={cx(classes.word, withinTime(wordObj, currentTime) && classes.litWord)}>{wordObj.word}</div>
+        ))}
     </div>
   )
 }
 
 export default Transcription
+
+const useStyles = createUseStyles({
+  transcription: {},
+  word: {
+    color: '#333333',
+    padding: '0.1em',
+    fontWeight: 'normal',
+    display: 'inline-block',
+  },
+  litWord: {
+    fontWeight: 'bold',
+    color: 'black',
+  },
+})

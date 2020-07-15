@@ -5,25 +5,16 @@ import { createUseStyles } from 'react-jss'
 import TabbedContainer from '../TabbedContainer'
 import Transcription from '../transcription'
 
-const AgendaItem = ({ agenda, prevSection, nextSection, round }) => {
+const AgendaItem = ({ agendaItem }) => {
   const classes = useStyles()
   return (
     <div className={classes['innerAgenda']}>
-      {agenda[round] && (
+      {agendaItem && (
         <>
           <div className={classes['agendaItem']}>
-            {/* <div className={classes['agendaTitle']}>
-              <button className={classes['agenda-icon-left']} onClick={prevSection}>
-                <Icon icon="chevron-left" size="1.5" name="previous-section" />
-              </button>
-              Agenda
-              <button className={classes['agenda-icon-right']} onClick={nextSection}>
-                <Icon icon="chevron-right" size="1.5" name="previous-section" />
-              </button>
-            </div> */}
             <ul className={classes['agendaList']}>
-              {agenda[round] &&
-                agenda[round].map((item, i) => (
+              {agendaItem &&
+                agendaItem.map((item, i) => (
                   <li className={classes['item']} key={item + i}>
                     {item}
                   </li>
@@ -36,28 +27,18 @@ const AgendaItem = ({ agenda, prevSection, nextSection, round }) => {
   )
 }
 
-export const Agenda = ({
-  className,
-  style,
-  agenda,
-  prevSection,
-  nextSection,
-  round,
-  participants,
-  speakingNow,
-  thisParticipants,
-}) => {
+export const Agenda = ({ className, style, agendaItem, transcript, element }) => {
   return (
     <div style={{ ...style, border: '5px solid #1d3491' }} className={className}>
       <TabbedContainer
         tabs={[
           {
             name: 'Agenda',
-            contents: <AgendaItem round={round} prevSection={prevSection} nextSection={nextSection} agenda={agenda} />,
+            contents: <AgendaItem agendaItem={agendaItem} />,
           },
           {
             name: 'Transcript',
-            contents: <Transcription round={round} transcriptions={participants[speakingNow].transcriptions} />,
+            contents: <Transcription transcript={transcript} element={element} />,
           },
         ]}
       />
