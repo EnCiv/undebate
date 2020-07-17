@@ -20,10 +20,14 @@ const Transcription = ({ transcript, element }) => {
   useEffect(() => {
     var timer
     const onPlay = e => {
-      timer = setInterval(() => setCurrentTime(element.currentTime), 100)
+      if (!timer) timer = setInterval(() => setCurrentTime(element.currentTime), 100) // in case it gets called more than once don't set multiple timers
       setCurrentTime(element.currentTime)
     }
     element && element.addEventListener('play', onPlay)
+    if (element && element.currentTime > 0) {
+      //it's already started playing when this got called
+      onPlay({})
+    }
     return () => {
       clearInterval(timer)
       element.removeEventListener('play', onPlay)
