@@ -1,18 +1,16 @@
 'use strict;'
 
 export default function mergeLatestTranscriptionIntoParent(childIotas, parentIota) {
-  // the list is sorted by date, find the first / youngest child with a socialpreview
-  let transcribe
-  childIotas.some(iota =>
-    iota.component && iota.component.component === 'Transcription' ? (transcribe = iota) : false
-  ) // .some to stop after finding the first one
-  if (transcribe) {
+  // the list is sorted by date, find each transcription and add it to the participant in parentIota - caution there may be old transcriptions
+  childIotas.forEach(iota => {
+    if (iota.component && iota.component.component !== 'Transcription') return
     Object.keys(parentIota.webComponent.participants).forEach(participant => {
-      if (parentIota.webComponent.participants[participant].participantId === transcribe.component.participantId) {
-        parentIota.webComponent.participants[participant].transcriptions = transcribe.component.transcriptions
+      if (parentIota.webComponent.participants[participant].participantId === iota.component.participantId) {
+        if (parentIota.webComponent.participants[participant].transcriptions) return // there is already a transcription here
+        parentIota.webComponent.participants[participant].transcriptions = iota.component.transcriptions
       }
     })
-  }
+  })
 }
 
 /*
