@@ -178,7 +178,7 @@ const FindDistrict = () => {
         style={{ border: error ? '3px solid #9d0000' : '' }}
         type="text"
         name="votersAddress"
-        placeholder="1234 Main St. Hartford CT"
+        placeholder="1234 Main St. Hartford CT 06103"
         id="votersAddress"
       />
       <OrangeButton> Find your District</OrangeButton>

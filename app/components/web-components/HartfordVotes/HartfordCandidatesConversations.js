@@ -3,7 +3,7 @@ import { createUseStyles } from 'react-jss'
 
 import TabbedContainer from '../TabbedContainer'
 import { useMode } from './phone-portrait-context'
-import { useAnimateTab, useCandidates, useTab, AddressContext } from './user-address-context'
+import { useOffices, useAnimateTab, useCandidates, useTab } from './user-address-context'
 
 const useStyles = createUseStyles({
   candidatesConversations: {
@@ -87,13 +87,13 @@ const useStyles = createUseStyles({
   },
 })
 
-const HartfordCandidatesConversations = () => {
+const HartfordCandidatesConversations = ({ viewers }) => {
   const classes = useStyles()
-  const { candidates } = useCandidates()
   const { tab } = useTab()
-  const { representatives_office_ids } = useContext(AddressContext)
+  const { offices, setOffices } = useOffices()
   const { animateTab } = useAnimateTab()
-  console.log(candidates)
+  setOffices(viewers)
+  console.log(offices)
 
   let isPortrait = useMode()
 
@@ -187,7 +187,8 @@ const HartfordCandidatesConversations = () => {
     </div>
   )
 
-  const hartfordTabs = representatives_office_ids.map(office => {
+  //context holds information about districts
+  const hartfordTabs = offices.map(office => {
     return { name: `District ${office.district}`, contents: tabContentsComingSoon }
   })
 

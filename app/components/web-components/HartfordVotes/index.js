@@ -32,16 +32,16 @@ const useStyles = createUseStyles({
   },
 })
 
-const HartfordLanding = () => {
+const HartfordLanding = ({ viewers }) => {
   return (
     <>
       <HartfordLandingHeader key="hartford-header" />
-      <HartfordCandidatesConversations key="hartford-candidate-conversations" />
+      <HartfordCandidatesConversations viewers={viewers} key="hartford-candidate-conversations" />
     </>
   )
 }
 
-const HartfordVotes = () => {
+const HartfordVotes = ({ viewers }) => {
   const classes = useStyles()
 
   return (
@@ -51,7 +51,7 @@ const HartfordVotes = () => {
           <div className={classes.landingPage}>
             <HartfordLandingMenu key="hartford-menu" />
             <FindDistrict />
-            <HartfordLanding />
+            <HartfordLanding viewers={viewers} />
           </div>
         </AddressProvider>
       </ModeProvider>
