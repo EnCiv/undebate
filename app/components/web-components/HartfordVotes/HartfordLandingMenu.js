@@ -108,6 +108,12 @@ const HartfordLandingMenu = () => {
       target: '',
     },
     {
+      display: 'Candidate Bios',
+      key: 'hartford-candidate-bios',
+      href: '/hartford/bios',
+      target: '',
+    },
+    {
       display: 'How & Where To Vote',
       key: 'hartford-how-where-vote',
       href: 'https://portaldir.ct.gov/sots/LookUp.aspx',
