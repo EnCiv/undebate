@@ -6,10 +6,12 @@ function getSeconds(wordTimeObj) {
   return parseFloat(wordTimeObj.seconds + '.' + wordTimeObj.nanos)
 }
 
+const windowSeconds = 0
+
 function withinTime(wordObj, currentTime) {
   let startTime = getSeconds(wordObj.startTime)
   let endTime = getSeconds(wordObj.endTime)
-  return currentTime >= startTime && currentTime <= endTime
+  return currentTime >= startTime - windowSeconds && currentTime <= endTime + windowSeconds
 }
 
 const Transcription = ({ transcript, element }) => {
@@ -48,7 +50,9 @@ const Transcription = ({ transcript, element }) => {
 export default Transcription
 
 const useStyles = createUseStyles({
-  transcription: {},
+  transcription: {
+    fontSize: '1.75rem',
+  },
   word: {
     color: '#333333',
     padding: '0.1em',
@@ -56,7 +60,7 @@ const useStyles = createUseStyles({
     display: 'inline-block',
   },
   litWord: {
-    fontWeight: 'bold',
+    backgroundColor: 'yellow',
     color: 'black',
   },
 })
