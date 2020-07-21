@@ -185,13 +185,14 @@ const Answer = ({ answer }) => {
   return <div className={classes.answer}>{ReactHtmlParser(answer)}</div>
 }
 
-const FAQHeader = ({ homelink, background, page_title }) => {
+const FAQHeader = ({ homelink, background, page_title, current_location }) => {
   const classes = useHeaderStyles(background)
   return (
     <div className={classes.faqheader} style={{}}>
       <div>
         <a href={homelink}>HOME</a>
-        {'>'}FAQ
+        {'>'}
+        {current_location}
       </div>
       <h1>{page_title}</h1>
     </div>
@@ -199,9 +200,12 @@ const FAQHeader = ({ homelink, background, page_title }) => {
 }
 FAQHeader.defaultProps = {
   background: 'red',
+  page_title: 'title',
+  homelink: 'https://enciv.org',
+  current_location: 'FAQ',
 }
 
-const FAQ = ({ questions_and_answers, banner, homelink, page_title }) => {
+const FAQ = ({ questions_and_answers, banner, homelink, page_title, current_location }) => {
   const classes = useStyles()
 
   return (
@@ -209,7 +213,12 @@ const FAQ = ({ questions_and_answers, banner, homelink, page_title }) => {
       <ModeProvider>
         <div className={classes.hartfordfaq}>
           <HartfordLandingMenu />
-          <FAQHeader background={banner} homelink={homelink} page_title={page_title} />
+          <FAQHeader
+            background={banner}
+            homelink={homelink}
+            page_title={page_title}
+            current_location={current_location}
+          />
           <div>
             {questions_and_answers.map((faq, index) => (
               <Question key={index} questionAndAnswer={{ question: faq.q, answer: faq.a }} />
