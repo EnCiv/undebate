@@ -1899,14 +1899,100 @@
       "homelink": "/hartford",
       "questions_and_answers": [
         {
-          "q": "Is this a question?",
-          "a": "Please make sure your device is plugged into the wall."
+          "q": "Primary Date",
+          "a": "August 11th"
         },
         {
-          "q": "Who should I vote for?",
-          "a": "The first rule of voting is that you don't talk about it."
+          "q": "Primary Type",
+          "a": "Closed (must be registered in a party to vote in that party's primary.) Unaffiliated voters must declare a party in order to vote in a primary election by NOON the day before a primary. <strong>If you are switching parties, there is a 3-month waiting period.</strong>"
+        },
+        {
+          "q": "What's the Registration Deadline?",
+          "a": "August 6"
+        },
+        {
+          "q": "Who can register to vote in CT?",
+          "a": "Citizens of the United States including Puerto Rican  citizens currently residing in the United States; Living in Connecticut; AND 17 years old and turning 18 before election day."
+        },
+        {
+          "q": "Is Online Registration Available?",
+          "a": "Yes. Link: <a href=\"https://voterregistration.ct.gov/OLVR/welcome.do\" target=\"_blank\">https://voterregistration.ct.gov/OLVR/welcome.do</a>"
+        },
+        {
+          "q": "Is Same Day Registration Available?",
+          "a": "Yes, though if in person, needs to be at City Hall – not at your polling location."
+        },
+        {
+          "q": "Is Early Voting Available?",
+          "a": "No"
+        },
+        {
+          "q": "Is absentee voting available?",
+          "a": "You would need to file an application. All registered voters should have received the application in the mail. This application needs to be completed and submitted with sufficient time to receive and send in your absentee ballot."
+        },
+        {
+          "q": "Voter ID",
+          "a": "Non-photo ID acceptable"
+        },
+        {
+          "q": "Poll Times",
+          "a": "6am to 8pm, August 11"
+        },
+        {
+          "q": "Where can I find more information about Voting in Connecticut?",
+          "a": "<a href=\"https://ballotpedia.org/Voting_in_Connecticut\" target=\"_blank\">https://ballotpedia.org/Voting_in_Connecticut</a>"
+        },
+        {
+          "q": "What candidates that represent Hartford will be on the Aug 11 ballot in the August Primary?",
+          "a": "The only Hartford candidates in the August primary will be for State Representative in the 5th District in a Democratic Primary and Registrar of Voters in a Republican Primary.  There will also be presidential candidates in both Primaries."
+        },
+        {
+          "q": "Can I register to vote online?",
+          "a": "<p>Yes you can if you have a current and valid driver’s license, learner’s permit or non-driver photo identification card issued by the CT Department of Motor Vehicles (DMV) and a signature on file with DMV.</p><p>You may use the online system to (1) register to vote in Connecticut, (2) change your name and/or address on your current registration record, or (3) enroll in a political party or change party enrollment (changing parties may result in losing rights in all parties for three months). 4) change your address if you move within your current town of residence.</p><p>The link:  <a href=\"https://voterregistration.ct.gov/OLVR/welcome.do\" target=\"_blank\">https://voterregistration.ct.gov/OLVR/welcome.do</p>"
+        },
+        {
+          "q": "If I move out of town, am I still registered to vote?",
+          "a": "If you move you must re-register to vote in your new town of residence.  <strong>You must reregister every time you change your address!</strong>  Check online at <a href=\"https://Vote.org\" target=\"_blank\">Vote.org</a> to find out if you are registered to vote at your current address"
+        },
+        {
+          "q": "What is the deadline to register for the primary election",
+          "a": "If new registrants choose to apply by mail, the deadline for forms to be completed and mailed and either postmarked or received by the Registrar of Voters' office or a voter registration agency is five days before a primary election. If a new registrant chooses to register in person, the registration must be completed by 12:00PM the day before the primary election at Hartford’s Registrar of Voter’s or Town Clerk’s office."
+        },
+        {
+          "q": "What is the deadline to register for the general election",
+          "a": "The deadline is 14 days before a general election by mail, or seven days before in person. Your application must be postmarked or received by the Registrar of Voters' office or a voter registration agency by the 14th day before a general election. You may apply in person at the Registrars’ office or at the Town Clerk’s office by the seventh day before a general election."
+        },
+        {
+          "q": "How do I know if I am eligible to vote in the August Primary?",
+          "a": "You may vote in the primary in Connecticut if you will be at least 18 years old on or before the date of the election, if you are a resident of Connecticut and if you have not been convicted of a disenfranchising felony.  Registered Republicans will be able to vote in the Republican primary ballot and Registered Democrats will be able to vote in the Democrat primary ballot. <strong>If you are an Independent or unaffiliated, you will NOT be eligible to vote in the Primary Elections.</strong>"
+        },
+        {
+          "q": "Where do I go to vote in Hartford?",
+          "a": "Find your polling place: <a href=\"http://www.hartford.gov/registrar-of-voters/polling-places\" target=\"_blank\">http://www.hartford.gov/registrar-of-voters/polling-places</a>"
+        },
+        {
+          "q": "Who do I call if I feel my voting rights have been violated on election day?",
+          "a": "Call the  State Elections Enforcement Commission at  866-733-2463 or the U.S. Department of Justice at  800-253-3931."
+        },
+        {
+          "q": "What if I have no ID?",
+          "a": "<p>You can vote even if you don't have ID! Here's how!</p><p><strong><u>If you are voting for the FIRST time in federal election</u></strong><ul><li>you may be asked to present EITHER a copy of a current and valid photo identification that shows your name and address</li><li>OR a copy of a current utility bill, bank statement, government check, paycheck or government document that shows your name and address;</li><li><strong>OR you may cast a provisional ballot.</strong></li></ul>ALL OTHERS:<ul><li>EITHER your social security card;</li><li>OR any pre-printed form of identification that shows your name and address or name and signature, or name and photograph;</li><li>OR Sign Form ED-681 \"Signatures of electors who did not present ID\"</li></ul>"
         }
       ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5f0512f67c213e16a464d66c"
+    },
+    "path": "/hartford/about",
+    "subject": "Important information regarding relevant organizations and general information for the city election in Hartford CT",
+    "description": "About page for elections in the city of Hartford CT",
+    "webComponent": {
+      "webComponent": "About",
+      "banner": "url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat",
+      "homelink": "/hartford",
+      "content": "<p><i>In response to the current pandemic, the following organizations have collaborated to develop this site to keep Hartford’s residents and their candidates for elected office safe and informed</i></p><h3>Hartford Votes~Hartford Vota Coalition</h3><p>The Hartford Votes/Hartford Vota Coalition includes thirteen organizations and agencies that work together to increase voter engagement in Hartford CT. The Coalition is nonpartisan.</p> <h3> EnCiv</h3> <p>EnCiv is a non-profit, transpartisan organization that develops online tools for citizen engagement. EnCiv's Candidate Conversation tool is being made available on Ballotpedia's website. </p> <h3> Ballotpedia</h3> <p>Ballotpedia is the digital encyclopedia of American politics and elections. Ballotpedia connects people with politics by changing the way they access the information they need to be informed about federal, state, and local politics. Ballotpedia currently has over 303,000 encyclopedic articles and offers daily, weekly, and monthly email newsletters on a variety of specialized topics.</p><p>Questions: <a href=\"HartfordVota@gmail.com\" target=\"_blank\">HartfordVota@gmail.com</a></p>"
     }
   },
   {
@@ -2137,6 +2223,99 @@
     "subject": "President of the World",
     "description": "A Candidate Conversation Recorder for: President of the World, Election Date:2020-12-31",
     "parentId": "5ecd55eb7c213e044cbeebdf"
+  },
+  {
+    "_id": {
+      "$oid": "5efc0c407c213e1ed4286ca9"
+    },
+    "component": {
+      "component": "UndebateCreator",
+      "participants": {
+        "moderator": {
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356978/5dfbd2cade08bc00174be9c2-0-speaking20200408T144249408Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356979/5dfbd2cade08bc00174be9c2-1-speaking20200408T144257711Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356980/5dfbd2cade08bc00174be9c2-2-speaking20200408T144259342Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356982/5dfbd2cade08bc00174be9c2-3-speaking20200408T144300057Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356985/5dfbd2cade08bc00174be9c2-4-speaking20200408T144302312Z.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356987/5dfbd2cade08bc00174be9c2-5-speaking20200408T144305156Z.mp4",
+          "name": "Sarah Rosier",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Name",
+              "2- City and State",
+              "3- One word to describe yourself",
+              "4- What office are you running for?"
+            ],
+            ["What do you love most about where you live?"],
+            ["What inspired you to run for office?"],
+            [
+              "1- Look into the camera while listening to the example speaker as your placeholder video is recorded",
+              "2- If elected, how will you know you that you've succeeded in this position?"
+            ],
+            ["Thank you!"]
+          ],
+          "timeLimits": [15, 30, 30, 30]
+        },
+        "audience1": {
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385606/5e41e44a19c15800177fad8b-0-speaking20200210T231647860Z_osr2mn.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385627/5e41e44a19c15800177fad8b-1-speaking20200210T231648772Z_c8kowz.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385643/5e41e44a19c15800177fad8b-2-speaking20200210T231649635Z_jaagja.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385666/5e41e44a19c15800177fad8b-3-speaking20200210T231650542Z_afvnxr.mp4"
+          ],
+          "name": "Adolf Gundersen",
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto,so_0,eo_6/v1581385689/5e41e44a19c15800177fad8b-0-listening20200210T231652250Z_fwq1dq.mp4"
+        },
+        "human": {
+          "listening": {
+            "round": 3,
+            "seat": "nextUp"
+          }
+        }
+      }
+    },
+    "webComponent": {
+      "webComponent": "Undebate",
+      "participants": {},
+      "opening": {
+        "line1": "Thank you for taking the lead in this <strong>new</strong> way to engage with voters",
+        "line2": "We want voters to learn about candidates in a more personal way, and candidates to have an easy way to reach voters",
+        "line3": "And we want to host Candidate Conversations for every election, every election season",
+        "line4": "So, we invite you to speak in this Candidate Conversation about:",
+        "subLine": "After you hit Begin, your browser may ask you to authorize the camera and mic for use by this application."
+      },
+      "closing": {
+        "thanks": "Thank You.",
+        "link": {
+          "name": "Your feedback would help us make this even better",
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeMNX1zEUAVuI3aZY9qreBfqMaXsS-yMLf7WYiylqVjHvoP2g/viewform"
+        },
+        "iframe": {
+          "src": "https://docs.google.com/forms/d/e/1FAIpQLSeMNX1zEUAVuI3aZY9qreBfqMaXsS-yMLf7WYiylqVjHvoP2g/viewform?embedded=true",
+          "width": 700,
+          "height": 1122
+        }
+      }
+    },
+    "path": "/candidate-conversation-candidate-recorder-questions-test",
+    "subject": "U.S. House Maryland District 1 Republican Party",
+    "description": "A Candidate Conversation Recorder for: U.S. House Maryland District 1 Republican Party Election Date:2020-06-02",
+    "bp_info": {
+      "office": "U.S. House Maryland District 1",
+      "party": "Republican Party",
+      "election_date": "2020-06-02",
+      "candidate_name": "Andrew Harris",
+      "last_name": "Harris",
+      "first_name": "Andrew",
+      "bp_url": "https://ballotpedia.org/Andrew_Harris",
+      "profession": "Doctor",
+      "candidate_emails": ["example@example.com"],
+      "person_emails": []
+    },
+    "parentId": "5e7e88a67c213e3443f11dbf"
   },
   {
     "_id": {

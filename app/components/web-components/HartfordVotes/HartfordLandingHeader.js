@@ -178,9 +178,7 @@ const HartfordLandingHeader = () => {
       <header className={classes.header} id="landing-header">
         {isPortrait ? null : <HartfordLogo />}
         <h1 className={classes.pageTitle}>Hartford Votes ~ Vota Coalition</h1>
-        <h2 className={classes.subTitle}>
-          Meet the Candidates for CT State Senator and State Representative for Hartford
-        </h2>
+        <h2 className={classes.subTitle}>Meet Hartford{"'"}s Primary Candidates for State Representatives</h2>
         {isPortrait ? null : <EncivLogo />}
       </header>
       <div

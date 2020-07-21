@@ -40,10 +40,7 @@ const getOfficials = (long, lat, doOnSuccess, address_found) => {
             let officeNames = []
             districts.forEach(district => {
               // the upper legislative body is being used for testing
-              if (
-                district.offices &&
-                (district.type === 'State Legislative (Upper)' || district.type === 'State Legislative (Lower)')
-              ) {
+              if (district.offices && district.type === 'State Legislative (Lower)') {
                 district.offices.forEach(office => {
                   officeNames.push({
                     id: office.id,
@@ -100,10 +97,7 @@ const getOfficials = (long, lat, doOnSuccess, address_found) => {
             let officeNames = []
             districts.forEach(district => {
               // the upper legislative body is being used for testing
-              if (
-                (district.offices && district.type === 'State Legislative (Upper)') ||
-                district.type === 'State Legislative (Lower)'
-              ) {
+              if (district.offices && district.type === 'State Legislative (Lower)') {
                 district.offices.forEach(office => {
                   officeNames.push({
                     id: office.id,
@@ -153,7 +147,7 @@ export default async function listOffices(address, doOnSuccess) {
           const jsonData = JSON.parse(data)
           const { result } = jsonData
           console.log(jsonData)
-          if (result && result.addressMatches.length >= 0) {
+          if (result && result.addressMatches.length > 0) {
             const matches = result.addressMatches[0]
             const address_found = matches.matchedAddress
             const lng = matches.coordinates.x

@@ -31,7 +31,7 @@ candidate_questions=[
   ]
  */
 
-function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questions, instructionLink }) {
+function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questions, instructionLink, timeLimits }) {
   const classes = useStyles()
   const [isPortrait, togglePortrait] = useState(false)
   const makeQuestions = (className, questions, keyIndex = 'mq') => {
@@ -41,12 +41,17 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
           typeof question === 'string' ? (
             <li key={keyIndex + '-' + index}>{question}</li>
           ) : question.length === 1 ? (
-            <li key={keyIndex + '-' + index}>{question[0]}</li>
+            <li key={keyIndex + '-' + index}>
+              <strong>[ {timeLimits[index]} seconds ]</strong> {question[0]}
+            </li>
           ) : question[0][0] >= '0' && question[0][0] <= '9' ? (
-            <li>{makeQuestions(classes.questionListInnerHeadless, question, keyIndex + index)}</li>
+            <li>
+              <strong>[ {timeLimits[index]} seconds ]</strong>
+              {makeQuestions(classes.questionListInnerHeadless, question, keyIndex + index)}
+            </li>
           ) : (
             <li>
-              {question[0]}
+              <strong>[ {timeLimits[index]} seconds ]</strong> {question[0]}
               {makeQuestions(classes.questionListInner, question.slice(1), keyIndex + index)}
             </li>
           )
