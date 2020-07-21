@@ -8,7 +8,7 @@
 
 const Iota = require('../models/iota')
 const MongoModels = require('mongo-models')
-import { transcribeParticipantIota } from '../server/events/transcribe'
+import { transcribeParticipantIota, transcribeSpeakingList } from '../server/events/transcribe'
 
 // Iota uses logger
 const log4js = require('log4js')
@@ -26,6 +26,7 @@ var argv = process.argv
 var args = {}
 for (let arg = 2; arg < argv.length; arg++) {
   switch (argv[arg]) {
+    case 'viewerId':
     case 'participantId':
     case 'db': // the mongo database URI
       args[argv[arg]] = argv[++arg]
@@ -35,8 +36,8 @@ for (let arg = 2; arg < argv.length; arg++) {
   }
 }
 
-if (!(args.db && args.participantId)) {
-  console.error('db and participantId are required')
+if (!(args.db && (args.participantId || args.viewerId))) {
+  console.error('db and ( participantId or viewerId ) are required')
   process.exit(1)
 }
 
@@ -50,18 +51,33 @@ async function main() {
   for await (const init of MongoModels.toInit) {
     await init()
   }
-  try {
-    const participantIota = await Iota.findOne({ _id: Iota.ObjectID(args.participantId) })
-    if (!participantIota) {
-      console.error('participantId not found', args.participantId)
+  if (args.viewerId) {
+    try {
+      var viewerIota = await Iota.findOne({ _id: Iota.ObjectID(args.viewerId) })
+      var transcriptionList = await transcribeSpeakingList(viewerIota.webComponent.participants.moderator.speaking)
+      await Iota.updateOne(
+        { _id: viewerIota._id },
+        { $set: { 'webComponent.participants.moderator.transcriptions': transcriptionList } }
+      )
+      finished(0)
+    } catch (err) {
+      console.error('caught error trying to update viewer', err)
       finished(1)
     }
-    const transcriptionIota = await transcribeParticipantIota(participantIota)
-    console.info('transcriptionIota', transcriptionIota)
-    finished(0)
-  } catch (error) {
-    logger.error('caught error trying to translate', error)
-    finished(1)
+  } else {
+    try {
+      const participantIota = await Iota.findOne({ _id: Iota.ObjectID(args.participantId) })
+      if (!participantIota) {
+        console.error('participantId not found', args.participantId)
+        finished(1)
+      }
+      const transcriptionIota = await transcribeParticipantIota(participantIota)
+      console.info('transcriptionIota', transcriptionIota)
+      finished(0)
+    } catch (error) {
+      logger.error('caught error trying to translate', error)
+      finished(1)
+    }
   }
 }
 

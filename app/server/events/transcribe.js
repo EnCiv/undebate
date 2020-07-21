@@ -43,12 +43,12 @@ export function transcribeParticipantIota(participantIota, transcriber = streamT
 // transcribe a list of videos of the candidate speaking
 // exported so it can also be used by tools
 //
-export function transcribeSpeakingList(speaking, transcriber) {
+export function transcribeSpeakingList(speaking, transcriber = streamTranscribe) {
   return new Promise(async (ok, ko) => {
     var transcriptions = []
     for await (const speakingFile of speaking) {
       try {
-        let convertedFile = speakingFile.replace('.mp4', '.wav')
+        let convertedFile = speakingFile.replace('.mp4', '.wav').replace('/upload/', '/upload/fl_mono/') // some files might have 2 chanel audio which messes up transcription
         const transcribeData = await transcriber(convertedFile)
         transcriptions.push(transcribeData)
       } catch (err) {
