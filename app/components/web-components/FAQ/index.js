@@ -185,7 +185,7 @@ const Answer = ({ answer }) => {
   return <div className={classes.answer}>{ReactHtmlParser(answer)}</div>
 }
 
-const FAQHeader = ({ homelink, background }) => {
+const FAQHeader = ({ homelink, background, page_title }) => {
   const classes = useHeaderStyles(background)
   return (
     <div className={classes.faqheader} style={{}}>
@@ -193,7 +193,7 @@ const FAQHeader = ({ homelink, background }) => {
         <a href={homelink}>HOME</a>
         {'>'}FAQ
       </div>
-      <h1>Frequently Asked Questions (FAQ)</h1>
+      <h1>{page_title}</h1>
     </div>
   )
 }
@@ -201,7 +201,7 @@ FAQHeader.defaultProps = {
   background: 'red',
 }
 
-const FAQ = ({ questions_and_answers, banner, homelink }) => {
+const FAQ = ({ questions_and_answers, banner, homelink, page_title }) => {
   const classes = useStyles()
 
   return (
@@ -209,7 +209,7 @@ const FAQ = ({ questions_and_answers, banner, homelink }) => {
       <ModeProvider>
         <div className={classes.hartfordfaq}>
           <HartfordLandingMenu />
-          <FAQHeader background={banner} homelink={homelink} />
+          <FAQHeader background={banner} homelink={homelink} page_title={page_title} />
           <div>
             {questions_and_answers.map((faq, index) => (
               <Question key={index} questionAndAnswer={{ question: faq.q, answer: faq.a }} />

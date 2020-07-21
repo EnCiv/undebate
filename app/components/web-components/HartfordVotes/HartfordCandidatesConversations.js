@@ -93,7 +93,6 @@ const HartfordCandidatesConversations = ({ viewers }) => {
   const { offices, setOffices } = useOffices()
   const { animateTab } = useAnimateTab()
   setOffices(viewers)
-  console.log(offices)
 
   let isPortrait = useMode()
 
@@ -187,11 +186,6 @@ const HartfordCandidatesConversations = ({ viewers }) => {
     </div>
   )
 
-  //context holds information about districts
-  const hartfordTabs = offices.map(office => {
-    return { name: `District ${office.district}`, contents: tabContentsComingSoon }
-  })
-
   const tabContentsExample = (
     <div>
       <h3>San Francisco District Attorney</h3>
@@ -203,6 +197,25 @@ const HartfordCandidatesConversations = ({ viewers }) => {
       />
     </div>
   )
+
+  const makeContents = urls => {
+    const viewers = []
+    if (!Array.isArray(urls)) {
+      return <div></div>
+    } else {
+      urls.forEach(url => {
+        if (url === '') viewers.push(tabContentsComingSoon)
+        else viewers.push(tabContentsExample)
+      })
+    }
+    console.log(viewers)
+    return viewers
+  }
+
+  //context holds information about districts
+  const hartfordTabs = offices.map(office => {
+    return { name: `District ${office.district}`, contents: makeContents(office.urls) }
+  })
 
   return (
     <>
