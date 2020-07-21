@@ -115,28 +115,32 @@ const HartfordCandidatesConversations = ({ viewers }) => {
       className="coming_soon"
     >
       <div
-        style={{
-          margin: '7vh auto',
-        }}
+        style={
+          {
+            //margin: '3vh auto',
+          }
+        }
       >
         <h3
           style={{
+            width: '90%',
+            textAlign: 'center',
+            display: 'inline-block',
             color: '#29316E',
             margin: '0 auto 3vh auto',
-            width: 'max-content',
-            width: 'max-content',
-            fontSize: isPortrait ? '4vw' : '4vmin',
+            fontSize: isPortrait ? '4vw' : '3vmin',
             fontWeight: '700',
           }}
         >
-          Candidate Conversations
+          Come Back for the General Election - There are no State Representative candidates in the Primary election for
+          this district
         </h3>
         <h3
           style={{
             color: '#29316E',
             margin: '0 auto 9vh auto',
             width: 'max-content',
-            fontSize: isPortrait ? '6.6vw' : '6.6vmin',
+            fontSize: isPortrait ? '6.6vw' : '5.6vmin',
             fontWeight: '700',
           }}
         >
@@ -157,7 +161,7 @@ const HartfordCandidatesConversations = ({ viewers }) => {
             paddingRight: '13vmin',
             margin: 0,
             borderRadius: '.5em .5em',
-            fontSize: isPortrait ? '4vw' : '4vmin',
+            fontSize: isPortrait ? '4vw' : '3vmin',
           }}
         >
           Get Notified
