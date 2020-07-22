@@ -212,7 +212,6 @@ const HartfordCandidatesConversations = ({ viewers }) => {
         else viewers.push(tabContentsExample)
       })
     }
-    console.log(viewers)
     return viewers
   }
 
