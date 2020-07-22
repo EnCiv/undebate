@@ -9,7 +9,7 @@
 const WebComponents = {
   TestJoin: require('./test-join'),
   Undebate: require('./undebate'),
-  CandidateConversation: require('./candidate-conversation'),
+  CandidateConversation: require('./candidate-conversation-2'),
   UndebateLine: require('./undebate-line'),
   UndebateIframes: require('./undebate-iframes'),
   Unpoll: require('./unpoll'),
