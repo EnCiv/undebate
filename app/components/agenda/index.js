@@ -49,60 +49,35 @@ export const Agenda = ({ className, style, agendaItem, transcript, element }) =>
 export default Agenda
 
 const useStyles = createUseStyles({
-  innerAgenda: {
-    display: 'table-cell',
-    width: '10000px',
-  },
+  innerAgenda: {},
   agendaList: {
-    textAlign: 'left',
     padding: '0',
     listStyleType: 'none',
-    textAlign: 'center',
+    textAlign: 'left',
+    marginTop: 0,
+    marginBottom: 0,
     '& li:first-child': {
       fontWeight: 'bold',
     },
-    '& li': {
-      paddingTop: '.5em',
-      paddingBottom: '.5em',
-    },
+    '& li': {},
   },
   agendaItem: {
-    'margin-block-start': '0',
+    marginBlockStart: '0',
     textAlign: 'left',
     fontSize: '1.5rem',
     lineHeight: '2rem',
-    'font-weight': '200',
-    'list-style-type': 'none',
+    fontWeight: '200',
+    listStyleType: 'none',
     paddingLeft: '0',
   },
-  /*
-    agendaTitle: {
-    fontFamily: 'Libre Franklin',
-    textAlign: 'center',
-    'font-size': '3rem',
-    lineHeight: '3rem',
-    backgroundColor: `${YELLOW}`,
-    paddingTop: '1rem',
-    paddingBottom: '1rem',
-    'font-weight': 'bold',
+  item: {
+    fontFamily: 'Roboto',
+    fontSize: '2rem',
+    fontWeight: 'normal',
+    backgroundColor: 'white',
+    borderBottom: '1px solid lightGray',
+    paddingTop: '0.5rem',
+    paddingBottom: '0.25rem',
+    paddingRight: '1rem',
   },
-  'agenda-icon-left': {
-    border: 'none',
-    backgroundColor: 'transparent',
-    marginLeft: '0.5rem',
-    display: 'inline-block',
-    float: 'left',
-    cursor: 'pointer',
-    fontSize: '100%',
-  },
-  'agenda-icon-right': {
-    border: 'none',
-    backgroundColor: 'transparent',
-    marginRight: '0.5rem',
-    display: 'inline-block',
-    float: 'right',
-    cursor: 'pointer',
-    fontSize: '100%',
-  },
-  */
 })

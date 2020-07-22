@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import cx from 'classnames'
 import { createUseStyles } from 'react-jss'
 
@@ -7,6 +7,7 @@ function getSeconds(wordTimeObj) {
 }
 
 const windowSeconds = 0
+const defaultFontSize = 1.75
 
 function withinTime(wordObj, currentTime) {
   let startTime = getSeconds(wordObj.startTime)
@@ -18,6 +19,8 @@ const Transcription = ({ transcript, element }) => {
   const classes = useStyles()
   const { transcription } = classes
   const [currentTime, setCurrentTime] = useState(0)
+  const outerRef = useRef(null)
+  const [fontSize, setFontSize] = useState(defaultFontSize)
 
   useEffect(() => {
     var timer
@@ -36,12 +39,34 @@ const Transcription = ({ transcript, element }) => {
     }
   }, [transcript, element])
 
+  useLayoutEffect(() => {
+    // when we swtich to a new transcript, after we have shrunk the fontSize for the previous transcription, when we need go back to the default font size because the new one may fit. But then we need to shrink if it doesn't
+    if (fontSize != defaultFontSize) setFontSize(defaultFontSize)
+  }, [transcript])
+
+  useLayoutEffect(() => {
+    if (fontSize != defaultFontSize) return // the transcript has changed but the fontSize has not been reset yet
+    const rect = outerRef.current.getBoundingClientRect()
+    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+    if (rect.bottom > vh) {
+      setFontSize(defaultFontSize * ((vh - rect.top) / rect.height))
+    }
+  }, [transcript, fontSize])
+
   return (
-    <div className={transcription}>
+    <div className={transcription} ref={outerRef} style={{ fontSize: fontSize + 'rem' }}>
       {transcript &&
         transcript.words &&
         transcript.words.map(wordObj => (
-          <div className={cx(classes.word, withinTime(wordObj, currentTime) && classes.litWord)}>{wordObj.word}</div>
+          <div
+            className={cx(
+              classes.word,
+              withinTime(wordObj, currentTime) && classes.litWord,
+              wordObj.word.slice(-1) === '.' && classes.sentenceEnd
+            )}
+          >
+            {wordObj.word}
+          </div>
         ))}
     </div>
   )
@@ -51,7 +76,7 @@ export default Transcription
 
 const useStyles = createUseStyles({
   transcription: {
-    fontSize: '1.75rem',
+    textAlign: 'justify',
   },
   word: {
     color: '#333333',
@@ -62,5 +87,8 @@ const useStyles = createUseStyles({
   litWord: {
     backgroundColor: 'yellow',
     color: 'black',
+  },
+  sentenceEnd: {
+    paddingRight: '0.25em',
   },
 })
