@@ -123,6 +123,9 @@ const useHeaderStyles = createUseStyles({
     marginBottom: '7em',
     height: '10em',
     padding: '1.6em',
+    '& a.otherlink': {
+      marginLeft: '78vw',
+    },
     '& h1': {
       marginLeft: 'auto',
       marginRight: 'auto',
@@ -185,14 +188,15 @@ const Answer = ({ answer }) => {
   return <div className={classes.answer}>{ReactHtmlParser(answer)}</div>
 }
 
-const FAQHeader = ({ homelink, background, page_title, current_location }) => {
+const FAQHeader = ({ homelink, otherlink, background, page_title, current_location }) => {
   const classes = useHeaderStyles(background)
   return (
-    <div className={classes.faqheader} style={{}}>
+    <div className={classes.faqheader}>
       <div>
         <a href={homelink}>HOME</a>
         {'>'}
         {current_location}
+        {ReactHtmlParser(otherlink)}
       </div>
       <h1>{page_title}</h1>
     </div>
@@ -202,10 +206,11 @@ FAQHeader.defaultProps = {
   background: 'red',
   page_title: 'title',
   homelink: 'https://enciv.org',
+  otherlink: '',
   current_location: 'FAQ',
 }
 
-const FAQ = ({ questions_and_answers, banner, homelink, page_title, current_location }) => {
+const FAQ = ({ questions_and_answers, banner, homelink, page_title, current_location, otherlink }) => {
   const classes = useStyles()
 
   return (
@@ -218,6 +223,7 @@ const FAQ = ({ questions_and_answers, banner, homelink, page_title, current_loca
             homelink={homelink}
             page_title={page_title}
             current_location={current_location}
+            otherlink={otherlink}
           />
           <div>
             {questions_and_answers.map((faq, index) => (
