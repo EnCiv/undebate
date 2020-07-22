@@ -50,6 +50,7 @@ export default class ReactCameraRecorder extends React.Component {
         if (this.videoCameras.length > 1) {
           this.setState({ cameraIndex: 0 })
         }
+        logger.info('reactCameraRecorder devices', JSON.stringify(devices, null, 2))
       })
     }
     this.nextCamera = this.nextCamera.bind(this)
