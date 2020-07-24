@@ -32,6 +32,8 @@ const WebRTCMediaRecordPeriod = 100
 
 export default class ReactCameraRecorder extends React.Component {
   state = {}
+  audioinputs = []
+  videoinputs = []
   constructor(props) {
     super(props)
     if (typeof window !== 'undefined') {
@@ -45,7 +47,6 @@ export default class ReactCameraRecorder extends React.Component {
     if (typeof navigator !== 'undefined') {
       var newState = {}
       navigator.mediaDevices.enumerateDevices().then(devices => {
-        this.devices = devices
         this.videoinputs = devices.reduce((acc, device) => (device.kind === 'videoinput' && acc.push(device), acc), [])
         if (this.videoinputs.length > 1) newState.cameraIndex = 0
         this.audioinputs = devices.reduce((acc, device) => (device.kind === 'audioinput' && acc.push(device), acc), [])
@@ -238,7 +239,7 @@ export default class ReactCameraRecorder extends React.Component {
 
   nextCamera(e) {
     this.releaseCamera()
-    let cameraIndex = this.state.cameraIndex
+    let cameraIndex = this.state.cameraIndex || 0
     if (++cameraIndex >= this.videoinputs.length) cameraIndex = 0
     this.setState({ cameraIndex }, () => {
       this.getCameraStreamFromCalculatedConstraints(this.cameraStreamUpdater)
@@ -247,7 +248,7 @@ export default class ReactCameraRecorder extends React.Component {
 
   nextMic(e) {
     this.releaseCamera()
-    let micIndex = this.state.micIndex
+    let micIndex = this.state.micIndex || 0
     if (++micIndex >= this.audioinputs.length) micIndex = 0
     this.setState({ micIndex }, () => {
       this.getCameraStreamFromCalculatedConstraints(this.cameraStreamUpdater)
@@ -255,10 +256,9 @@ export default class ReactCameraRecorder extends React.Component {
   }
 
   render() {
-    if (typeof this.state.cameraIndex === 'undefined' || !this.state.getCameraStream) return null
-    else
-      return (
-        <>
+    return (
+      <>
+        {typeof this.state.cameraIndex !== 'undefined' && this.state.getCameraStream && (
           <div
             style={{
               zIndex: 10,
@@ -271,11 +271,13 @@ export default class ReactCameraRecorder extends React.Component {
               position: 'absolute',
               bottom: '3em',
             }}
-            title={this.videoinputs[this.state.cameraIndex].label}
+            title={this.videoinputs[this.state.cameraIndex] && this.videoinputs[this.state.cameraIndex].label}
             onClick={this.nextCamera}
           >
             Change Camera
           </div>
+        )}
+        {typeof this.state.micIndex !== 'undefined' && this.state.getCameraStream && (
           <div
             style={{
               zIndex: 10,
@@ -288,12 +290,13 @@ export default class ReactCameraRecorder extends React.Component {
               position: 'absolute',
               bottom: '1em',
             }}
-            title={this.audioinputs[this.state.micIndex].label}
+            title={this.audioinputs[this.state.micIndex] && this.audioinputs[this.state.micIndex].label}
             onClick={this.nextMic}
           >
             Change Mic
           </div>
-        </>
-      )
+        )}
+      </>
+    )
   }
 }
