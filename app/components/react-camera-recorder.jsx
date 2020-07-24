@@ -43,17 +43,19 @@ export default class ReactCameraRecorder extends React.Component {
     this.startRecorderState = { state: 'READY' } //"BLOCK", "QUEUED"
     this.stopRecording = noError => !noError && logger.error('stopRecording called before startRecording')
     if (typeof navigator !== 'undefined') {
-      // doesn't exist on the server
+      var newState = {}
       navigator.mediaDevices.enumerateDevices().then(devices => {
         this.devices = devices
-        this.videoCameras = devices.reduce((acc, device) => (device.kind === 'videoinput' && acc.push(device), acc), [])
-        if (this.videoCameras.length > 1) {
-          this.setState({ cameraIndex: 0 })
-        }
+        this.videoinputs = devices.reduce((acc, device) => (device.kind === 'videoinput' && acc.push(device), acc), [])
+        if (this.videoinputs.length > 1) newState.cameraIndex = 0
+        this.audioinputs = devices.reduce((acc, device) => (device.kind === 'audioinput' && acc.push(device), acc), [])
+        if (this.audioinputs.length > 1) newState.micIndex = 0
+        if (Object.keys(newState).length) this.setState(newState)
         logger.info('reactCameraRecorder devices', JSON.stringify(devices, null, 2))
       })
     }
     this.nextCamera = this.nextCamera.bind(this)
+    this.nextMic = this.nextMic.bind(this)
   }
 
   releaseCamera() {
@@ -100,11 +102,18 @@ export default class ReactCameraRecorder extends React.Component {
   async getCameraStreamFromCalculatedConstraints(ok, ko) {
     let calcConstraints = cloneDeep(this.constraints)
     if (typeof this.state.cameraIndex !== 'undefined') {
-      calcConstraints.video.deviceId = this.videoCameras[this.state.cameraIndex].deviceId
-      let audioInput = this.devices.filter(
-        device => device.group === this.videoCameras[this.state.cameraIndex].groupId && device.kind === 'audioinput'
-      )
-      if (audioInput.length) calcConstraints.audio.deviceId = audioInput[0].deviceId
+      if (this.videoinputs[this.state.cameraIndex].deviceId)
+        calcConstraints.video.deviceId = this.videoinputs[this.state.cameraIndex].deviceId
+      else if (this.videoinputs[this.state.cameraIndex].groupId)
+        calcConstraints.video.groupId = this.videoinputs[this.state.cameraIndex].groupId
+      else logger.error('video device has no device or group id', this.videoinputs[this.state.micIndex])
+    }
+    if (typeof this.state.micIndex !== 'undefined') {
+      if (this.audioinputs[this.state.micIndex].deviceId)
+        calcConstraints.audio.deviceId = this.audioinputs[this.state.micIndex].deviceId
+      else if (this.audioinputs[this.state.micIndex].groupId)
+        calcConstraints.audio.groupId = this.audioinputs[this.state.micIndex].groupId
+      else logger.error('audio device has no device or group id', this.audioinputs[this.state.micIndex])
     }
     try {
       const stream = await navigator.mediaDevices.getUserMedia(calcConstraints)
@@ -230,8 +239,17 @@ export default class ReactCameraRecorder extends React.Component {
   nextCamera(e) {
     this.releaseCamera()
     let cameraIndex = this.state.cameraIndex
-    if (++cameraIndex >= this.videoCameras.length) cameraIndex = 0
+    if (++cameraIndex >= this.videoinputs.length) cameraIndex = 0
     this.setState({ cameraIndex }, () => {
+      this.getCameraStreamFromCalculatedConstraints(this.cameraStreamUpdater)
+    })
+  }
+
+  nextMic(e) {
+    this.releaseCamera()
+    let micIndex = this.state.micIndex
+    if (++micIndex >= this.audioinputs.length) micIndex = 0
+    this.setState({ micIndex }, () => {
       this.getCameraStreamFromCalculatedConstraints(this.cameraStreamUpdater)
     })
   }
@@ -240,22 +258,42 @@ export default class ReactCameraRecorder extends React.Component {
     if (typeof this.state.cameraIndex === 'undefined' || !this.state.getCameraStream) return null
     else
       return (
-        <div
-          style={{
-            zIndex: 10,
-            margin: '1em',
-            border: '1px solid #808080',
-            borderRadius: '3px',
-            padding: '.1em',
-            cursor: 'pointer',
-            pointerEvents: 'auto',
-            position: 'absolute',
-            bottom: '3em',
-          }}
-          onClick={this.nextCamera}
-        >
-          Change Camera
-        </div>
+        <>
+          <div
+            style={{
+              zIndex: 10,
+              margin: '1em',
+              border: '1px solid #808080',
+              borderRadius: '3px',
+              padding: '.1em',
+              cursor: 'pointer',
+              pointerEvents: 'auto',
+              position: 'absolute',
+              bottom: '3em',
+            }}
+            title={this.videoinputs[this.state.cameraIndex].label}
+            onClick={this.nextCamera}
+          >
+            Change Camera
+          </div>
+          <div
+            style={{
+              zIndex: 10,
+              margin: '1em',
+              border: '1px solid #808080',
+              borderRadius: '3px',
+              padding: '.1em',
+              cursor: 'pointer',
+              pointerEvents: 'auto',
+              position: 'absolute',
+              bottom: '1em',
+            }}
+            title={this.audioinputs[this.state.micIndex].label}
+            onClick={this.nextMic}
+          >
+            Change Mic
+          </div>
+        </>
       )
   }
 }
