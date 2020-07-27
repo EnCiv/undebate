@@ -123,7 +123,7 @@ const useStyles = createUseStyles({
   },
   questions: {
     alignSelf: 'center',
-    color: 'white',
+    //color: 'white',
     fontWeight: '200',
     fontSize: '1.3em',
     textAlign: 'right',
@@ -132,22 +132,22 @@ const useStyles = createUseStyles({
     width: '100%',
     paddingRight: '1em',
     //lineHeight: '4.3em',
-    '@media only screen and (max-device-width: 600px)': {
-      color: '#333333',
-      '& div a, & div': {
-        height: '3em',
-        lineHeight: '1.7em',
-        display: 'inline-block',
-        width: '100%',
-      },
-      marginTop: '1em',
-      marginBottom: '1em',
-      paddingLeft: '1em',
-      textAlign: 'center',
-      fontSize: '1.2em',
-      fontWeight: '600',
-      letterSpacing: '0.06em',
+    //'@media only screen and (max-device-width: 600px)': {
+    color: '#333333',
+    '& div a, & div': {
+      height: '3em',
+      lineHeight: '1.7em',
+      display: 'inline-block',
+      width: '100%',
     },
+    marginTop: '1em',
+    marginBottom: '1em',
+    paddingLeft: '1em',
+    textAlign: 'center',
+    fontSize: '1.2em',
+    fontWeight: '600',
+    letterSpacing: '0.06em',
+    //},
     //'@media only screen and (max-device-width: 415px)': {
     //'& button': {
     //width: '100%',
@@ -181,13 +181,7 @@ const HartfordLandingHeader = () => {
         <h2 className={classes.subTitle}>Meet Hartford{"'"}s Candidates - August 11 Primary, State Representatives</h2>
         {isPortrait ? null : <EncivLogo />}
       </header>
-      <div
-        title="banner depicting flag of Hartford CT in center straddled by pictures of two government buildings"
-        className={classes.headerImages}
-      >
-        <div>{isPortrait ? null : question}</div>
-      </div>
-      {isPortrait ? question : null}
+      <div>{question}</div>
     </>
   )
 }
