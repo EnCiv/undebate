@@ -2447,7 +2447,10 @@ class Undebate extends React.Component {
             <div style={{ width: '100%', height: '100%', display: 'table' }}>
               <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
                 <p style={{ fontSize: '150%' }}>We're still building this.</p>
-                <p>Recording is not supported by this browser yet. Please try Chrome for now.</p>
+                <p>
+                  Please come back to this link from a Windows 10 PC or a Mac using the Chrome browser. Recording video
+                  from this device or browser is not supported yet.
+                </p>
               </div>
             </div>
           </div>
