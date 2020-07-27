@@ -2440,11 +2440,9 @@ class Undebate extends React.Component {
       return (
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
           <div className={classes['note']}>
-            <div style={{ width: '100%', height: '100%', display: 'table' }}>
-              <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-                <p style={{ fontSize: '150%' }}>Recording video from this device or browser is not yet supported.</p>
-                <p>Please come back to this link from a Windows 10 PC or a Mac using the Chrome browser.</p>
-              </div>
+            <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
+              <p style={{ fontSize: '150%' }}>Recording video from this device or browser is not yet supported.</p>
+              <p>Please come back to this link from a Windows 10 PC or a Mac using the Chrome browser.</p>
             </div>
           </div>
         </div>
