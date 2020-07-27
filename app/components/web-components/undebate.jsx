@@ -2444,7 +2444,7 @@ class Undebate extends React.Component {
         'ReactCameraRecorder canNotRecordHere:',
         this.canNotRecordHere,
         'camera.canNotRecordHere:',
-        this.camera.canNotRecordHere
+        this.camera && this.camera.canNotRecordHere
       )
       return (
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
