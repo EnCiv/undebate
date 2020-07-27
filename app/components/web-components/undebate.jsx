@@ -517,14 +517,14 @@ const styles = {
     'background-color': 'lightyellow',
     top: '25vh', // yes vh - vw because the box is square
     padding: '1em',
-    width: '25vw',
+    width: '50vw',
     height: '50vh', // yes vw because it's supose to be square
     'box-shadow': `${ShadowBox}px ${ShadowBox}px ${ShadowBox}px grey`,
     //transform: 'rotate(-2deg)',
     //'font-family': 'Comic Sans MS',
     left: '25vw',
     'font-weight': '600',
-    'font-size': '125%',
+    //'font-size': '125%',
     display: 'table',
     transition: 'all .5s linear',
     '&$finishUp': {
