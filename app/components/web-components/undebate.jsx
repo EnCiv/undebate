@@ -515,16 +515,13 @@ const styles = {
   note: {
     position: 'absolute',
     'background-color': 'lightyellow',
-    top: '25vh', // yes vh - vw because the box is square
+    top: 'calc( ( 100vh - min( 50vw, 50vh)) / 2 )',
     padding: '1em',
-    width: '50vw',
-    height: '50vh', // yes vw because it's supose to be square
+    width: 'calc( min(50vw, 50vh) )',
+    height: 'calc( min(50vw, 50vh) )',
     'box-shadow': `${ShadowBox}px ${ShadowBox}px ${ShadowBox}px grey`,
-    //transform: 'rotate(-2deg)',
-    //'font-family': 'Comic Sans MS',
-    left: '25vw',
+    left: 'calc( ( 100vw - min( 50vw, 50vh)) / 2 )',
     'font-weight': '600',
-    //'font-size': '125%',
     display: 'table',
     transition: 'all .5s linear',
     '&$finishUp': {
