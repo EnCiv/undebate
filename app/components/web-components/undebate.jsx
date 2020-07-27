@@ -515,14 +515,14 @@ const styles = {
   note: {
     position: 'absolute',
     'background-color': 'lightyellow',
-    top: 'calc( 50vh - (25vw / 2) )', // yes vh - vw because the box is square
+    top: '25vh', // yes vh - vw because the box is square
     padding: '1em',
     width: '25vw',
-    height: '25vw', // yes vw because it's supose to be square
+    height: '50vh', // yes vw because it's supose to be square
     'box-shadow': `${ShadowBox}px ${ShadowBox}px ${ShadowBox}px grey`,
     //transform: 'rotate(-2deg)',
     //'font-family': 'Comic Sans MS',
-    left: 'calc( 50vw - (25vw / 2))',
+    left: '25vw',
     'font-weight': '600',
     'font-size': '125%',
     display: 'table',
@@ -2442,11 +2442,8 @@ class Undebate extends React.Component {
           <div className={classes['note']}>
             <div style={{ width: '100%', height: '100%', display: 'table' }}>
               <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-                <p style={{ fontSize: '150%' }}>We're still building this.</p>
-                <p>
-                  Please come back to this link from a Windows 10 PC or a Mac using the Chrome browser. Recording video
-                  from this device or browser is not supported yet.
-                </p>
+                <p style={{ fontSize: '150%' }}>Recording video from this device or browser is not yet supported.</p>
+                <p>Please come back to this link from a Windows 10 PC or a Mac using the Chrome browser.</p>
               </div>
             </div>
           </div>
