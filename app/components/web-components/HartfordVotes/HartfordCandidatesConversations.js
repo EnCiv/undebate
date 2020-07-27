@@ -3,7 +3,7 @@ import { createUseStyles } from 'react-jss'
 
 import TabbedContainer from '../TabbedContainer'
 import { useMode } from './phone-portrait-context'
-import { useOffices, useAnimateTab, useCandidates, useTab } from './user-address-context'
+import { useOffices, useAnimateTab, useTab } from './user-address-context'
 
 const useStyles = createUseStyles({
   candidatesConversations: {
@@ -19,70 +19,6 @@ const useStyles = createUseStyles({
         marginLeft: 'auto !important',
         marginRight: 'auto !important',
       },
-    },
-  },
-  conversationsHeader: {
-    marginTop: '2em',
-    marginBottom: '1em',
-    position: 'relative',
-    background: 'none',
-    '&:before': {
-      position: 'absolute',
-      content: '" "',
-      backgroundColor: '#29316E',
-      zIndex: 1,
-      top: '0',
-      bottom: '0',
-      width: '1.5em',
-    },
-    // sets a background that has transparency
-    '&:after': {
-      content: '" "',
-      position: 'absolute',
-      right: '0',
-      left: '0',
-      bottom: '0',
-      display: 'block',
-      top: '0',
-      zIndex: -1,
-      opacity: '0.14',
-      background:
-        'url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat',
-    },
-    padding: 0,
-    display: 'flex',
-    '& > *': {
-      color: '#29316E',
-      // required to make text show above transparent background
-      position: 'relative',
-      zIndex: 1,
-
-      '@media only screen and (max-device-width: 600px)': {
-        textAlign: 'left',
-        paddingLeft: '6.5vw',
-        marginLeft: '0 !important',
-        marginTop: '1em !important',
-      },
-    },
-    '& h3': {
-      margin: 'auto 0 auto 1.5em',
-      fontSize: '2.5em',
-    },
-    boxSizing: 'border-box',
-    margin: '0px',
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    '@media only screen and (max-device-width: 600px)': {
-      flexDirection: 'column',
-    },
-  },
-  electionDates: {
-    fontSize: '1.2em',
-    fontWeight: '200',
-    margin: 'auto 1rem auto auto',
-    '@media only screen and (max-device-width: 600px)': {
-      margin: 0,
     },
   },
 })
@@ -212,6 +148,7 @@ const HartfordCandidatesConversations = ({ viewers }) => {
         else viewers.push(tabContentsExample)
       })
     }
+    console.log(viewers)
     return viewers
   }
 
@@ -223,14 +160,6 @@ const HartfordCandidatesConversations = ({ viewers }) => {
   return (
     <>
       <main className={classes.candidatesConversations}>
-        <div className={classes.conversationsHeader}>
-          <h3> Candidates Conversations </h3>
-          <div className={classes.electionDates}>
-            <h4>Primary Election: 08/11/2020</h4>
-            <h4>General Election: 11/03/2020</h4>
-          </div>
-        </div>
-
         {/* districts in tabs */}
         <TabbedContainer tabs={hartfordTabs} selected_tab={tab} transition={animateTab} />
       </main>
