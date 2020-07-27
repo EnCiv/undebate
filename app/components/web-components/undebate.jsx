@@ -1442,7 +1442,7 @@ class Undebate extends React.Component {
 
     if (true /*window.env!=='production' || this.participants[part].youtube */) {
       // in development, don'e prefetch the videos because they won't be cached by the browser and you'll end up consuming a lot of extra cloudinary bandwith, on youtube we can't prefetch
-      logger.trace("undebate.preFetchObjectURl - in development we don't prefetch", part, speaking, round)
+      //logger.trace("undebate.preFetchObjectURl - in development we don't prefetch", part, speaking, round)
       this.setExternalObjectURL(part, speaking, round)
       return
     } else {
@@ -2440,12 +2440,6 @@ class Undebate extends React.Component {
     const noOverlay = this.noOverlay
 
     if (this.canNotRecordHere || (this.camera && this.camera.canNotRecordHere)) {
-      logger.trace(
-        'ReactCameraRecorder canNotRecordHere:',
-        this.canNotRecordHere,
-        'camera.canNotRecordHere:',
-        this.camera && this.camera.canNotRecordHere
-      )
       return (
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
           <ConversationHeader subject={subject} bp_info={bp_info} logo={logo} />
