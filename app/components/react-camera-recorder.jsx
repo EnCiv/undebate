@@ -39,7 +39,7 @@ export default class ReactCameraRecorder extends React.Component {
     if (typeof window !== 'undefined') {
       if (typeof MediaRecorder === 'undefined' || (!supportsVideoType('webm') && !supportsVideoType('mp4'))) {
         this.canNotRecordHere = true
-        logger.error('ReactCameraRecorder can not record here')
+        logger.error('ReactCameraRecorder can not record here MediaRecorder undefined')
       }
     }
     this.startRecorderState = { state: 'READY' } //"BLOCK", "QUEUED"
@@ -228,7 +228,10 @@ export default class ReactCameraRecorder extends React.Component {
       if (window.MediaSource) {
         this.mediaSource = new MediaSource()
         this.mediaSource.addEventListener('sourceopen', this.getCamera.bind(this), false) // when you request the camera, the browser asks the user for permission, if you get it, then getCamera will be called. But you may never get it.
-      } else this.canNotRecordHere = true
+      } else {
+        logger.info('ReactCameraRecorder can not record here, MediaSource not defined')
+        this.canNotRecordHere = true
+      }
     }
   }
 
