@@ -628,10 +628,16 @@ class Undebate extends React.Component {
     if (typeof window !== 'undefined') {
       if (!supportsVideoType('webm')) {
         if (supportsVideoType('mp4')) this.forceMP4 = true
-        else this.canNotRecordHere = true
+        else {
+          logger.info('Undebate can not record here, neither webm nor mp4 supported')
+          this.canNotRecordHere = true
+        }
       }
       if (props.participants.human) {
-        if (typeof MediaRecorder === 'undefined') this.canNotRecordHere = true
+        if (typeof MediaRecorder === 'undefined') {
+          logger.info('Undebate can not record here, MediaRecorder not supported')
+          this.canNotRecordHere = true
+        }
       }
     }
     var loadYoutube = false
