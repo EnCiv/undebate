@@ -2439,10 +2439,6 @@ class Undebate extends React.Component {
     if (this.canNotRecordHere || (this.camera && this.camera.canNotRecordHere)) {
       return (
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
-          <img style={getIntroStyle('introRight')} src="/assets/images/female_hands_mug.png" />
-          <img style={getIntroStyle('introLeft')} src="/assets/images/male_hands_mug.png" />
-          <img style={getIntroStyle('introTopLeft')} src="/assets/images/left_flowers.png" />
-          <img style={getIntroStyle('introTopRight')} src="/assets/images/right_flowers.png" />
           <div className={classes['note']}>
             <div style={{ width: '100%', height: '100%', display: 'table' }}>
               <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
