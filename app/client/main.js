@@ -62,6 +62,7 @@ if (typeof window !== 'undefined') {
   }
 
   window.logger = log4js.getLogger('browser')
+  logger.level = window.env === 'production' ? 'info' : 'trace'
   logger.info('client main running on browser')
 }
 
