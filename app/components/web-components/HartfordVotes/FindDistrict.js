@@ -20,7 +20,7 @@ const useStyles = createUseStyles({
       },
       paddingLeft: '.5em',
       height: '2.3em',
-      border: 'none',
+      border: '1px solid #c7c7c7',
       marginRight: '1em',
       width: '60%',
       maxWidth: '850px',
