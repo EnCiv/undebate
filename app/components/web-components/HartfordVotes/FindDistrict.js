@@ -7,7 +7,7 @@ import { useNotification, useCandidates, useError } from './user-address-context
 
 const useStyles = createUseStyles({
   findDistrict: {
-    backgroundColor: '#EBEAEA',
+    backgroundColor: 'white',
     width: '100%',
     padding: '1.5em',
     margin: '0 0 1em',

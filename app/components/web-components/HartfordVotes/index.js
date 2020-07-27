@@ -37,6 +37,7 @@ const HartfordLanding = ({ viewers }) => {
   return (
     <>
       <HartfordLandingHeader key="hartford-header" />
+      <FindDistrict />
       <HartfordCandidatesConversations viewers={viewers} key="hartford-candidate-conversations" />
       <CandidateQuestions />
     </>
@@ -52,7 +53,6 @@ const HartfordVotes = ({ viewers }) => {
         <AddressProvider>
           <div className={classes.landingPage}>
             <HartfordLandingMenu key="hartford-menu" />
-            <FindDistrict />
             <HartfordLanding viewers={viewers} />
           </div>
         </AddressProvider>
