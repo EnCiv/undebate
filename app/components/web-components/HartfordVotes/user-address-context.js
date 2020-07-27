@@ -6,7 +6,7 @@ const defaultValue = {
   district: [null, () => {}],
   tab: [0, () => {}],
   animateTab: [false, () => {}],
-  notification: ['Enter full address to see candidates running in your State Representative District', () => {}],
+  notification: ['Enter your address to meet the candidates in your district.', () => {}],
   offices: [
     { id: 0, district: 0, urls: [''] },
     { id: 1, district: 1, urls: [''] },
@@ -20,9 +20,7 @@ const AddressProvider = ({ children }) => {
   let [district, setDistrict] = useState(null)
   let [tab, selectTab] = useState(0)
   let [animateTab, makeTabAnimate] = useState(false)
-  let [notification, setNotification] = useState(
-    'Enter full address to see candidates running in your State Representative District'
-  )
+  let [notification, setNotification] = useState('Enter your address to meet the candidates in your district.')
   let [offices, setOffices] = useState([
     { id: 0, district: 0, urls: [''] },
     { id: 1, district: 1, urls: [''] },
