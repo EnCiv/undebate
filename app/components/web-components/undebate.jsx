@@ -2439,6 +2439,7 @@ class Undebate extends React.Component {
     if (this.canNotRecordHere || (this.camera && this.camera.canNotRecordHere)) {
       return (
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
+          <ConversationHeader subject={subject} bp_info={bp_info} logo={logo} />
           <div className={classes['note']}>
             <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
               <p style={{ fontSize: '150%' }}>Recording video from this device or browser is not yet supported.</p>
