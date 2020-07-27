@@ -16,9 +16,9 @@ log4js.configure({
     nodeMongoAppender: { type: mongologger, source: 'node' },
   },
   categories: {
-    browser: { appenders: ['err', 'browserMongoAppender'], level: 'debug' },
-    node: { appenders: ['err', 'nodeMongoAppender'], level: 'debug' },
-    default: { appenders: ['err'], level: 'debug' },
+    browser: { appenders: ['err', 'browserMongoAppender'], level: 'trace' },
+    node: { appenders: ['err', 'nodeMongoAppender'], level: 'trace' },
+    default: { appenders: ['err'], level: 'trace' },
   },
 })
 
