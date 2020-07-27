@@ -7,6 +7,7 @@ import HartfordLandingMenu from './HartfordLandingMenu'
 import { ModeProvider } from './phone-portrait-context'
 import { AddressProvider } from './user-address-context'
 import FindDistrict from './FindDistrict'
+import CandidateQuestions from './CandidateQuestions'
 
 const useStyles = createUseStyles({
   landingPage: {
@@ -37,6 +38,7 @@ const HartfordLanding = ({ viewers }) => {
     <>
       <HartfordLandingHeader key="hartford-header" />
       <HartfordCandidatesConversations viewers={viewers} key="hartford-candidate-conversations" />
+      <CandidateQuestions />
     </>
   )
 }

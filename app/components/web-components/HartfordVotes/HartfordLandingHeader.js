@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react'
 import { createUseStyles } from 'react-jss'
-import cx from 'classnames'
 import { useMode } from './phone-portrait-context'
 import { HartfordLogo, EncivLogo } from './logos'
 import OrangeButton from '../../OrangeButton'
@@ -25,17 +23,6 @@ const useStyles = createUseStyles({
     gridTemplateAreas: `
     "logos-hartford page-title page-title page-title logos-enciv"
     "logos-hartford sub-title sub-title sub-title logos-enciv"`,
-    //"images images images images images"`,
-
-    //'@media only screen and (max-device-width: 600px)': {
-    //gridTemplateColumns: '1fr 2fr 1fr 2fr 1fr',
-    //gridTemplateRows: '1fr 1fr 6fr 4fr',
-    //gridTemplateAreas: `
-    //"page-title page-title page-title page-title page-title"
-    //"sub-title sub-title sub-title sub-title sub-title"
-    //"images images images images images"
-    //"questions questions questions questions questions"`,
-    //},
   },
   pageTitle: {
     alignSelf: 'center',
@@ -59,8 +46,6 @@ const useStyles = createUseStyles({
     gridArea: 'sub-title',
     textAlign: 'center',
   },
-  logos_enciv: {},
-  logos_hartford: {},
   headerImages: {
     minHeight: '310px',
     gridArea: 'images',
@@ -121,58 +106,12 @@ const useStyles = createUseStyles({
     backgroundSize: 'contain',
     position: 'relative',
   },
-  questions: {
-    alignSelf: 'center',
-    //color: 'white',
-    fontWeight: '200',
-    fontSize: '1.3em',
-    textAlign: 'right',
-    margin: '0px',
-    gridArea: 'questions',
-    width: '100%',
-    paddingRight: '1em',
-    //lineHeight: '4.3em',
-    //'@media only screen and (max-device-width: 600px)': {
-    color: '#333333',
-    '& div a, & div': {
-      height: '3em',
-      lineHeight: '1.7em',
-      display: 'inline-block',
-      width: '100%',
-    },
-    marginTop: '1em',
-    marginBottom: '1em',
-    paddingLeft: '1em',
-    textAlign: 'center',
-    fontSize: '1.2em',
-    fontWeight: '600',
-    letterSpacing: '0.06em',
-    //},
-    //'@media only screen and (max-device-width: 415px)': {
-    //'& button': {
-    //width: '100%',
-    //},
-    //paddingLeft: '1em',
-    //textAlign: 'center',
-    //fontSize: '1.2em',
-    //fontWeight: '600',
-    //letterSpacing: '0.06em',
-    //},
-  },
 })
 
 const HartfordLandingHeader = () => {
   const classes = useStyles()
   let isPortrait = useMode()
 
-  const question = (
-    <h3 className={classes.questions}>
-      Have questions for the candidates? →{' '}
-      <OrangeButton href="https://forms.gle/HgDH7TpewvBeecLe9" target="_blank">
-        Click here to ask Questions
-      </OrangeButton>
-    </h3>
-  )
   return (
     <>
       <header className={classes.header} id="landing-header">
@@ -181,7 +120,6 @@ const HartfordLandingHeader = () => {
         <h2 className={classes.subTitle}>Meet Hartford{"'"}s Candidates - August 11 Primary, State Representatives</h2>
         {isPortrait ? null : <EncivLogo />}
       </header>
-      <div>{question}</div>
     </>
   )
 }
