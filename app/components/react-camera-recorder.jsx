@@ -52,7 +52,12 @@ export default class ReactCameraRecorder extends React.Component {
         this.audioinputs = devices.reduce((acc, device) => (device.kind === 'audioinput' && acc.push(device), acc), [])
         if (this.audioinputs.length > 1) newState.micIndex = 0
         if (Object.keys(newState).length) this.setState(newState)
-        logger.info('reactCameraRecorder devices', JSON.stringify(devices, null, 2))
+        logger.info(
+          'reactCameraRecorder can not record here:',
+          this.canNotRecordHere,
+          'devices:',
+          JSON.stringify(devices, null, 2)
+        )
       })
     }
     this.nextCamera = this.nextCamera.bind(this)
@@ -89,6 +94,7 @@ export default class ReactCameraRecorder extends React.Component {
     },
     cameraStreamUpdater
   ) {
+    logger.trace('ReactCameraRecorder.getCameraStream')
     this.constraints = cloneDeep(constraints)
     this.cameraStreamUpdater = cameraStreamUpdater
     if (this.canNotRecordHere) return Promise.reject(new Error('can not record here'))

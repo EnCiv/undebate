@@ -2440,6 +2440,12 @@ class Undebate extends React.Component {
     const noOverlay = this.noOverlay
 
     if (this.canNotRecordHere || (this.camera && this.camera.canNotRecordHere)) {
+      logger.trace(
+        'ReactCameraRecorder canNotRecordHere:',
+        this.canNotRecordHere,
+        'camera.canNotRecordHere:',
+        this.camera.canNotRecordHere
+      )
       return (
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
           <ConversationHeader subject={subject} bp_info={bp_info} logo={logo} />
