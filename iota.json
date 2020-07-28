@@ -2363,6 +2363,7 @@
       "webComponent": "FAQ",
       "banner": "url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat",
       "homelink": "/hartford",
+      "otherlink": "<a class=\"otherlink\" href=\"/hartford/bios-es\">Español</a>",
       "current_location": "BIOS",
       "page_title": "Bios for Candidates Running for Office in Hartford, CT",
       "questions_and_answers": [
@@ -2372,7 +2373,7 @@
         },
         {
           "q": "Craig Stallings",
-          "a": "<p>Craig is Former Chairman of the Hartford Board of Education, currently serving as a Board Member. He has been a PTO president at two Hartford schools and was coordinator of the original governance council at Thirman Milner School.</p>As Chairman he had over site of the completion of the Weaver High School Project. As well as making sure that the funding was secured for the renovation project of the <i>MLK</i> School. Noted it is the only in the State of CT. It is slated to be completed and open for school year 2020 - 2021.<p></p><p></p>He has been Co-Owner and Marketing Manager for Stallings Tax Service LLC since 2006, as well as having worked out of the home as a customer service representative for Tele-Tech, contracted to work for Bank of America.<p>A graduate of Weaver High School, he has attended Capital and Manchester Community Colleges and the University of Hartford and is father to three young men, one whom is currently a Police Cadet at HPD and the other two are still attending the Hartford Public School system.</p>"
+          "a": "<p>Craig is Former Chairman of the Hartford Board of Education, currently serving as a Board Member. He has been a PTO president at two Hartford schools and was coordinator of the original governance council at Thirman Milner School.</p><p>As Chairman he had over site of the completion of the Weaver High School Project. As well as making sure that the funding was secured for the renovation project of the <i>MLK</i> School. Noted it is the only in the State of CT. It is slated to be completed and open for school year 2020 - 2021.</p><p>He has been Co-Owner and Marketing Manager for Stallings Tax Service LLC since 2006, as well as having worked out of the home as a customer service representative for Tele-Tech, contracted to work for Bank of America.</p><p>A graduate of Weaver High School, he has attended Capital and Manchester Community Colleges and the University of Hartford and is father to three young men, one whom is currently a Police Cadet at HPD and the other two are still attending the Hartford Public School system.</p>"
         }
       ]
     }
@@ -2470,6 +2471,32 @@
         {
           "q": "¿Qué sucede si no tengo tarjeta identificación?  ",
           "a": "<p>!Usted puede votar aunque no tenga tarjeta de identificación! Es así de simple:</p> <p><b>Si está votando por PRIMERA VEZ en elecciones federales:</b></p> <ul> <li>Tendrá que presentar una copia al corriente de identificación válida que muestre su nombre complete y dirección de residencia;</li> <li>Ó, una copia de una facture de electricidad, documento de cuenta bancaria, cheque del gobierno, cheque de pago de su trabajo, u otro documento del gobierno que muestre su nombre completo y dirección de residencia</li> <li>Ó usted puede también optar por votar con una <b>papeleta de voto provisional</b></li> </ul> <p>Otros votantes:</p> <ul> <li>Tendrán que mostrar tarjeta del Seguro Social;</li> <li>Ó cualquier otro documento escrito que muestre su nombre complete y dirección de residencia o su nombre y firma, ó su nombre y foto;</li> <li>Ó, podrá llenar y firmar el formulario ED-681 \"Signatures of electors who did not present ID\" (Documento firmado con la firma de votantes que no rindieron identificación alguna)</li> </ul> "
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5f1fcbc27c213e0f577aef83"
+    },
+    "path": "/hartford/bios-es",
+    "subject": "candidate bios for elections in Hartford CT in Spanish",
+    "description": "a page with dropdown tabs containing bios for candidates running in Hartford CT in Spanish",
+    "webComponent": {
+      "webComponent": "FAQ",
+      "banner": "url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat",
+      "homelink": "/hartford",
+      "otherlink": "<a class=\"otherlink\" href=\"/hartford/bios\">English</a>",
+      "current_location": "BIOS",
+      "page_title": "Datos biográficos de los candidatos políticos de Hartford, CT",
+      "questions_and_answers": [
+        {
+          "q": "Brandon McGee Jr.",
+          "a": "<p>Brandon L. McGee Jr. está cumpliendo su cuarto término en el cargo como Representante Estatal y en búsqueda de su re-elección al mismo para continuar abogando por los residentes de Windsor y Hartford en el Distrito 5 de la Asamblea Estatal. Nacido en Hartford, Brandon se enfoca ampliamente en influenciar las políticas públicas en el estado y ha persistido en abogar por la equitatividad en la educación, la reforma del sistema judicial, la inscripción de votantes, y el empoderamiento por las personas de color y sus comunidades. El también tomó parte en la aprobación de la ley más favorable en la nación en relación al pago por tiempo para atención familiar y médica (Paid Family and Medical Leave). Brandon actualmente asume el cargo de Presidente del Comité de Vivienda así como de Vice-Presidente del Grupo de Consulta Política Afro-Americano y Puertorriqueño de la legislatura estatal. También rinde labor en el Comité de Educación y el de Servicios Humanos. Luego de obtener el Bachillerato en Alabama State University, el se graduó con Maestría en Ciencias de la Albertus Magnus College. Disponiendo de sus facultades, destrezas y experiencia, ha colaborado con sus constituyentes en numerosos organismos y juntas directivas para aumentar los recursos comunitarios, entre ellos Ascend Mentoring, BSL Education Foundation (en el cual ejerció el cargo de Presidente), Citadel of Love Church (como Díacono), Hartford Behavioral Health, y Jewish Family Services.</p><p>Durante su trayectoria professional, ha recibido numerosos galardones por su labor cívica. Brandon continúa ejerciendo el puesto de Oficial Creativo en su empresa McGee Firm en Hartford, y también trabaja en Capitol Region Education Council. Actualmente reside en Hartford con su esposa y dos hijas.</p>"
+        },
+        {
+          "q": "Craig Stallings",
+          "a": "<p>Craig Stallings se distinguió como Presidente y miembro de la Junta de Educación de Hartford. Fue Presidente del PTO (Grupos de Padres y Maestros) en dos de las escuelas en Hartford y fue coordinador del concilio original de gobierno en la escuela Thirman L. Milner School.</p><p> Como Presidente de la Junta de Educación, él supervisó el Proyecto de la Escuela Superior Weaver y, además, se aseguró que se aprobaran fondos para el proyecto de renovación de la <i>MLK</i> School, la única de su índole en el estado y la cual será inagurada en el año escolar 2020-2021.</p><p>Craig es co-fundador y gerente de Stallings Tax Service LLC desde el 2006, y también trabajó como representante de servicios a los clientes en la empresa Tele-Tech, bajo contrato con Bank of America.</p><p>Graduado de Weaver High School, terminó sus estudios en Capital Community College, Manchester Community College, y University of Hartford. Craig es el padre de tres varones, uno de ellos Cadete en el Departamento de Policía de Hartford y los otros dos aún estudiantes en las escuelas públicas de Hartford.</p>"
         }
       ]
     }
