@@ -54,13 +54,28 @@ async function notifyOfNewRecording(participantIota) {
     },
   }
   for await (const speakingFile of participantIota.component.participant.speaking) {
-    //let convertedFile = speakingFile.replace('.mp4', '.transcript').replace('video', 'raw')
-    let convertedFile =
-      'https://res.cloudinary.com/hvi2k2swg/raw/upload/v1594133701/5ed587e53bfd4f38408669da-2-speaking20200707T145452626Z.transcript'
-    //logger.info(convertedFile)
-    const resp = await superagent.get(convertedFile)
-    fs.readFile(convertedFile, { encoding: 'utf8' }, (err, data) => logger.info(data))
-    logger.info(resp)
+    var re = /v(\d*)\//
+    var id = speakingFile.match(re)
+    var new_id = parseInt(id[1]) + 1
+    var new_route = 'v' + new_id.toString() + '/'
+    let convertedFile = speakingFile
+      .replace('.mp4', '.transcript')
+      .replace('video', 'raw')
+      .replace(re, new_route, 1)
+      .replace('q_auto/', '')
+    logger.info(convertedFile)
+    superagent
+      .get(convertedFile)
+      .then(res => {
+        let data = ''
+        res.on('data', chunk => {
+          data += chunk
+        })
+        res.on('end', async () => {
+          logger.info(JSON.parse(data))
+        })
+      })
+      .catch(err => console.log('Error: ' + err))
     //logger.info(JSON.stringify(resp))
     //logger.info(resp.body.toString())
 
