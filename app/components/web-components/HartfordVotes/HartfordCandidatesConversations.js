@@ -50,13 +50,7 @@ const HartfordCandidatesConversations = ({ viewers }) => {
       }}
       className="coming_soon"
     >
-      <div
-        style={
-          {
-            //margin: '3vh auto',
-          }
-        }
-      >
+      <div>
         <h3
           style={{
             width: '90%',
@@ -68,19 +62,20 @@ const HartfordCandidatesConversations = ({ viewers }) => {
             fontWeight: '700',
           }}
         >
-          Come Back for the General Election - There are no State Representative candidates in the Primary election for
-          this district
+          There are no state representative candidates in the primary election for this district.
         </h3>
         <h3
           style={{
             color: '#29316E',
+            display: 'inline-block',
             margin: '0 auto 9vh auto',
-            width: 'max-content',
+            textAlign: 'center',
+            width: '90%',
             fontSize: isPortrait ? '6.6vw' : '5.6vmin',
             fontWeight: '700',
           }}
         >
-          COMING SOON
+          Come Back for the General Election
         </h3>
         <a
           href="https://forms.gle/HgDH7TpewvBeecLe9"
