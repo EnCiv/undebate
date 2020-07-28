@@ -28,6 +28,8 @@ const useStyles = createUseStyles({
       fontFamily: 'Libre Franklin, Bold',
     },
     '@media (min-width: 1000px) and (min-height: 1000px)': { fontSize: '20px' },
+    '@media (max-width: 600px)': { fontSize: '2rem' },
+    '@media (max-width: 400px)': { fontSize: '1.5rem' },
 
     '& *': {
       boxSizing: 'border-box',
@@ -85,6 +87,10 @@ const useStyles = createUseStyles({
   question: {
     borderBottom: '1px solid #707070',
     width: '70%',
+    '@media (max-width: 600px)': {
+      fontSize: '1.8rem',
+      width: '90%',
+    },
     maxWidth: '1400px',
     '&__closed': {
       transition: 'max-height 0.5s cubicBezier(0,1,0,1)',
@@ -110,6 +116,7 @@ const useStyles = createUseStyles({
     },
     '&__q': {
       fontSize: '1.5em',
+      '@media (max-width: 600px)': { fontSize: '2rem' },
       fontWeight: 'bold',
       backgroundColor: 'white',
       gridArea: 'q',
@@ -124,7 +131,7 @@ const useHeaderStyles = createUseStyles({
     height: '10em',
     padding: '1.6em',
     '& a.otherlink': {
-      marginLeft: '78vw',
+      marginLeft: 'calc(100vw - 16em)',
     },
     '& h1': {
       marginLeft: 'auto',
