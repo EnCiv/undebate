@@ -4,7 +4,7 @@ const defaultValue = {
   candidates: [[], () => {}],
   error: ['', () => {}],
   district: [null, () => {}],
-  tab: [0, () => {}],
+  tab: [3, () => {}],
   animateTab: [false, () => {}],
   notification: ['Enter your address to meet the candidates in your district.', () => {}],
   offices: [
@@ -14,18 +14,17 @@ const defaultValue = {
 }
 const AddressContext = createContext(defaultValue)
 
-const AddressProvider = ({ children }) => {
+const AddressProvider = ({ children, value }) => {
   let [candidates, setCandidates] = useState([])
   let [error, setError] = useState('')
   let [district, setDistrict] = useState(null)
-  let [tab, selectTab] = useState(0)
+  let [tab, selectTab] = useState(value ? value.tab : 0)
   let [animateTab, makeTabAnimate] = useState(false)
   let [notification, setNotification] = useState('Enter your address to meet the candidates in your district.')
   let [offices, setOffices] = useState([
     { id: 0, district: 0, urls: [''] },
     { id: 1, district: 1, urls: [''] },
   ])
-  console.log(offices)
 
   const representatives_office_ids = [
     {
@@ -125,10 +124,11 @@ const useDistrict = () => {
   return { district, setDistrict }
 }
 
-const useTab = () => {
+const useTab = defaultTab => {
   const {
     tab: [tab, selectTab],
   } = useContext(AddressContext)
+  if (defaultTab) selectTab(defaultTab)
   return { tab, selectTab }
 }
 

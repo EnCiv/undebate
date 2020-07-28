@@ -5,7 +5,7 @@ import HartfordLandingHeader from './HartfordLandingHeader'
 import HartfordCandidatesConversations from './HartfordCandidatesConversations'
 import HartfordLandingMenu from './HartfordLandingMenu'
 import { ModeProvider } from './phone-portrait-context'
-import { AddressProvider } from './user-address-context'
+import { AddressProvider, useTab } from './user-address-context'
 import FindDistrict from './FindDistrict'
 import CandidateQuestions from './CandidateQuestions'
 
@@ -50,7 +50,7 @@ const HartfordVotes = ({ viewers }) => {
   return (
     <hartford-dom key="hartfordLanding">
       <ModeProvider>
-        <AddressProvider>
+        <AddressProvider value={{ tab: 3 }}>
           <div className={classes.landingPage}>
             <HartfordLandingMenu key="hartford-menu" />
             <HartfordLanding viewers={viewers} />
