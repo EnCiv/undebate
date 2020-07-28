@@ -1940,12 +1940,36 @@
     "webComponent": {
       "webComponent": "HartfordVotes",
       "viewers": [
-        { "district": 1, "id": 7976, "urls": [""] },
-        { "district": 3, "id": 318, "urls": [""] },
-        { "district": 4, "id": 8254, "urls": [""] },
-        { "district": 5, "id": 9803, "urls": [""] },
-        { "district": 6, "id": 21641, "urls": [""] },
-        { "district": 7, "id": 6527, "urls": ["viewer"] }
+        {
+          "district": 1,
+          "id": 7976,
+          "urls": [""]
+        },
+        {
+          "district": 3,
+          "id": 318,
+          "urls": [""]
+        },
+        {
+          "district": 4,
+          "id": 8254,
+          "urls": [""]
+        },
+        {
+          "district": 5,
+          "id": 9803,
+          "urls": [""]
+        },
+        {
+          "district": 6,
+          "id": 21641,
+          "urls": [""]
+        },
+        {
+          "district": 7,
+          "id": 6527,
+          "urls": [""]
+        }
       ]
     }
   },
