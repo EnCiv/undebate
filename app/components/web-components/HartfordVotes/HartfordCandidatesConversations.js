@@ -41,9 +41,9 @@ const HartfordCandidatesConversations = ({ viewers }) => {
       ) center center no-repeat`,
         backgroundSize: '70vmax',
         maxHeight: '53.5em',
-        height: 'max-content',
+        //height: 'max-content',
         paddingBottom: '3vh',
-        paddingTop: isPortrait ? '30%' : 'calc(30% - 21vmax)',
+        paddingTop: isPortrait ? '30%' : 'calc(30% - 22vmax)',
         margin: isPortrait ? '1em' : '4em',
         width: isPortrait ? 'calc(100% - 2em)' : 'calc(100% - 8em)',
         position: 'relative',
@@ -58,7 +58,7 @@ const HartfordCandidatesConversations = ({ viewers }) => {
             display: 'inline-block',
             color: '#29316E',
             margin: '0 auto 3vh auto',
-            fontSize: isPortrait ? '4vw' : '3vmin',
+            fontSize: isPortrait ? '4vw' : '2.3rem',
             fontWeight: '700',
           }}
         >
@@ -71,7 +71,7 @@ const HartfordCandidatesConversations = ({ viewers }) => {
             margin: '0 auto 9vh auto',
             textAlign: 'center',
             width: '90%',
-            fontSize: isPortrait ? '6.6vw' : '5.6vmin',
+            fontSize: isPortrait ? '6.6vw' : '4rem',
             fontWeight: '700',
           }}
         >
@@ -83,7 +83,7 @@ const HartfordCandidatesConversations = ({ viewers }) => {
           style={{
             boxShadow: '0.14em 0.15em .2em rgba(0,0,0,0.2)',
             textDecoration: 'none',
-            height: '2.3e',
+            height: '2.3em',
             lineHeight: 0,
             background: '#29316E',
             color: 'white',
