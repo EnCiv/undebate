@@ -107,6 +107,14 @@
         "line4": "Candidate Recorder for:",
         "bigLine": "US School Board Candidate Conversation",
         "subLine": "Your video will be recorded, you will have the option to upload it or not at the end."
+      },
+      "closing": {
+        "thanks": "Thank You.",
+        "iframe": {
+          "src": "https://docs.google.com/forms/d/e/1FAIpQLSeh7kAVWpyjnSYmHhjfpjfalgznfDA_AF2xmrFB8ZzQj75Vyw/viewform?embedded=true",
+          "width": "640",
+          "height": "1511"
+        }
       }
     },
     "parentId": "5e7e88a67c213e3443f11dbf"
