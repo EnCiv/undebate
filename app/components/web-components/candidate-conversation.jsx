@@ -24,12 +24,12 @@ const ShadowBox = 10
 
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser'
 
-import IconPrevSpeaker from '../../svgr/icon-prev-speaker'
-import IconPrevSection from '../../svgr/icon-prev-session'
-import IconPlay from '../../svgr/icon-play'
-import IconPause from '../../svgr/icon-pause'
-import IconSkipSpeaker from '../../svgr/icon-skip-speaker'
-import IconNextSection from '../../svgr/icon-skip-session'
+import IconPrevSpeaker from '../../svgr/prev-speaker-icon'
+import IconPrevSection from '../../svgr/prev-section-icon'
+import IconPlay from '../../svgr/play-icon'
+import IconPause from '../../svgr/pause-icon'
+import IconSkipSpeaker from '../../svgr/next-speaker-icon'
+import IconNextSection from '../../svgr/next-section-icon'
 import IconRedo from '../../svgr/icon-redo'
 import IconFinishRecording from '../../svgr/icon-finish-recording'
 import IconRecording from '../../svgr/icon-recording'
@@ -180,6 +180,17 @@ const styles = {
     },
     '&$intro': {
       top: '100vh',
+    },
+  },
+  iconButton: {
+    color: 'white',
+    pointerEvents: 'auto',
+    '& rect': {
+      stroke: '#000',
+      fill: '#000',
+    },
+    '& rect:hover': {
+      fill: '	#565656',
     },
   },
   beginButton: {
@@ -624,7 +635,7 @@ const styles = {
   portrait: {},
 }
 
-class CandidateConversation extends React.Component {
+class CandidateConversation2 extends React.Component {
   render() {
     return <RASPUndebate {...this.props} />
   }
@@ -1007,7 +1018,7 @@ class RASPUndebate extends React.Component {
     const innerTitleHeight = 3.5 * fontSize // title is 3.5rem high, it overlays the video window at the bottom
     var portraitMode = false
     if (width / height > 1) {
-      let speakingWidthRatio = 0.65
+      let speakingWidthRatio = 0.45
       const speakingHeight = () => speakingWidthRatio * width * HDRatio
       let seatWidthRatio = 0.25
       const seatHeight = () => seatWidthRatio * width * HDRatio
@@ -1031,7 +1042,7 @@ class RASPUndebate extends React.Component {
         (width - speakingWidthRatio * width - titleHeight * (1 / HDRatio) - agendaMaxWidth - hGap) / 2
       seatStyle.speaking.width = speakingWidthRatio * width + titleHeight * (1 / HDRatio)
       seatStyle.speaking.top = navBarHeight + vGap + width * seatWidthRatio * HDRatio + vGap
-      seatStyle.speaking['--speaking-height'] = speakingHeight() + 'px' // tell child div's what the speaking-height is
+      // seatStyle.speaking['--speaking-height'] = speakingHeight() + 'px' // tell child div's what the speaking-height is
       introSeatStyle.speaking = { top: -(speakingWidthRatio * HDRatio * width + vGap + ShadowBox) }
 
       seatStyle.nextUp.left = hGap
@@ -1082,8 +1093,8 @@ class RASPUndebate extends React.Component {
         fontSize +
         seatStyle.speaking.top +
         seatStyle.speaking.width * HDRatio -
-        (buttonBarStyle.width / this.buttons.length) * 0.75 - // there are 5 buttons and they are essentially square
-        2 * vGap
+        (buttonBarStyle.width / this.buttons.length) * 0.05 - // there are 5 buttons and they are essentially square
+        0.5 * vGap
       recorderButtonBarStyle.left = seatStyle.speaking.left
       recorderButtonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
       recorderButtonBarStyle.width = seatStyle.speaking.width
@@ -1578,24 +1589,32 @@ class RASPUndebate extends React.Component {
 
   buttons = [
     {
-      name: () => <IconPrevSection width="60%" height="auto" />,
+      name: props => <IconPrevSection width="60%" height="auto" className={props} />,
       func: this.prevSection,
       title: () => 'Previous Question',
     },
     {
-      name: () => <IconPrevSpeaker width="60%" height="auto" />,
+      name: props => <IconPrevSpeaker width="60%" height="auto" className={props} />,
       func: this.prevSpeaker,
       title: () => 'Previous Speaker',
     },
     {
-      name: () =>
-        this.state.allPaused ? <IconPlay width="75%" height="auto" /> : <IconPause width="75%" height="75%" />,
+      name: props =>
+        this.state.allPaused ? (
+          <IconPlay width="60%" height="auto" className={props} />
+        ) : (
+          <IconPause width="60%" height="60%" className={props} />
+        ),
       func: this.allPause,
       title: () => (this.state.isRecording ? 'Stop' : this.state.allPaused ? 'Play' : 'Pause'),
     },
-    { name: () => <IconSkipSpeaker width="60%" height="auto" />, func: this.nextSpeaker, title: () => 'Next Speaker' },
     {
-      name: () => <IconNextSection width="60%" height="auto" />,
+      name: props => <IconSkipSpeaker width="60%" height="auto" className={props} />,
+      func: this.nextSpeaker,
+      title: () => 'Next Speaker',
+    },
+    {
+      name: props => <IconNextSection width="60%" height="auto" className={props} />,
       func: this.nextSection,
       title: () => 'Next Question',
       disabled: () => this.participants.human && !this.participants.human.speakingObjectURLs[this.state.round],
@@ -2392,9 +2411,18 @@ class RASPUndebate extends React.Component {
       let chair = this.seat(i)
       let videoWidth = pxSeatStyleWidth(this.seat(i))
       let videoHeight = pxSeatStyleWidth(this.seat(i)) * HDRatio
+      let marginTopForSpeaking = 0
+      let marginLeftForSpeaking = 0
+      // if (this.seat(i) === 'speaking') {
+      //   videoWidth = pxSeatStyleWidth(this.seat(i)) - 280
+      //   videoHeight = (pxSeatStyleWidth(this.seat(i)) - 280) * HDRatio
+      //   marginTopForSpeaking = '-105px'
+      //   marginLeftForSpeaking = '150px'
+      // }
       const speaking = this.seat(i) === 'speaking'
       if (participant === 'human' && speaking) humanSpeaking = true
       const style = seatStyle[chair] //noOverlay || bot || intro ? seatStyle[chair] : Object.assign({},seatStyle[chair],introSeatStyle[chair])
+      console.log(style)
       let participant_name
       if (participant === 'human' && this.props.bp_info && this.props.bp_info.candidate_name)
         participant_name = this.props.bp_info.candidate_name
@@ -2436,7 +2464,12 @@ class RASPUndebate extends React.Component {
             )}
           >
             <img
-              style={{ transition: `all ${TransitionTime}ms linear`, height: videoHeight }}
+              style={{
+                transition: `all ${TransitionTime}ms linear`,
+                height: videoHeight,
+                marginTop: marginTopForSpeaking,
+                marginLeft: marginLeftForSpeaking,
+              }}
               height={pxSeatStyleWidth('speaking') * HDRatio}
               width="auto"
               src={(this.participants[participant] && this.participants[participant].placeholderUrl) || undefined}
@@ -2471,7 +2504,10 @@ class RASPUndebate extends React.Component {
                 controls={false}
                 onEnded={this.autoNextSpeaker.bind(this)}
                 onError={this.videoError.bind(this, participant)}
-                style={{ width: videoWidth, height: videoHeight }}
+                style={{
+                  width: videoWidth,
+                  height: videoHeight,
+                }}
                 key={participant + '-video'}
               ></video>
               <div
@@ -2485,14 +2521,7 @@ class RASPUndebate extends React.Component {
                 </div>
               </div>
 
-              <div
-                className={cx(
-                  classes['title'],
-                  speaking && classes['title-speaking'],
-                  stylesSet && classes['stylesSet'],
-                  finishUp && classes['finishUp']
-                )}
-              >
+              <div className={cx(classes['title'], stylesSet && classes['stylesSet'], finishUp && classes['finishUp'])}>
                 <span>{participant_name}</span>
               </div>
             </>
@@ -2554,7 +2583,7 @@ class RASPUndebate extends React.Component {
               key={button.title()}
             >
               <div disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
-                {button.name()}
+                {button.name(classes.iconButton)}
               </div>
             </div>
           ))}
@@ -2713,4 +2742,4 @@ class RASPUndebate extends React.Component {
   }
 }
 
-export default injectSheet(styles)(CandidateConversation)
+export default injectSheet(styles)(CandidateConversation2)
