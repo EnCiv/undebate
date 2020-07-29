@@ -197,7 +197,7 @@ const TabSelect = ({ selected_tab = 0, tabs, action, transition }) => {
 const TabbedContainer = ({ tabs, selected_tab = 0, transition = false }) => {
   const isPortrait = useMode()
   const classes = useStyles()
-  let [selectedTab, changeTab] = useState(selected_tab)
+  let [selectedTab, changeTab] = useState(0)
   //make sure that the previously selected tab isn't undefined. prevSelectedTab is used to ensure that there is always a highlightTab in the UI
   const prevSelectedTabRef = useRef(selected_tab === tabs.length - 1 ? selectedTab - 1 : selectedTab + 1)
 
