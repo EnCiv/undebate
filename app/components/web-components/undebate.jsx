@@ -24,13 +24,13 @@ const ShadowBox = 10
 
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser'
 
-import IconPrevSpeaker from '../../svgr/icon-prev-speaker'
-import IconPrevSection from '../../svgr/icon-prev-session'
-import IconPlay from '../../svgr/icon-play'
-import IconPause from '../../svgr/icon-pause'
+import IconPrevSpeaker from '../../svgr/prev-speaker-icon'
+import IconPrevSection from '../../svgr/prev-section-icon'
+import IconPlay from '../../svgr/play-icon'
+import IconPause from '../../svgr/pause-icon'
 import IconStop from '../../svgr/icon-stop'
-import IconSkipSpeaker from '../../svgr/icon-skip-speaker'
-import IconNextSection from '../../svgr/icon-skip-session'
+import IconSkipSpeaker from '../../svgr/next-speaker-icon'
+import IconNextSection from '../../svgr/next-section-icon'
 import IconRedo from '../../svgr/icon-redo'
 import IconFinishRecording from '../../svgr/icon-finish-recording'
 import IconRecording from '../../svgr/icon-recording'
@@ -437,6 +437,17 @@ const styles = {
     },
     '&$warmup': {
       color: 'lime',
+    },
+  },
+  iconButton: {
+    color: 'white',
+    pointerEvents: 'auto',
+    '& rect': {
+      stroke: '#000',
+      fill: '#000',
+    },
+    '& rect:hover': {
+      fill: '	#565656',
     },
   },
   buttonBar: {
@@ -1130,9 +1141,10 @@ class Undebate extends React.Component {
 
         introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
-        buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25
-        buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.1
-        buttonBarStyle.width = seatStyle.nextUp.width
+        buttonBarStyle.left = seatStyle.speaking.left
+        buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.36
+        // buttonBarStyle.width = seatStyle.nextUp.width
+        buttonBarStyle.width = speakingWidthRatio * 100 + 'vw'
         buttonBarStyle.height = Math.max(0.05 * height, 4 * fontSize)
 
         recorderButtonBarStyle.left = seatStyle.speaking.left
@@ -1675,34 +1687,34 @@ class Undebate extends React.Component {
 
   buttons = [
     {
-      name: () => <IconPrevSection width="60%" height="60%" />,
+      name: props => <IconPrevSection width="60%" height="60%" className={props} />,
       func: this.prevSection,
       title: () => 'Previous Question',
     },
     {
-      name: () => <IconPrevSpeaker width="60%" height="60%" />,
+      name: props => <IconPrevSpeaker width="60%" height="60%" className={props} />,
       func: this.prevSpeaker,
       title: () => 'Previous Speaker',
     },
     {
-      name: () =>
+      name: props =>
         this.state.isRecording ? (
-          <IconStop width="75%" height="75%" />
+          <IconStop width="60%" height="60%" className={props} />
         ) : this.state.allPaused ? (
-          <IconPlay width="75%" height="75%" />
+          <IconPlay width="60%" height="60%" className={props} />
         ) : (
-          <IconPause width="75%" height="75%" />
+          <IconPause width="60%" height="60%" className={props} />
         ),
       func: this.allPause,
       title: () => (this.state.isRecording ? 'Stop' : this.state.allPaused ? 'Play' : 'Pause'),
     },
     {
-      name: () => <IconSkipSpeaker width="60%" height="60%" />,
+      name: props => <IconSkipSpeaker width="60%" height="60%" className={props} />,
       func: this.nextSpeaker,
       title: () => 'Next Speaker',
     },
     {
-      name: () => <IconNextSection width="60%" height="60%" />,
+      name: props => <IconNextSection width="60%" height="60%" className={props} />,
       func: this.nextSection,
       title: () => 'Next Question',
       disabled: () => this.participants.human && !this.participants.human.speakingObjectURLs[this.state.round],
@@ -2892,7 +2904,7 @@ class Undebate extends React.Component {
               key={button.title()}
             >
               <div disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
-                {button.name()}
+                {button.name(classes.iconButton)}
               </div>
             </div>
           ))}
