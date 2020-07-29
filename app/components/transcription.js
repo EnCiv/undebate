@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef, useMemo } from 'react'
 import cx from 'classnames'
 import { createUseStyles } from 'react-jss'
 
@@ -15,12 +15,42 @@ function withinTime(wordObj, currentTime) {
   return currentTime >= startTime - windowSeconds && currentTime <= endTime + windowSeconds
 }
 
+function withinSentence(sentence, currentTime) {
+  return currentTime >= sentence.startTime && currentTime <= sentence.endTime
+}
+
+function emptySentence() {
+  return { startTime: 0, endTime: 0, words: [] }
+}
+
+const endPunctuation = ['.', '?', '!']
+
 const Transcription = ({ transcript, element }) => {
   const classes = useStyles()
   const { transcription } = classes
   const [currentTime, setCurrentTime] = useState(0)
   const outerRef = useRef(null)
   const [fontSize, setFontSize] = useState(defaultFontSize)
+  const sentences = useMemo(
+    () =>
+      (transcript &&
+        transcript.words &&
+        transcript.words.reduce(
+          (sentences, wordObj, idx, src) => {
+            const lastSentence = sentences[sentences.length - 1]
+            const endTime = getSeconds(wordObj.endTime)
+            if (!lastSentence.startTime) lastSentence.startTime = getSeconds(wordObj.startTime)
+            if (lastSentence.endTime < endTime) lastSentence.endTime = endTime
+            lastSentence.words.push(wordObj)
+            if (endPunctuation.includes(wordObj.word.slice(-1)) && idx < src.length - 1)
+              // don't start a new sentence if this is the last word
+              sentences.push(emptySentence())
+            return sentences
+          },
+          [emptySentence()]
+        )) || [emptySentence()],
+    [transcript]
+  )
 
   useEffect(() => {
     var timer
@@ -40,7 +70,7 @@ const Transcription = ({ transcript, element }) => {
   }, [transcript, element])
 
   useLayoutEffect(() => {
-    // when we swtich to a new transcript, after we have shrunk the fontSize for the previous transcription, when we need go back to the default font size because the new one may fit. But then we need to shrink if it doesn't
+    // when we switch to a new transcript, after we have shrunk the fontSize for the previous transcription, when we need go back to the default font size because the new one may fit. But then we need to shrink if it doesn't
     if (fontSize != defaultFontSize) setFontSize(defaultFontSize)
   }, [transcript])
 
@@ -53,21 +83,42 @@ const Transcription = ({ transcript, element }) => {
     }
   }, [transcript, fontSize])
 
-  return (
-    <div className={transcription} ref={outerRef} style={{ fontSize: fontSize + 'rem' }}>
-      {transcript &&
-        transcript.words &&
-        transcript.words.map(wordObj => (
+  const showWords = () =>
+    transcript &&
+    transcript.words &&
+    transcript.words.map(wordObj => (
+      <div
+        className={cx(
+          classes.word,
+          withinTime(wordObj, currentTime) && classes.litWord,
+          endPunctuation.includes(wordObj.word.slice(-1)) && classes.sentenceEnd
+        )}
+      >
+        {wordObj.word}
+      </div>
+    ))
+
+  const showSentences = () =>
+    sentences.reduce((wordDivs, sentence) => {
+      sentence.words.forEach(wordObj =>
+        wordDivs.push(
           <div
             className={cx(
               classes.word,
-              withinTime(wordObj, currentTime) && classes.litWord,
-              wordObj.word.slice(-1) === '.' && classes.sentenceEnd
+              withinSentence(sentence, currentTime) && classes.litWord,
+              endPunctuation.includes(wordObj.word.slice(-1)) && classes.sentenceEnd
             )}
           >
             {wordObj.word}
           </div>
-        ))}
+        )
+      )
+      return wordDivs
+    }, [])
+
+  return (
+    <div className={transcription} ref={outerRef} style={{ fontSize: fontSize + 'rem' }}>
+      {showSentences()}
     </div>
   )
 }
