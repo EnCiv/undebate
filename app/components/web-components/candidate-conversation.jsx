@@ -7,7 +7,8 @@ import Join from '../join'
 import Input from '../lib/input'
 import SocialShareBtn from '../lib/socialShareBtn'
 import Icon from '../lib/icon'
-import { Agenda } from '../agenda'
+import AgendaTranscript from '../agenda-transcript'
+import AgendaNav from '../agenda-nav'
 
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep'
@@ -45,8 +46,7 @@ function promiseSleep(time) {
 }
 
 // this is where we should use a theme but for now
-const BLUE = '#1B47A7'
-const YELLOW = '#E5A650'
+
 const styles = {
   scrollableIframe: {},
   wrapper: {
@@ -323,14 +323,7 @@ const styles = {
     },
   },
   agenda: {
-    textAlign: 'center',
-    backgroundColor: 'white',
     position: 'absolute',
-    //border: '1px solid black',
-    'box-shadow': '0px 4px 4px rgba(0,0,0,0.25)',
-    'box-sizing': 'border-box',
-    'font-weight': '600',
-    display: 'table',
     '&$finishUp': {
       left: '50vw',
       top: '50vh',
@@ -348,16 +341,6 @@ const styles = {
       top: `calc( -1 * 25vw *  ${HDRatio} -${TopMargin})`,
       left: '100vw',
     },
-  },
-  item: {
-    // fontFamily: 'Roboto',
-    fontSize: '2rem',
-    fontWeight: 'normal',
-    backgroundColor: 'white',
-    padding: '1rem',
-    'border-bottom': '1px solid lightGray',
-    'padding-top': '0.5rem',
-    'padding-bottom': '0.25rem',
   },
   thanks: {
     'font-size': '200%',
@@ -692,6 +675,10 @@ class RASPUndebate extends React.Component {
     // we need to calculate the position of everything if/or as if rendered on the server. Then in componentDidMount we can calculate based on the real size.  This is because react.hydrate needs to be able to match the serverside and the browser side
     let calculatedStyles = this.calculateStyles(width, height, height, fontSize)
     Object.assign(this.state, calculatedStyles, { fontSize })
+
+    this.nextSection = this.nextSection.bind(this)
+    this.prevSection = this.prevSection.bind(this)
+    this.autoNextSpeaker = this.autoNextSpeaker.bind(this)
   }
 
   state = {
@@ -2138,6 +2125,11 @@ class RASPUndebate extends React.Component {
 
     const bot = this.props.browserConfig.type === 'bot'
     const noOverlay = true
+    const Agenda = Object.keys(this.props.participants).some(
+      participant => this.props.participants[participant].transcriptions
+    )
+      ? AgendaTranscript
+      : AgendaNav
 
     if (this.canNotRecordHere || (this.camera && this.camera.canNotRecordHere)) {
       return (
@@ -2425,7 +2417,7 @@ class RASPUndebate extends React.Component {
                 playsInline
                 autoPlay={!bot}
                 controls={false}
-                onEnded={this.autoNextSpeaker.bind(this)}
+                onEnded={this.autoNextSpeaker}
                 onError={this.videoError.bind(this, participant)}
                 style={{ width: videoWidth, height: videoHeight }}
                 key={participant + '-video'}
@@ -2581,6 +2573,8 @@ class RASPUndebate extends React.Component {
                 this.props.participants[this.speakingNow()].transcriptions[round]
               }
               element={this.participants[this.speakingNow()].element.current}
+              prevSection={this.prevSection}
+              nextSection={this.nextSection}
             />
           </div>
           <div

@@ -1,9 +1,8 @@
 import cx from 'classnames'
 import React from 'react'
-import Icon from '../lib/icon'
 import { createUseStyles } from 'react-jss'
-import TabbedContainer from '../TabbedContainer'
-import Transcription from '../transcription'
+import TabbedContainer from './TabbedContainer'
+import Transcription from './transcription'
 
 const AgendaItem = ({ agendaItem }) => {
   const classes = useStyles()
@@ -27,9 +26,10 @@ const AgendaItem = ({ agendaItem }) => {
   )
 }
 
-export const Agenda = ({ className, style, agendaItem, transcript, element }) => {
+export const AgendaTranscript = ({ className, style, agendaItem, transcript, element }) => {
+  const classes = useAgendaStyles()
   return (
-    <div style={{ ...style, border: '5px solid #1d3491' }} className={className}>
+    <div style={{ ...style, border: '5px solid #1d3491' }} className={cx(className, classes.agenda)}>
       <TabbedContainer
         tabs={[
           {
@@ -46,9 +46,28 @@ export const Agenda = ({ className, style, agendaItem, transcript, element }) =>
   )
 }
 
-export default Agenda
+export default AgendaTranscript
+
+const useAgendaStyles = createUseStyles({
+  agenda: {
+    textAlign: 'center',
+    backgroundColor: 'white',
+    'box-shadow': '0px 4px 4px rgba(0,0,0,0.25)',
+    'box-sizing': 'border-box',
+    'font-weight': '600',
+    display: 'table',
+  },
+})
 
 const useStyles = createUseStyles({
+  agenda: {
+    textAlign: 'center',
+    backgroundColor: 'white',
+    'box-shadow': '0px 4px 4px rgba(0,0,0,0.25)',
+    'box-sizing': 'border-box',
+    'font-weight': '600',
+    display: 'table',
+  },
   innerAgenda: {},
   agendaList: {
     padding: '0',
