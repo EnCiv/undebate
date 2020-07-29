@@ -1145,7 +1145,7 @@ class Undebate extends React.Component {
         buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.36
         // buttonBarStyle.width = seatStyle.nextUp.width
         buttonBarStyle.width = speakingWidthRatio * 100 + 'vw'
-        buttonBarStyle.height = Math.max(0.05 * height, 4 * fontSize)
+        buttonBarStyle.height = Math.max(0.05 * height, 4 * fontSize) + 15
 
         recorderButtonBarStyle.left = seatStyle.speaking.left
         recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
