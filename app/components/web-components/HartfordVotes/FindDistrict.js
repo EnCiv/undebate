@@ -7,7 +7,7 @@ import { useNotification, useCandidates, useError } from './user-address-context
 
 const useStyles = createUseStyles({
   findDistrict: {
-    backgroundColor: '#EBEAEA',
+    backgroundColor: 'white',
     width: '100%',
     padding: '1.5em',
     margin: '0 0 1em',
@@ -20,7 +20,7 @@ const useStyles = createUseStyles({
       },
       paddingLeft: '.5em',
       height: '2.3em',
-      border: 'none',
+      border: '1px solid #c7c7c7',
       marginRight: '1em',
       width: '60%',
       maxWidth: '850px',
@@ -178,11 +178,12 @@ const FindDistrict = () => {
         style={{ border: error ? '3px solid #9d0000' : '' }}
         type="text"
         name="votersAddress"
-        placeholder="1234 Main St. Hartford CT"
+        placeholder="1234 Main St. Hartford CT 06103"
         id="votersAddress"
       />
-      <OrangeButton> Find your district</OrangeButton>
+      {isPortrait ? null : <OrangeButton>Find your District</OrangeButton>}
       <div className={classes.notificationBox}>{notification}</div>
+      {isPortrait ? <OrangeButton>Find your District</OrangeButton> : null}
     </form>
   )
 }

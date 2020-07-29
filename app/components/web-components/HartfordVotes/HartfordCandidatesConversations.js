@@ -3,7 +3,7 @@ import { createUseStyles } from 'react-jss'
 
 import TabbedContainer from '../TabbedContainer'
 import { useMode } from './phone-portrait-context'
-import { useAnimateTab, useCandidates, useTab, AddressContext } from './user-address-context'
+import { useOffices, useAnimateTab, useTab } from './user-address-context'
 
 const useStyles = createUseStyles({
   candidatesConversations: {
@@ -21,79 +21,14 @@ const useStyles = createUseStyles({
       },
     },
   },
-  conversationsHeader: {
-    marginTop: '2em',
-    marginBottom: '1em',
-    position: 'relative',
-    background: 'none',
-    '&:before': {
-      position: 'absolute',
-      content: '" "',
-      backgroundColor: '#29316E',
-      zIndex: 1,
-      top: '0',
-      bottom: '0',
-      width: '1.5em',
-    },
-    // sets a background that has transparency
-    '&:after': {
-      content: '" "',
-      position: 'absolute',
-      right: '0',
-      left: '0',
-      bottom: '0',
-      display: 'block',
-      top: '0',
-      zIndex: -1,
-      opacity: '0.14',
-      background:
-        'url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat',
-    },
-    padding: 0,
-    display: 'flex',
-    '& > *': {
-      color: '#29316E',
-      // required to make text show above transparent background
-      position: 'relative',
-      zIndex: 1,
-
-      '@media only screen and (max-device-width: 600px)': {
-        textAlign: 'left',
-        paddingLeft: '6.5vw',
-        marginLeft: '0 !important',
-        marginTop: '1em !important',
-      },
-    },
-    '& h3': {
-      margin: 'auto 0 auto 1.5em',
-      fontSize: '2.5em',
-    },
-    boxSizing: 'border-box',
-    margin: '0px',
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    '@media only screen and (max-device-width: 600px)': {
-      flexDirection: 'column',
-    },
-  },
-  electionDates: {
-    fontSize: '1.2em',
-    fontWeight: '200',
-    margin: 'auto 1rem auto auto',
-    '@media only screen and (max-device-width: 600px)': {
-      margin: 0,
-    },
-  },
 })
 
-const HartfordCandidatesConversations = () => {
+const HartfordCandidatesConversations = ({ viewers }) => {
   const classes = useStyles()
-  const { candidates } = useCandidates()
   const { tab } = useTab()
-  const { representatives_office_ids } = useContext(AddressContext)
+  const { offices, setOffices } = useOffices()
   const { animateTab } = useAnimateTab()
-  console.log(candidates)
+  setOffices(viewers)
 
   let isPortrait = useMode()
 
@@ -106,42 +41,41 @@ const HartfordCandidatesConversations = () => {
       ) center center no-repeat`,
         backgroundSize: '70vmax',
         maxHeight: '53.5em',
-        height: 'max-content',
+        //height: 'max-content',
         paddingBottom: '3vh',
-        paddingTop: isPortrait ? '30%' : 'calc(30% - 21vmax)',
+        paddingTop: isPortrait ? '30%' : 'calc(30% - 22vmax)',
         margin: isPortrait ? '1em' : '4em',
         width: isPortrait ? 'calc(100% - 2em)' : 'calc(100% - 8em)',
         position: 'relative',
       }}
       className="coming_soon"
     >
-      <div
-        style={{
-          margin: '7vh auto',
-        }}
-      >
+      <div>
         <h3
           style={{
+            width: '90%',
+            textAlign: 'center',
+            display: 'inline-block',
             color: '#29316E',
             margin: '0 auto 3vh auto',
-            width: 'max-content',
-            width: 'max-content',
-            fontSize: isPortrait ? '4vw' : '4vmin',
+            fontSize: isPortrait ? '4vw' : '2.3rem',
             fontWeight: '700',
           }}
         >
-          Candidate Conversations
+          There are no state representative candidates in the primary election for this district.
         </h3>
         <h3
           style={{
             color: '#29316E',
+            display: 'inline-block',
             margin: '0 auto 9vh auto',
-            width: 'max-content',
-            fontSize: isPortrait ? '6.6vw' : '6.6vmin',
+            textAlign: 'center',
+            width: '90%',
+            fontSize: isPortrait ? '6.6vw' : '4rem',
             fontWeight: '700',
           }}
         >
-          COMING SOON
+          Come Back for the General Election
         </h3>
         <a
           href="https://forms.gle/HgDH7TpewvBeecLe9"
@@ -149,7 +83,7 @@ const HartfordCandidatesConversations = () => {
           style={{
             boxShadow: '0.14em 0.15em .2em rgba(0,0,0,0.2)',
             textDecoration: 'none',
-            height: '2.3e',
+            height: '2.3em',
             lineHeight: 0,
             background: '#29316E',
             color: 'white',
@@ -158,7 +92,7 @@ const HartfordCandidatesConversations = () => {
             paddingRight: '13vmin',
             margin: 0,
             borderRadius: '.5em .5em',
-            fontSize: isPortrait ? '4vw' : '4vmin',
+            fontSize: isPortrait ? '4vw' : '3vmin',
           }}
         >
           Get Notified
@@ -187,10 +121,6 @@ const HartfordCandidatesConversations = () => {
     </div>
   )
 
-  const hartfordTabs = representatives_office_ids.map(office => {
-    return { name: `District ${office.district}`, contents: tabContentsComingSoon }
-  })
-
   const tabContentsExample = (
     <div>
       <h3>San Francisco District Attorney</h3>
@@ -203,17 +133,28 @@ const HartfordCandidatesConversations = () => {
     </div>
   )
 
+  const makeContents = urls => {
+    const viewers = []
+    if (!Array.isArray(urls)) {
+      return <div></div>
+    } else {
+      urls.forEach(url => {
+        if (url === '') viewers.push(tabContentsComingSoon)
+        else viewers.push(tabContentsExample)
+      })
+    }
+    console.log(viewers)
+    return viewers
+  }
+
+  //context holds information about districts
+  const hartfordTabs = offices.map(office => {
+    return { name: `District ${office.district}`, contents: makeContents(office.urls) }
+  })
+
   return (
     <>
       <main className={classes.candidatesConversations}>
-        <div className={classes.conversationsHeader}>
-          <h3> Candidates Conversations </h3>
-          <div className={classes.electionDates}>
-            <h4>Primary Election: 08/11/2020</h4>
-            <h4>General Election: 11/03/2020</h4>
-          </div>
-        </div>
-
         {/* districts in tabs */}
         <TabbedContainer tabs={hartfordTabs} selected_tab={tab} transition={animateTab} />
       </main>

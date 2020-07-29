@@ -4,22 +4,27 @@ const defaultValue = {
   candidates: [[], () => {}],
   error: ['', () => {}],
   district: [null, () => {}],
-  tab: [0, () => {}],
+  tab: [3, () => {}],
   animateTab: [false, () => {}],
-  notification: ['Enter full address to see candidates running in your assembly district', () => {}],
-  representatives_office_ids: [],
+  notification: ['Enter your address to meet the candidates in your district.', () => {}],
+  offices: [
+    { id: 0, district: 0, urls: [''] },
+    { id: 1, district: 1, urls: [''] },
+  ],
 }
 const AddressContext = createContext(defaultValue)
 
-const AddressProvider = ({ children }) => {
+const AddressProvider = ({ children, value }) => {
   let [candidates, setCandidates] = useState([])
   let [error, setError] = useState('')
   let [district, setDistrict] = useState(null)
-  let [tab, selectTab] = useState(0)
+  let [tab, selectTab] = useState(value ? value.tab : 0)
   let [animateTab, makeTabAnimate] = useState(false)
-  let [notification, setNotification] = useState(
-    'Enter full address to see candidates running in your assembly district'
-  )
+  let [notification, setNotification] = useState('Enter your address to meet the candidates in your district.')
+  let [offices, setOffices] = useState([
+    { id: 0, district: 0, urls: [''] },
+    { id: 1, district: 1, urls: [''] },
+  ])
 
   const representatives_office_ids = [
     {
@@ -56,7 +61,7 @@ const AddressProvider = ({ children }) => {
       const office = candidates.officeNames[0]
       //office.name.match(/^Connecticut House of Representatives District \d/)
       //get the index to get viewers of the same index
-      let tab_index = representatives_office_ids.findIndex(element => element.district === office.district_number)
+      let tab_index = offices.findIndex(element => element.district === office.district_number)
       //change the tab you are in
       selectTab(tab_index)
       makeTabAnimate(true)
@@ -91,7 +96,7 @@ const AddressProvider = ({ children }) => {
     tab: [tab, selectTab],
     notification: [notification, setNotification],
     animateTab: [animateTab, makeTabAnimate],
-    representatives_office_ids,
+    offices: [offices, setOffices],
   }
 
   return <AddressContext.Provider value={store}>{children}</AddressContext.Provider>
@@ -119,10 +124,11 @@ const useDistrict = () => {
   return { district, setDistrict }
 }
 
-const useTab = () => {
+const useTab = defaultTab => {
   const {
     tab: [tab, selectTab],
   } = useContext(AddressContext)
+  if (defaultTab) selectTab(defaultTab)
   return { tab, selectTab }
 }
 
@@ -140,4 +146,21 @@ const useAnimateTab = () => {
   return { animateTab, makeTabAnimate }
 }
 
-export { useCandidates, useError, useDistrict, useTab, useNotification, useAnimateTab, AddressProvider, AddressContext }
+const useOffices = () => {
+  const {
+    offices: [offices, setOffices],
+  } = useContext(AddressContext)
+  return { offices, setOffices }
+}
+
+export {
+  useCandidates,
+  useError,
+  useDistrict,
+  useTab,
+  useNotification,
+  useAnimateTab,
+  useOffices,
+  AddressProvider,
+  AddressContext,
+}
