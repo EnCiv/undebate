@@ -131,6 +131,12 @@ const HartfordLandingMenu = () => {
       href: '/hartford/about',
       target: '',
     },
+    {
+      display: 'Rank the Candidates',
+      key: 'scorescard',
+      href: '',
+      target: '_blank',
+    },
     //{
     //display: 'Score Card',
     //key: 'score',
