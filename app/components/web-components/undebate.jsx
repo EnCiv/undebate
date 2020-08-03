@@ -517,16 +517,13 @@ const styles = {
   note: {
     position: 'absolute',
     'background-color': 'lightyellow',
-    top: 'calc( 50vh - (25vw / 2) )', // yes vh - vw because the box is square
+    top: 'calc( ( 100vh - min( 50vw, 50vh)) / 2 )',
     padding: '1em',
-    width: '25vw',
-    height: '25vw', // yes vw because it's supose to be square
+    width: 'calc( min(50vw, 50vh) )',
+    height: 'calc( min(50vw, 50vh) )',
     'box-shadow': `${ShadowBox}px ${ShadowBox}px ${ShadowBox}px grey`,
-    //transform: 'rotate(-2deg)',
-    //'font-family': 'Comic Sans MS',
-    left: 'calc( 50vw - (25vw / 2))',
+    left: 'calc( ( 100vw - min( 50vw, 50vh)) / 2 )',
     'font-weight': '600',
-    'font-size': '125%',
     display: 'table',
     transition: 'all .5s linear',
     '&$finishUp': {
@@ -2457,16 +2454,11 @@ class Undebate extends React.Component {
     if (this.canNotRecordHere || (this.camera && this.camera.canNotRecordHere)) {
       return (
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
-          <img style={getIntroStyle('introRight')} src="/assets/images/female_hands_mug.png" />
-          <img style={getIntroStyle('introLeft')} src="/assets/images/male_hands_mug.png" />
-          <img style={getIntroStyle('introTopLeft')} src="/assets/images/left_flowers.png" />
-          <img style={getIntroStyle('introTopRight')} src="/assets/images/right_flowers.png" />
+          <ConversationHeader subject={subject} bp_info={bp_info} logo={logo} />
           <div className={classes['note']}>
-            <div style={{ width: '100%', height: '100%', display: 'table' }}>
-              <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-                <p style={{ fontSize: '150%' }}>We're still building this.</p>
-                <p>Recording is not supported by this browser yet. Please try Chrome for now.</p>
-              </div>
+            <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
+              <p style={{ fontSize: '150%' }}>Recording video from this device or browser is not yet supported.</p>
+              <p>Please come back to this link from a Windows 10 PC or a Mac using the Chrome browser.</p>
             </div>
           </div>
         </div>
@@ -2501,6 +2493,7 @@ class Undebate extends React.Component {
           frameBorder="0"
           marginHeight="0"
           marginWidth="0"
+          style={{ pointerEvents: 'all' }}
         >
           Loading...
         </iframe>
@@ -3090,6 +3083,7 @@ class Undebate extends React.Component {
               }}
               candidate_questions={participants.moderator.agenda}
               instructionLink={instructionLink}
+              timeLimits={participants.moderator.timeLimits}
             />
           )}
           {ending()}

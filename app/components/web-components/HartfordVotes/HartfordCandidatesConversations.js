@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { createUseStyles } from 'react-jss'
-import cx from 'classnames'
-import OrangeButton from '../../OrangeButton'
 
 import TabbedContainer from '../TabbedContainer'
 import { useMode } from './phone-portrait-context'
+import { useOffices, useAnimateTab, useTab } from './user-address-context'
 
 const useStyles = createUseStyles({
   candidatesConversations: {
@@ -22,187 +21,17 @@ const useStyles = createUseStyles({
       },
     },
   },
-  conversationsHeader: {
-    marginTop: '2em',
-    position: 'relative',
-    background: 'none',
-    '&:before': {
-      position: 'absolute',
-      content: '" "',
-      backgroundColor: '#29316E',
-      zIndex: 1,
-      top: '0',
-      bottom: '0',
-      width: '1.5em',
-    },
-    // sets a background that has transparency
-    '&:after': {
-      content: '" "',
-      position: 'absolute',
-      right: '0',
-      left: '0',
-      bottom: '0',
-      display: 'block',
-      top: '0',
-      zIndex: -1,
-      opacity: '0.14',
-      background:
-        'url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat',
-    },
-    padding: 0,
-    display: 'flex',
-    '& > *': {
-      color: '#29316E',
-      // required to make text show above transparent background
-      position: 'relative',
-      zIndex: 1,
-
-      '@media only screen and (max-device-width: 600px)': {
-        textAlign: 'left',
-        paddingLeft: '6.5vw',
-        marginLeft: '0 !important',
-        marginTop: '1em !important',
-      },
-    },
-    '& h3': {
-      margin: 'auto 0 auto 1.5em',
-      fontSize: '2.5em',
-    },
-    boxSizing: 'border-box',
-    margin: '0px',
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    '@media only screen and (max-device-width: 600px)': {
-      flexDirection: 'column',
-    },
-  },
-  electionDates: {
-    fontSize: '1.2em',
-    fontWeight: '200',
-    margin: 'auto 1rem auto auto',
-    '@media only screen and (max-device-width: 600px)': {
-      margin: 0,
-    },
-  },
-  findDistrict: {
-    backgroundColor: '#BABABA',
-    width: '100%',
-    padding: '1.5em',
-    margin: '2em 0',
-    '& > *': {
-      boxShadow: '0.14em 0.15em .2em rgba(0,0,0,0.2)',
-    },
-    '& > #votersAddress': {
-      '&::placeholder': {
-        color: '#515989',
-      },
-      paddingLeft: '.5em',
-      height: '2.3em',
-      border: 'none',
-      marginRight: '1em',
-      width: '60%',
-      maxWidth: '850px',
-
-      '@media only screen and (max-device-width: 600px)': {
-        width: '100%',
-        marginBottom: '0.3em',
-      },
-    },
-
-    '& > button': {
-      maxWidth: '390px',
-      width: '30vw',
-      '@media only screen and (max-device-width: 600px)': {
-        width: '100%',
-      },
-    },
-    '@media only screen and (max-device-width: 600px)': {
-      marginTop: 0,
-    },
-  },
 })
 
-//{
-//name: 'District 1',
-//contents: (
-//),
-//},
-const HartfordCandidatesConversations = () => {
+const HartfordCandidatesConversations = ({ viewers }) => {
   const classes = useStyles()
-  let [candidates, setCandidates] = useState([])
-  let [error, setError] = useState('')
-  let [district, setDistrict] = useState(null)
+  const { tab } = useTab()
+  const { offices, setOffices } = useOffices()
+  const { animateTab } = useAnimateTab()
+  setOffices(viewers)
+
   let isPortrait = useMode()
 
-  // TODO need to get viewers by office to populate the tabs
-  // first list the offices in the area by office id
-  const valid_zip_codes = [
-    '06101',
-    '06105',
-    '06114',
-    '06126',
-    '06141',
-    '06145',
-    '06151',
-    '06156',
-    '06176',
-    '06102',
-    '06106',
-    '06115',
-    '06132',
-    '06142',
-    '06146',
-    '06152',
-    '06160',
-    '06180',
-    '06103',
-    '06108',
-    '06120',
-    '06134',
-    '06143',
-    '06147',
-    '06154',
-    '06161',
-    '06183',
-    '06104',
-    '06112',
-    '06123',
-    '06140',
-    '06144',
-    '06150',
-    '06155',
-    '06167',
-  ]
-  const representatives_office_ids = [
-    {
-      id: 7976,
-      district: 1,
-    },
-    {
-      id: 318,
-      district: 3,
-    },
-    {
-      id: 8254,
-      district: 4,
-    },
-    {
-      id: 9803,
-      district: 5,
-    },
-    {
-      id: 21641,
-      district: 6,
-    },
-    {
-      id: 6527,
-      district: 7,
-    },
-  ]
-  // make a list of those offices and sort them into districts
-
-  console.log(candidates)
   const tabContentsComingSoon = (
     <div
       style={{
@@ -211,42 +40,42 @@ const HartfordCandidatesConversations = () => {
         'https://res.cloudinary.com/hf6mryjpf/image/upload/v1593540680/assets/connecticut_flag.png'
       ) center center no-repeat`,
         backgroundSize: '70vmax',
-        //maxHeight: '53.5em',
-        height: 'max-content',
+        maxHeight: '53.5em',
+        //height: 'max-content',
         paddingBottom: '3vh',
+        paddingTop: isPortrait ? '30%' : 'calc(30% - 22vmax)',
         margin: isPortrait ? '1em' : '4em',
         width: isPortrait ? 'calc(100% - 2em)' : 'calc(100% - 8em)',
         position: 'relative',
       }}
       className="coming_soon"
     >
-      <div
-        style={{
-          margin: '7vh auto',
-        }}
-      >
+      <div>
         <h3
           style={{
+            width: '90%',
+            textAlign: 'center',
+            display: 'inline-block',
             color: '#29316E',
             margin: '0 auto 3vh auto',
-            width: 'max-content',
-            width: 'max-content',
-            fontSize: '4vmin',
+            fontSize: isPortrait ? '4vw' : '2.3rem',
             fontWeight: '700',
           }}
         >
-          Candidate Conversations
+          There are no state representative candidates in the primary election for this district.
         </h3>
         <h3
           style={{
             color: '#29316E',
+            display: 'inline-block',
             margin: '0 auto 9vh auto',
-            width: 'max-content',
-            fontSize: '6.6vmin',
+            textAlign: 'center',
+            width: '90%',
+            fontSize: isPortrait ? '6.6vw' : '4rem',
             fontWeight: '700',
           }}
         >
-          COMING SOON
+          Come Back for the General Election
         </h3>
         <a
           href="https://forms.gle/HgDH7TpewvBeecLe9"
@@ -263,7 +92,7 @@ const HartfordCandidatesConversations = () => {
             paddingRight: '13vmin',
             margin: 0,
             borderRadius: '.5em .5em',
-            fontSize: '4vmin',
+            fontSize: isPortrait ? '4vw' : '3vmin',
           }}
         >
           Get Notified
@@ -276,16 +105,22 @@ const HartfordCandidatesConversations = () => {
           position: 'absolute',
           backgroundColor: 'white',
           color: '#6D6889',
-          height: 'max-content',
-          bottom: '-1.8em',
-          right: isPortrait ? 'calc(50% - 1em)' : 'calc(50% - 2em)',
+          bottom: '-1.15em',
+          right: isPortrait ? 'calc(40% - 1em)' : 'calc(50% - 1em)',
+          left: isPortrait ? 'calc(40% - 1em)' : '',
           padding: '0.25em 0.3em',
+          height: '.4em',
+          minWidth: isPortrait ? '' : '4em',
+          lineHeight: '0.4',
+          padding: '-0.55em 0.6em',
+          textAlign: 'center',
         }}
       >
         2020
       </h3>
     </div>
   )
+
   const tabContentsExample = (
     <div>
       <h3>San Francisco District Attorney</h3>
@@ -298,101 +133,30 @@ const HartfordCandidatesConversations = () => {
     </div>
   )
 
-  // TODO use useEffect in the case where candidates gets set to either some sort of usable set of offices or returns an error from one of the api calls.
-  useEffect(() => {
-    if (candidates.ok) {
-      //confirm that the string matches Conneticut House of Representatives \d
-      candidates.officeNames.forEach((office, index) => {
-        office.name.match(/^Connecticut House of Representatives District \d/)
-        //get the index to get viewers of the same index
-      })
-      //change the tab you are in
-
-      //prominently display what address_found
+  const makeContents = urls => {
+    const viewers = []
+    if (!Array.isArray(urls)) {
+      return <div></div>
     } else {
-      //display error and recommend action
+      urls.forEach(url => {
+        if (url === '') viewers.push(tabContentsComingSoon)
+        else viewers.push(tabContentsExample)
+      })
     }
-  }, [candidates, error])
+    console.log(viewers)
+    return viewers
+  }
+
+  //context holds information about districts
+  const hartfordTabs = offices.map(office => {
+    return { name: `District ${office.district}`, contents: makeContents(office.urls) }
+  })
 
   return (
     <>
       <main className={classes.candidatesConversations}>
-        <div className={classes.conversationsHeader}>
-          <h3> Candidates Conversations </h3>
-          <div className={classes.electionDates}>
-            <h4>Primary Election: 08/11/2020</h4>
-            <h4>General Election: 11/03/2020</h4>
-          </div>
-        </div>
-
-        {/* search for district */}
-        <form
-          className={classes.findDistrict}
-          onSubmit={event => {
-            event.preventDefault()
-            //TODO validation here use setError if the user inputs a bad string.
-            const votersAddress = event.target.votersAddress.value
-
-            console.log('validation: ', votersAddress.match(/hartford/gi))
-            console.log('validation: ', votersAddress.match(/ct/gi))
-            console.log('validation: ', votersAddress.match(/ct/gi))
-            window.socket.emit('hartford address lookup', event.target.votersAddress.value, setCandidates)
-          }}
-        >
-          <input type="text" name="votersAddress" placeholder="1234 Main St. Hartford CT" id="votersAddress" />
-          <OrangeButton> Find your district</OrangeButton>
-        </form>
-
         {/* districts in tabs */}
-        <TabbedContainer
-          tabs={[
-            {
-              name: 'District 1',
-              contents: tabContentsComingSoon,
-            },
-            {
-              name: 'District 3',
-              contents: (
-                <div>
-                  <p>hello universe</p>
-                </div>
-              ),
-            },
-            {
-              name: 'District 4',
-              contents: (
-                <div>
-                  <p>hello galaxy</p>
-                </div>
-              ),
-            },
-            {
-              name: 'District 5',
-              contents: (
-                <div>
-                  <p>hello galaxy</p>
-                </div>
-              ),
-            },
-
-            {
-              name: 'District 6',
-              contents: (
-                <div>
-                  <p>hello galaxy</p>
-                </div>
-              ),
-            },
-            {
-              name: 'District 7',
-              contents: (
-                <div>
-                  <p>hello galaxy</p>
-                </div>
-              ),
-            },
-          ]}
-        />
+        <TabbedContainer tabs={hartfordTabs} selected_tab={tab} transition={animateTab} />
       </main>
     </>
   )

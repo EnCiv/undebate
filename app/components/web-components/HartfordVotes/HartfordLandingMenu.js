@@ -87,11 +87,7 @@ const useStyles = createUseStyles({
     height: '1em',
   },
   smallscreen: {
-    //display: 'grid',
     height: '4.9em',
-    //gridTemplateColumns: '1fr 1fr 2fr 1fr',
-    //gridTemplateRows: '1fr',
-    //gridTemplateAreas: `"logos-hartford logos-enciv . . ham"`,
     boxShadow: '0em 0.25em 0.2em rgba(0,0,0,0.1)',
     position: 'relative',
     zIndex: 2,
@@ -106,29 +102,34 @@ const HartfordLandingMenu = () => {
 
   const arrayOfLinks = [
     {
-      display: 'Find your District',
-      key: 'hartford-find-district',
-      href: 'http://www.hartford.gov/images/registrar/SenatorialAssemblyandVotingDistrictwithPollingLocations.pdf',
-    },
-    {
       display: 'FAQs',
       key: 'hartford-faq',
       href: '/hartford/faq',
+      target: '',
+    },
+    {
+      display: 'Candidate Bios',
+      key: 'hartford-candidate-bios',
+      href: '/hartford/bios',
+      target: '',
     },
     {
       display: 'How & Where To Vote',
       key: 'hartford-how-where-vote',
       href: 'https://portaldir.ct.gov/sots/LookUp.aspx',
+      target: '_blank',
     },
     {
       display: 'Contact Us',
       key: 'hartford-contact',
       href: 'mailto:HartfordVota@gmail.com',
+      target: '_blank',
     },
     {
       display: 'About',
       key: 'about',
-      href: '',
+      href: '/hartford/about',
+      target: '',
     },
     //{
     //display: 'Score Card',
@@ -140,7 +141,7 @@ const HartfordLandingMenu = () => {
     <ul className={classes.links}>
       {arrayOfLinks.map(link => (
         <li key={link.key} className={classes.linkContents}>
-          <a href={link.href} target="_blank">
+          <a href={link.href} target={link.target}>
             {link.display}
           </a>
         </li>

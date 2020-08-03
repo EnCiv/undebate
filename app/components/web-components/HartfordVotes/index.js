@@ -1,10 +1,12 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
-import cx from 'classnames'
 import HartfordLandingHeader from './HartfordLandingHeader'
 import HartfordCandidatesConversations from './HartfordCandidatesConversations'
 import HartfordLandingMenu from './HartfordLandingMenu'
 import { ModeProvider } from './phone-portrait-context'
+import { AddressProvider } from './user-address-context'
+import FindDistrict from './FindDistrict'
+import CandidateQuestions from './CandidateQuestions'
 
 const useStyles = createUseStyles({
   landingPage: {
@@ -30,25 +32,29 @@ const useStyles = createUseStyles({
   },
 })
 
-const HartfordLanding = () => {
+const HartfordLanding = ({ viewers }) => {
   return (
     <>
       <HartfordLandingHeader key="hartford-header" />
-      <HartfordCandidatesConversations key="hartford-candidate-conversations" />
+      <FindDistrict />
+      <HartfordCandidatesConversations viewers={viewers} key="hartford-candidate-conversations" />
+      <CandidateQuestions />
     </>
   )
 }
 
-const HartfordVotes = () => {
+const HartfordVotes = ({ viewers }) => {
   const classes = useStyles()
 
   return (
     <hartford-dom key="hartfordLanding">
       <ModeProvider>
-        <div className={classes.landingPage}>
-          <HartfordLandingMenu key="hartford-menu" />
-          <HartfordLanding />
-        </div>
+        <AddressProvider value={{ tab: 3 }}>
+          <div className={classes.landingPage}>
+            <HartfordLandingMenu key="hartford-menu" />
+            <HartfordLanding viewers={viewers} />
+          </div>
+        </AddressProvider>
       </ModeProvider>
     </hartford-dom>
   )
