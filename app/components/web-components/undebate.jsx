@@ -991,6 +991,7 @@ class Undebate extends React.Component {
 
   onResize() {
     setTimeout(this.calculatePositionAndStyle, TransitionTime) // have to wait out the transitions
+    this.renderPortraitRecordingWarning()
   }
 
   // take control of the damn font size - set it in the body
@@ -2373,11 +2374,13 @@ class Undebate extends React.Component {
     } else this.setState({ intro: true, stylesSet: true, allPaused: false }, () => this.onIntroEnd())
   }
 
-  renderPortraitRecordingWarning = (browserConfig, isRecording, isPortraitPhoneRecording) => {
+  renderPortraitRecordingWarning = () => {
+    const { browserConfig } = this.props
+    const { isRecording, isPortraitPhoneRecording } = this.state
     let portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
     if (browserConfig.type === 'phone' && !portraitMode && !isRecording && isPortraitPhoneRecording) {
       this.setState({ isPortraitPhoneRecording: false })
-      this.resumeRecording()
+      this.rerecordButton()
     } else if (browserConfig.type === 'phone' && portraitMode && isRecording) {
       this.pauseRecording()
       this.setState({ isPortraitPhoneRecording: true })
@@ -2438,9 +2441,6 @@ class Undebate extends React.Component {
       left,
       preambleAgreed,
     } = this.state
-
-    // puts a stop to recording with the phone in a portrait orientation
-    this.renderPortraitRecordingWarning(this.props.browserConfig, isRecording, isPortraitPhoneRecording)
 
     const getIntroStyle = name =>
       Object.assign({}, stylesSet && { transition: IntroTransition }, introStyle[name], intro && introSeatStyle[name])
