@@ -5,40 +5,86 @@ import Button from '../button'
 import cx from 'classnames'
 
 const useStyles = createUseStyles({
+  container: {
+    textAlign: 'center',
+    //steps area title
+    '&>h3': {
+      fontSize: '3rem',
+    },
+  },
   Steps: {
     display: 'flex',
     flexDirection: 'column',
+    listStyleType: 'none',
+    paddingLeft: 0,
   },
   step: {
+    position: 'relative',
     border: '1px solid gray',
+    padding: '2em',
+
+    '& p': {
+      fontSize: '2rem',
+    },
+    '&>div>*': {
+      margin: 0, //reset the margin on all the children first
+    },
+    '& h4': {
+      //fontSize: '2.5rem',
+      marginBottom: '2rem',
+    },
+    '& .__title': {
+      fontWeight: '900',
+      fontSize: '3rem',
+      //TODO: change the font Style for this so that it is bold.
+    },
+    '& .__icon': {
+      fontSize: '2.5rem',
+    },
+  },
+  stepLable: {
+    color: 'white',
+    backgroundColor: 'grey',
+    padding: '0.4em',
+    position: 'absolute',
+    left: 0,
+    top: 0,
   },
 })
-function Steps({}) {
+
+const makeStep = (index, title, icon, content, class_name) => {
   const classes = useStyles()
 
   return (
-    <ul className={classes.Steps}>
-      <li className={classes.step}>
-        <div>
-          {' '}
-          <h3>Record</h3>
-          <p>
-            When you start recording, an onscreen moderator will ask a series of questions, and you{"'"}ll be prompted
-            to record your answers.
-          </p>
-        </div>
-      </li>
-      <li className={classes.step}>
-        <div>
-          {' '}
-          <h3>Record</h3>
-          <p>
-            When you start recording, an onscreen moderator will ask a series of questions, and you{"'"}ll be prompted
-            to record your answers.
-          </p>
-        </div>
-      </li>
-    </ul>
+    <li className={class_name} key={'step' + index}>
+      <div className={classes.stepLable}>Step {1 + index}</div>
+      <div>
+        {' '}
+        <h4 className={'__icon'}>{icon}</h4>
+        <h4 className={'__title'}>{title}</h4>
+        <p>{content}</p>
+      </div>
+    </li>
+  )
+}
+
+function Steps({}) {
+  const classes = useStyles()
+  const steps = [
+    {
+      title: 'Record',
+      icon: 'none',
+      content: `When you start recording, an onscreen moderator will ask a series of questions, and you'll be prompted to record your answers.`,
+    },
+  ]
+
+  return (
+    <section className={classes.container}>
+      <h3>Recording is Easy</h3>
+      <ul className={classes.Steps}>
+        {steps.map((step, index) => makeStep(index, step.title, step.icon, step.content, classes.step))}
+      </ul>
+    </section>
   )
 }
 export default Steps

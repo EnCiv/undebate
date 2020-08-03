@@ -6,6 +6,8 @@ import cx from 'classnames'
 import ConversationHeader from '../conversation-header'
 import Agenda from './Agenda'
 import Steps from './Steps'
+import StartRecordingButton from './StartRecordingButton'
+import PreambleHeader from './PreambleHeader'
 
 /**
  * 
@@ -45,15 +47,9 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
         handleOrientationChange={choice => togglePortrait(choice)}
       />
       <div className={cx(classes['Preamble-inner'], isPortrait ? classes['portrait'] : undefined)}>
-        <h2>
-          Welcome{' '}
-          {bp_info && bp_info.candidate_name ? (
-            <span style={{ fontSize: '150%', fontWeight: 'bold' }}>{bp_info.candidate_name}</span>
-          ) : (
-            ''
-          )}
-        </h2>
+        <PreambleHeader onClickStartRecording={onClick} isPortrait={isPortrait} bp_info={bp_info} />
         <Steps />
+        <StartRecordingButton onClick={onClick} />
         <Agenda candidate_questions={candidate_questions} timeLimits={timeLimits} />
         <div className={classes['center']}>
           <Button onClick={onClick}>Next</Button>
