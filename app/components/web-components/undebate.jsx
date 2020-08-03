@@ -1048,7 +1048,7 @@ class Undebate extends React.Component {
       let calculatedStyles = this.calculateStyles(width, height, maxerHeight, fontSize)
       this.setState({ left: -x + 'px', fontSize, ...calculatedStyles })
     }
-    this.renderPortraitRecordingWarning()
+    this.preventPortraitRecording()
   }
 
   calculateStyles(width, height, maxerHeight, fontSize) {
@@ -1939,7 +1939,7 @@ class Undebate extends React.Component {
   startRecording(cb, visible = false) {
     this.camera.startRecording(cb)
     if (visible) this.setState({ isRecording: true })
-    this.renderPortraitRecordingWarning()
+    this.preventPortraitRecording()
   }
 
   stopRecording() {
@@ -2375,7 +2375,7 @@ class Undebate extends React.Component {
     } else this.setState({ intro: true, stylesSet: true, allPaused: false }, () => this.onIntroEnd())
   }
 
-  renderPortraitRecordingWarning = () => {
+  preventPortraitRecording = () => {
     const { browserConfig } = this.props
     const { isPortraitPhoneRecording } = this.state
     const isRecording = this.isRecording()
@@ -2384,7 +2384,7 @@ class Undebate extends React.Component {
       this.setState({ isPortraitPhoneRecording: false })
       this.rerecordButton()
     } else if (browserConfig.type === 'phone' && portraitMode && isRecording) {
-      this.pauseRecording()
+      this.ensurePaused()
       this.setState({ isPortraitPhoneRecording: true })
     }
   }
