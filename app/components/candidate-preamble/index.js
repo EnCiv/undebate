@@ -4,7 +4,8 @@ import { createUseStyles } from 'react-jss'
 import Button from '../button'
 import cx from 'classnames'
 import ConversationHeader from '../conversation-header'
-import Agenda from './Agenda.js'
+import Agenda from './Agenda'
+import Steps from './Steps'
 
 /**
  * 
@@ -52,42 +53,7 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
             ''
           )}
         </h2>
-        <p>
-          Undebate and EnCiv are teaming up to create a better way for candidates to be heard, and voters to learn about
-          their candidates.
-        </p>
-        <p>
-          You are invited to engage in an application that will include you, as part of a publicly available online
-          video conversation.
-        </p>
-        <ul className={classes.PreambleList}>
-          <li>
-            During the conversation, you will be asked questions, and your video will be recorded and stored on your
-            computer.
-          </li>
-          <li>
-            At the end of the conversation, you will be asked to review and accept EnCiv's{' '}
-            <a href="https://enciv.org/terms" target="_blank">
-              terms of service
-            </a>{' '}
-            and create an account.
-          </li>
-          <li>
-            Then, hitting the <b>Post</b> button will upload the recorded video and make it public.
-          </li>
-          <li>
-            Or, hitting the <b>Hang Up</b> button or closing this window any time before hitting the <b>Post</b> button
-            will cause any recordings to be discarded.
-          </li>
-          {instructionLink && (
-            <li>
-              You can continue and each step will be explained one at a time, or you can review written instructions{' '}
-              <a target="#" href={instructionLink}>
-                here
-              </a>
-            </li>
-          )}
-        </ul>
+        <Steps />
         <Agenda candidate_questions={candidate_questions} timeLimits={timeLimits} />
         <div className={classes['center']}>
           <Button onClick={onClick}>Next</Button>
@@ -138,3 +104,40 @@ const useStyles = createUseStyles({
 })
 
 export default CandidatePreamble
+
+//<p>
+//Undebate and EnCiv are teaming up to create a better way for candidates to be heard, and voters to learn about
+//their candidates.
+//</p>
+//<p>
+//You are invited to engage in an application that will include you, as part of a publicly available online
+//video conversation.
+//</p>
+//<ul className={classes.PreambleList}>
+//<li>
+//During the conversation, you will be asked questions, and your video will be recorded and stored on your
+//computer.
+//</li>
+//<li>
+//At the end of the conversation, you will be asked to review and accept EnCiv's{' '}
+//<a href="https://enciv.org/terms" target="_blank">
+//terms of service
+//</a>{' '}
+//and create an account.
+//</li>
+//<li>
+//Then, hitting the <b>Post</b> button will upload the recorded video and make it public.
+//</li>
+//<li>
+//Or, hitting the <b>Hang Up</b> button or closing this window any time before hitting the <b>Post</b> button
+//will cause any recordings to be discarded.
+//</li>
+//{instructionLink && (
+//<li>
+//You can continue and each step will be explained one at a time, or you can review written instructions{' '}
+//<a target="#" href={instructionLink}>
+//here
+//</a>
+//</li>
+//)}
+//</ul>
