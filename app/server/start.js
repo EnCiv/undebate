@@ -47,6 +47,7 @@ function start(emitter = false) {
 async function asyncStart(emitter) {
   try {
     var verbose = false
+    process.env.MONGODB_URI = 'mongodb://jackpham:jackpham123@ds019698.mlab.com:19698/undebate'
     if (process.env.NODE_ENV === 'production') {
       process.title = 'synappprod'
     } else {

@@ -31,8 +31,8 @@ import IconPause from '../../svgr/pause-icon'
 import IconStop from '../../svgr/stop-icon'
 import IconSkipSpeaker from '../../svgr/next-speaker-icon'
 import IconNextSection from '../../svgr/next-section-icon'
-import IconRedo from '../../svgr/icon-redo'
-import IconFinishRecording from '../../svgr/icon-finish-recording'
+import IconRedo from '../../svgr/redo-icon'
+import IconFinishRecording from '../../svgr/finish-speaking-icon'
 import IconRecording from '../../svgr/icon-recording'
 import ConversationHeader from '../conversation-header'
 
@@ -447,6 +447,9 @@ const styles = {
       fill: '#000',
     },
     '& rect:hover': {
+      fill: '	#565656',
+    },
+    '& circle:hover': {
       fill: '	#565656',
     },
   },
@@ -1145,7 +1148,7 @@ class Undebate extends React.Component {
         buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.36
         // buttonBarStyle.width = seatStyle.nextUp.width
         buttonBarStyle.width = speakingWidthRatio * 100 + 'vw'
-        buttonBarStyle.height = Math.max(0.05 * height, 4 * fontSize) + 15
+        buttonBarStyle.height = Math.max(0.05 * height, 4 * fontSize) + 20
 
         recorderButtonBarStyle.left = seatStyle.speaking.left
         recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
@@ -1723,7 +1726,7 @@ class Undebate extends React.Component {
 
   recorderButtons = [
     {
-      name: () => 'Redo',
+      name: props => <IconRedo width="100%" height="100%" className={props} />,
       func: this.rerecordButton,
       title: () => 'Re-record',
       disabled: () => this.speakingNow() !== 'human' || this.state.warmup,
@@ -1732,7 +1735,7 @@ class Undebate extends React.Component {
     { name: () => 'key2', func: null, title: () => '' },
     { name: () => 'key3', func: null, title: () => '' },
     {
-      name: () => 'Finished Speaking',
+      name: props => <IconFinishRecording width="100%" height="100%" className={props} />,
       func: this.finishedSpeaking,
       title: () => 'Done Speaking',
       disabled: () => this.speakingNow() !== 'human' || (this.state.reviewing && !this.rerecord),
@@ -2925,9 +2928,9 @@ class Undebate extends React.Component {
               title={button.title()}
             >
               {button.func ? (
-                <button disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
-                  {button.name()}
-                </button>
+                <div disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
+                  {button.name(classes.iconButton)}
+                </div>
               ) : (
                 <div></div>
               )}
