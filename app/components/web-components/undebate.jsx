@@ -1048,7 +1048,7 @@ class Undebate extends React.Component {
       let calculatedStyles = this.calculateStyles(width, height, maxerHeight, fontSize)
       this.setState({ left: -x + 'px', fontSize, ...calculatedStyles })
     }
-    this.renderPortraitRecordingWarning(this.state.isRecording, this.state.isPortraitPhoneRecording)
+    this.renderPortraitRecordingWarning()
   }
 
   calculateStyles(width, height, maxerHeight, fontSize) {
@@ -1939,7 +1939,7 @@ class Undebate extends React.Component {
   startRecording(cb, visible = false) {
     this.camera.startRecording(cb)
     if (visible) this.setState({ isRecording: true })
-    this.renderPortraitRecordingWarning(true, this.state.isPortraitPhoneRecording) // state.isRecording won't necessarially be set at this point
+    this.renderPortraitRecordingWarning()
   }
 
   stopRecording() {
@@ -2375,16 +2375,39 @@ class Undebate extends React.Component {
     } else this.setState({ intro: true, stylesSet: true, allPaused: false }, () => this.onIntroEnd())
   }
 
-  renderPortraitRecordingWarning = (isRecording, isPortraitPhoneRecording) => {
+  renderPortraitRecordingWarning = () => {
     const { browserConfig } = this.props
+    const { isPortraitPhoneRecording } = this.state
+    const isRecording = this.isRecording()
     let portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
-    if (browserConfig.type === 'phone' && !portraitMode && !isRecording && isPortraitPhoneRecording) {
+    if (browserConfig.type === 'phone' && !portraitMode && isRecording && isPortraitPhoneRecording) {
       this.setState({ isPortraitPhoneRecording: false })
       this.rerecordButton()
     } else if (browserConfig.type === 'phone' && portraitMode && isRecording) {
       this.pauseRecording()
       this.setState({ isPortraitPhoneRecording: true })
     }
+  }
+
+  isRecording() {
+    return this.isRecordingPlaceHolder() || this.isRecordingSpeaking()
+  }
+
+  isRecordingPlaceHolder() {
+    const { participants } = this.props
+    const { round, reviewing } = this.state
+    if (participants.human) {
+      const { listeningRound, listeningSeat } = this.listening()
+      if (listeningRound === round && listeningSeat === this.seatOfParticipant('human')) {
+        const reviewingAndNotReRecording = reviewing && !this.rerecord
+        if (!reviewingAndNotReRecording) return true
+      }
+    }
+    return false
+  }
+
+  isRecordingSpeaking() {
+    return this.speakingNow() === 'human'
   }
 
   render() {
