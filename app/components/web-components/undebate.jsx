@@ -991,7 +991,6 @@ class Undebate extends React.Component {
 
   onResize() {
     setTimeout(this.calculatePositionAndStyle, TransitionTime) // have to wait out the transitions
-    this.renderPortraitRecordingWarning()
   }
 
   // take control of the damn font size - set it in the body
@@ -1049,6 +1048,7 @@ class Undebate extends React.Component {
       let calculatedStyles = this.calculateStyles(width, height, maxerHeight, fontSize)
       this.setState({ left: -x + 'px', fontSize, ...calculatedStyles })
     }
+    this.renderPortraitRecordingWarning()
   }
 
   calculateStyles(width, height, maxerHeight, fontSize) {
