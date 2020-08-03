@@ -2,6 +2,7 @@
 import React from 'react'
 import supportsVideoType from './lib/supports-video-type'
 import cloneDeep from 'lodash/cloneDeep'
+import micValues from './react-mic-meter'
 
 /***
  *
@@ -120,6 +121,7 @@ export default class ReactCameraRecorder extends React.Component {
       const stream = await navigator.mediaDevices.getUserMedia(calcConstraints)
       logger.trace('getUserMedia() got stream:', stream)
       this.cameraStream = stream
+      micValues(calcConstraints)
       ok && ok(stream)
     } catch (e) {
       logger.error('navigator.getUserMedia error:', e.name, e.message)
