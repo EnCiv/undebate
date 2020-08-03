@@ -5,7 +5,12 @@ import Button from '../button'
 import cx from 'classnames'
 
 const useStyles = createUseStyles({
+  container: {
+    border: '1px solid grey',
+    marginTop: '4em',
+  },
   questionList: {
+    textAlign: 'left',
     listStyleType: 'upper-alpha',
     marginTop: 0,
     marginBottom: 0,
@@ -34,8 +39,10 @@ const useStyles = createUseStyles({
     },
   },
 })
+
 function Agenda({ candidate_questions, timeLimits }) {
   const classes = useStyles()
+
   const makeQuestions = (className, questions, keyIndex = 'mq') => {
     return (
       <ul className={className}>
@@ -61,14 +68,15 @@ function Agenda({ candidate_questions, timeLimits }) {
       </ul>
     )
   }
+
   return (
-    <>
-      <h2 style={{ marginBottom: '0.5rem' }}>Stuff for Candidates</h2>
+    <div className={classes.container}>
+      <h2 style={{ marginBottom: '0.5rem' }}>Questions for Candidates</h2>
       {makeQuestions(
         classes.questionList,
         candidate_questions && candidate_questions.slice(0, -1)
       ) /* the last thing in the list is the moderators closing remarks*/}
-    </>
+    </div>
   )
 }
 
