@@ -11,7 +11,7 @@ import Icon from '../lib/icon'
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep'
 import getYouTubeID from 'get-youtube-id'
-import Preamble from '../preambleRedesign'
+import Preamble from '../preamble'
 import Config from '../../../public.json'
 
 const ResolutionToFontSizeTable = require('../../../resolution-to-font-size-table').default

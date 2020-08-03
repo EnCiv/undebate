@@ -2,7 +2,7 @@
 
 import React from 'react'
 import injectSheet from 'react-jss'
-import Button from './button'
+import Button from '../button'
 import cx from 'classnames'
 import { createUseStyles } from 'react-jss'
 
@@ -38,7 +38,7 @@ const useStyles = createUseStyles({
   },
 })
 
-const Preamble = ({ classes, onClick, agreed, bp_info }) => {
+const Preamble = ({ onClick, agreed, bp_info }) => {
   const classes = useStyles()
   return (
     <div className={cx(classes['Preamble'], agreed && classes['agreed'])}>
@@ -65,8 +65,8 @@ const Preamble = ({ classes, onClick, agreed, bp_info }) => {
         )}
       </p>
       <p>
-        Ballotpedia and EnCiv are teaming up to create a better way for candidates to be heard, and voters to learn
-        about their candidates.
+        Dana and EnCiv are teaming up to create a better way for candidates to be heard, and voters to learn about their
+        candidates.
       </p>
       <p>
         You are invited to engage in an application that will include you, as part of a publicly available online video
