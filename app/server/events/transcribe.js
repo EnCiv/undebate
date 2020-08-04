@@ -27,7 +27,7 @@ export function transcribeParticipantIota(participantIota, transcriber = streamT
         transcriber
       )
     } catch (err) {
-      logger.error('translateParticipantIota new recording caught error', speakingFile, err)
+      logger.error('translateParticipantIota new recording caught error', err)
       return ko(err)
     }
     try {
@@ -46,13 +46,19 @@ export function transcribeParticipantIota(participantIota, transcriber = streamT
 export function transcribeSpeakingList(speaking, transcriber = streamTranscribe) {
   return new Promise(async (ok, ko) => {
     var transcriptions = []
-    for await (const speakingFile of speaking) {
+    for await (const speakingURL of speaking) {
       try {
-        let convertedFile = speakingFile.replace('.mp4', '.wav').replace('/upload/', '/upload/fl_mono/') // some files might have 2 chanel audio which messes up transcription
-        const transcribeData = await transcriber(convertedFile)
+        let parts = speakingURL.split('.')
+        if (parts.length < 2) {
+          logger.error('transcribeSpeakingList unexpected speaking file type', speakingURL)
+          ko('transcribeSpeakingList unexpected speaking file type')
+        }
+        parts[parts.length - 1] = 'wav'
+        const wavURL = parts.join('.').replace('/upload/', '/upload/fl_mono/') // some files might have 2 chanel audio which messes up transcription
+        const transcribeData = await transcriber(wavURL)
         transcriptions.push(transcribeData)
       } catch (err) {
-        logger.error('transcribeSpeakingList caught error', speakingFile, err)
+        logger.error('transcribeSpeakingList caught error', speakingURL, err)
         ko(err)
       }
     }
