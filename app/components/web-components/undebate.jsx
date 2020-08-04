@@ -2376,17 +2376,18 @@ class Undebate extends React.Component {
   }
 
   preventPortraitRecording = () => {
-    const { browserConfig } = this.props
+    if (this.props.browserConfig.type !== 'phone') return // nothing to do here if not a phone
     const { isPortraitPhoneRecording } = this.state
-    const isRecording = this.isRecording()
-    let portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
-    if (browserConfig.type === 'phone' && !portraitMode && isRecording && isPortraitPhoneRecording) {
+    const portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
+    if (isPortraitPhoneRecording && !portraitMode) {
+      if (this.isRecordingSpeaking) this.rerecordButton()
+      else if (this.isRecordingPlaceHolder) this.allPlay()
       this.setState({ isPortraitPhoneRecording: false })
-      this.rerecordButton()
-    } else if (browserConfig.type === 'phone' && portraitMode && isRecording) {
-      this.ensurePaused()
+    } else if (!isPortraitPhoneRecording && portraitMode) {
+      if (this.isRecordingSpeaking()) this.ensurePaused()
+      else if (this.isRecordingPlaceHolder()) this.ensurePaused()
       this.setState({ isPortraitPhoneRecording: true })
-    }
+    } else return // just stay in this mode
   }
 
   isRecording() {
