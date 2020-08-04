@@ -10,6 +10,7 @@ const useStyles = createUseStyles({
     //steps area title
     '&>h3': {
       fontSize: '3rem',
+      fontWeight: 600,
     },
   },
   Steps: {
@@ -24,22 +25,23 @@ const useStyles = createUseStyles({
     padding: '2em',
 
     '& p': {
-      fontSize: '2rem',
+      fontSize: '1.33em',
+      color: '#646464',
+      fontWeight: 400,
     },
     '&>div>*': {
       margin: 0, //reset the margin on all the children first
     },
     '& h4': {
-      //fontSize: '2.5rem',
       marginBottom: '2rem',
     },
     '& .__title': {
-      fontWeight: '900',
-      fontSize: '3rem',
+      fontSize: '1.666em',
+      fontWeight: '700',
       //TODO: change the font Style for this so that it is bold.
     },
     '& .__icon': {
-      fontSize: '2.5rem',
+      height: '3.455em',
     },
   },
   stepLable: {

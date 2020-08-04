@@ -7,13 +7,24 @@ import StartRecordingButton from './StartRecordingButton'
 
 const useStyles = createUseStyles({
   container: {
-    '&>*': {
+    padding: '1px 2em',
+    color: 'white',
+    backgroundColor: 'black',
+    '&>*+*': {
       marginTop: '3em',
       marginBottom: '3em',
     },
+    //subtitle
+    '&>h3': {
+      fontSize: '1.33em',
+      fontWeight: '400',
+      letterSpacing: '0.005em',
+    },
+    //title
     '&>h2': {
-      fontSize: '5rem',
-      marginTop: '1.5em',
+      fontSize: '2em',
+      fontWeight: '600',
+      letterSpacing: '.025em',
       marginBottom: '1.5em',
     },
   },

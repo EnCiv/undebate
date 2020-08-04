@@ -11,6 +11,7 @@ const useStyles = createUseStyles({
       border: 'none !important',
       borderRadius: '0.2em',
       fontSize: '2rem',
+      fontWeight: 600,
       paddingLeft: '2em !important',
       paddingRight: '2em !important',
     },
