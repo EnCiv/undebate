@@ -2380,8 +2380,8 @@ class Undebate extends React.Component {
     const { isPortraitPhoneRecording } = this.state
     const portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
     if (isPortraitPhoneRecording && !portraitMode) {
-      if (this.isRecordingSpeaking) this.rerecordButton()
-      else if (this.isRecordingPlaceHolder) this.allPlay()
+      if (this.isRecordingSpeaking()) this.rerecordButton()
+      else if (this.isRecordingPlaceHolder()) this.allPlay()
       this.setState({ isPortraitPhoneRecording: false })
     } else if (!isPortraitPhoneRecording && portraitMode) {
       if (this.isRecordingSpeaking()) this.ensurePaused()
