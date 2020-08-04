@@ -22,7 +22,7 @@ const useStyles = createUseStyles({
     },
     //title
     '&>h2': {
-      fontSize: '2em',
+      fontSize: '2.66em',
       fontWeight: '600',
       letterSpacing: '.025em',
       marginBottom: '1.5em',

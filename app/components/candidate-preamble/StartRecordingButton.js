@@ -10,7 +10,7 @@ const useStyles = createUseStyles({
     '& button, & a': {
       border: 'none !important',
       borderRadius: '0.2em',
-      fontSize: '2rem',
+      fontSize: '1.6em',
       fontWeight: 600,
       paddingLeft: '2em !important',
       paddingRight: '2em !important',
