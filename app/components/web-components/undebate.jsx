@@ -1609,9 +1609,10 @@ class Undebate extends React.Component {
           this.requestPermissionElements.push(element)
           if (!this.state.requestPermission) this.setState({ requestPermission: true })
         } else if (err.name === 'AbortError') {
-          if (element.loop && element.autoplay && element.muted) return // safari generates this error but plays anyway - chome does not generate an error
+          return
+          /*if (element.loop && element.autoplay && element.muted) return // safari generates this error but plays anyway - chome does not generate an error
           this.requestPermissionElements.push(element)
-          if (!this.state.requestPermission) this.setState({ requestPermission: true })
+          if (!this.state.requestPermission) this.setState({ requestPermission: true })*/
         } else {
           logger.error('Undebate.playObjectURL caught error', err.name, err)
         }
