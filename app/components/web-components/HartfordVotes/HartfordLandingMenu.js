@@ -87,11 +87,7 @@ const useStyles = createUseStyles({
     height: '1em',
   },
   smallscreen: {
-    //display: 'grid',
     height: '4.9em',
-    //gridTemplateColumns: '1fr 1fr 2fr 1fr',
-    //gridTemplateRows: '1fr',
-    //gridTemplateAreas: `"logos-hartford logos-enciv . . ham"`,
     boxShadow: '0em 0.25em 0.2em rgba(0,0,0,0.1)',
     position: 'relative',
     zIndex: 2,
@@ -105,16 +101,16 @@ const HartfordLandingMenu = () => {
   let isPortrait = useMode()
 
   const arrayOfLinks = [
-    //{
-    //display: 'Find Your District',
-    //key: 'hartford-find-district',
-    //href: 'http://www.hartford.gov/images/registrar/SenatorialAssemblyandVotingDistrictwithPollingLocations.pdf',
-    //target: '_blank',
-    //},
     {
       display: 'FAQs',
       key: 'hartford-faq',
       href: '/hartford/faq',
+      target: '',
+    },
+    {
+      display: 'Candidate Bios',
+      key: 'hartford-candidate-bios',
+      href: '/hartford/bios',
       target: '',
     },
     {
