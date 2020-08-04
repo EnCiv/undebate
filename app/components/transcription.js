@@ -7,7 +7,7 @@ function getSeconds(wordTimeObj) {
 }
 
 const windowSeconds = 0
-const defaultFontSize = 1.75
+const defaultFontSize = 2.0
 
 function withinTime(wordObj, currentTime) {
   let startTime = getSeconds(wordObj.startTime)
