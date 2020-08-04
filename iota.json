@@ -7,7 +7,7 @@
     "subject": "Candidate Conversation with 5 participants",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -54,7 +54,7 @@
     "subject": "Candidate Conversation",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -145,6 +145,7 @@
     },
     "webComponent": {
       "webComponent": "Undebate",
+      "instructionLink": "https://docs.google.com/document/d/1fORs9PlLss9azlsnf0A0lxFoOzDQJ9RJ-zNRZ583SVo/edit?usp=sharing",
       "participants": {},
       "opening": {
         "line1": "Thank you for helping us create a mock candidate conversation.",
@@ -153,6 +154,14 @@
         "line4": "Candidate Recorder for:",
         "bigLine": "US School Board Candidate Conversation",
         "subLine": "Your video will be recorded, you will have the option to upload it or not at the end."
+      },
+      "closing": {
+        "thanks": "Thank You.",
+        "iframe": {
+          "src": "https://docs.google.com/forms/d/e/1FAIpQLSeh7kAVWpyjnSYmHhjfpjfalgznfDA_AF2xmrFB8ZzQj75Vyw/viewform?embedded=true",
+          "width": "640",
+          "height": "1511"
+        }
       }
     },
     "parentId": "5e7e88a67c213e3443f11dbf"
@@ -400,6 +409,15 @@
       "opening": {
         "noPreamble": true
       },
+      "logo": "none",
+      "instructionLink": "https://docs.google.com/document/d/1rTk1d7EP2SJxiXDJCG7opCO0-yNnVXhyiobwVoqo2is/edit?usp=sharing",
+      "metaTags": [
+        "property=\"og:title\" content=\"What is Democracy\"",
+        "property=\"og:image\" content=\"https://res.cloudinary.com/hf6mryjpf/image/upload/v1587412519/what-is-democracy-preview-2020Apr20_cl3ziv.png\""
+      ],
+      "hangupButton": {
+        "name": "Exit"
+      },
       "maxParticipants": 5,
       "webComponent": "Undebate",
       "participants": {
@@ -508,7 +526,7 @@
     "subject": "School Board Candidate Conversation - Candidate Conversation using Youtube Video",
     "description": "A prototype Candidate Conversation for schoolboard, using Youtube video",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "Undebate",
@@ -572,7 +590,7 @@
     "subject": "HackForLA Projects",
     "description": "HackForLA Projects",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -912,7 +930,7 @@
     "subject": "School Board Candidate Conversation",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "Undebate",
@@ -1194,7 +1212,7 @@
     "subject": "Candidate Conversation with 2 participants",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -1283,7 +1301,7 @@
     "subject": "Candidate Conversation with 3 participants",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -1393,7 +1411,7 @@
     "subject": "Candidate Conversation with 4 participants",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -1523,7 +1541,7 @@
     "subject": "Candidate Conversation with 6 participants",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -1695,7 +1713,7 @@
     "subject": "Candidate Conversation with 7 participants",
     "description": "A prototype Candidate Conversation for schoolboard",
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -1914,10 +1932,150 @@
   },
   {
     "_id": {
+      "$oid": "5ed325ee7c213e044cc03a46"
+    },
+    "path": "/hartford",
+    "subject": "City election in Hartford CT",
+    "description": "A prototype Candidate Conversation for schoolboard, using Youtube video",
+    "webComponent": {
+      "webComponent": "HartfordVotes",
+      "viewers": [
+        {
+          "district": 1,
+          "id": 7976,
+          "urls": [""]
+        },
+        {
+          "district": 3,
+          "id": 318,
+          "urls": [""]
+        },
+        {
+          "district": 4,
+          "id": 8254,
+          "urls": [""]
+        },
+        {
+          "district": 5,
+          "id": 9803,
+          "urls": [""]
+        },
+        {
+          "district": 6,
+          "id": 21641,
+          "urls": [""]
+        },
+        {
+          "district": 7,
+          "id": 6527,
+          "urls": [""]
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5eeb08c07c213e044cc5a719"
+    },
+    "path": "/hartford/faq",
+    "subject": "Frequently asked questions for the city election in Hartford CT",
+    "description": "An FAQ that answers common questions for voters participating in conversations with Candidates who vote in Hartford CT",
+    "webComponent": {
+      "webComponent": "FAQ",
+      "banner": "url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat",
+      "homelink": "/hartford",
+      "otherlink": "<a class=\"otherlink\" href=\"/hartford/faq-es\">Español</a>",
+      "page_title": "Frequently Asked Questions (FAQ)",
+      "questions_and_answers": [
+        {
+          "q": "Primary Date",
+          "a": "August 11th"
+        },
+        {
+          "q": "Primary Type",
+          "a": "Closed (must be registered in a party to vote in that party's primary.) Unaffiliated voters must declare a party in order to vote in a primary election by NOON the day before a primary. <strong>If you are switching parties, there is a 3-month waiting period.</strong>"
+        },
+        {
+          "q": "What's the Registration Deadline?",
+          "a": "August 6"
+        },
+        {
+          "q": "Who can register to vote in CT?",
+          "a": "Citizens of the United States including Puerto Rican  citizens currently residing in the United States; Living in Connecticut; AND 17 years old and turning 18 before election day."
+        },
+        {
+          "q": "Is Online Registration Available?",
+          "a": "Yes. Link: <a href=\"https://voterregistration.ct.gov/OLVR/welcome.do\" target=\"_blank\">https://voterregistration.ct.gov/OLVR/welcome.do</a>"
+        },
+        {
+          "q": "Is Same Day Registration Available?",
+          "a": "Yes, though if in person, needs to be at City Hall – not at your polling location."
+        },
+        {
+          "q": "Is Early Voting Available?",
+          "a": "No"
+        },
+        {
+          "q": "Is absentee voting available?",
+          "a": "You would need to file an application. All registered voters should have received the application in the mail. This application needs to be completed and submitted with sufficient time to receive and send in your absentee ballot."
+        },
+        {
+          "q": "Voter ID",
+          "a": "Non-photo ID acceptable"
+        },
+        {
+          "q": "Poll Times",
+          "a": "6am to 8pm, August 11"
+        },
+        {
+          "q": "Where can I find more information about Voting in Connecticut?",
+          "a": "<a href=\"https://ballotpedia.org/Voting_in_Connecticut\" target=\"_blank\">https://ballotpedia.org/Voting_in_Connecticut</a>"
+        },
+        {
+          "q": "What candidates that represent Hartford will be on the Aug 11 ballot in the August Primary?",
+          "a": "The only Hartford candidates in the August primary will be for State Representative in the 5th District in a Democratic Primary and Registrar of Voters in a Republican Primary.  There will also be presidential candidates in both Primaries."
+        },
+        {
+          "q": "Can I register to vote online?",
+          "a": "<p>Yes you can if you have a current and valid driver’s license, learner’s permit or non-driver photo identification card issued by the CT Department of Motor Vehicles (DMV) and a signature on file with DMV.</p><p>You may use the online system to (1) register to vote in Connecticut, (2) change your name and/or address on your current registration record, or (3) enroll in a political party or change party enrollment (changing parties may result in losing rights in all parties for three months). 4) change your address if you move within your current town of residence.</p><p>The link:  <a href=\"https://voterregistration.ct.gov/OLVR/welcome.do\" target=\"_blank\">https://voterregistration.ct.gov/OLVR/welcome.do</p>"
+        },
+        {
+          "q": "If I move out of town, am I still registered to vote?",
+          "a": "If you move you must re-register to vote in your new town of residence.  <strong>You must reregister every time you change your address!</strong>  Check online at <a href=\"https://Vote.org\" target=\"_blank\">Vote.org</a> to find out if you are registered to vote at your current address"
+        },
+        {
+          "q": "What is the deadline to register for the primary election",
+          "a": "If new registrants choose to apply by mail, the deadline for forms to be completed and mailed and either postmarked or received by the Registrar of Voters' office or a voter registration agency is five days before a primary election. If a new registrant chooses to register in person, the registration must be completed by 12:00PM the day before the primary election at Hartford’s Registrar of Voter’s or Town Clerk’s office."
+        },
+        {
+          "q": "What is the deadline to register for the general election",
+          "a": "The deadline is 14 days before a general election by mail, or seven days before in person. Your application must be postmarked or received by the Registrar of Voters' office or a voter registration agency by the 14th day before a general election. You may apply in person at the Registrars’ office or at the Town Clerk’s office by the seventh day before a general election."
+        },
+        {
+          "q": "How do I know if I am eligible to vote in the August Primary?",
+          "a": "You may vote in the primary in Connecticut if you will be at least 18 years old on or before the date of the election, if you are a resident of Connecticut and if you have not been convicted of a disenfranchising felony.  Registered Republicans will be able to vote in the Republican primary ballot and Registered Democrats will be able to vote in the Democrat primary ballot. <strong>If you are an Independent or unaffiliated, you will NOT be eligible to vote in the Primary Elections.</strong>"
+        },
+        {
+          "q": "Where do I go to vote in Hartford?",
+          "a": "Find your polling place: <a href=\"http://www.hartford.gov/registrar-of-voters/polling-places\" target=\"_blank\">http://www.hartford.gov/registrar-of-voters/polling-places</a>"
+        },
+        {
+          "q": "Who do I call if I feel my voting rights have been violated on election day?",
+          "a": "Call the  State Elections Enforcement Commission at  866-733-2463 or the U.S. Department of Justice at  800-253-3931."
+        },
+        {
+          "q": "What if I have no ID?",
+          "a": "<p>You can vote even if you don't have ID! Here's how!</p><p><strong><u>If you are voting for the FIRST time in federal election</u></strong><ul><li>you may be asked to present EITHER a copy of a current and valid photo identification that shows your name and address</li><li>OR a copy of a current utility bill, bank statement, government check, paycheck or government document that shows your name and address;</li><li><strong>OR you may cast a provisional ballot.</strong></li></ul>ALL OTHERS:<ul><li>EITHER your social security card;</li><li>OR any pre-printed form of identification that shows your name and address or name and signature, or name and photograph;</li><li>OR Sign Form ED-681 \"Signatures of electors who did not present ID\"</li></ul>"
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
       "$oid": "5ecd55eb7c213e044cbeebdf"
     },
     "component": {
-      "component": "MergeParticipants"
+      "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
@@ -2140,5 +2298,239 @@
     "subject": "President of the World",
     "description": "A Candidate Conversation Recorder for: President of the World, Election Date:2020-12-31",
     "parentId": "5ecd55eb7c213e044cbeebdf"
+  },
+  {
+    "_id": {
+      "$oid": "5ef28004e7179a4006925fb4"
+    },
+    "component": {
+      "component": "MergeChildren"
+    },
+    "webComponent": {
+      "webComponent": "CandidateConversation",
+      "closing": {
+        "thanks": "Thank You.",
+        "iframe": {
+          "src": "https://docs.google.com/forms/d/e/1FAIpQLSeh7kAVWpyjnSYmHhjfpjfalgznfDA_AF2xmrFB8ZzQj75Vyw/viewform?embedded=true",
+          "width": "640",
+          "height": "1511"
+        }
+      },
+      "shuffle": "bp_info_alphabetize",
+      "participants": {
+        "moderator": {
+          "name": "Sarah Rosier",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804991/5dfbd2cade08bc00174be9c2-0-speaking20191220T012308880Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804992/5dfbd2cade08bc00174be9c2-1-speaking20191220T012311425Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804993/5dfbd2cade08bc00174be9c2-2-speaking20191220T012312246Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804993/5dfbd2cade08bc00174be9c2-3-speaking20191220T012312981Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804995/5dfbd2cade08bc00174be9c2-4-speaking20191220T012313581Z.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1576804997/5dfbd2cade08bc00174be9c2-5-speaking20191220T012315245Z.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Name",
+              "2- City and State",
+              "3- One word to describe yourself",
+              "4- What office are you running for?"
+            ],
+            ["What do you love most about where you live?"],
+            ["What inspired you to run for office?"],
+            ["If elected, how will you know you that you've succeeded in this position?"],
+            ["Thank you!"]
+          ],
+          "timeLimits": [15, 30, 30, 30]
+        }
+      }
+    },
+    "path": "/country:us/state:ct/state-legislative-upper:connecticut-state-senate-district-2/stage:primary/party:democratic-party/2020-08-11-qa",
+    "subject": "Connecticut State Senate District 2",
+    "bp_info": {
+      "stage_id": "123456789",
+      "election_date": "2020-08-11",
+      "race": {
+        "id": "123456789",
+        "year": 2020,
+        "type": "Regular",
+        "office": {
+          "id": "8218",
+          "name": "Connecticut State Senate District 2",
+          "level": "State",
+          "branch": "Legislative",
+          "district": {
+            "id": "771",
+            "name": "Connecticut State Senate District 2",
+            "type": "State Legislative (Upper)",
+            "state": "CT"
+          }
+        }
+      }
+    },
+    "description": "A Candidate Conversation for: Connecticut State Senate District 2 Election Date:2020-08-11. This is a manually build record for QA testing"
+  },
+  {
+    "_id": {
+      "$oid": "5f0512f67c213e16a464d66c"
+    },
+    "path": "/hartford/about",
+    "subject": "Important information regarding relevant organizations and general information for the city election in Hartford CT",
+    "description": "About page for elections in the city of Hartford CT",
+    "webComponent": {
+      "webComponent": "About",
+      "banner": "url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat",
+      "homelink": "/hartford",
+      "content": "<p><i>In response to the current pandemic, the following organizations have collaborated to develop this site to keep Hartford’s residents and their candidates for elected office safe and informed</i></p><h3><div style='height: 4.5em; text-align:center; '><img style='height: 100%; ' src=\"https://res.cloudinary.com/hf6mryjpf/image/upload/v1591726798/assets/HVC_Logo-1.png\" alt=\"Hartford Votes ~ Vota Coalition logo\"/></div></h3><p>The Hartford Votes/Hartford Vota Coalition includes thirteen organizations and agencies that work together to increase voter engagement in Hartford CT. The Coalition is nonpartisan.</p> <h3> <div style='height: 3.5em; text-align:center;'><img style='height: 100%;' src=\"https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png\" alt=\"EnCiv logo\"/></div></h3> <p>EnCiv is a non-profit, transpartisan organization that develops online tools for citizen engagement. EnCiv's Candidate Conversation tool is being made available on Ballotpedia's website. </p> <h3> <div style='height: 2.5em; text-align:center;'><img style='height: 100%;' src=\"https://ballotpedia.org/wiki/skins/Ballotpedia/images/bp-logo.svg\" alt=\"Ballotpedia logo\"/></div></h3> <p>Ballotpedia is the digital encyclopedia of American politics and elections. Ballotpedia connects people with politics by changing the way they access the information they need to be informed about federal, state, and local politics. Ballotpedia currently has over 303,000 encyclopedic articles and offers daily, weekly, and monthly email newsletters on a variety of specialized topics.</p><p>Questions: <a href=\"HartfordVota@gmail.com\" target=\"_blank\">HartfordVota@gmail.com</a></p>"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5f17490b7c213e0f5779c054"
+    },
+    "path": "/hartford/bios",
+    "subject": "candidate bios for elections in Hartford CT",
+    "description": "a page with dropdown tabs containing bios for candidates running in Hartford CT",
+    "webComponent": {
+      "webComponent": "FAQ",
+      "banner": "url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat",
+      "homelink": "/hartford",
+      "otherlink": "<a class=\"otherlink\" href=\"/hartford/bios-es\">Español</a>",
+      "current_location": "BIOS",
+      "page_title": "Bios for Candidates Running for Office in Hartford, CT",
+      "questions_and_answers": [
+        {
+          "q": "Brandon McGee Jr.",
+          "a": "<p>Brandon L. McGee Jr., is serving his fourth term as a State Representative, seeking re-election for the 5th Assembly District, to continue advocating for residents in Windsor and Hartford. A Hartford native, Brandon takes on a holistic approach when influencing policy throughout our state and has continuously advocated for equity in education, criminal justice reform, voter registration and empowerment for people of color and their communities. He also took part in passing one of the nation’s most generous Paid Family and Medical Leave laws. Brandon currently serves as Chairman of the Connecticut legislature's Housing Committee and Co-Chair of the Black and Puerto Rican Caucus. He also serves on the Education Committee and the Human Services Committee. While having earned his Bachelor’s degree from Alabama State University, he went on to pursue an M.S. from Albertus Magnus College. Utilizing his skillset and experience, afforded him the opportunity to work alongside constituents, serving on numerous boards that aim to enhance communal resources, that of, Ascend Mentoring and BSL Education Foundation (President), Citadel of Love Church (Deacon), Hartford Behavioral Health, and Jewish Family Services.</p><p>Throughout his career, he's received an abundance of awards for his civic work. Brandon remains as the Chief Creative Officer of the McGee Firm in Hartford, and is employed at the Capitol Region Education Council. He currently lives in Hartford with his wife and two daughters.</p>"
+        },
+        {
+          "q": "Craig Stallings",
+          "a": "<p>Craig is Former Chairman of the Hartford Board of Education, currently serving as a Board Member. He has been a PTO president at two Hartford schools and was coordinator of the original governance council at Thirman Milner School.</p><p>As Chairman he had over site of the completion of the Weaver High School Project. As well as making sure that the funding was secured for the renovation project of the <i>MLK</i> School. Noted it is the only in the State of CT. It is slated to be completed and open for school year 2020 - 2021.</p><p>He has been Co-Owner and Marketing Manager for Stallings Tax Service LLC since 2006, as well as having worked out of the home as a customer service representative for Tele-Tech, contracted to work for Bank of America.</p><p>A graduate of Weaver High School, he has attended Capital and Manchester Community Colleges and the University of Hartford and is father to three young men, one whom is currently a Police Cadet at HPD and the other two are still attending the Hartford Public School system.</p>"
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5f186c537c213e0f5779f196"
+    },
+    "path": "/hartford/faq-es",
+    "subject": "Frequently asked questions for the city election in Hartford CT in spanish",
+    "description": "An FAQ that answers common questions for voters participating in conversations with Candidates who vote in Hartford CT in spanish",
+    "webComponent": {
+      "webComponent": "FAQ",
+      "banner": "url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat",
+      "homelink": "/hartford",
+      "otherlink": "<a class=\"otherlink\" href=\"/hartford/faq\">English</a>",
+      "page_title": "Preguntas Y Contestaciones",
+      "questions_and_answers": [
+        {
+          "q": "Fecha de la primaria",
+          "a": "11 de Agosto"
+        },
+        {
+          "q": "Tipo de primaria",
+          "a": "Restricta (el votante debe de estar inscrito con el Partido político que lleva a cabo la primaria). Votantes no afiliados a algún Partido deben declarse parte de un Partido no más tarde el medio dia anterior para poder votar en la primaria.<b> Si usted decide cambiarse de Partido, hay un período de espera de 3 meses</b>."
+        },
+        {
+          "q": "¿Cuál es la fecha final para inscribirse?  ",
+          "a": "6 de Agosto"
+        },
+        {
+          "q": "¿Quién puede inscribirse para votar en CT?",
+          "a": "Ciudadanos de los Estados Unidos de América (EE.UU.AA.) incluyendo ciudadanos Puertorriqueños que residen en cualquier estado de los EE.UU.AA.; que viven en Connecticut; Y que cumplen con 17 años de edad pero cumplirán la edad de 18 años antes del Día de Elecciones.  "
+        },
+        {
+          "q": "¿Es permitido inscribirse como votante por medio de la internet?",
+          "a": "Sí. Enlace:  <a target=\"_blank\" href=\"https://voterregistration.ct.gov/OLVR/welcome.do\">https://voterregistration.ct.gov/OLVR/welcome.do</a> "
+        },
+        {
+          "q": "¿Es permitido inscribirse como votante el Día de Elecciones?",
+          "a": "Sí, pero si se inscribe en persona, debe de acudir al Municipio (Registrador de Votantes) y no en su lugar de votación."
+        },
+        {
+          "q": "¿Es permitido votar antes del Día de Elecciones?  ",
+          "a": "No"
+        },
+        {
+          "q": "¿Es permitido votar como votante en ausencia?",
+          "a": "Es permitido si usted somete una solicitud para votar en ausencia. Todos los votantes habrán ya recibido tal solicitud por correo postal. Usted debe llenarla y someterla con suficiente tiempo para luego poder recibir y enviar su papeleta de voto en ausencia.  "
+        },
+        {
+          "q": "¿Qué tipo de identificación necesito",
+          "a": "Usted puede proveer identificación sin foto"
+        },
+        {
+          "q": "¿Cuales son los horarios de los lugares de votación?",
+          "a": "Entra las 6 de la madrugada hasta las 8 de la noche el 11 de Agosto."
+        },
+        {
+          "q": "¿Donde puedo encontrar más información de como votar en Connecticut?",
+          "a": "<a target=\"_blank\"  href=\"https://ballotpedia.org/Voting_in_Connecticut\"> https://ballotpedia.org/Voting_in_Connecticut</a>"
+        },
+        {
+          "q": "- ¿Qué candidatos representando a Hartford estarán en la papeleta de votación en la primaria del 11 de Agosto?",
+          "a": "Los únicos candidatos de Hartford en la primaria de Agosto serán los Representantes Estatales (Asambleístas) del Distrito 5 in la primaria del Partido Demócrata y los Registradores de Votantes en la primaria Republicana. Habrán también candidatos a la Presidencia de los EE.UU.AA. en las primarias de ambos Partidos."
+        },
+        {
+          "q": "¿Puedo inscribirme por el internet?",
+          "a": "<p> Usted puede inscribirse por internet si tiene una licencia de conducir válida, un permiso de conducir como aprendíz, o una tarjeta oficial de identificación con foto y su firma suministrada por el Departamento de Vehículos de Connecticut (DMV).</p> <p>Usted puede usar el sistema de inscripción de votantes por internet para: </p><ol><li> inscribirse como votante en Connecticut,</li> <li> cambiar su nombre ó dirección como votante ya inscrito, ó</li><li> inscribirse a un partido político o cambiar de partido político (reconociendo que pierde ciertos derechos con el partido anterior por un período de tres meses), ó </li><li> cambiar su dirección si se muda a otro lugar en su actual pueblo o ciudad.</li></ol> <p> El enlace: <a target=\"_blank\"  href=\"https://voterregistration.ct.gov/OLVR/welcome.do\">https://voterregistration.ct.gov/OLVR/welcome.do</a></p> "
+        },
+        {
+          "q": "Si me mudo de pueblo o ciudad, ¿sigo aún inscrito como votante?",
+          "a": "Si se muda de pueblo o ciudad, usted debe re-inscribirse para votar en su nuevo pueblo o ciudad de residencia."
+        },
+        {
+          "q": "¿Cuál es la fecha final para inscribirme como nuevo votante?",
+          "a": "Si usted opta por inscribirse por correo como nuevo votante, la fecha final para completar y enviar su solicitud de inscripción, sea fecha de matasellos o recibida por la Oficina de Registrador de Votantes ó agencia oficial para registro de votantes, es CINCO dias antes de las Elecciones Primarias. Si usted opta por inscribirse en persona como nuevo votante, debe inscribirse no más tarde de las 12 del medio dia el dia antes de las Elecciones Primarias. Por lo tanto, debe acudir a la Oficina de Registrador de Votantes ó la Secretaría Municipal (Town Clerk).  "
+        },
+        {
+          "q": "¿Cual es la fecha final para inscribirme para las votar en las Elecciones Generales?  ",
+          "a": "La fecha final es 14 dias antes de las Elecciones Generales si se inscribe por correo, o 7 dias antes si se inscribe en persona. Su solicitud debe de llegar, sea con fecha de matasello ó recibida por el Registrador de Votantes ó la Secretaría Municipal no más de 14 dias antesde las Elecciones Generales. Usted puede inscribirse en persona en las oficinas del Registrador de Votantes ó en la Secretaría Municipal no más tarde del séptimo dia antes de las Elecciones Generales."
+        },
+        {
+          "q": "¿Como puedo saber si soy eligible para votar en las Elecciones Primarias del 11 de Agosto?",
+          "a": "Usted puede votar en las elecciones primarias en Connecticut si cumple la edad de 18 años antes ó el dia de elecciones, si es residente en el estado de Connecticut, y si no ha sido sentenciado y encarcelado por un delito mayor que lo descalifique como votante en el estado. Votantes inscritos como republicanos podrán votar en la primaria del Partido Republicano, y los votantes inscritos como demócratas podrán votar en la primaria del Partido Demócrata. <b>Si usted es un votante independiente ó no afiliado a algún partido político, no podrá votar en las Elecciones Primarias en Agosto</b>."
+        },
+        {
+          "q": "¿Donde puedo votar en Hartford?",
+          "a": "encuentre su lugar de votación aquí: <a target=\"_blank\"  href=\"http://www.hartford.gov/registrar-of-voters/polling-places\">http://www.hartford.gov/registrar-of-voters/polling-places</a> "
+        },
+        {
+          "q": "¿A quién debo llamar si mis derechos como votante han sido violados?",
+          "a": "Usted puede llamar a la State Elections Enforcement Commission (Comisión Estatal de Elecciones) al 866-733-2463 ó al U.S. Department of Justice (Departamento de Justicia de los EE.UU.AA.) al 800-253-3931."
+        },
+        {
+          "q": "¿Qué sucede si no tengo tarjeta identificación?  ",
+          "a": "<p>!Usted puede votar aunque no tenga tarjeta de identificación! Es así de simple:</p> <p><b>Si está votando por PRIMERA VEZ en elecciones federales:</b></p> <ul> <li>Tendrá que presentar una copia al corriente de identificación válida que muestre su nombre complete y dirección de residencia;</li> <li>Ó, una copia de una facture de electricidad, documento de cuenta bancaria, cheque del gobierno, cheque de pago de su trabajo, u otro documento del gobierno que muestre su nombre completo y dirección de residencia</li> <li>Ó usted puede también optar por votar con una <b>papeleta de voto provisional</b></li> </ul> <p>Otros votantes:</p> <ul> <li>Tendrán que mostrar tarjeta del Seguro Social;</li> <li>Ó cualquier otro documento escrito que muestre su nombre complete y dirección de residencia o su nombre y firma, ó su nombre y foto;</li> <li>Ó, podrá llenar y firmar el formulario ED-681 \"Signatures of electors who did not present ID\" (Documento firmado con la firma de votantes que no rindieron identificación alguna)</li> </ul> "
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5f1fcbc27c213e0f577aef83"
+    },
+    "path": "/hartford/bios-es",
+    "subject": "candidate bios for elections in Hartford CT in Spanish",
+    "description": "a page with dropdown tabs containing bios for candidates running in Hartford CT in Spanish",
+    "webComponent": {
+      "webComponent": "FAQ",
+      "banner": "url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat",
+      "homelink": "/hartford",
+      "otherlink": "<a class=\"otherlink\" href=\"/hartford/bios\">English</a>",
+      "current_location": "BIOS",
+      "page_title": "Datos biográficos de los candidatos políticos de Hartford, CT",
+      "questions_and_answers": [
+        {
+          "q": "Brandon McGee Jr.",
+          "a": "<p>Brandon L. McGee Jr. está cumpliendo su cuarto término en el cargo como Representante Estatal y en búsqueda de su re-elección al mismo para continuar abogando por los residentes de Windsor y Hartford en el Distrito 5 de la Asamblea Estatal. Nacido en Hartford, Brandon se enfoca ampliamente en influenciar las políticas públicas en el estado y ha persistido en abogar por la equitatividad en la educación, la reforma del sistema judicial, la inscripción de votantes, y el empoderamiento por las personas de color y sus comunidades. El también tomó parte en la aprobación de la ley más favorable en la nación en relación al pago por tiempo para atención familiar y médica (Paid Family and Medical Leave). Brandon actualmente asume el cargo de Presidente del Comité de Vivienda así como de Vice-Presidente del Grupo de Consulta Política Afro-Americano y Puertorriqueño de la legislatura estatal. También rinde labor en el Comité de Educación y el de Servicios Humanos. Luego de obtener el Bachillerato en Alabama State University, el se graduó con Maestría en Ciencias de la Albertus Magnus College. Disponiendo de sus facultades, destrezas y experiencia, ha colaborado con sus constituyentes en numerosos organismos y juntas directivas para aumentar los recursos comunitarios, entre ellos Ascend Mentoring, BSL Education Foundation (en el cual ejerció el cargo de Presidente), Citadel of Love Church (como Díacono), Hartford Behavioral Health, y Jewish Family Services.</p><p>Durante su trayectoria professional, ha recibido numerosos galardones por su labor cívica. Brandon continúa ejerciendo el puesto de Oficial Creativo en su empresa McGee Firm en Hartford, y también trabaja en Capitol Region Education Council. Actualmente reside en Hartford con su esposa y dos hijas.</p>"
+        },
+        {
+          "q": "Craig Stallings",
+          "a": "<p>Craig Stallings se distinguió como Presidente y miembro de la Junta de Educación de Hartford. Fue Presidente del PTO (Grupos de Padres y Maestros) en dos de las escuelas en Hartford y fue coordinador del concilio original de gobierno en la escuela Thirman L. Milner School.</p><p> Como Presidente de la Junta de Educación, él supervisó el Proyecto de la Escuela Superior Weaver y, además, se aseguró que se aprobaran fondos para el proyecto de renovación de la <i>MLK</i> School, la única de su índole en el estado y la cual será inagurada en el año escolar 2020-2021.</p><p>Craig es co-fundador y gerente de Stallings Tax Service LLC desde el 2006, y también trabajó como representante de servicios a los clientes en la empresa Tele-Tech, bajo contrato con Bank of America.</p><p>Graduado de Weaver High School, terminó sus estudios en Capital Community College, Manchester Community College, y University of Hartford. Craig es el padre de tres varones, uno de ellos Cadete en el Departamento de Policía de Hartford y los otros dos aún estudiantes en las escuelas públicas de Hartford.</p>"
+        }
+      ]
+    }
   }
 ]

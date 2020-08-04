@@ -1,5 +1,5 @@
 'use strict'
-import React from 'react'
+import React, { useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import Button from './button'
 import cx from 'classnames'
@@ -31,8 +31,9 @@ candidate_questions=[
   ]
  */
 
-function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questions }) {
+function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questions, instructionLink, timeLimits }) {
   const classes = useStyles()
+  const [isPortrait, togglePortrait] = useState(false)
   const makeQuestions = (className, questions, keyIndex = 'mq') => {
     return (
       <ul className={className}>
@@ -40,12 +41,17 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
           typeof question === 'string' ? (
             <li key={keyIndex + '-' + index}>{question}</li>
           ) : question.length === 1 ? (
-            <li key={keyIndex + '-' + index}>{question[0]}</li>
+            <li key={keyIndex + '-' + index}>
+              <strong>[ {timeLimits[index]} seconds ]</strong> {question[0]}
+            </li>
           ) : question[0][0] >= '0' && question[0][0] <= '9' ? (
-            <li>{makeQuestions(classes.questionListInnerHeadless, question, keyIndex + index)}</li>
+            <li>
+              <strong>[ {timeLimits[index]} seconds ]</strong>
+              {makeQuestions(classes.questionListInnerHeadless, question, keyIndex + index)}
+            </li>
           ) : (
             <li>
-              {question[0]}
+              <strong>[ {timeLimits[index]} seconds ]</strong> {question[0]}
               {makeQuestions(classes.questionListInner, question.slice(1), keyIndex + index)}
             </li>
           )
@@ -56,8 +62,12 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
 
   return (
     <div className={cx(classes['Preamble'], agreed && classes['agreed'])}>
-      <ConversationHeader subject={subject} bp_info={bp_info} />
-      <div className={classes['Preamble-inner']}>
+      <ConversationHeader
+        subject={subject}
+        bp_info={bp_info}
+        handleOrientationChange={choice => togglePortrait(choice)}
+      />
+      <div className={cx(classes['Preamble-inner'], isPortrait ? classes['portrait'] : undefined)}>
         <h2>
           Welcome{' '}
           {bp_info && bp_info.candidate_name ? (
@@ -93,6 +103,14 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
             Or, hitting the <b>Hang Up</b> button or closing this window any time before hitting the <b>Post</b> button
             will cause any recordings to be discarded.
           </li>
+          {instructionLink && (
+            <li>
+              You can continue and each step will be explained one at a time, or you can review written instructions{' '}
+              <a target="#" href={instructionLink}>
+                here
+              </a>
+            </li>
+          )}
         </ul>
         <h2 style={{ marginBottom: '0.5rem' }}>Questions for Candidates</h2>
         {makeQuestions(
@@ -128,10 +146,10 @@ const useStyles = createUseStyles({
     },
   },
   PreambleList: {
-    paddingTop: '0.5em',
+    paddingTop: '0.4em',
     paddingLeft: '2em',
     '& li': {
-      paddingBottom: '0.5em',
+      paddingBottom: '0.4em',
     },
   },
   agreed: {},
@@ -142,6 +160,9 @@ const useStyles = createUseStyles({
     marginTop: '6vh',
     // need to have someting here for portrait mode - but don't record in portrait mode for now.
   },
+  portrait: {
+    marginTop: '20vh',
+  },
   questionList: {
     listStyleType: 'upper-alpha',
     marginTop: 0,
@@ -149,7 +170,7 @@ const useStyles = createUseStyles({
     padding: '0',
     paddingLeft: '2em',
     '& li': {
-      paddingTop: '0.5em',
+      paddingTop: '0.4em',
     },
   },
   questionListInner: {

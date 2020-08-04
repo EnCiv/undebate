@@ -41,6 +41,8 @@ import supportsVideoType from '../lib/supports-video-type'
 
 import { auto_quality, placeholder_image } from '../lib/cloudinary-urls'
 import createParticipant from '../lib/create-participant'
+import Modal from './Modal'
+import Icon from '../lib/icon'
 
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
@@ -515,16 +517,13 @@ const styles = {
   note: {
     position: 'absolute',
     'background-color': 'lightyellow',
-    top: 'calc( 50vh - (25vw / 2) )', // yes vh - vw because the box is square
+    top: 'calc( ( 100vh - min( 50vw, 50vh)) / 2 )',
     padding: '1em',
-    width: '25vw',
-    height: '25vw', // yes vw because it's supose to be square
+    width: 'calc( min(50vw, 50vh) )',
+    height: 'calc( min(50vw, 50vh) )',
     'box-shadow': `${ShadowBox}px ${ShadowBox}px ${ShadowBox}px grey`,
-    //transform: 'rotate(-2deg)',
-    //'font-family': 'Comic Sans MS',
-    left: 'calc( 50vw - (25vw / 2))',
+    left: 'calc( ( 100vw - min( 50vw, 50vh)) / 2 )',
     'font-weight': '600',
-    'font-size': '125%',
     display: 'table',
     transition: 'all .5s linear',
     '&$finishUp': {
@@ -602,17 +601,12 @@ const styles = {
 }
 
 class Undebate extends React.Component {
-  render() {
-    return <RASPUndebate {...this.props} />
-  }
-}
-
-class RASPUndebate extends React.Component {
   static onYouTubeIframeAPIReadyList = []
   retries = {}
   requestPermissionElements = []
   preFetchList = []
   youtubePlayers = []
+  uploadStarted = false
   constructor(props) {
     super(props)
     if (typeof window !== 'undefined') {
@@ -731,6 +725,7 @@ class RASPUndebate extends React.Component {
     allPaused: true, // so the play button shows
     warmup: false,
     isRecording: false,
+    isPortraitPhoneRecording: false,
 
     seatStyle: {
       speaking: {
@@ -1053,6 +1048,7 @@ class RASPUndebate extends React.Component {
       let calculatedStyles = this.calculateStyles(width, height, maxerHeight, fontSize)
       this.setState({ left: -x + 'px', fontSize, ...calculatedStyles })
     }
+    this.preventPortraitRecording()
   }
 
   calculateStyles(width, height, maxerHeight, fontSize) {
@@ -1613,9 +1609,10 @@ class RASPUndebate extends React.Component {
           this.requestPermissionElements.push(element)
           if (!this.state.requestPermission) this.setState({ requestPermission: true })
         } else if (err.name === 'AbortError') {
-          if (element.loop && element.autoplay && element.muted) return // safari generates this error but plays anyway - chome does not generate an error
+          return
+          /*if (element.loop && element.autoplay && element.muted) return // safari generates this error but plays anyway - chome does not generate an error
           this.requestPermissionElements.push(element)
-          if (!this.state.requestPermission) this.setState({ requestPermission: true })
+          if (!this.state.requestPermission) this.setState({ requestPermission: true })*/
         } else {
           logger.error('Undebate.playObjectURL caught error', err.name, err)
         }
@@ -1943,6 +1940,7 @@ class RASPUndebate extends React.Component {
   startRecording(cb, visible = false) {
     this.camera.startRecording(cb)
     if (visible) this.setState({ isRecording: true })
+    this.preventPortraitRecording()
   }
 
   stopRecording() {
@@ -2037,26 +2035,26 @@ class RASPUndebate extends React.Component {
       if (this.rerecord) {
         this.recordWithWarmup(timeLimit, round)
       } else if (!this.participants.human.speakingObjectURLs[round]) {
-        this.recordWithCountdown(timeLimit, round)
+        this.recordWithCountdown(timeLimit, round, TransitionTime)
       }
     }
   }
 
-  recordWithCountdown(timeLimit, round) {
-    this.startCountDown(timeLimit, () => this.autoNextSpeaker())
+  recordWithCountdown(timeLimit, round, delay) {
+    this.startCountDown(timeLimit, () => this.autoNextSpeaker(), delay)
     this.startTalkativeTimeout(timeLimit * 0.75)
     this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs), true)
   }
 
   recordWithWarmup(timeLimit, round) {
     const warmupSeconds = 3
-    this.warmupCountDown(warmupSeconds, () => this.recordWithCountdown(timeLimit, round))
+    this.warmupCountDown(warmupSeconds, () => this.recordWithCountdown(timeLimit, round, 0))
   }
 
   recordFromSpeakersSeat(listeningSeat, timeLimit, round) {
     if (listeningSeat === 'speaking') {
       // recording the listening segment from the speakers seat
-      this.startCountDown(timeLimit, () => this.autoNextSpeaker())
+      this.startCountDown(timeLimit, () => this.autoNextSpeaker(), TransitionTime)
     }
     this.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
   }
@@ -2105,6 +2103,9 @@ class RASPUndebate extends React.Component {
   }
 
   onUserUpload() {
+    if (this.uploadStarted) return
+    // prevent double uploads - the users might double click the upload button
+    else this.uploadStarted = true
     logger.info('Undebate.onUserUpload')
     logger.trace('onUserUpload', this.props)
     const userId = (this.props.user && this.props.user.id) || this.state.newUserId
@@ -2113,20 +2114,21 @@ class RASPUndebate extends React.Component {
     )
   }
 
-  startCountDown(seconds, finishFunc) {
+  startCountDown(seconds, finishFunc, startDelay = TransitionTime) {
+    // startDelay is used to allow the moving windows to move into position before recording starts, but when rerecording there is no need
     const counter = sec => {
       if (sec > 0) {
         this.countdownTimeout = setTimeout(() => counter(sec - 1), 1000)
-        this.setState({ countDown: sec })
+        this.setState({ warmup: false, countDown: sec })
       } else {
         this.countdownTimeout = 0
         finishFunc && setTimeout(finishFunc) // called after timeout to avoid setState collisions
-        if (this.state.countDown !== 0) this.setState({ countDown: 0 })
+        if (this.state.countDown !== 0) this.setState({ warmup: false, countDown: 0 })
       }
     }
 
     if (this.countdownTimeout) clearTimeout(this.countdownTimeout)
-    this.countdownTimeout = setTimeout(() => counter(seconds), TransitionTime) // can't call setState from here because it will collide with the setstate of the parent event handler
+    this.countdownTimeout = setTimeout(() => counter(seconds), startDelay) // can't call setState from here because it will collide with the setstate of the parent event handler
   }
 
   stopCountDown() {
@@ -2147,11 +2149,20 @@ class RASPUndebate extends React.Component {
   }
 
   warmupCountDown(seconds, finishFunc) {
-    this.setState({ warmup: true, countDown: seconds })
-    this.startCountDown(seconds, () => {
-      finishFunc()
-      this.setState({ warmup: false })
-    })
+    // for warmUp it should be 3..2..1..60...59
+    const stopAt = 1
+    const counter = sec => {
+      if (sec > stopAt) {
+        this.countdownTimeout = setTimeout(() => counter(sec - 1), 1000)
+        this.setState({ warmup: true, countDown: sec })
+      } else {
+        this.countdownTimeout = 0
+        this.setState({ warmup: true, countDown: sec })
+        setTimeout(finishFunc, 1000) // do the finish on the next tick
+      }
+    }
+    if (this.countdownTimeout) clearTimeout(this.countdownTimeout) // if users clicks again on the redo button within the coundown time
+    counter(seconds)
   }
 
   onIntroEnd() {
@@ -2365,8 +2376,71 @@ class RASPUndebate extends React.Component {
     } else this.setState({ intro: true, stylesSet: true, allPaused: false }, () => this.onIntroEnd())
   }
 
+  preventPortraitRecording = () => {
+    if (this.props.browserConfig.type !== 'phone') return // nothing to do here if not a phone
+    const { isPortraitPhoneRecording } = this.state
+    const portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
+    if (isPortraitPhoneRecording && !portraitMode) {
+      if (this.isRecordingSpeaking()) {
+        this.setState({ isPortraitPhoneRecording: false }, () => this.rerecordButton())
+      } else if (this.isRecordingPlaceHolder()) {
+        const speakingNow = this.speakingNow()
+        if (speakingNow !== 'human') this.participants[speakingNow].element.current.currentTime = 0 // rewind the speaker
+        this.setState({ isPortraitPhoneRecording: false }, () =>
+          setTimeout(() => {
+            this.allPlay()
+            setTimeout(() => this.rerecordButton(), 1000)
+          }, TransitionTime)
+        ) // wait for the user to settle before starting to record the place holder video
+      }
+    } else if (!isPortraitPhoneRecording && portraitMode) {
+      if (this.isRecordingSpeaking()) {
+        this.ensurePaused()
+        this.setState({ isPortraitPhoneRecording: true })
+      } else if (this.isRecordingPlaceHolder()) {
+        this.ensurePaused()
+        this.setState({ isPortraitPhoneRecording: true })
+      }
+    }
+  }
+
+  isRecording() {
+    return this.isRecordingPlaceHolder() || this.isRecordingSpeaking()
+  }
+
+  isRecordingPlaceHolder() {
+    const { participants } = this.props
+    const { round, reviewing } = this.state
+    if (participants.human) {
+      const { listeningRound, listeningSeat } = this.listening()
+      if (listeningRound === round && listeningSeat === this.seatOfParticipant('human')) {
+        const reviewingAndNotReRecording = reviewing && !this.rerecord
+        if (!reviewingAndNotReRecording) return true
+      }
+    }
+    return false
+  }
+
+  isRecordingSpeaking() {
+    return this.speakingNow() === 'human'
+  }
+
   render() {
-    const { className, classes, opening = {}, closing = { thanks: 'Thank You' }, bp_info = {} } = this.props
+    const {
+      className,
+      classes,
+      opening = {},
+      closing = { thanks: 'Thank You' },
+      bp_info = {},
+      instructionLink,
+      subject,
+      browserConfig,
+      participants,
+      user,
+      hangupButton = {},
+      logo,
+      path,
+    } = this.props
     const {
       round,
       finishUp,
@@ -2385,7 +2459,25 @@ class RASPUndebate extends React.Component {
       introStyle,
       stylesSet,
       conversationTopicStyle,
+      isRecording,
+      isPortraitPhoneRecording,
       reviewing,
+      uploadComplete,
+      hungUp,
+      preFetchQueue,
+      name,
+      firstName,
+      lastName,
+      newUserId,
+      progress,
+      fontSize,
+      stalled,
+      waitingPercent,
+      totalSize_before_hangup,
+      countDown,
+      errorMsg,
+      left,
+      preambleAgreed,
     } = this.state
 
     const getIntroStyle = name =>
@@ -2393,38 +2485,25 @@ class RASPUndebate extends React.Component {
     const innerWidth = typeof window !== 'undefined' ? window.innerWidth : 1920
     const humanSpeaking = this.speakingNow() === 'human'
 
-    //const scrollableIframe=done && !this.state.hungUp && closing.iframe && (!this.participants.human || (this.participants.human && this.state.uploadComplete));
-    const scrollableIframe = done && this.props.participants.human
-    /*
-      (done &&
-        !this.state.hungUp &&
-        closing.iframe &&
-        (!this.participants.human || (this.participants.human && this.state.uploadComplete))) ||
-      (done && this.state.hungUp && closing.iframe && this.participants.human)
-*/
-    const bot = this.props.browserConfig.type === 'bot'
+    const scrollableIframe = done && participants.human
+    const bot = browserConfig.type === 'bot'
     const noOverlay = this.noOverlay
 
     if (this.canNotRecordHere || (this.camera && this.camera.canNotRecordHere)) {
       return (
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
-          <img style={getIntroStyle('introRight')} src="/assets/images/female_hands_mug.png" />
-          <img style={getIntroStyle('introLeft')} src="/assets/images/male_hands_mug.png" />
-          <img style={getIntroStyle('introTopLeft')} src="/assets/images/left_flowers.png" />
-          <img style={getIntroStyle('introTopRight')} src="/assets/images/right_flowers.png" />
+          <ConversationHeader subject={subject} bp_info={bp_info} logo={logo} />
           <div className={classes['note']}>
-            <div style={{ width: '100%', height: '100%', display: 'table' }}>
-              <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-                <p style={{ fontSize: '150%' }}>We're still building this.</p>
-                <p>Recording is not supported by this browser yet. Please try Chrome for now.</p>
-              </div>
+            <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
+              <p style={{ fontSize: '150%' }}>Recording video from this device or browser is not yet supported.</p>
+              <p>Please come back to this link from a Windows 10 PC or a Mac using the Chrome browser.</p>
             </div>
           </div>
         </div>
       )
     }
     const recordingPlaceholderBar = () => {
-      if (this.props.participants.human) {
+      if (participants.human) {
         const { listeningRound, listeningSeat } = this.listening()
         if (listeningRound === round && listeningSeat === this.seatOfParticipant('human')) {
           const reviewingAndNotReRecording = reviewing && !this.rerecord
@@ -2444,27 +2523,26 @@ class RASPUndebate extends React.Component {
     }
 
     const surveyForm = () =>
-      (closing.iframe &&
-        (!this.participants.human || (this.participants.human && (this.state.uploadComplete || this.state.hungUp))) && (
-          <iframe
-            src={closing.iframe.src}
-            width={Math.min(closing.iframe.width, innerWidth)}
-            height={closing.iframe.height}
-            frameBorder="0"
-            marginHeight="0"
-            marginWidth="0"
-          >
-            Loading...
-          </iframe>
-        )) ||
-      (closing.link &&
-        (!this.participants.human || (this.participants.human && (this.state.uploadComplete || this.state.hungUp))) && (
-          <div className={classes['thanks-link']}>
-            <a href={closing.link.url} target={closing.link.target || '_self'}>
-              {closing.link.name}
-            </a>
-          </div>
-        ))
+      (closing.iframe && (!this.participants.human || (this.participants.human && (uploadComplete || hungUp))) && (
+        <iframe
+          src={closing.iframe.src}
+          width={Math.min(closing.iframe.width, innerWidth)}
+          height={closing.iframe.height}
+          frameBorder="0"
+          marginHeight="0"
+          marginWidth="0"
+          style={{ pointerEvents: 'all' }}
+        >
+          Loading...
+        </iframe>
+      )) ||
+      (closing.link && (!this.participants.human || (this.participants.human && (uploadComplete || hungUp))) && (
+        <div className={classes['thanks-link']}>
+          <a href={closing.link.url} target={closing.link.target || '_self'}>
+            {closing.link.name}
+          </a>
+        </div>
+      ))
     //! ===============================   beginOverlay   ===============================
     const beginOverlay = () =>
       !begin &&
@@ -2555,7 +2633,7 @@ class RASPUndebate extends React.Component {
               </div>
               <div>
                 <span className={cx(classes['thanks'], scrollableIframe && classes['scrollableIframe'])}>
-                  {this.state.preFetchQueue}
+                  {preFetchQueue}
                 </span>
               </div>
             </div>
@@ -2587,7 +2665,7 @@ class RASPUndebate extends React.Component {
 
     const reviewButton = () =>
       this.participants.human &&
-      !this.state.uploadComplete && (
+      !uploadComplete && (
         <div className={classes.reviewIt}>
           <button
             className={classes['beginButton']}
@@ -2614,22 +2692,19 @@ class RASPUndebate extends React.Component {
 
     const nameInput = () =>
       !bp_info.candidate_name &&
-      (this.state.newUserId || this.props.user) && (
+      (newUserId || user) && (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             Name Shown with Video
             <Input
-              className={this.props.classes['name']}
+              className={classes['name']}
               block
               medium
               required
               placeholder="Your Name Tag"
               ref="name"
               name="name"
-              defaultValue={
-                this.state.name ||
-                (this.state.firstName && this.state.lastName && this.state.firstName + ' ' + this.state.lastName)
-              }
+              defaultValue={name || (firstName && lastName && firstName + ' ' + lastName)}
               onChange={e => this.setState({ name: e.value })}
             />
           </label>
@@ -2639,26 +2714,26 @@ class RASPUndebate extends React.Component {
 
     const postButton = () =>
       this.participants.human &&
-      !this.state.uploadComplete && (
+      !uploadComplete && (
         <>
           <div>
             <button
-              disabled={this.newUser && !this.state.newUserId}
+              disabled={this.newUser && !newUserId}
               className={classes['beginButton']}
               onClick={this.onUserUpload.bind(this)}
             >
               Post
             </button>
           </div>
-          {this.state.progress && <div>{'uploading: ' + this.state.progress}</div>}
+          {progress && <div>{'uploading: ' + progress}</div>}
         </>
       )
 
     const authForm = () =>
       this.participants.human &&
-      !this.state.uploadComplete &&
+      !uploadComplete &&
       this.newUser &&
-      !this.state.newUserId && (
+      !newUserId && (
         <>
           <div style={{ textAlign: 'center' }}>
             <span>Join and your recorded videos will be uploaded and shared</span>
@@ -2666,9 +2741,9 @@ class RASPUndebate extends React.Component {
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <AuthForm
               userInfo={{
-                name: this.state.name || bp_info.candidate_name,
-                firstName: this.state.firstName || bp_info.first_name,
-                lastName: this.state.lastName || bp_info.last_name,
+                name: name || bp_info.candidate_name,
+                firstName: firstName || bp_info.first_name,
+                lastName: lastName || bp_info.last_name,
               }}
               onChange={this.onUserLogin.bind(this)}
             />
@@ -2678,7 +2753,7 @@ class RASPUndebate extends React.Component {
 
     const ending = () =>
       done &&
-      !this.state.hungUp && (
+      !hungUp && (
         <>
           <div className={cx(classes['outerBox'], scrollableIframe && classes['scrollableIframe'])} key="ending">
             <div style={{ width: '100%', height: '100%', display: 'table' }}>
@@ -2695,8 +2770,8 @@ class RASPUndebate extends React.Component {
         </>
       )
 
-    const hungUp = () =>
-      this.state.hungUp && (
+    const renderHungUp = () =>
+      hungUp && (
         <div className={cx(classes['outerBox'], scrollableIframe && classes['scrollableIframe'])} key="hungUp">
           <div style={{ width: '100%', height: '100%', display: 'table' }}>
             <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
@@ -2717,10 +2792,9 @@ class RASPUndebate extends React.Component {
       let participant_name
       if (participant === 'human') {
         if (bp_info.candidate_name) participant_name = bp_info.candidate_name
-        else if (this.state.name) participant_name = this.state.name
-        else if (this.state.firstName || this.state.lastName)
-          participant_name = this.state.firstName + ' ' + this.state.lastName
-      } else participant_name = this.props.participants[participant].name
+        else if (name) participant_name = name
+        else if (firstName || lastName) participant_name = firstName + ' ' + lastName
+      } else participant_name = participants[participant].name
       /*src={"https://www.youtube.com/embed/"+getYouTubeID(this.participants[participant].listeningObjectURL)+"?enablejsapi=1&autoplay=1&loop=1&controls=0&disablekb=1&fs=0&modestbranding=1&rel=0"}*/
       return (
         <div
@@ -2737,10 +2811,10 @@ class RASPUndebate extends React.Component {
           {this.seat(i) === 'speaking' ? (
             <SocialShareBtn
               metaData={{
-                path: this.props.path,
-                subject: this.props.subject,
+                path: path,
+                subject: subject,
               }}
-              fontSize={this.state.fontSize}
+              fontSize={fontSize}
             />
           ) : null}
           <div
@@ -2809,7 +2883,7 @@ class RASPUndebate extends React.Component {
                 chair={chair}
               ></video>
               <div
-                className={cx(classes['stalledOverlay'], this.state.stalled === participant && classes['stalledNow'])}
+                className={cx(classes['stalledOverlay'], stalled === participant && classes['stalledNow'])}
                 style={{
                   width: (parseFloat(seatStyle[this.seat(i)].width) * innerWidth) / 100,
                   height: (parseFloat(seatStyle[this.seat(i)].width) * HDRatio * innerWidth) / 100,
@@ -2817,8 +2891,8 @@ class RASPUndebate extends React.Component {
               >
                 <div className={classes['stalledBox']}>
                   <p>Hmmmm... the Internet is slow here</p>
-                  <p>{`${this.props.participants[participant].name} will be with us shortly`}</p>
-                  <p>{`${this.state.waitingPercent}% complete`}</p>
+                  <p>{`${participants[participant].name} will be with us shortly`}</p>
+                  <p>{`${waitingPercent}% complete`}</p>
                 </div>
               </div>
             </>
@@ -2850,12 +2924,12 @@ class RASPUndebate extends React.Component {
           key={'agenda' + round + agendaStyle.left}
         >
           <div className={classes['innerAgenda']}>
-            {this.props.participants.moderator.agenda[round] && (
+            {participants.moderator.agenda[round] && (
               <>
                 <span className={classes['agendaTitle']}>Agenda</span>
                 <ul className={classes['agendaItem']}>
-                  {this.props.participants.moderator.agenda[round] &&
-                    this.props.participants.moderator.agenda[round].map((item, i) => <li key={item + i}>{item}</li>)}
+                  {participants.moderator.agenda[round] &&
+                    participants.moderator.agenda[round].map((item, i) => <li key={item + i}>{item}</li>)}
                 </ul>
               </>
             )}
@@ -2906,23 +2980,20 @@ class RASPUndebate extends React.Component {
         </div>
       )
 
-    const hangupButton = () =>
-      !this.state.hungUp &&
+    const renderHangupButton = () =>
+      !hungUp &&
       this.participants.human && (
         <div className={classes['hangUpButton']}>
           <button
             onClick={this.hangup}
             key="hangup"
-            title={
-              (this.props.hangupButton && this.props.hangupButton.title) ||
-              'Stop recording and delete all video stored in the browser.'
-            }
+            title={hangupButton.title || 'Stop recording and delete all video stored in the browser.'}
           >
-            {(this.props.hangupButton && this.props.hangupButton.name) || 'Hang Up'}
+            {hangupButton.name || 'Hang Up'}
           </button>
-          {this.state.totalSize_before_hangup && !this.state.uploadComplete ? (
+          {totalSize_before_hangup && !uploadComplete ? (
             <div className={classes['hangUpButtonReally']}>
-              {(this.props.hangupButton && this.props.hangupButton.question) ||
+              {hangupButton.question ||
                 'You have recorded video, did you really want to exit and delete it, rather than finish this and post it?'}
               <div
                 className={classes['hangUpButtonReallyClose']}
@@ -2938,14 +3009,14 @@ class RASPUndebate extends React.Component {
     const conversationTopic = topicStyle => {
       return (
         <>
-          {this.props.instructionLink && (
+          {instructionLink && (
             <div className={classes['instructionLink']}>
-              <a target="#" href={this.props.instructionLink}>
+              <a target="#" href={instructionLink}>
                 <i
                   className={cx('far', 'fa-question-circle', classes['instructionIcon'])}
                   onClick={() => {
                     this.ensurePaused()
-                    let win = window.open(this.props.instructionLink, '_blank')
+                    let win = window.open(instructionLink, '_blank')
                     win.focus()
                   }}
                 />
@@ -2953,22 +3024,21 @@ class RASPUndebate extends React.Component {
             </div>
           )}
           <div style={topicStyle} className={classes['conversationTopic']}>
-            <p className={classes['conversationTopicContent']}>{this.props.subject}</p>
+            <p className={classes['conversationTopicContent']}>{subject}</p>
           </div>
           <a target="#" href="https://www.EnCiv.org">
             <img className={classes['enciv-logo']} src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png" />
           </a>
-          {this.props.logo && this.props.logo === 'undebate' ? (
+          {logo === 'undebate' ? (
             <a target="#" href="https://enciv.org/undebate">
               <img
                 className={classes['logo']}
                 src="https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,h_100/v1585602937/Undebate_Logo.png"
               />
             </a>
-          ) : this.props.logo && this.props.logo === 'none' ? (
+          ) : logo === 'none' ? (
             false
-          ) : (this.props.logo && this.props.logo === 'CandidateConversations') ||
-            typeof this.props.logo === 'undefined' ? (
+          ) : logo === 'CandidateConversations' || typeof logo === 'undefined' ? (
             <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
               <img
                 className={classes['logo']}
@@ -2987,7 +3057,7 @@ class RASPUndebate extends React.Component {
         <>
           {conversationTopic(conversationTopicStyle)}
           <div className={classes['outerBox']}>
-            {Object.keys(this.props.participants).map((participant, i) => videoBox(participant, i, seatStyle))}
+            {Object.keys(participants).map((participant, i) => videoBox(participant, i, seatStyle))}
             {agenda(agendaStyle)}
           </div>
           <div
@@ -3000,55 +3070,68 @@ class RASPUndebate extends React.Component {
               warmup && classes['warmup']
             )}
           >
-            {(warmup ? '-' : '') + TimeFormat.fromS(Math.round(this.state.countDown), 'mm:ss')}
+            {(warmup ? '-' : '') + TimeFormat.fromS(Math.round(countDown), 'mm:ss')}
           </div>
           <div style={{ whiteSpace: 'pre-wrap' }}>
-            <span>{this.state.errorMsg}</span>
+            <span>{errorMsg}</span>
           </div>
         </>
       )
 
     return (
       <div
-        style={{ fontSize: this.state.fontSize }}
+        style={{ fontSize: fontSize }}
         className={cx(classes['wrapper'], scrollableIframe && classes['scrollableIframe'])}
       >
-        {this.props.participants.human && <ReactCameraRecorder ref={this.getCamera} />}
+        {isPortraitPhoneRecording ? (
+          <Modal
+            render={() => (
+              <>
+                <div>
+                  <Icon style={{ padding: '15% 0' }} icon={'redo'} flip={'horizontal'}></Icon>
+                </div>
+                Recording will start from the top after switching to landscape orientation
+              </>
+            )}
+          ></Modal>
+        ) : null}
+        {participants.human && <ReactCameraRecorder ref={this.getCamera} />}
         <section
           id="syn-ask-webrtc"
           key="began"
           className={cx(classes['innerWrapper'], scrollableIframe && classes['scrollableIframe'])}
-          style={{ left: this.state.left }}
+          style={{ left: left }}
           ref={this.calculatePositionAndStyle}
         >
           <audio ref={this.audio} playsInline controls={false} onEnded={this.audioEnd} key="audio"></audio>
           {main()}
-          {((this.participants.human && (this.state.preambleAgreed || opening.noPreamble)) ||
-            !this.participants.human) &&
+          {((this.participants.human && (preambleAgreed || opening.noPreamble)) || !this.participants.human) &&
             !bot &&
             beginOverlay()}
           {this.participants.human && !opening.noPreamble && !intro && !begin && !done && (
             <CandidatePreamble
-              subject={this.props.subject}
+              subject={subject}
               bp_info={bp_info}
-              agreed={this.state.preambleAgreed}
+              agreed={preambleAgreed}
+              classes={classes}
               onClick={() => {
                 logger.info('Undebate preambleAgreed true')
                 this.setState({ preambleAgreed: true })
                 noOverlay && this.beginButton()
               }}
-              candidate_questions={this.props.participants.moderator.agenda}
+              candidate_questions={participants.moderator.agenda}
+              instructionLink={instructionLink}
+              timeLimits={participants.moderator.timeLimits}
             />
           )}
           {ending()}
-          {((this.participants.human && (this.state.preambleAgreed || opening.noPreamble)) ||
-            !this.participants.human) &&
+          {((this.participants.human && (preambleAgreed || opening.noPreamble)) || !this.participants.human) &&
             buttonBar(buttonBarStyle)}
           {recorderButtonBar(recorderButtonBarStyle)}
           {permissionOverlay()}
           {waitingOnModeratorOverlay()}
-          {hangupButton()}
-          {hungUp()}
+          {renderHangupButton()}
+          {renderHungUp()}
           {recordingPlaceholderBar()}
         </section>
       </div>
