@@ -2386,7 +2386,12 @@ class Undebate extends React.Component {
       } else if (this.isRecordingPlaceHolder()) {
         const speakingNow = this.speakingNow()
         if (speakingNow !== 'human') this.participants[speakingNow].element.current.currentTime = 0 // rewind the speaker
-        this.setState({ isPortraitPhoneRecording: false }, () => setTimeout(() => this.allPlay(), TransitionTime)) // wait for the user to settle before starting to record the place holder video
+        this.setState({ isPortraitPhoneRecording: false }, () =>
+          setTimeout(() => {
+            this.allPlay()
+            setTimeout(() => this.rerecordButton(), 1000)
+          }, TransitionTime)
+        ) // wait for the user to settle before starting to record the place holder video
       }
     } else if (!isPortraitPhoneRecording && portraitMode) {
       if (this.isRecordingSpeaking()) {
