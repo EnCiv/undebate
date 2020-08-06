@@ -73,6 +73,7 @@ const HartfordCandidatesConversations = ({ viewers }) => {
             width: '90%',
             fontSize: isPortrait ? '6.6vw' : '4rem',
             fontWeight: '700',
+            display: 'block',
           }}
         >
           Come Back for the General Election
