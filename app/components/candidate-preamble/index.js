@@ -128,8 +128,7 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
       </div>
     </div>
   )
-  let rootNode = typeof document === 'object' ? document.getElementById('synapp') : {}
-  return createPortal(preamble, rootNode)
+  return typeof document === 'object' ? createPortal(preamble, document.getElementById('synapp')) : preamble
 }
 
 export default CandidatePreamble
