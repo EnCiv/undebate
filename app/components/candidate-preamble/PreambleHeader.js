@@ -10,6 +10,8 @@ const useStyles = createUseStyles({
     padding: '1px 2em',
     color: 'white',
     backgroundColor: 'black',
+    backgroundImage: 'url("https://res.cloudinary.com/hf6mryjpf/image/upload/v1596687676/assets/Group_29.png")',
+    backgroundSize: 'cover',
     '&>*+*': {
       marginTop: '3em',
       marginBottom: '3em',

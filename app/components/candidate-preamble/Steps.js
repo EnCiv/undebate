@@ -43,6 +43,7 @@ const useStyles = createUseStyles({
     },
     '& .__icon': {
       height: '3.455em',
+      marginBottom: '2.5em',
     },
   },
   stepLable: {
@@ -76,17 +77,17 @@ function Steps({}) {
   const steps = [
     {
       title: 'Record',
-      icon: 'none',
+      icon: <img src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1596687809/assets/record.svg" />,
       content: `When you start recording, an onscreen moderator will ask a series of questions, and you'll be prompted to record your answers.`,
     },
     {
       title: 'Review It',
-      icon: 'none',
+      icon: <img src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1596687838/assets/review.svg" />,
       content: `Re-record any question as many times as you want; nothing is pulbished until you're ready.`,
     },
     {
       title: 'Post Your Video',
-      icon: 'none',
+      icon: <img src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1596687849/assets/upload.svg" />,
       content: `Make a final review of the whole Conversation if you like, then hit "Post" and your video is automatically published on your Ballotpedia page.`,
     },
   ]
