@@ -73,7 +73,7 @@ const HartfordVotes = ({ viewers }) => {
           <div className={classes.landingPage}>
             <HartfordLandingMenu key="hartford-menu" />
             <Modal
-              buttonText={'click here'}
+              buttonText={'important election information'}
               open={true}
               modalId={'visitor_info_hartford'}
               render={() => distressSignal}
