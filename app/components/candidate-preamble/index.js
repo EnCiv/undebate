@@ -40,7 +40,7 @@ const useStyles = createUseStyles({
   Preamble: {
     fontFamily: '"Libre Franklin"',
     textAlign: 'center',
-    fontSize: '1.33rem',
+    //fontSize: '1.33rem',
     position: 'absolute',
     top: 0,
     left: 0,
