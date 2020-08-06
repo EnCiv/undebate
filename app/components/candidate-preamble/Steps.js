@@ -15,6 +15,7 @@ const useStyles = createUseStyles({
   },
   Steps: {
     display: 'flex',
+    gap: '3em',
     flexDirection: 'column',
     listStyleType: 'none',
     paddingLeft: 0,
@@ -77,6 +78,16 @@ function Steps({}) {
       title: 'Record',
       icon: 'none',
       content: `When you start recording, an onscreen moderator will ask a series of questions, and you'll be prompted to record your answers.`,
+    },
+    {
+      title: 'Review It',
+      icon: 'none',
+      content: `Re-record any question as many times as you want; nothing is pulbished until you're ready.`,
+    },
+    {
+      title: 'Post Your Video',
+      icon: 'none',
+      content: `Make a final review of the whole Conversation if you like, then hit "Post" and your video is automatically published on your Ballotpedia page.`,
     },
   ]
 
