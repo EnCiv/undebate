@@ -6,10 +6,12 @@ import cx from 'classnames'
 
 const useStyles = createUseStyles({
   container: {
+    padding: '3em',
     border: '1px solid grey',
     marginTop: '4em',
     //Questions for Candidates
     '& h2': {
+      marginTop: 0,
       fontSize: '2em',
       fontWeight: 700,
     },

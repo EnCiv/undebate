@@ -5,6 +5,7 @@ import injectSheet from 'react-jss'
 import Button from '../button'
 import cx from 'classnames'
 import { createUseStyles } from 'react-jss'
+import StartRecordingButton from '../candidate-preamble/StartRecordingButton'
 
 const useStyles = createUseStyles({
   Preamble: {
@@ -93,7 +94,7 @@ const Preamble = ({ onClick, agreed, bp_info }) => {
         </li>
       </ul>
       <div className={classes['center']}>
-        <Button onClick={onClick}>Next</Button>
+        <StartRecordingButton onClick={onClick} />
       </div>
     </div>
   )

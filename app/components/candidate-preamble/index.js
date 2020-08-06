@@ -82,6 +82,20 @@ const useStyles = createUseStyles({
     marginTop: '20vh',
     height: '80vh',
   },
+  tips: {
+    //tips for success
+    border: '1px solid grey',
+    color: '#3E3E3E',
+    '& h3': {
+      fontSize: '2em',
+      fontWeight: '700',
+    },
+    //use a deskop or...
+    '& p': {
+      fontSize: '1em',
+      fontWeight: '500',
+    },
+  },
 })
 
 function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questions, instructionLink, timeLimits }) {
@@ -102,8 +116,13 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
           <Steps />
           <StartRecordingButton onClick={onClick} />
           <Agenda candidate_questions={candidate_questions} timeLimits={timeLimits} />
-          <div className={classes['center']}>
-            <Button onClick={onClick}>Next</Button>
+          <StartRecordingButton onClick={onClick} />
+          <div className={classes.tips}>
+            <h3>Tips for Success</h3>
+            <p>
+              Use a desktop or laptop camera, not a phone. place the camera so you are looking slightly upward. Use a
+              lamp or window to ensure your face is well lit.
+            </p>
           </div>
         </div>
       </div>
