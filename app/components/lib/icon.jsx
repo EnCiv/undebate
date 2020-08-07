@@ -5,7 +5,7 @@ import React from 'react'
 class Icon extends React.Component {
   render() {
     let classes = ['fa']
-    const { icon, size, list, spin, circle, mute, ...newProps } = this.props
+    const { icon, size, list, spin, circle, mute, flip, ...newProps } = this.props
 
     if (icon) {
       classes.push(`fa-${icon}`)
@@ -21,6 +21,9 @@ class Icon extends React.Component {
 
     if (spin) {
       classes.push('fa-spin')
+    }
+    if (flip) {
+      classes.push(`fa-flip-${flip}`)
     }
 
     if (this.props.className) {
