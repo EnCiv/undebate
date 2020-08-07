@@ -120,7 +120,7 @@ const DistressSignal = () => {
             Visit the Hartford Town Clerk{"'"}s Office where you can receive your Absentee Ballot and Cast your vote at
             the same time.
           </p>
-          <p className={classes.line}>M -F 8:15am-5pm or Saturday August 8, 9-am-1pm</p>
+          <p className={classes.line}>M-F 8:15am-5pm or Saturday August 8, 9am-1pm</p>
           <p className={classes.line}>or</p>
         </li>
         <li>
@@ -140,7 +140,7 @@ const DistressSignal = () => {
         </a>
       </p>
       <p className={classes.line}>
-        And, be sure to visit this site in the Fall, where we invite you to Meet the local Candidates in the November
+        And, be sure to visit this site in the Fall, where we invite you to meet the local Candidates in the November
         election with video interviews and more.
       </p>
     </div>
