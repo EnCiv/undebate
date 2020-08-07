@@ -112,7 +112,7 @@ const distressStyles = createUseStyles({
 const DistressSignal = () => {
   const classes = distressStyles()
   return (
-    <div style={{ fontSize: '1.5rem', maxWidth: '62rem', marginLeft: 'auto', marginRight: 'auto' }}>
+    <div style={{ fontSize: 'calc( max( 1.1vw, 1.1vh) )', maxWidth: '40em', marginLeft: 'auto', marginRight: 'auto' }}>
       <h1 style={{ marginTop: 0 }}>If you do not receive your absentee ballots on time, you can either:</h1>
       <ol>
         <li>
