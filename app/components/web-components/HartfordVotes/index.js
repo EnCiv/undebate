@@ -37,14 +37,15 @@ const HartfordLanding = ({ viewers }) => {
   return (
     <>
       <HartfordLandingHeader key="hartford-header" />
-      <FindDistrict />
+      <DistressSignal />
+      {/*<FindDistrict />
       <HartfordCandidatesConversations viewers={viewers} key="hartford-candidate-conversations" />
-      <CandidateQuestions />
+      <CandidateQuestions /> */}
     </>
   )
 }
 
-const HartfordVotes = ({ viewers }) => {
+const oldHartfordVotes = ({ viewers }) => {
   const classes = useStyles()
   const distressSignal = (
     <div style={{ fontSize: '2.6em' }}>
@@ -86,4 +87,52 @@ const HartfordVotes = ({ viewers }) => {
   )
 }
 
+const HartfordVotes = ({ viewers }) => {
+  const classes = useStyles()
+  return (
+    <div className={classes.landingPage}>
+      <HartfordLandingMenu key="hartford-menu" />
+      <HartfordLandingHeader key="hartford-header" />
+      <DistressSignal />
+    </div>
+  )
+}
+
 export default HartfordVotes
+
+const DistressSignal = () => {
+  return (
+    <div style={{ fontSize: '1.5rem', maxWidth: '62rem', marginLeft: 'auto', marginRight: 'auto' }}>
+      <h1 style={{ marginTop: 0 }}>If you do not receive your absentee ballots on time, you can either:</h1>
+      <ol>
+        <li>
+          <p style={{ textAlign: 'left' }}>
+            Visit the Hartford Town Clerk{"'"}s Office where you can receive your Absentee Ballot and Cast your vote at
+            the same time.
+          </p>
+          <p style={{ textAlign: 'left' }}>M -F 8:15am-5pm or Saturday August 8, 9-am-1pm</p>
+          <p style={{ textAlign: 'left' }}>or</p>
+        </li>
+        <li>
+          <p style={{ textAlign: 'left' }}>
+            Go to <span style={{ color: 'red' }}>VOTE</span> at your{' '}
+            <a href="https://portaldir.ct.gov/sots/LookUp.aspx" target="_blank">
+              polling place
+            </a>{' '}
+            on August 11
+          </p>
+        </li>
+      </ol>
+      <p style={{ textAlign: 'left' }}>
+        Learn about the candidates in this election at{' '}
+        <a href="https://ballotpedia.org/Connecticut_elections,_2020" target="_blank">
+          Ballotpedia.org Connecticut elections, 2020
+        </a>
+      </p>
+      <p style={{ textAlign: 'left' }}>
+        And, be sure to visit this site in the Fall, where we invite you to Meet the local Candidates in the November
+        election with video interviews and more.
+      </p>
+    </div>
+  )
+}
