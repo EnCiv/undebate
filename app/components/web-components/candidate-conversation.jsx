@@ -7,22 +7,19 @@ import Join from '../join'
 import Input from '../lib/input'
 import SocialShareBtn from '../lib/socialShareBtn'
 import Icon from '../lib/icon'
+import AgendaTranscript from '../agenda-transcript'
+import AgendaNav from '../agenda-nav'
 
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep'
 import getYouTubeID from 'get-youtube-id'
 import Preamble from '../preamble'
-import Config from '../../../public.json'
-
-const ResolutionToFontSizeTable = require('../../../resolution-to-font-size-table').default
 
 const TransitionTime = 500
 const TopMargin = 0
 const IntroTransition = 'all 5s ease'
 const HDRatio = 1080 / 1920 //0.5625
 const ShadowBox = 10
-
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser'
 
 import IconPrevSpeaker from '../../svgr/icon-prev-speaker'
 import IconPrevSection from '../../svgr/icon-prev-session'
@@ -42,14 +39,14 @@ import supportsVideoType from '../lib/supports-video-type'
 import { auto_quality, placeholder_image } from '../lib/cloudinary-urls'
 import createParticipant from '../lib/create-participant'
 import BeginButton from '../begin-button'
+import Transcription from '../transcription'
 
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
 }
 
 // this is where we should use a theme but for now
-const BLUE = '#1B47A7'
-const YELLOW = '#E5A650'
+
 const styles = {
   scrollableIframe: {},
   wrapper: {
@@ -326,14 +323,7 @@ const styles = {
     },
   },
   agenda: {
-    textAlign: 'center',
-    backgroundColor: 'white',
     position: 'absolute',
-    //border: '1px solid black',
-    'box-shadow': '0px 4px 4px rgba(0,0,0,0.25)',
-    'box-sizing': 'border-box',
-    'font-weight': '600',
-    display: 'table',
     '&$finishUp': {
       left: '50vw',
       top: '50vh',
@@ -351,63 +341,6 @@ const styles = {
       top: `calc( -1 * 25vw *  ${HDRatio} -${TopMargin})`,
       left: '100vw',
     },
-  },
-  innerAgenda: {
-    display: 'table-cell',
-  },
-  agendaTitle: {
-    fontFamily: 'Libre Franklin',
-    textAlign: 'center',
-    'font-size': '3rem',
-    lineHeight: '3rem',
-    backgroundColor: `${YELLOW}`,
-    paddingTop: '1rem',
-    paddingBottom: '1rem',
-    'font-weight': 'bold',
-  },
-  agendaList: {
-    textAlign: 'left',
-    padding: '0',
-    listStyleType: 'none',
-    '& li:first-child': {
-      fontWeight: 'bold',
-    },
-  },
-  agendaItem: {
-    'margin-block-start': '0',
-    textAlign: 'left',
-    lineHeight: '2rem',
-    'font-weight': '200',
-    'list-style-type': 'none',
-    paddingLeft: '0',
-  },
-  'agenda-icon-left': {
-    border: 'none',
-    backgroundColor: 'transparent',
-    marginLeft: '0.5rem',
-    display: 'inline-block',
-    float: 'left',
-    cursor: 'pointer',
-    fontSize: '100%',
-  },
-  'agenda-icon-right': {
-    border: 'none',
-    backgroundColor: 'transparent',
-    marginRight: '0.5rem',
-    display: 'inline-block',
-    float: 'right',
-    cursor: 'pointer',
-    fontSize: '100%',
-  },
-  item: {
-    fontFamily: 'Roboto',
-    fontSize: '2rem',
-    fontWeight: 'normal',
-    backgroundColor: 'white',
-    padding: '1rem',
-    'border-bottom': '1px solid lightGray',
-    'padding-top': '0.5rem',
-    'padding-bottom': '0.25rem',
   },
   thanks: {
     'font-size': '200%',
@@ -742,6 +675,10 @@ class RASPUndebate extends React.Component {
     // we need to calculate the position of everything if/or as if rendered on the server. Then in componentDidMount we can calculate based on the real size.  This is because react.hydrate needs to be able to match the serverside and the browser side
     let calculatedStyles = this.calculateStyles(width, height, height, fontSize)
     Object.assign(this.state, calculatedStyles, { fontSize })
+
+    this.nextSection = this.nextSection.bind(this)
+    this.prevSection = this.prevSection.bind(this)
+    this.autoNextSpeaker = this.autoNextSpeaker.bind(this)
   }
 
   state = {
@@ -1769,6 +1706,12 @@ class RASPUndebate extends React.Component {
     if (this.seat(Object.keys(this.props.participants).indexOf('human')) === 'speaking') return this.autoNextSpeaker()
   }
 
+  // return the property of this.props.participants who is speaking now
+  speakingNow() {
+    const participantList = Object.keys(this.props.participants)
+    return this.state.seatOffset ? participantList[participantList.length - this.state.seatOffset] : participantList[0]
+  }
+
   rerecordButton() {
     logger.info('Undebate.rerecordButton')
     this.camera && this.camera.stopRecording() // it might be recording when the user hit's rerecord
@@ -2182,6 +2125,11 @@ class RASPUndebate extends React.Component {
 
     const bot = this.props.browserConfig.type === 'bot'
     const noOverlay = true
+    const Agenda = Object.keys(this.props.participants).some(
+      participant => this.props.participants[participant].transcriptions
+    )
+      ? AgendaTranscript
+      : AgendaNav
 
     if (this.canNotRecordHere || (this.camera && this.camera.canNotRecordHere)) {
       return (
@@ -2469,7 +2417,7 @@ class RASPUndebate extends React.Component {
                 playsInline
                 autoPlay={!bot}
                 controls={false}
-                onEnded={this.autoNextSpeaker.bind(this)}
+                onEnded={this.autoNextSpeaker}
                 onError={this.videoError.bind(this, participant)}
                 style={{ width: videoWidth, height: videoHeight }}
                 key={participant + '-video'}
@@ -2497,49 +2445,6 @@ class RASPUndebate extends React.Component {
               </div>
             </>
           )}
-        </div>
-      )
-    }
-
-    var agenda = agendaStyle => {
-      const style = agendaStyle //finishUp ? {} :  noOverlay || bot || intro ? agendaStyle : Object.assign({},agendaStyle,introSeatStyle['agenda']);
-      return (
-        <div
-          style={style}
-          className={cx(
-            classes['agenda'],
-            stylesSet && classes['stylesSet'],
-            finishUp && classes['finishUp'],
-            begin && classes['begin'],
-            !intro && classes['intro']
-          )}
-          key={'agenda' + round + agendaStyle.left}
-        >
-          <div className={classes['innerAgenda']}>
-            {this.props.participants.moderator.agenda[round] && (
-              <>
-                <div className={classes['agendaItem']}>
-                  <div className={classes['agendaTitle']}>
-                    <button className={classes['agenda-icon-left']} onClick={this.prevSection.bind(this)}>
-                      <Icon icon="chevron-left" size="1.5" name="previous-section" />
-                    </button>
-                    Agenda
-                    <button className={classes['agenda-icon-right']} onClick={this.nextSection.bind(this)}>
-                      <Icon icon="chevron-right" size="1.5" name="previous-section" />
-                    </button>
-                  </div>
-                  <ul className={classes['agendaList']}>
-                    {this.props.participants.moderator.agenda[round] &&
-                      this.props.participants.moderator.agenda[round].map((item, i) => (
-                        <li className={classes['item']} key={item + i}>
-                          {item}
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-              </>
-            )}
-          </div>
         </div>
       )
     }
@@ -2653,7 +2558,24 @@ class RASPUndebate extends React.Component {
           <ConversationHeader subject={this.props.subject} bp_info={this.props.bp_info} logo={this.props.logo} />
           <div className={classes['outerBox']}>
             {Object.keys(this.props.participants).map((participant, i) => videoBox(participant, i, seatStyle))}
-            {agenda(agendaStyle)}
+            <Agenda
+              className={cx(
+                classes['agenda'],
+                stylesSet && classes['stylesSet'],
+                finishUp && classes['finishUp'],
+                begin && classes['begin'],
+                !intro && classes['intro']
+              )}
+              style={agendaStyle}
+              agendaItem={this.props.participants.moderator.agenda[round]}
+              transcript={
+                this.props.participants[this.speakingNow()].transcriptions &&
+                this.props.participants[this.speakingNow()].transcriptions[round]
+              }
+              element={this.participants[this.speakingNow()].element.current}
+              prevSection={this.prevSection}
+              nextSection={this.nextSection}
+            />
           </div>
           <div
             className={cx(

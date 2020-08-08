@@ -57,6 +57,7 @@ typings/
 # dotenv environment variables file
 .env
 .bashrc
+enciv-transcribe.json
 
 # next.js build output
 .next
