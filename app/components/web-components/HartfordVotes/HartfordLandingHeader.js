@@ -53,7 +53,7 @@ const HartfordLandingHeader = () => {
         {isPortrait ? null : <HartfordLogo />}
         <h1 className={classes.pageTitle}>Meet Hartford{"'"}s Candidates</h1>
         <h2 className={classes.subTitle}>
-          in the August 11<sup>th</sup> Primary for State Representative
+          Your information source for the local candidates in the Hartford CT November General Election
         </h2>
         {isPortrait ? null : <EncivLogo />}
       </header>

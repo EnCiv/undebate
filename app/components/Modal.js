@@ -65,7 +65,7 @@ class Modal extends React.Component {
     let app_root
     if (typeof document !== 'undefined') {
       app_root = document.getElementById('synapp')
-    }
+    } else return null
     return (
       <div className="modal" id={'modalWrapper'}>
         {!this.state.open ? (

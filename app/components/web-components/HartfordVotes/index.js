@@ -37,14 +37,15 @@ const HartfordLanding = ({ viewers }) => {
   return (
     <>
       <HartfordLandingHeader key="hartford-header" />
-      <FindDistrict />
+      <DistressSignal />
+      {/*<FindDistrict />
       <HartfordCandidatesConversations viewers={viewers} key="hartford-candidate-conversations" />
-      <CandidateQuestions />
+      <CandidateQuestions /> */}
     </>
   )
 }
 
-const HartfordVotes = ({ viewers }) => {
+const oldHartfordVotes = ({ viewers }) => {
   const classes = useStyles()
   const distressSignal = (
     <div style={{ fontSize: '2.6em' }}>
@@ -86,4 +87,62 @@ const HartfordVotes = ({ viewers }) => {
   )
 }
 
+const HartfordVotes = ({ viewers }) => {
+  const classes = useStyles()
+  return (
+    <div className={classes.landingPage}>
+      <ModeProvider>
+        <HartfordLandingMenu key="hartford-menu" />
+        <HartfordLandingHeader key="hartford-header" />
+        <DistressSignal />
+      </ModeProvider>
+    </div>
+  )
+}
+
 export default HartfordVotes
+
+const distressStyles = createUseStyles({
+  line: {
+    textAlign: 'left',
+    fontSize: '125%',
+  },
+})
+
+const DistressSignal = () => {
+  const classes = distressStyles()
+  return (
+    <div style={{ fontSize: 'calc( max( 1.1vw, 1.1vh) )', maxWidth: '40em', marginLeft: 'auto', marginRight: 'auto' }}>
+      <h1 style={{ marginTop: 0 }}>If you do not receive your absentee ballots on time, you can either:</h1>
+      <ol>
+        <li>
+          <p className={classes.line}>
+            Visit the Hartford Town Clerk{"'"}s Office where you can receive your Absentee Ballot and Cast your vote at
+            the same time.
+          </p>
+          <p className={classes.line}>M-F 8:15am-5pm or Saturday August 8, 9am-1pm</p>
+          <p className={classes.line}>or</p>
+        </li>
+        <li>
+          <p className={classes.line}>
+            Go to <span style={{ color: 'red' }}>VOTE</span> at your{' '}
+            <a href="https://portaldir.ct.gov/sots/LookUp.aspx" target="_blank">
+              polling place
+            </a>{' '}
+            on August 11
+          </p>
+        </li>
+      </ol>
+      <p className={classes.line}>
+        Learn about the candidates in this election at{' '}
+        <a href="https://ballotpedia.org/Connecticut_elections,_2020" target="_blank">
+          Ballotpedia.org Connecticut elections, 2020
+        </a>
+      </p>
+      <p className={classes.line}>
+        And, be sure to visit this site in the Fall, where we invite you to meet the local Candidates in the November
+        election with video interviews and more.
+      </p>
+    </div>
+  )
+}
