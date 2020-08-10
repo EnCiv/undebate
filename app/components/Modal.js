@@ -3,7 +3,7 @@
  * */
 
 import ReactDOM, { createPortal } from 'react-dom'
-import Icon from './lib/icon.jsx'
+import Icon from './lib/icon'
 
 import React, { useState } from 'react'
 
