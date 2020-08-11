@@ -43,7 +43,7 @@ const useStyles = createUseStyles({
     },
     '& .__icon': {
       height: '3.455em',
-      marginBottom: '2.5em',
+      marginBottom: '3.5em',
     },
   },
   stepLable: {
