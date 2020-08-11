@@ -23,7 +23,7 @@ const useStyles = createUseStyles({
   },
   step: {
     flexGrow: 1,
-    flexBasis: 'calc( calc(400px - 100%) * 999 )',
+    flexBasis: 'calc( calc(300px - 100%) * 999 )', //holy albatross
     position: 'relative',
     border: '1px solid gray',
     padding: '2em',
