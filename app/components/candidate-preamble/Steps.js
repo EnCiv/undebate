@@ -16,11 +16,14 @@ const useStyles = createUseStyles({
   Steps: {
     display: 'flex',
     gap: '3em',
-    flexDirection: 'column',
+    //flexDirection: 'column',
     listStyleType: 'none',
+    flexWrap: 'wrap',
     paddingLeft: 0,
   },
   step: {
+    flexGrow: 1,
+    flexBasis: 'calc( calc(400px - 100%) * 999 )',
     position: 'relative',
     border: '1px solid gray',
     padding: '2em',
