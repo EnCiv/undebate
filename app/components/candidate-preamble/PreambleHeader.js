@@ -10,7 +10,13 @@ const useStyles = createUseStyles({
     padding: '1px 2em',
     color: 'white',
     backgroundColor: 'black',
-    backgroundImage: 'url("https://res.cloudinary.com/hf6mryjpf/image/upload/v1596687676/assets/Group_29.png")',
+    backgroundPosition: 'center center',
+    backgroundImage:
+      'url("https://res.cloudinary.com/hf6mryjpf/image/upload/h_200/q_auto/v1596687676/assets/Group_29.png")',
+    '@media only screen and (min-width: 1800px)': {
+      backgroundImage:
+        'url("https://res.cloudinary.com/hf6mryjpf/image/upload/h_400/q_auto/v1596687676/assets/Group_29.png")',
+    },
     backgroundSize: 'cover',
     '&>*+*': {
       marginTop: '3em',
