@@ -9,6 +9,7 @@ const useStyles = createUseStyles({
     padding: '3em',
     border: '1px solid grey',
     marginTop: '4em',
+    marginBottom: '3em',
     //Questions for Candidates
     '& h2': {
       marginTop: 0,

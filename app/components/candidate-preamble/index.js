@@ -52,6 +52,9 @@ const useStyles = createUseStyles({
     boxSizing: 'border-box',
     transition: 'all 0.5s linear',
     backgroundColor: 'white', //'#F4F4F4',
+    //'&>div': {
+    //marginBottom: '3em',
+    //},
     '&$agreed': {
       left: '-100vw',
     },
@@ -85,6 +88,7 @@ const useStyles = createUseStyles({
   tips: {
     //tips for success
     border: '1px solid grey',
+    marginTop: '3em',
     color: '#3E3E3E',
     '& h3': {
       fontSize: '2em',
