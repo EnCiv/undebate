@@ -6,12 +6,8 @@ import cx from 'classnames'
 
 const useStyles = createUseStyles({
   container: {
+    margin: '0 0 3em',
     textAlign: 'center',
-    //steps area title
-    '&>h3': {
-      fontSize: '3rem',
-      fontWeight: 600,
-    },
   },
   Steps: {
     display: 'flex',
@@ -19,7 +15,8 @@ const useStyles = createUseStyles({
     //flexDirection: 'column',
     listStyleType: 'none',
     flexWrap: 'wrap',
-    paddingLeft: 0,
+    padding: 0,
+    margin: 0,
   },
   step: {
     flexGrow: 1,
@@ -84,12 +81,12 @@ function Steps({}) {
       content: `When you start recording, an onscreen moderator will ask a series of questions, and you'll be prompted to record your answers.`,
     },
     {
-      title: 'Review It',
+      title: 'Review',
       icon: <img src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1596687838/assets/review.svg" />,
-      content: `Re-record any question as many times as you want; nothing is pulbished until you're ready.`,
+      content: `Re-record any question as many times as you want; nothing is published until you're ready.`,
     },
     {
-      title: 'Post Your Video',
+      title: 'Post',
       icon: <img src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1596687849/assets/upload.svg" />,
       content: `Make a final review of the whole Conversation if you like, then hit "Post" and your video is automatically published on your Ballotpedia page.`,
     },
@@ -97,7 +94,6 @@ function Steps({}) {
 
   return (
     <section className={classes.container}>
-      <h3>Recording is Easy</h3>
       <ul className={classes.Steps}>
         {steps.map((step, index) => makeStep(index, step.title, step.icon, step.content, classes.step))}
       </ul>

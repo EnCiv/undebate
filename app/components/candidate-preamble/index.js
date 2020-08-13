@@ -52,9 +52,6 @@ const useStyles = createUseStyles({
     boxSizing: 'border-box',
     transition: 'all 0.5s linear',
     backgroundColor: 'white', //'#F4F4F4',
-    //'&>div': {
-    //marginBottom: '3em',
-    //},
     '&$agreed': {
       left: '-100vw',
     },
@@ -78,7 +75,14 @@ const useStyles = createUseStyles({
     // need to have someting here for portrait mode - but don't record in portrait mode for now.
   },
   'Preamble-inner-content': {
-    padding: '1.5em',
+    padding: '0 1.5em 1.5em',
+    //steps area title
+    '&>h3': {
+      fontSize: '2em',
+      fontWeight: 600,
+      margin: 0,
+      padding: '1.5em',
+    },
     // need to have someting here for portrait mode - but don't record in portrait mode for now.
   },
   portrait: {
@@ -117,6 +121,7 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
       <div className={cx(classes['Preamble-inner'], isPortrait ? classes['portrait'] : undefined)}>
         <PreambleHeader onClickStartRecording={onClick} isPortrait={isPortrait} bp_info={bp_info} />
         <div className={classes['Preamble-inner-content']}>
+          <h3>Recording is Easy</h3>
           <Steps />
           <StartRecordingButton onClick={onClick} />
           <Agenda candidate_questions={candidate_questions} timeLimits={timeLimits} />

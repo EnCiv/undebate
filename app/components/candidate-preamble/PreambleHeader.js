@@ -47,8 +47,8 @@ function PreambleHeader({ isPortrait, bp_info, onClickStartRecording }) {
     <div className={classes.container}>
       <h2>Welcome{bp_info && bp_info.candidate_name ? <span>{' ' + bp_info.candidate_name}</span> : ''}!</h2>
       <h3>
-        Thanks for recording a Candidate Conversation. Recording should be done in one session, and takes about 15
-        minutes.
+        Recording your candidate conversation should be done in one session, and takes about 15 minutes. Let{"'"}s get
+        started.
       </h3>
       <StartRecordingButton onClick={onClickStartRecording} />
     </div>
