@@ -76,6 +76,9 @@ const useStyles = createUseStyles({
   },
   'Preamble-inner-content': {
     padding: '0 1.5em 1.5em',
+    maxWidth: '1000px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
     //steps area title
     '&>h3': {
       fontSize: '2em',
@@ -94,6 +97,16 @@ const useStyles = createUseStyles({
     border: '1px solid grey',
     marginTop: '3em',
     color: '#3E3E3E',
+
+    '& ul': {
+      textAlign: 'left',
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      padding: '0 2em',
+      maxWidth: 'max-content',
+      fontSize: '1em',
+      fontWeight: '500',
+    },
     '& h3': {
       fontSize: '2em',
       fontWeight: '700',
@@ -128,10 +141,12 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
           <StartRecordingButton onClick={onClick} />
           <div className={classes.tips}>
             <h3>Tips for Success</h3>
-            <p>
-              Use a desktop or laptop camera, not a phone. place the camera so you are looking slightly upward. Use a
-              lamp or window to ensure your face is well lit.
-            </p>
+            <ul>
+              <li>Use a desktop or laptop camera, not a phone.</li>
+              <li>Place the camera so you are looking slightly upward.</li>
+              <li>Use a lamp or window to ensure your face is well lit.</li>
+              <li>Look directly into the camera, not your computer screen, while recording.</li>
+            </ul>
           </div>
         </div>
       </div>
