@@ -133,15 +133,10 @@ const HartfordLandingMenu = () => {
     },
     {
       display: 'Rank the Candidates',
-      key: 'scorescard',
-      href: '',
+      key: 'score',
+      href: '/assets/hartfordScoreCard.pdf',
       target: '_blank',
     },
-    //{
-    //display: 'Score Card',
-    //key: 'score',
-    //href: '',
-    //},
   ]
   const links = (
     <ul className={classes.links}>
