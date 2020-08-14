@@ -42,7 +42,8 @@ const useStyles = createUseStyles({
       //TODO: change the font Style for this so that it is bold.
     },
     '& .__icon': {
-      height: '3.455em',
+      width: 'auto',
+      height: '100%',
       marginBottom: '3.5em',
     },
   },
