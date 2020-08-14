@@ -40,7 +40,7 @@ const useStyles = createUseStyles({
   Preamble: {
     fontFamily: '"Libre Franklin"',
     textAlign: 'center',
-    //fontSize: '1.33rem',
+    overflow: 'scroll',
     position: 'absolute',
     top: 0,
     left: 0,
@@ -152,7 +152,8 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
       </div>
     </div>
   )
-  return typeof document === 'object' ? createPortal(preamble, document.getElementById('synapp')) : preamble
+  //return typeof document === 'object' ? createPortal(preamble, document.getElementById('synapp')) : preamble
+  return preamble
 }
 
 export default CandidatePreamble
