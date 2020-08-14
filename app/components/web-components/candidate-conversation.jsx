@@ -900,7 +900,7 @@ class RASPUndebate extends React.Component {
     Object.keys(this.participants).forEach((participant, i) => {
       if (this.participants[participant].youtube) {
         const videoId = getYouTubeID(this.props.participants[participant].listening)
-        logger.trace('Undebate.onYouTubeIframeAPIReady new player for:', participant, videoId)
+        logger.trace('CandidateConversation.onYouTubeIframeAPIReady new player for:', participant, videoId)
         try {
           this.participants[participant].youtubePlayer = new YT.Player('youtube-' + participant, {
             width: pxSeatStyleWidth(this.seat(i)),
@@ -926,13 +926,17 @@ class RASPUndebate extends React.Component {
               onReady: this.onYouTubePlayerReady.bind(this, participant),
               onStateChange: this.onYouTubePlayerStateChange.bind(this, participant),
               onError: e => {
-                logger.error('Undebate.onYouTubeIframeAPIReady onError', participant, e.data)
+                logger.error('CandidateConversation.onYouTubeIframeAPIReady onError', participant, e.data)
               },
             },
           })
-          logger.trace('Undebate.onYouTubeIframeAPIReady new Player completed')
+          logger.trace('CandidateConversation.onYouTubeIframeAPIReady new Player completed')
         } catch (error) {
-          logger.error('Undebate.onYouTubeIframeAPIReady caught error on new YT.Player', error.name, error.message)
+          logger.error(
+            'CandidateConversation.onYouTubeIframeAPIReady caught error on new YT.Player',
+            error.name,
+            error.message
+          )
         }
       }
     })
@@ -1299,7 +1303,7 @@ class RASPUndebate extends React.Component {
       } else if (!(objectURL = this.participants[part].speakingObjectURLs[round])) {
         this.participants[part].speakingImmediate[round] = true
         this.stallWatch(part)
-        logger.error('Undebate.nextMediaState need to do something about stallWatch with preFetch')
+        logger.error('CandidateConversation.nextMediaState need to do something about stallWatch with preFetch')
       }
     } else {
       if (part === 'human') objectURL = 'cameraStream'
@@ -1352,7 +1356,7 @@ class RASPUndebate extends React.Component {
 
     if (true /*window.env!=='production' || this.participants[part].youtube */) {
       // in development, don'e prefetch the videos because they won't be cached by the browser and you'll end up consuming a lot of extra cloudinary bandwith, on youtube we can't prefetch
-      logger.trace("undebate.preFetchObjectURl - in development we don't prefetch", part, speaking, round)
+      logger.trace("CandidateConversation.preFetchObjectURl - in development we don't prefetch", part, speaking, round)
       this.setExternalObjectURL(part, speaking, round)
       return
     } else {
@@ -1381,7 +1385,7 @@ class RASPUndebate extends React.Component {
       .then(res => res.blob()) // Gets the response and returns it as a blob
       .then(async blob => {
         logger.trace(
-          'Undebate.preFetchObjectURL fetch completed:',
+          'CandidateConversation.preFetchObjectURL fetch completed:',
           'part:',
           part,
           'url:',
@@ -1419,16 +1423,30 @@ class RASPUndebate extends React.Component {
         }
       })
       .catch(err => {
-        logger.error('Undebate.preFetchObjectURL fetch caught error', part, speaking, round, url, err.name, err.message)
+        logger.error(
+          'CandidateConversation.preFetchObjectURL fetch caught error',
+          part,
+          speaking,
+          round,
+          url,
+          err.name,
+          err.message
+        )
         this.preFetchQueue = Math.max(this.preFetchQueue - 1, 0)
         this.setState({ preFetchQueue: this.preFetchQueue + this.preFetchQueue + this.preFetchList.length })
         let retries = this.retries[part + speaking + round] || 0
         if (retries < 3) {
-          logger.trace('Undebate.preFetchObjectURL retrying', retries, part, speaking, round, url)
+          logger.trace('CandidateConversation.preFetchObjectURL retrying', retries, part, speaking, round, url)
           this.retries[part + speaking + round] = retries + 1
           this.preFetchList.push([part, speaking, round])
         } else {
-          logger.error('Undebate.preFetchObjectURL retries exceeded, using external link', part, speaking, round, url)
+          logger.error(
+            'CandidateConversation.preFetchObjectURL retries exceeded, using external link',
+            part,
+            speaking,
+            round,
+            url
+          )
           this.setExternalObjectURL(part, speaking, round)
         }
         shiftPreFetchList()
@@ -1512,7 +1530,7 @@ class RASPUndebate extends React.Component {
           this.requestPermissionElements.push(element)
           if (!this.state.requestPermission) this.setState({ requestPermission: true })
         } else {
-          logger.error('Undebate.playObjectURL caught error', err.name, err)
+          logger.error('CandidateConversation.playObjectURL caught error', err.name, err)
         }
       }
     }
@@ -1538,7 +1556,7 @@ class RASPUndebate extends React.Component {
         this.requestPermissionElements.push(element)
         if (!this.state.requestPermission) this.setState({ requestPermission: true })
       } else {
-        logger.error('Undebate.playAudioObject caught error', err.name, err)
+        logger.error('CandidateConversation.playAudioObject caught error', err.name, err)
       }
     }
   }
@@ -1659,7 +1677,7 @@ class RASPUndebate extends React.Component {
               this.requestPermissionElements.push(element)
               this.setState({ requestPermission: true })
             } else {
-              logger.error('undebate.play() for ', participant, 'caught error', err)
+              logger.error('CandidateConversation.play() for ', participant, 'caught error', err)
             }
           }
         }
@@ -1682,7 +1700,7 @@ class RASPUndebate extends React.Component {
 
   prevSection() {
     var { seatOffset, round } = this.state
-    logger.info('Undebate.prevSection', seatOffset, round)
+    logger.info('CandidateConversation.prevSection', seatOffset, round)
     seatOffset = 0
     round -= 1
     if (round < 0) round = 0
@@ -1691,7 +1709,7 @@ class RASPUndebate extends React.Component {
 
   prevSpeaker() {
     var { seatOffset, round } = this.state
-    logger.info('Undebate.prevSpeaker', seatOffset, round)
+    logger.info('CandidateConversation.prevSpeaker', seatOffset, round)
     if (this.numParticipants === 1) {
       round -= 1
       if (round < 0) round = 0
@@ -1715,7 +1733,7 @@ class RASPUndebate extends React.Component {
 
   nextSection() {
     var { seatOffset, round } = this.state
-    logger.info('Undebate.nextSection', seatOffset, round)
+    logger.info('CandidateConversation.nextSection', seatOffset, round)
     if (this.numParticipants === 1) {
       round += 1
       if (!this.props.participants.moderator.speaking[round]) return this.finished()
@@ -1729,7 +1747,7 @@ class RASPUndebate extends React.Component {
 
   nextSpeaker() {
     var { seatOffset, round } = this.state
-    logger.info('Undebate.nextSpeaker', seatOffset, round)
+    logger.info('CandidateConversation.nextSpeaker', seatOffset, round)
     if (this.numParticipants === 1) {
       round += 1
       if (!this.props.participants.moderator.speaking[round]) return this.finished()
@@ -1747,7 +1765,7 @@ class RASPUndebate extends React.Component {
 
   autoNextSpeaker() {
     var { seatOffset, round } = this.state
-    logger.trace('Undebate.autoNextSpeaker', seatOffset, round)
+    logger.trace('CandidateConversation.autoNextSpeaker', seatOffset, round)
     if (this.numParticipants === 1) {
       round += 1
       if (!this.props.participants.moderator.speaking[round]) return this.finished()
@@ -1765,12 +1783,12 @@ class RASPUndebate extends React.Component {
 
   finishedSpeaking() {
     // this is different than nextSpeaker to avoid the race condition that one might hit the finished speaking button just after the timeout and things have already advanced
-    logger.info('Undebate.finishedSpeaking')
+    logger.info('CandidateConversation.finishedSpeaking')
     if (this.seat(Object.keys(this.props.participants).indexOf('human')) === 'speaking') return this.autoNextSpeaker()
   }
 
   rerecordButton() {
-    logger.info('Undebate.rerecordButton')
+    logger.info('CandidateConversation.rerecordButton')
     this.camera && this.camera.stopRecording() // it might be recording when the user hit's rerecord
     this.rerecord = true
     const { seatOffset, round } = this.state
@@ -1857,7 +1875,7 @@ class RASPUndebate extends React.Component {
   }
 
   finished() {
-    logger.info('Undebate.finished')
+    logger.info('CandidateConversation.finished')
     this.audioSets && this.audioSets.ending && this.playAudioObject('audio', this.audioSets.ending)
     setTimeout(() => {
       this.camera && this.camera.releaseCamera()
@@ -1891,14 +1909,14 @@ class RASPUndebate extends React.Component {
   }
 
   onUserLogin(info) {
-    logger.info('Undebate.onUserLogin')
+    logger.info('CandidateConversation.onUserLogin')
     logger.trace('onUserLogin', info)
     const { userId } = info
     this.setState({ newUserId: userId })
   }
 
   onUserUpload() {
-    logger.info('Undebate.onUserUpload')
+    logger.info('CandidateConversation.onUserUpload')
     logger.trace('onUserUpload', this.props)
     const userId = (this.props.user && this.props.user.id) || this.state.newUserId
     createParticipant(this.props, this.participants.human, userId, this.state.name, progressObj =>
@@ -2011,7 +2029,7 @@ class RASPUndebate extends React.Component {
       return
 
     if (this.stallWatchTimeout) {
-      logger.error('Undebate.stallWatch called but timeout already set', this.stallWatchTimeout)
+      logger.error('CandidateConversation.stallWatch called but timeout already set', this.stallWatchTimeout)
     }
 
     const element = this.participants[speaker].element.current
@@ -2031,11 +2049,11 @@ class RASPUndebate extends React.Component {
       // this is called after the player has started
       if (this.state.stalled) {
         if (element.readyState === 4 || element.buffered.end(0) - element.currentTime > 15) {
-          logger.trace('Undebate.stallWatch.stallWatchPlayed unstalled', speaker)
+          logger.trace('CandidateConversation.stallWatch.stallWatchPlayed unstalled', speaker)
           this.setState({ stalled: false, waitingPercent: 0 })
         } else {
           element.pause()
-          logger.trace('Undebate.stallWatch.stallWatchPlayed paused', speaker)
+          logger.trace('CandidateConversation.stallWatch.stallWatchPlayed paused', speaker)
           this.setState({ waitingPercent: calcWaitingPercent() })
         }
       }
@@ -2048,11 +2066,11 @@ class RASPUndebate extends React.Component {
         // wait for the Meta Data to be ready
         let duration = element.duration || Infinity // it might be Infinity, it might be NAN if the Meta Data hasn't loaded yet
         if (currentTime === Infinity) {
-          logger.error('Undebate.stallWatch CurrentTime is Infinity') // it might be - so just come back again later
+          logger.error('CandidateConversation.stallWatch CurrentTime is Infinity') // it might be - so just come back again later
           this.stallWatchTimeout = setTimeout(updater, 250)
         } else if (currentTime >= duration) {
           if (this.state.stalled) {
-            logger.trace('Undebate.stallWatch unstalling on end', speaker)
+            logger.trace('CandidateConversation.stallWatch unstalling on end', speaker)
             this.setState({ stalled: false, waitPercent: 0 })
           }
           this.stallWatchTimeout = false
@@ -2063,7 +2081,7 @@ class RASPUndebate extends React.Component {
             this.stallWatchTimeout = setTimeout(updater, 250)
           } else if (this.state.stalled !== speaker) {
             element.pause()
-            logger.trace('Undebate.stallWatch stalled', speaker)
+            logger.trace('CandidateConversation.stallWatch stalled', speaker)
             this.setState({ stalled: speaker })
             this.stallWatchTimeout = setTimeout(updater, 250)
           } else {
@@ -2076,7 +2094,7 @@ class RASPUndebate extends React.Component {
                   this.setState({ stalled: false, waitingPercent: 0 })
                 })
                 .catch(err => {
-                  logger.error('Undebate.stallWatch.updater caught error on play', err.name, err.message)
+                  logger.error('CandidateConversation.stallWatch.updater caught error on play', err.name, err.message)
                 })
             } else {
               this.setState({ waitingPercent: calcWaitingPercent() })
@@ -2089,7 +2107,7 @@ class RASPUndebate extends React.Component {
           if (this.state.stalled === speaker) {
             // it was stalled and now its moved forward, but we don't want it to stall again too soon
             if (element.readyState === 4 || element.buffered.end(0) - currentTime > 15) {
-              logger.trace('Undebate.stallWatch unstalled', speaker)
+              logger.trace('CandidateConversation.stallWatch unstalled', speaker)
               this.setState({ stalled: false, waitingPercent: 0 })
             } else {
               this.setState({ waitingPercent: calcWaitingPercent() })
@@ -2138,7 +2156,7 @@ class RASPUndebate extends React.Component {
   }
 
   beginButton(e) {
-    logger.info('Undebate.beginButton')
+    logger.info('CandidateConversation.beginButton')
     if (this.audioSets && this.audioSets.intro) {
       this.setState({ intro: true, stylesSet: true }, () => {
         this.playAudioObject('audio', this.audioSets.intro, this.onIntroEnd.bind(this))
@@ -2688,7 +2706,7 @@ class RASPUndebate extends React.Component {
             <Preamble
               agreed={this.state.preambleAgreed}
               onClick={() => {
-                logger.info('Undebate preambleAgreed true')
+                logger.info('CandidateConversation preambleAgreed true')
                 this.setState({ preambleAgreed: true })
                 noOverlay && this.beginButton()
               }}
