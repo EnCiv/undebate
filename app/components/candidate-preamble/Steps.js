@@ -20,7 +20,7 @@ const useStyles = createUseStyles({
   },
   step: {
     flexGrow: 1,
-    flexBasis: 'calc( calc(300px - 100%) * 999 )', //holy albatross
+    flexBasis: '10em',
     position: 'relative',
     border: '1px solid gray',
     padding: '2em',
@@ -42,8 +42,7 @@ const useStyles = createUseStyles({
       //TODO: change the font Style for this so that it is bold.
     },
     '& .__icon': {
-      width: 'auto',
-      height: '100%',
+      height: '3.455em',
       marginBottom: '3.5em',
     },
   },
@@ -78,17 +77,17 @@ function Steps({}) {
   const steps = [
     {
       title: 'Record',
-      icon: <img src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1596687809/assets/record.svg" />,
+      icon: <img src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1596687809/assets/record.svg" height="100%" />,
       content: `When you start recording, an onscreen moderator will ask a series of questions, and you'll be prompted to record your answers.`,
     },
     {
       title: 'Review',
-      icon: <img src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1596687838/assets/review.svg" />,
+      icon: <img src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1596687838/assets/review.svg" height="100%" />,
       content: `Re-record any question as many times as you want; nothing is published until you're ready.`,
     },
     {
       title: 'Post',
-      icon: <img src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1596687849/assets/upload.svg" />,
+      icon: <img src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1596687849/assets/upload.svg" height="100%" />,
       content: `Make a final review of the whole Conversation if you like, then hit "Post" and your video is automatically published on your Ballotpedia page.`,
     },
   ]

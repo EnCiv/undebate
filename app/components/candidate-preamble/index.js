@@ -40,7 +40,6 @@ const useStyles = createUseStyles({
   Preamble: {
     fontFamily: '"Libre Franklin"',
     textAlign: 'center',
-    overflow: 'scroll',
     position: 'absolute',
     top: 0,
     left: 0,
@@ -76,7 +75,7 @@ const useStyles = createUseStyles({
   },
   'Preamble-inner-content': {
     padding: '0 1.5em 1.5em',
-    maxWidth: '1000px',
+    maxWidth: '50em',
     marginLeft: 'auto',
     marginRight: 'auto',
     //steps area title
