@@ -17,10 +17,13 @@ const useStyles = createUseStyles({
     flexWrap: 'wrap',
     padding: 0,
     margin: 0,
+    '@media (orientation: portrait)': {
+      flexDirection: 'column',
+    },
   },
   step: {
     flexGrow: 1,
-    flexBasis: '10em',
+    flexBasis: '1em',
     position: 'relative',
     border: '1px solid gray',
     padding: '2em',
