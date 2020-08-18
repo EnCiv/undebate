@@ -2,7 +2,7 @@
 import React from 'react'
 import supportsVideoType from './lib/supports-video-type'
 import cloneDeep from 'lodash/cloneDeep'
-import micValues from './react-mic-meter'
+import micValues, { ChangeMic, AppAudioProvider } from './react-mic-meter'
 
 /***
  *
@@ -51,7 +51,7 @@ export default class ReactCameraRecorder extends React.Component {
         this.videoinputs = devices.reduce((acc, device) => (device.kind === 'videoinput' && acc.push(device), acc), [])
         if (this.videoinputs.length > 1) newState.cameraIndex = 0
         this.audioinputs = devices.reduce((acc, device) => (device.kind === 'audioinput' && acc.push(device), acc), [])
-        if (this.audioinputs.length > 1) newState.micIndex = 0
+        if (this.audioinputs.length >= 1) newState.micIndex = 0
         if (Object.keys(newState).length) this.setState(newState)
         logger.info('reactCameraRecorder devices', JSON.stringify(devices, null, 2))
       })
@@ -121,7 +121,7 @@ export default class ReactCameraRecorder extends React.Component {
       const stream = await navigator.mediaDevices.getUserMedia(calcConstraints)
       logger.trace('getUserMedia() got stream:', stream)
       this.cameraStream = stream
-      micValues(calcConstraints)
+      //micValues(calcConstraints)
       ok && ok(stream)
     } catch (e) {
       logger.error('navigator.getUserMedia error:', e.name, e.message)
@@ -260,44 +260,34 @@ export default class ReactCameraRecorder extends React.Component {
   render() {
     return (
       <>
-        {typeof this.state.cameraIndex !== 'undefined' && this.state.getCameraStream && (
-          <div
-            style={{
-              zIndex: 10,
-              margin: '1em',
-              border: '1px solid #808080',
-              borderRadius: '3px',
-              padding: '.1em',
-              cursor: 'pointer',
-              pointerEvents: 'auto',
-              position: 'absolute',
-              bottom: '3em',
-            }}
-            title={this.videoinputs[this.state.cameraIndex] && this.videoinputs[this.state.cameraIndex].label}
-            onClick={this.nextCamera}
-          >
-            Change Camera
-          </div>
-        )}
-        {typeof this.state.micIndex !== 'undefined' && this.state.getCameraStream && (
-          <div
-            style={{
-              zIndex: 10,
-              margin: '1em',
-              border: '1px solid #808080',
-              borderRadius: '3px',
-              padding: '.1em',
-              cursor: 'pointer',
-              pointerEvents: 'auto',
-              position: 'absolute',
-              bottom: '1em',
-            }}
-            title={this.audioinputs[this.state.micIndex] && this.audioinputs[this.state.micIndex].label}
-            onClick={this.nextMic}
-          >
-            Change Mic
-          </div>
-        )}
+        <AppAudioProvider>
+          {typeof this.state.cameraIndex !== 'undefined' && this.state.getCameraStream && (
+            <div
+              style={{
+                zIndex: 10,
+                margin: '1em',
+                border: '1px solid #808080',
+                borderRadius: '3px',
+                padding: '.1em',
+                cursor: 'pointer',
+                pointerEvents: 'auto',
+                position: 'absolute',
+                bottom: '3em',
+              }}
+              title={this.videoinputs[this.state.cameraIndex] && this.videoinputs[this.state.cameraIndex].label}
+              onClick={this.nextCamera}
+            >
+              Change Camera
+            </div>
+          )}
+          <ChangeMic
+            nextMic={this.nextMic}
+            audioinputs={this.audioinputs}
+            getCameraStream={this.getCameraStream}
+            micIndex={this.state.micIndex}
+            calcConstraints={this.calcConstraints}
+          />
+        </AppAudioProvider>
       </>
     )
   }
