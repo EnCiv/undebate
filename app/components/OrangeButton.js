@@ -35,7 +35,7 @@ export default function OrangeButton({ children, href, target, onClick }) {
             padding: '0.4em',
             margin: 0,
           }}
-          onClick={() => onClick}
+          onClick={() => onClick()}
         >
           {children}
         </button>

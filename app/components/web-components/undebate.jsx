@@ -107,6 +107,10 @@ const styles = {
     fontFamily: "'Montserrat', sans-serif",
     '&$scrollableIframe': {
       height: 'auto',
+      pointerEvents: 'all',
+      '& button': {
+        cursor: 'pointer',
+      },
     },
   },
   innerImageOverlay: {
@@ -2484,8 +2488,8 @@ class Undebate extends React.Component {
       Object.assign({}, stylesSet && { transition: IntroTransition }, introStyle[name], intro && introSeatStyle[name])
     const innerWidth = typeof window !== 'undefined' ? window.innerWidth : 1920
     const humanSpeaking = this.speakingNow() === 'human'
-
-    const scrollableIframe = done && participants.human
+    const ifShowPreamble = this.participants.human && !opening.noPreamble && !intro && !begin && !done
+    const scrollableIframe = (done && participants.human) || ifShowPreamble
     const bot = browserConfig.type === 'bot'
     const noOverlay = this.noOverlay
 
@@ -2808,7 +2812,7 @@ class Undebate extends React.Component {
           )}
           key={participant}
         >
-          {this.seat(i) === 'speaking' ? (
+          {this.seat(i) === 'speaking' && !participants.human ? (
             <SocialShareBtn
               metaData={{
                 path: path,
@@ -2981,6 +2985,7 @@ class Undebate extends React.Component {
       )
 
     const renderHangupButton = () =>
+      !ifShowPreamble &&
       !hungUp &&
       this.participants.human && (
         <div className={classes['hangUpButton']}>
@@ -3108,7 +3113,7 @@ class Undebate extends React.Component {
           {((this.participants.human && (preambleAgreed || opening.noPreamble)) || !this.participants.human) &&
             !bot &&
             beginOverlay()}
-          {this.participants.human && !opening.noPreamble && !intro && !begin && !done && (
+          {ifShowPreamble && (
             <CandidatePreamble
               subject={subject}
               bp_info={bp_info}
