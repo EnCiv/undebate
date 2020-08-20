@@ -478,7 +478,7 @@ const styles = {
   },
   buttonBar: {
     //display: "table",
-    opacity: '0.6',
+    // opacity: '0.6',
     textAlign: 'center',
     position: 'absolute',
     width: '50vw',
@@ -1018,7 +1018,7 @@ class RASPUndebate extends React.Component {
     const innerTitleHeight = 3.5 * fontSize // title is 3.5rem high, it overlays the video window at the bottom
     var portraitMode = false
     if (width / height > 1) {
-      let speakingWidthRatio = 0.45
+      let speakingWidthRatio = 0.65
       const speakingHeight = () => speakingWidthRatio * width * HDRatio
       let seatWidthRatio = 0.25
       const seatHeight = () => seatWidthRatio * width * HDRatio
@@ -1028,10 +1028,11 @@ class RASPUndebate extends React.Component {
       const hGap = fontSize
       const numOfParticipants = Object.keys(this.props.participants).length - 1 // without the speaker
 
-      let calcHeight = navBarHeight + vGap + seatHeight() + titleHeight + vGap + speakingHeight() + titleHeight + vGap
+      let calcHeight =
+        navBarHeight + vGap + seatHeight() + titleHeight + vGap + speakingHeight() + titleHeight + vGap + 90
       if (calcHeight > height) {
         // if the window is really wide - squish the video height so it still fits
-        let heightForVideo = height - navBarHeight - vGap - /*titleHeight -*/ vGap - vGap
+        let heightForVideo = height - navBarHeight - vGap - /*titleHeight -*/ vGap - vGap - 90
         let calcHeightForVideo = seatHeight() + speakingHeight()
         seatWidthRatio = (seatWidthRatio * heightForVideo) / calcHeightForVideo
         speakingWidthRatio = (speakingWidthRatio * heightForVideo) / calcHeightForVideo
@@ -1042,7 +1043,7 @@ class RASPUndebate extends React.Component {
         (width - speakingWidthRatio * width - titleHeight * (1 / HDRatio) - agendaMaxWidth - hGap) / 2
       seatStyle.speaking.width = speakingWidthRatio * width + titleHeight * (1 / HDRatio)
       seatStyle.speaking.top = navBarHeight + vGap + width * seatWidthRatio * HDRatio + vGap
-      // seatStyle.speaking['--speaking-height'] = speakingHeight() + 'px' // tell child div's what the speaking-height is
+      seatStyle.speaking['--speaking-height'] = speakingHeight() + 'px' // tell child div's what the speaking-height is
       introSeatStyle.speaking = { top: -(speakingWidthRatio * HDRatio * width + vGap + ShadowBox) }
 
       seatStyle.nextUp.left = hGap
@@ -1126,7 +1127,7 @@ class RASPUndebate extends React.Component {
       let seat = 1
       let rowLeftEdge = hGap
 
-      const maxAgendaHeight = fontSize * 20
+      const maxAgendaHeight = fontSize * 20 - 90
       const numOfParticipants = Object.keys(this.props.participants).length - 1 // without the speaker/moderator
 
       if (numOfParticipants * seatHorizontalPitch() - hGap <= width) rows = 1
@@ -1232,7 +1233,7 @@ class RASPUndebate extends React.Component {
       seatStyle.finishUp.top = 0.5 * height
       seatStyle.finishUp.width = 0.01 * width
 
-      agendaStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
+      agendaStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap + 50
       agendaStyle.left = seatStyle.speaking.left
       agendaStyle.width = seatStyle.speaking.width
       agendaStyle.height = Math.max(maxAgendaHeight, height - agendaStyle.top - vGap)
@@ -1242,10 +1243,7 @@ class RASPUndebate extends React.Component {
       buttonBarStyle.width = seatStyle.speaking.width * 0.6
       buttonBarStyle.left = seatStyle.speaking.left + seatStyle.speaking.width * 0.2 // center it
       buttonBarStyle.top =
-        seatStyle.speaking.top +
-        seatStyle.speaking.width * HDRatio -
-        (buttonBarStyle.width / this.buttons.length) * 0.75 - // there are 5 buttons and they are essentially square
-        1 * vGap
+        seatStyle.speaking.top + seatStyle.speaking.width * HDRatio - buttonBarStyle.width / this.buttons.length + 70 // there are 5 buttons and they are essentially square
       recorderButtonBarStyle.left = seatStyle.speaking.left
       recorderButtonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
       recorderButtonBarStyle.width = seatStyle.speaking.width
@@ -2422,7 +2420,6 @@ class RASPUndebate extends React.Component {
       const speaking = this.seat(i) === 'speaking'
       if (participant === 'human' && speaking) humanSpeaking = true
       const style = seatStyle[chair] //noOverlay || bot || intro ? seatStyle[chair] : Object.assign({},seatStyle[chair],introSeatStyle[chair])
-      console.log(style)
       let participant_name
       if (participant === 'human' && this.props.bp_info && this.props.bp_info.candidate_name)
         participant_name = this.props.bp_info.candidate_name

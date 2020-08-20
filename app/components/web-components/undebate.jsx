@@ -453,14 +453,25 @@ const styles = {
       fill: '	#565656',
     },
   },
+  iconButtonDisabled: {
+    cursor: 'no-drop',
+    '& rect': {
+      stroke: '#878686',
+      fill: '#878686',
+    },
+    '& circle': {
+      stroke: '#878686',
+      fill: '#878686',
+    },
+  },
   buttonBar: {
     //display: "table",
     textAlign: 'center',
     position: 'absolute',
-    width: '50vw',
+    width: '35vw',
     left: '25vw',
-    top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
-    height: '3.5vh',
+    // top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
+    height: '10vh',
     overflow: 'hidden',
     'text-overflow': 'clip',
     '& button': {
@@ -798,10 +809,11 @@ class Undebate extends React.Component {
     },
 
     buttonBarStyle: {
-      width: '50vw',
+      width: '35vw',
       left: '25vw',
-      top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
-      height: '3.5vh',
+      // top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
+      bottom: '5vh',
+      height: '10vh',
       position: 'absolute',
       overflow: 'hidden',
       textOverflow: 'clip',
@@ -1145,10 +1157,9 @@ class Undebate extends React.Component {
         introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
         buttonBarStyle.left = seatStyle.speaking.left
-        buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.36
         // buttonBarStyle.width = seatStyle.nextUp.width
         buttonBarStyle.width = speakingWidthRatio * 100 + 'vw'
-        buttonBarStyle.height = Math.max(0.05 * height, 4 * fontSize) + 20
+        // buttonBarStyle.height = Math.max(0.05 * height, 4 * fontSize) + 20
 
         recorderButtonBarStyle.left = seatStyle.speaking.left
         recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
@@ -1231,23 +1242,23 @@ class Undebate extends React.Component {
         agendaStyle.height = Math.max(0.175 * width, 20 * fontSize)
         introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
-        buttonBarStyle.width = speakingWidthRatio * 50 + 'vw'
-        buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25
-        // buttonBarStyle.top= speakingWidthRatio * HDRatio * width;
-        if (width / height < 0.87) {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.18
-        } else if (width / height < 1) {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.13
-        } else if (width / height < 1.2) {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.08
-        } else if (width / height < 1.4) {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.04
-        } else if (width / height < 1.6) {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1
-        } else {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width
-        }
-        buttonBarStyle.height = Math.max(0.035 * height, 4 * fontSize)
+        buttonBarStyle.width = speakingWidthRatio * 70 + 'vw'
+        buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25 - 100
+        // buttonBarStyle.top = speakingWidthRatio * HDRatio * width
+        // if (width / height < 0.87) {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.18
+        // } else if (width / height < 1) {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.13
+        // } else if (width / height < 1.2) {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.08
+        // } else if (width / height < 1.4) {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.04
+        // } else if (width / height < 1.6) {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1
+        // } else {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width
+        // }
+        // buttonBarStyle.height = Math.max(0.035 * height, 4 * fontSize)
 
         recorderButtonBarStyle.left = seatStyle.speaking.left
         recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
@@ -1331,9 +1342,9 @@ class Undebate extends React.Component {
       introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
       buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25
-      buttonBarStyle.top = speakingWidthRatio * HDRatio * width + verticalSeatSpace * 1.2 //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
+      // buttonBarStyle.top = speakingWidthRatio * HDRatio * width + verticalSeatSpace * 1.2 //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
       buttonBarStyle.width = speakingWidthRatio * 50 + 'vw'
-      buttonBarStyle.height = '5vh'
+      // buttonBarStyle.height = '5vh'
 
       recorderButtonBarStyle.left = buttonBarStyle.left
       recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
@@ -1690,6 +1701,12 @@ class Undebate extends React.Component {
 
   buttons = [
     {
+      name: props => <IconRedo width="60%" height="60%" className={props} />,
+      func: this.rerecordButton,
+      title: () => 'Re-record',
+      disabled: () => this.speakingNow() !== 'human' || this.state.warmup,
+    },
+    {
       name: props => <IconPrevSection width="60%" height="60%" className={props} />,
       func: this.prevSection,
       title: () => 'Previous Question',
@@ -1721,6 +1738,12 @@ class Undebate extends React.Component {
       func: this.nextSection,
       title: () => 'Next Question',
       disabled: () => this.participants.human && !this.participants.human.speakingObjectURLs[this.state.round],
+    },
+    {
+      name: props => <IconFinishRecording width="60%" height="60%" className={props} />,
+      func: this.finishedSpeaking,
+      title: () => 'Done Speaking',
+      disabled: () => this.speakingNow() !== 'human' || (this.state.reviewing && !this.rerecord),
     },
   ]
 
@@ -2906,8 +2929,10 @@ class Undebate extends React.Component {
               title={button.title()}
               key={button.title()}
             >
-              <div disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
-                {button.name(classes.iconButton)}
+              <div onClick={button.func.bind(this)}>
+                {button.disabled && button.disabled()
+                  ? button.name(classes.iconButtonDisabled)
+                  : button.name(classes.iconButton)}
               </div>
             </div>
           ))}
@@ -3074,7 +3099,7 @@ class Undebate extends React.Component {
           {ending()}
           {((this.participants.human && (preambleAgreed || opening.noPreamble)) || !this.participants.human) &&
             buttonBar(buttonBarStyle)}
-          {recorderButtonBar(recorderButtonBarStyle)}
+          {/* {recorderButtonBar(recorderButtonBarStyle)} */}
           {permissionOverlay()}
           {waitingOnModeratorOverlay()}
           {renderHangupButton()}
