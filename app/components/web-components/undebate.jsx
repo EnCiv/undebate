@@ -41,6 +41,8 @@ import supportsVideoType from '../lib/supports-video-type'
 
 import { auto_quality, placeholder_image } from '../lib/cloudinary-urls'
 import createParticipant from '../lib/create-participant'
+import Modal from './Modal'
+import Icon from '../lib/icon'
 
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
@@ -105,6 +107,10 @@ const styles = {
     fontFamily: "'Montserrat', sans-serif",
     '&$scrollableIframe': {
       height: 'auto',
+      pointerEvents: 'all',
+      '& button': {
+        cursor: 'pointer',
+      },
     },
   },
   innerImageOverlay: {
@@ -748,6 +754,7 @@ class Undebate extends React.Component {
     allPaused: true, // so the play button shows
     warmup: false,
     isRecording: false,
+    isPortraitPhoneRecording: false,
 
     seatStyle: {
       speaking: {
@@ -1071,6 +1078,7 @@ class Undebate extends React.Component {
       let calculatedStyles = this.calculateStyles(width, height, maxerHeight, fontSize)
       this.setState({ left: -x + 'px', fontSize, ...calculatedStyles })
     }
+    this.preventPortraitRecording()
   }
 
   calculateStyles(width, height, maxerHeight, fontSize) {
@@ -1631,9 +1639,10 @@ class Undebate extends React.Component {
           this.requestPermissionElements.push(element)
           if (!this.state.requestPermission) this.setState({ requestPermission: true })
         } else if (err.name === 'AbortError') {
-          if (element.loop && element.autoplay && element.muted) return // safari generates this error but plays anyway - chome does not generate an error
+          return
+          /*if (element.loop && element.autoplay && element.muted) return // safari generates this error but plays anyway - chome does not generate an error
           this.requestPermissionElements.push(element)
-          if (!this.state.requestPermission) this.setState({ requestPermission: true })
+          if (!this.state.requestPermission) this.setState({ requestPermission: true })*/
         } else {
           logger.error('Undebate.playObjectURL caught error', err.name, err)
         }
@@ -1973,6 +1982,7 @@ class Undebate extends React.Component {
   startRecording(cb, visible = false) {
     this.camera.startRecording(cb)
     if (visible) this.setState({ isRecording: true })
+    this.preventPortraitRecording()
   }
 
   stopRecording() {
@@ -2408,6 +2418,55 @@ class Undebate extends React.Component {
     } else this.setState({ intro: true, stylesSet: true, allPaused: false }, () => this.onIntroEnd())
   }
 
+  preventPortraitRecording = () => {
+    if (this.props.browserConfig.type !== 'phone') return // nothing to do here if not a phone
+    const { isPortraitPhoneRecording } = this.state
+    const portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
+    if (isPortraitPhoneRecording && !portraitMode) {
+      if (this.isRecordingSpeaking()) {
+        this.setState({ isPortraitPhoneRecording: false }, () => this.rerecordButton())
+      } else if (this.isRecordingPlaceHolder()) {
+        const speakingNow = this.speakingNow()
+        if (speakingNow !== 'human') this.participants[speakingNow].element.current.currentTime = 0 // rewind the speaker
+        this.setState({ isPortraitPhoneRecording: false }, () =>
+          setTimeout(() => {
+            this.allPlay()
+            setTimeout(() => this.rerecordButton(), 1000)
+          }, TransitionTime)
+        ) // wait for the user to settle before starting to record the place holder video
+      }
+    } else if (!isPortraitPhoneRecording && portraitMode) {
+      if (this.isRecordingSpeaking()) {
+        this.ensurePaused()
+        this.setState({ isPortraitPhoneRecording: true })
+      } else if (this.isRecordingPlaceHolder()) {
+        this.ensurePaused()
+        this.setState({ isPortraitPhoneRecording: true })
+      }
+    }
+  }
+
+  isRecording() {
+    return this.isRecordingPlaceHolder() || this.isRecordingSpeaking()
+  }
+
+  isRecordingPlaceHolder() {
+    const { participants } = this.props
+    const { round, reviewing } = this.state
+    if (participants.human) {
+      const { listeningRound, listeningSeat } = this.listening()
+      if (listeningRound === round && listeningSeat === this.seatOfParticipant('human')) {
+        const reviewingAndNotReRecording = reviewing && !this.rerecord
+        if (!reviewingAndNotReRecording) return true
+      }
+    }
+    return false
+  }
+
+  isRecordingSpeaking() {
+    return this.speakingNow() === 'human'
+  }
+
   render() {
     const {
       className,
@@ -2443,6 +2502,7 @@ class Undebate extends React.Component {
       stylesSet,
       conversationTopicStyle,
       isRecording,
+      isPortraitPhoneRecording,
       reviewing,
       uploadComplete,
       hungUp,
@@ -2466,8 +2526,8 @@ class Undebate extends React.Component {
       Object.assign({}, stylesSet && { transition: IntroTransition }, introStyle[name], intro && introSeatStyle[name])
     const innerWidth = typeof window !== 'undefined' ? window.innerWidth : 1920
     const humanSpeaking = this.speakingNow() === 'human'
-
-    const scrollableIframe = done && participants.human
+    const ifShowPreamble = this.participants.human && !opening.noPreamble && !intro && !begin && !done
+    const scrollableIframe = (done && participants.human) || ifShowPreamble
     const bot = browserConfig.type === 'bot'
     const noOverlay = this.noOverlay
 
@@ -2790,7 +2850,7 @@ class Undebate extends React.Component {
           )}
           key={participant}
         >
-          {this.seat(i) === 'speaking' ? (
+          {this.seat(i) === 'speaking' && !participants.human ? (
             <SocialShareBtn
               metaData={{
                 path: path,
@@ -2965,6 +3025,7 @@ class Undebate extends React.Component {
       )
 
     const renderHangupButton = () =>
+      !ifShowPreamble &&
       !hungUp &&
       this.participants.human && (
         <div className={classes['hangUpButton']}>
@@ -3067,6 +3128,18 @@ class Undebate extends React.Component {
         style={{ fontSize: fontSize }}
         className={cx(classes['wrapper'], scrollableIframe && classes['scrollableIframe'])}
       >
+        {isPortraitPhoneRecording ? (
+          <Modal
+            render={() => (
+              <>
+                <div>
+                  <Icon style={{ padding: '15% 0' }} icon={'redo'} flip={'horizontal'}></Icon>
+                </div>
+                Recording will start from the top after switching to landscape orientation
+              </>
+            )}
+          ></Modal>
+        ) : null}
         {participants.human && <ReactCameraRecorder ref={this.getCamera} />}
         <section
           id="syn-ask-webrtc"
@@ -3080,7 +3153,7 @@ class Undebate extends React.Component {
           {((this.participants.human && (preambleAgreed || opening.noPreamble)) || !this.participants.human) &&
             !bot &&
             beginOverlay()}
-          {this.participants.human && !opening.noPreamble && !intro && !begin && !done && (
+          {ifShowPreamble && (
             <CandidatePreamble
               subject={subject}
               bp_info={bp_info}
