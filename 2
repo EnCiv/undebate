@@ -2,6 +2,8 @@
 import React, { useContext, useEffect, createContext, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 
+//export let averageVolume = 0
+
 const defaultValue = {
   averageVolume: 0,
 }
@@ -48,8 +50,10 @@ export const ChangeMic = ({
   })
   const [changeMic, setChangeMic] = useState(false)
   const { averageVolume, setAverageVolume } = useAverageVolume()
+  //async function micValues(constraints) {
   const audioOnly = { audio: { ...calcConstraints.audio, noiseSuppression: true } }
 
+  //console.log('avgVol', averageVolume)
   const micValues = async () => {
     console.log('getting new mic Values for mic', micIndex)
     const stream = cameraStream ? cameraStream : await navigator.mediaDevices.getUserMedia(audioOnly)
@@ -111,6 +115,8 @@ export const ChangeMic = ({
       style={{
         zIndex: 10,
         margin: '1em',
+        border: '1px solid #808080',
+        borderRadius: '3px',
         padding: '.1em',
         cursor: 'pointer',
         pointerEvents: 'auto',
@@ -122,15 +128,8 @@ export const ChangeMic = ({
       {!changeMic ? (
         <button
           style={{
-            border: '1px solid #808080',
-            borderRadius: '3px',
-            color: 'black',
-
-            backgroundImage: `linear-gradient(to right, #ffffff ${(averageVolume / 2) *
-              100}%, #ffffff ${(averageVolume / 2) * 100}%, #fbae9e ${(1 - averageVolume / 2) * 100}%)`,
-            backgroundColor: `${averageVolume === 0 ? 'red' : null}`,
-            //backgroundImage: `linear-gradient(to right, #fbae9e 0%, #fbae9e 0%, #ffffff ${(1 - averageVolume / 70) *
-            //100}%)`,
+            border: 'none',
+            background: `linear-gradient(left rgb(1,0,0) 30% ,linear-gradient(left rgb(1,0,0) 30%, rgb(1,1,1) 30%)`,
           }}
           onClick={() => setChangeMic(true)}
         >

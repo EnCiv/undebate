@@ -3,6 +3,7 @@ import React from 'react'
 import supportsVideoType from './lib/supports-video-type'
 import cloneDeep from 'lodash/cloneDeep'
 import micValues, { ChangeMic, AppAudioProvider } from './react-mic-meter'
+import { update } from 'lodash'
 
 /***
  *
@@ -32,7 +33,12 @@ import micValues, { ChangeMic, AppAudioProvider } from './react-mic-meter'
 const WebRTCMediaRecordPeriod = 100
 
 export default class ReactCameraRecorder extends React.Component {
-  state = {}
+  state = {
+    audioinputs: [],
+    videoinputs: [],
+    micIndex: 0,
+    cameraIndex: 0,
+  }
   audioinputs = []
   videoinputs = []
   constructor(props) {
@@ -45,30 +51,63 @@ export default class ReactCameraRecorder extends React.Component {
     }
     this.startRecorderState = { state: 'READY' } //"BLOCK", "QUEUED"
     this.stopRecording = noError => !noError && logger.error('stopRecording called before startRecording')
+    this.updateDevices()
+
+    //if (typeof navigator !== 'undefined') {
+    //navigator.mediaDevices.ondevicechange = function(event) {
+    //let newState = {}
+    //navigator.mediaDevices.enumerateDevices().then(devices => {
+    //console.log(devicek)
+    //this.videoinputs = devices.reduce(
+    //(acc, device) => (device.kind === 'videoinput' && acc.push(device), acc),
+    //[]
+    //)
+    //if (this.videoinputs.length > 1) newState.cameraIndex = 0 //TODO:make it use this.state.cameraIndex if it is defined
+    //this.audioinputs = devices.reduce(
+    //(acc, device) => (device.kind === 'audioinput' && acc.push(device), acc),
+    //[]
+    //)
+    //if (this.audioinputs.length >= 1) newState.micIndex = 0 //TODO:make it use this.state.micIndex if it is defined
+    //if (Object.keys(newState).length) this.setState(newState)
+    //logger.info('reactCameraRecorder devices', JSON.stringify(devices, null, 2))
+    //})
+    //}
+    //}
+    console.log(this.audioinputs)
+    this.nextCamera = this.nextCamera.bind(this)
+    this.getCameraStream = this.getCameraStream.bind(this)
+    this.nextMic = this.nextMic.bind(this)
+    this.getCameraStreamFromCalculatedConstraints = this.getCameraStreamFromCalculatedConstraints.bind(this)
+    this.switchMic = this.switchMic.bind(this)
+    //this.updateDevices.bind(this)
+  }
+
+  updateDevices() {
     if (typeof navigator !== 'undefined') {
-      var newState = {}
+      let newState = {}
       navigator.mediaDevices.enumerateDevices().then(devices => {
         this.videoinputs = devices.reduce((acc, device) => (device.kind === 'videoinput' && acc.push(device), acc), [])
-        if (this.videoinputs.length > 1) newState.cameraIndex = 0
+        if (this.videoinputs.length > 1) newState.cameraIndex = 0 //TODO:make it use this.state.cameraIndex if it is defined
         this.audioinputs = devices.reduce((acc, device) => (device.kind === 'audioinput' && acc.push(device), acc), [])
-        if (this.audioinputs.length >= 1) newState.micIndex = 0
+        if (this.audioinputs.length >= 1) newState.micIndex = 0 //TODO:make it use this.state.micIndex if it is defined
         if (Object.keys(newState).length) this.setState(newState)
         logger.info('reactCameraRecorder devices', JSON.stringify(devices, null, 2))
       })
     }
-    this.nextCamera = this.nextCamera.bind(this)
-    this.nextMic = this.nextMic.bind(this)
   }
 
   releaseCamera() {
-    if (this.cameraStream && this.cameraStream.getTracks) {
-      var tracks = this.cameraStream.getTracks()
+    console.log('releaseCamera is being called')
+    if (this.state.cameraStream && this.state.cameraStream.getTracks) {
+      var tracks = this.state.cameraStream.getTracks()
       tracks.forEach(track => track.stop())
     }
-    this.cameraStream = null
+    //this.cameraStream = null
+    this.setState({ ...this.state, cameraStream: null })
   }
 
   getCamera(event) {
+    console.log('getCamera is being called')
     if (!this.canNotRecordHere) {
       logger.trace('MediaSource opened')
       this.sourceBuffer = this.mediaSource.addSourceBuffer('video/webm; codecs="vp8"')
@@ -102,7 +141,20 @@ export default class ReactCameraRecorder extends React.Component {
   }
 
   async getCameraStreamFromCalculatedConstraints(ok, ko) {
-    let calcConstraints = cloneDeep(this.constraints)
+    //console.log(this.state.micIndex)
+    console.log(this.constraints)
+    //console.log(this.audioinputs)
+    let calcConstraints = await cloneDeep(
+      this.constraints || {
+        audio: {
+          echoCancellation: { exact: true },
+        },
+        video: {
+          width: 640,
+          height: 360,
+        },
+      }
+    )
     if (typeof this.state.cameraIndex !== 'undefined') {
       if (this.videoinputs[this.state.cameraIndex].deviceId)
         calcConstraints.video.deviceId = this.videoinputs[this.state.cameraIndex].deviceId
@@ -111,6 +163,7 @@ export default class ReactCameraRecorder extends React.Component {
       else logger.error('video device has no device or group id', this.videoinputs[this.state.micIndex])
     }
     if (typeof this.state.micIndex !== 'undefined') {
+      console.log('the mic index is ', this.state.micIndex)
       if (this.audioinputs[this.state.micIndex].deviceId)
         calcConstraints.audio.deviceId = this.audioinputs[this.state.micIndex].deviceId
       else if (this.audioinputs[this.state.micIndex].groupId)
@@ -120,7 +173,12 @@ export default class ReactCameraRecorder extends React.Component {
     try {
       const stream = await navigator.mediaDevices.getUserMedia(calcConstraints)
       logger.trace('getUserMedia() got stream:', stream)
-      this.cameraStream = stream
+      //this.constraints =
+      //this.cameraStream = stream
+      await this.setState({ ...this.state, cameraStream: stream })
+
+      console.log(this.state.cameraStream)
+
       //micValues(calcConstraints)
       ok && ok(stream)
     } catch (e) {
@@ -192,7 +250,7 @@ export default class ReactCameraRecorder extends React.Component {
       logger.error(`MediaRecorder.isTypeSupported`, options.mimeType, `caught error`)
     }
     try {
-      mediaRecorder = new MediaRecorder(this.cameraStream, options)
+      mediaRecorder = new MediaRecorder(this.state.cameraStream, options)
       logger.trace('Undebate.startRecording succeeded MediaRecorder.mimeType', mediaRecorder.mimeType)
     } catch (e) {
       logger.error('Exception while creating MediaRecorder:', e.name, e.message)
@@ -257,6 +315,16 @@ export default class ReactCameraRecorder extends React.Component {
     })
   }
 
+  switchMic(index) {
+    console.log(this.audioinputs[index].deviceId)
+    this.releaseCamera()
+    let micIndex = index
+    if (micIndex >= this.audioinputs.length + 1 || micIndex < 0) micIndex = 0
+    this.setState({ micIndex }, () => {
+      this.getCameraStreamFromCalculatedConstraints(this.cameraStreamUpdater)
+    })
+  }
+
   render() {
     return (
       <>
@@ -281,8 +349,9 @@ export default class ReactCameraRecorder extends React.Component {
             </div>
           )}
           <ChangeMic
-            nextMic={this.nextMic}
+            switchMic={idx => this.switchMic(idx)}
             audioinputs={this.audioinputs}
+            cameraStream={this.state.cameraStream}
             getCameraStream={this.getCameraStream}
             micIndex={this.state.micIndex}
             calcConstraints={this.calcConstraints}
