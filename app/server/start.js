@@ -86,6 +86,7 @@ async function asyncStart(emitter) {
 
     require('./events/notify-of-new-participant') // no need to assign it to anything
     require('./events/transcribe') // why does the line above exist
+    require('./events/generate-smpreview')
 
     emitter.emit.bind(emitter, 'message', 'started')
   } catch (error) {
