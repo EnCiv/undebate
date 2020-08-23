@@ -2178,20 +2178,9 @@ class Undebate extends React.Component {
 
   async getCameraMedia() {
     if (this.props.participants.human) {
-      // if we have a human in this debate
-      const constraints = {
-        audio: {
-          echoCancellation: { exact: true },
-        },
-        video: {
-          width: 640,
-          height: 360,
-        },
-      }
-      logger.trace('Using media constraints:', constraints)
-
+      // if we have a human in this debate then we are using the camera
       try {
-        await this.camera.getCameraStream(constraints, () => this.nextMediaState('human'))
+        await this.camera.getCameraStream()
         const { listeningRound, listeningSeat } = this.listening()
         logger.trace('getUserMedia() got stream:', this.cameraStream)
         //it will be set by nextMediaState this.human.current.src = stream;
@@ -3105,6 +3094,16 @@ class Undebate extends React.Component {
             ref={this.getCamera}
             onCanNotRecordHere={status => (this.canNotRecordHere = status)}
             onCameraStream={stream => (this.cameraStream = stream)}
+            onCameraChange={() => this.nextMediaState('human')}
+            constraints={{
+              audio: {
+                echoCancellation: { exact: true },
+              },
+              video: {
+                width: 640,
+                height: 360,
+              },
+            }}
           />
         )}
         <section

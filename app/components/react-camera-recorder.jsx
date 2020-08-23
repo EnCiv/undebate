@@ -77,16 +77,14 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
   const [cameraIsStreaming, setCameraIsStreaming] = useState(false)
 
   // the properties in reactThis are changed in realtime by events that are associated to an instance of this
-  // the useState setter is not used here because the state isn't changed until sometime after the event has been processed, just before render
+  // the useState setter is not used here because that doesn't change the value of the state  until sometime after the event has been processed, just before render
   // and changes to these properties are not intended to cause a rerender
   // it's like setting this.property of a React Class component
-  // reactThis will always be the same 'object' throught the life of this instance of the component (as long as neverSetReactThis is never used)
+  // reactThis will be the same 'object' throught the life of this instance of the component (as long as neverSetReactThis is never used)
 
   const [reactThis, neverSetReactThis] = useState({
     sourceBuffer: undefined,
     mediaSource: undefined,
-    cameraStreamUpdater: undefined,
-    constraints: undefined,
     cameraStream: undefined,
   })
 
@@ -108,20 +106,7 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
 
   // called by parent to turn on the camera and get the video in a stream - but doesn't start recording yet
   // it's up to the parent to render the video from the stream if and wherever it wants
-  const getCameraStream = (
-    constraints = {
-      audio: {
-        echoCancellation: { exact: true },
-      },
-      video: {
-        width: 640,
-        height: 360,
-      },
-    },
-    cameraStreamUpdater
-  ) => {
-    reactThis.constraints = cloneDeep(constraints)
-    reactThis.cameraStreamUpdater = cameraStreamUpdater
+  const getCameraStream = () => {
     if (canNotRecordHere) return Promise.reject(new Error('can not record here'))
     else {
       setCameraIsStreaming(true)
@@ -132,7 +117,7 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
   }
 
   const getCameraStreamFromCalculatedConstraints = async (ok, ko) => {
-    let calcConstraints = cloneDeep(reactThis.constraints)
+    let calcConstraints = cloneDeep(props.constraints)
     if (typeof cameraIndex !== 'undefined') {
       if (inputDevices.videoinputs[cameraIndex].deviceId)
         calcConstraints.video.deviceId = inputDevices.videoinputs[cameraIndex].deviceId
@@ -285,6 +270,7 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
     releaseCamera,
   }))
 
+  // grab the camera after this component mounts, release it after this component unmounts
   useEffect(() => {
     if (!canNotRecordHere) {
       if (window.MediaSource) {
@@ -301,9 +287,9 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
     }
   }, []) // empty list to prevent releasing the camera on props changes. this effect should only be done once on creation, and once on deletion
 
-  // if an index changes, get the new camera
+  // if a camera or mic index changes, get the new stream
   useEffect(() => {
-    getCameraStreamFromCalculatedConstraints(reactThis.cameraStreamUpdater)
+    getCameraStreamFromCalculatedConstraints(props.onCameraChange)
   }, [cameraIndex, micIndex])
 
   return (
