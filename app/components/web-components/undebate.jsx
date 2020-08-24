@@ -816,8 +816,8 @@ class Undebate extends React.Component {
     },
 
     buttonBarStyle: {
-      width: '35vw',
-      left: '25vw',
+      // width: '35vw',
+      // left: '25vw',
       // top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
       bottom: '5vh',
       height: '10vh',
@@ -1166,7 +1166,7 @@ class Undebate extends React.Component {
 
         buttonBarStyle.left = seatStyle.speaking.left
         // buttonBarStyle.width = seatStyle.nextUp.width
-        buttonBarStyle.width = speakingWidthRatio * 100 + 'vw'
+        buttonBarStyle.width = seatStyle.speaking.width
         // buttonBarStyle.height = Math.max(0.05 * height, 4 * fontSize) + 20
 
         recorderButtonBarStyle.left = seatStyle.speaking.left
@@ -1250,8 +1250,8 @@ class Undebate extends React.Component {
         agendaStyle.height = Math.max(0.175 * width, 20 * fontSize)
         introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
-        buttonBarStyle.width = speakingWidthRatio * 70 + 'vw'
-        buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25 - 100
+        buttonBarStyle.width = seatStyle.speaking.width
+        buttonBarStyle.left = seatStyle.speaking.left
         // buttonBarStyle.top = speakingWidthRatio * HDRatio * width
         // if (width / height < 0.87) {
         //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.18
@@ -2982,7 +2982,7 @@ class Undebate extends React.Component {
 
     const buttonBar = buttonBarStyle =>
       (bot || ((noOverlay || (begin && intro)) && !finishUp && !done)) && (
-        <div style={buttonBarStyle} className={classes['buttonBar']} key="buttonBar">
+        <div style={buttonBarStyle} className={classes['']} key="buttonBar">
           {this.buttons.map(button => (
             <div
               style={{ width: 100 / this.buttons.length + '%', display: 'inline-block', height: '100%' }}
