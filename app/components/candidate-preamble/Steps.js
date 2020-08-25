@@ -11,14 +11,21 @@ const useStyles = createUseStyles({
   },
   Steps: {
     display: 'flex',
-    gap: '3em',
-    //flexDirection: 'column',
+    // gap: '3em',
+    // flexDirection: 'column',
     listStyleType: 'none',
     flexWrap: 'wrap',
     padding: 0,
     margin: 0,
+    '&>*:not(:last-child)': {
+      marginRight: '3em',
+    },
     '@media (orientation: portrait)': {
       flexDirection: 'column',
+      '&>*:not(:last-child)': {
+        marginRight: '0px',
+        marginBottom: '3em',
+      },
     },
   },
   step: {
