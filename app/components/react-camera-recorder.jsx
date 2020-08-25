@@ -34,8 +34,6 @@ const WebRTCMediaRecordPeriod = 100
 
 export default class ReactCameraRecorder extends React.Component {
   state = {
-    audioinputs: [],
-    videoinputs: [],
     micIndex: 0,
     cameraIndex: 0,
   }
@@ -73,7 +71,6 @@ export default class ReactCameraRecorder extends React.Component {
     //})
     //}
     //}
-    console.log(this.audioinputs)
     this.nextCamera = this.nextCamera.bind(this)
     this.getCameraStream = this.getCameraStream.bind(this)
     this.nextMic = this.nextMic.bind(this)
@@ -92,6 +89,10 @@ export default class ReactCameraRecorder extends React.Component {
         if (this.audioinputs.length >= 1) newState.micIndex = 0 //TODO:make it use this.state.micIndex if it is defined
         if (Object.keys(newState).length) this.setState(newState)
         logger.info('reactCameraRecorder devices', JSON.stringify(devices, null, 2))
+      })
+      //register an event listener such that update devices is called when a new device is plugged in or another decice gets removed.
+      navigator.mediaDevices.addEventListener('devicechange', () => {
+        this.updateDevices()
       })
     }
   }
