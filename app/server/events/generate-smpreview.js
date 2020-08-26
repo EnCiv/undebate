@@ -3,7 +3,7 @@
 const serverEvents = require('./index.js')
 const { callSocketApi } = require('socket-api')
 
-async function generateSMPreview(iota) {
+function generateSMPreview(iota) {
   callSocketApi('generate_smpreview', iota)
 }
 
