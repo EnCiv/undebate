@@ -62,7 +62,7 @@ if (typeof window !== 'undefined') {
   }
 
   window.logger = log4js.getLogger('browser')
-  logger.info('client main running on browser')
+  logger.info('client main running on browser', window.location.pathname, reactProps.browserConfig)
 }
 
 function render(props) {
