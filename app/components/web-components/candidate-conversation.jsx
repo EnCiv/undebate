@@ -39,7 +39,7 @@ import supportsVideoType from '../lib/supports-video-type'
 import { auto_quality, placeholder_image } from '../lib/cloudinary-urls'
 import createParticipant from '../lib/create-participant'
 import BeginButton from '../begin-button'
-import Transcription from '../transcription'
+import DonateButton from '../donate-button'
 
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
@@ -247,32 +247,6 @@ const styles = {
       'text-decoration': 'none',
       background: 'lightgray',
     },
-  },
-  donateButton: {
-    width: '12vw',
-    '& button': {
-      height: '5.5rem',
-      color: 'white',
-      background: 'linear-gradient(to bottom, #ff6745 0%,#ff5745 51%,#ff4745 100%)',
-      'border-radius': '7px',
-      'border-width': '2px',
-      'border-color': 'white',
-      'font-size': '1.25rem',
-      padding: '1rem',
-      height: '100%',
-      whiteSpace: 'no-wrap',
-    },
-  },
-  donateCallToAction: {
-    fontSize: '1rem',
-    display: 'inline-block',
-    maxWidth: '32em',
-    verticalAlign: 'middle',
-    fontWeight: 'normal',
-    marginTop: '.5rem',
-    textAlign: 'justify',
-    paddingLeft: '1rem',
-    paddingRight: '1rem',
   },
   rerecordButton: {
     width: '12vw',
@@ -2108,7 +2082,7 @@ class RASPUndebate extends React.Component {
   }
 
   render() {
-    const { className, classes, opening = {}, closing = { thanks: 'Thank You' } } = this.props
+    const { className, classes, opening = {}, closing = { thanks: 'Thank You' }, logo, donateButton } = this.props
     const {
       round,
       finishUp,
@@ -2170,16 +2144,29 @@ class RASPUndebate extends React.Component {
     const surveyForm = () =>
       (closing.iframe &&
         (!this.participants.human || (this.participants.human && (this.state.uploadComplete || this.state.hungUp))) && (
-          <iframe
-            src={closing.iframe.src}
-            width={Math.min(closing.iframe.width, innerWidth)}
-            height={closing.iframe.height}
-            frameBorder="0"
-            marginHeight="0"
-            marginWidth="0"
-          >
-            Loading...
-          </iframe>
+          <>
+            <iframe
+              src={closing.iframe.src}
+              width={Math.min(closing.iframe.width, innerWidth)}
+              height={closing.iframe.height}
+              frameBorder="0"
+              marginHeight="0"
+              marginWidth="0"
+            >
+              Loading...
+            </iframe>
+            <span className={cx(classes['thanks'], scrollableIframe && classes['scrollableIframe'])}>
+              <p>{closing.thanks}</p>
+              <DonateButton
+                url={
+                  logo === 'undebate'
+                    ? 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H7XBVF5U2C9NJ&source=url'
+                    : 'https://ballotpedia.org/Donate:_Candidate_Conversations'
+                }
+                {...donateButton}
+              />
+            </span>
+          </>
         )) ||
       (closing.link &&
         (!this.participants.human || (this.participants.human && (this.state.uploadComplete || this.state.hungUp))) && (
@@ -2253,31 +2240,17 @@ class RASPUndebate extends React.Component {
           <div className={cx(classes['outerBox'], scrollableIframe && classes['scrollableIframe'])} key="ending">
             <div style={{ width: '100%', height: '100%', display: 'table' }}>
               <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-                <span className={cx(classes['thanks'], scrollableIframe && classes['scrollableIframe'])}>
+                <div className={cx(classes['thanks'], scrollableIframe && classes['scrollableIframe'])}>
                   <p>{closing.thanks}</p>
-                  <p>
-                    <span className={classes['donateButton']}>
-                      <button
-                        onClick={() => {
-                          let dst =
-                            this.props.logo === 'undebate'
-                              ? 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H7XBVF5U2C9NJ&source=url'
-                              : 'https://ballotpedia.org/Donate:_Candidate_Conversations'
-                          let win = window.open(dst, '_blank')
-                          win.focus()
-                        }}
-                      >
-                        Donate
-                      </button>
-                    </span>
-                    <span>
-                      <div className={classes['donateCallToAction']}>
-                        EnCiv is a 501(c)3 nonprofit working to bring free and fair candidate conversations to elections
-                        across the country. Donations will help us keep this going.
-                      </div>
-                    </span>
-                  </p>
-                </span>
+                  <DonateButton
+                    url={
+                      logo === 'undebate'
+                        ? 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H7XBVF5U2C9NJ&source=url'
+                        : 'https://ballotpedia.org/Donate:_Candidate_Conversations'
+                    }
+                    {...donateButton}
+                  />
+                </div>
                 {surveyForm()}
                 {this.participants.human && !this.state.uploadComplete && (
                   <>
@@ -2573,7 +2546,7 @@ class RASPUndebate extends React.Component {
     var main = () =>
       !done && (
         <div>
-          <ConversationHeader subject={this.props.subject} bp_info={this.props.bp_info} logo={this.props.logo} />
+          <ConversationHeader subject={this.props.subject} bp_info={this.props.bp_info} logo={logo} />
           <div className={classes['outerBox']}>
             {Object.keys(this.props.participants).map((participant, i) => videoBox(participant, i, seatStyle))}
             <Agenda
