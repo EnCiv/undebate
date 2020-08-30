@@ -46,6 +46,7 @@ function DonateButton({
       <span className={classes.button}>
         <button
           onClick={() => {
+            logger.info('DonateButton.onClick from', window.location.pathname, url, name, callToAction)
             let win = window.open(url, '_blank')
             win.focus()
           }}
