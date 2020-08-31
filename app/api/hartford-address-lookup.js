@@ -1,4 +1,5 @@
 import getViewersByOffice from '../server/util/get-viewers-by-office'
+import _ from 'lodash'
 
 /*
  * function takes an address in Hartford CT
@@ -40,64 +41,7 @@ const getOfficials = (long, lat, doOnSuccess, address_found) => {
             let officeNames = []
             districts.forEach(district => {
               // the upper legislative body is being used for testing
-              if (district.offices && district.type === 'State Legislative (Lower)') {
-                district.offices.forEach(office => {
-                  officeNames.push({
-                    id: office.id,
-                    name: office.name,
-                    district_number: parseInt(office.name[office.name.length - 1]),
-                    type: district.type,
-                  })
-                })
-              }
-            })
-
-            //officeNames.forEach(office => {
-            //console.log(parseInt(office.name[office.name.length - 1]))
-            //})
-            //TODO remove this later as the tabs should be filled
-            let viewers = []
-            for (let office of officeNames) {
-              let viewer = await getViewersByOffice(String(office.id))
-              viewers.push(viewer)
-            }
-            //send info after success
-            doOnSuccess({ ok: true, address_found, officeNames, viewers })
-          } else {
-            doOnSuccess({ ok: false, error: JSON.parse(data) })
-          }
-        })
-      })
-      .on('error', err => {
-        console.log('Error: ' + err)
-      })
-    https
-      .get(`${process.env.ELECTED_OFFICIALS_URL}?long=${long}&lat=${lat}`, resp => {
-        let data = ''
-        resp.on('data', chunk => {
-          data += chunk
-        })
-
-        resp.on('end', async () => {
-          const success = JSON.parse(data).success
-          if (success) {
-            const officials = JSON.parse(data).data[0].elected_officials
-            const districts = officials.districts
-
-            /*
-             * districts is an array of objects
-             * format:
-             * name: String -> containing district name
-             * id: Number
-             * type: String -> containing type of district e.g. School District
-             * state: 'CT'
-             * offices: [{id, name:???,office_holders}]
-             * */
-
-            let officeNames = []
-            districts.forEach(district => {
-              // the upper legislative body is being used for testing
-              if (district.offices && district.type === 'State Legislative (Lower)') {
+              if (district.offices && district.type === 'State Legislative (Upper)') {
                 district.offices.forEach(office => {
                   officeNames.push({
                     id: office.id,
