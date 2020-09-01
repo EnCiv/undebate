@@ -1346,7 +1346,7 @@ class Undebate extends React.Component {
         agendaStyle.left + fontSize * 20 + 2 * horizontalSeatSpace <= width
           ? fontSize * 20
           : width - agendaStyle.left - 2 * horizontalSeatSpace // don't go too wide
-      agendaStyle.height = agendaStyle.width //fontSize * 20;
+      agendaStyle.height = agendaStyle.width - 30 //fontSize * 20;
       introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
       buttonBarStyle.left = 15
