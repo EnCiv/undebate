@@ -1349,9 +1349,9 @@ class Undebate extends React.Component {
       agendaStyle.height = agendaStyle.width //fontSize * 20;
       introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
-      buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25
+      buttonBarStyle.left = 15
       // buttonBarStyle.top = speakingWidthRatio * HDRatio * width + verticalSeatSpace * 1.2 //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
-      buttonBarStyle.width = speakingWidthRatio * 50 + 'vw'
+      buttonBarStyle.width = speakingWidthRatio * 80 + 'vw'
       // buttonBarStyle.height = '5vh'
 
       recorderButtonBarStyle.left = buttonBarStyle.left
@@ -2985,7 +2985,12 @@ class Undebate extends React.Component {
         <div style={buttonBarStyle} className={classes['']} key="buttonBar">
           {this.buttons.map(button => (
             <div
-              style={{ width: 100 / this.buttons.length + '%', display: 'inline-block', height: '100%' }}
+              style={{
+                width: 100 / this.buttons.length + '%',
+                display: 'inline-block',
+                height: '100%',
+                textAlign: 'center',
+              }}
               title={button.title()}
               key={button.title()}
             >
