@@ -11,17 +11,29 @@ import cloneDeep from 'lodash/cloneDeep'
  *
  * Usage:
  *
+ *           <ReactCameraRecorder
+ *            ref={this.getCamera}
+ *            onCanNotRecordHere={status => (this.canNotRecordHere = status)}
+ *            onCameraStream={stream => (this.cameraStream = stream)}
+ *            onCameraChange={() => this.nextMediaState('human')}
+ *            constraints={{ // constraints as defined by https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+ *              audio: {
+ *                echoCancellation: { exact: true },
+ *              },
+ *              video: {
+ *                width: 640,
+ *                height: 360,
+ *              },
+ *            }}
+ *         />
+ *
  * <ReactCameraRecorder ref={(ref)=>ref && this.camera=ref} />
  *
- * await this.camera.getCameraStream(constraints)  // constraints as defined by https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
- *
- * element.srcObject=this.camera.cameraStream; //assign the camera stream to a video element for playback
+ * await this.camera.getCameraStream()
  *
  * this.camera.startRecording((blob)=>{ after recording, save the blobs somewhere }); // start recording
  *
  * this.camera.stopRecording(); // stop recording and cause the call back passed to startRecording to be called
- *
- * this.this.camera.canNotRecordHere // if true you can't record video and things won't do anything
  *
  * this.camera.releaseCamera(); // when you are done using the camera, let it go
  *
@@ -83,8 +95,6 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
   // reactThis will be the same 'object' throught the life of this instance of the component (as long as neverSetReactThis is never used)
 
   const [reactThis, neverSetReactThis] = useState({
-    sourceBuffer: undefined,
-    mediaSource: undefined,
     cameraStream: undefined,
   })
 
@@ -94,14 +104,6 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
       tracks.forEach(track => track.stop())
     }
     reactThis.cameraStream = null
-  }
-
-  const getCamera = event => {
-    if (!canNotRecordHere) {
-      logger.trace('MediaSource opened')
-      reactThis.sourceBuffer = reactThis.mediaSource.addSourceBuffer('video/webm; codecs="vp8"')
-      logger.trace('Source buffer: ', sourceBuffer)
-    }
   }
 
   // called by parent to turn on the camera and get the video in a stream - but doesn't start recording yet
@@ -136,6 +138,16 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
       const stream = await navigator.mediaDevices.getUserMedia(calcConstraints)
       logger.trace('getUserMedia() got stream:', stream)
       reactThis.cameraStream = stream
+      let audioTracks = stream.getAudioTracks()
+      audioTracks.forEach((track, i) =>
+        logger.info(
+          'ReactCameraRecorder.getCameraStreamFromCalculatedConstraints audioTrack[',
+          i,
+          ']:',
+          track.valueOf(), // doesn't show up in logger unless you get valueOf
+          track.getSettings()
+        )
+      )
       if (props.onCameraStream) props.onCameraStream(stream)
       ok && ok(stream)
     } catch (e) {
@@ -249,6 +261,7 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
   }
 
   const nextCamera = e => {
+    logger.info('ReactCameraRecorder.nextCamera')
     releaseCamera()
     let index = cameraIndex || 0
     if (++index >= inputDevices.videoinputs.length) index = 0
@@ -256,6 +269,7 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
   }
 
   const nextMic = e => {
+    logger.info('ReactCameraRecorder.nextMic')
     releaseCamera()
     let index = micIndex || 0
     if (++index >= inputDevices.audioinputs.length) index = 0
@@ -270,26 +284,9 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
     releaseCamera,
   }))
 
-  // grab the camera after this component mounts, release it after this component unmounts
+  // if a camera or mic index changes, get the new stream - but don't do it initially only do this on index changes after the camera is streaming
   useEffect(() => {
-    if (!canNotRecordHere) {
-      if (window.MediaSource) {
-        reactThis.mediaSource = new MediaSource()
-        reactThis.mediaSource.addEventListener('sourceopen', getCamera, false) // when you request the camera, the browser asks the user for permission, if you get it, then getCamera will be called. But you may never get it.
-      } else {
-        setCanNotRecordHere(true)
-        if (props.onCanNotRecordHere) props.onCanNotRecordHere(true)
-      }
-    }
-    return () => {
-      reactThis.stopRecording && reactThis.stopRecording(true)
-      releaseCamera()
-    }
-  }, []) // empty list to prevent releasing the camera on props changes. this effect should only be done once on creation, and once on deletion
-
-  // if a camera or mic index changes, get the new stream
-  useEffect(() => {
-    getCameraStreamFromCalculatedConstraints(props.onCameraChange)
+    if (cameraIsStreaming) getCameraStreamFromCalculatedConstraints(props.onCameraChange)
   }, [cameraIndex, micIndex])
 
   return (
