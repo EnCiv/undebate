@@ -95,7 +95,8 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
   // reactThis will be the same 'object' throught the life of this instance of the component (as long as neverSetReactThis is never used)
 
   const [reactThis, neverSetReactThis] = useState({
-    cameraStream: undefined,
+    cameraStream: undefined, // the current cameraStream. It needs to be release when done
+    stopRecording: undefined, // the function to call to stop recording.  It changes with each call to startRecording
   })
 
   const releaseCamera = () => {
@@ -198,7 +199,7 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
     reactThis.stopRecording = stopRecording // the parent will call stopRecording - it needs to stop the on with this recorderBlobs and mediaRecorder
 
     // It's necessary to create a new mediaRecorder every time for Safari - safari won't stop and start again.  Chrome stops and starts just fine.
-    let options = { mimeType: 'video/webm;codecs=vp9' }
+    let options = { mimeType: 'video/webm;codecs=vp9,opus' }
     try {
       if (!MediaRecorder.isTypeSupported) {
         // Safari doesn't have this yet
@@ -207,7 +208,7 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
       } else {
         if (!MediaRecorder.isTypeSupported(options.mimeType)) {
           logger.trace('startRecording', options.mimeType, 'is not Supported, trying vp8')
-          options = { mimeType: 'video/webm;codecs=vp8' }
+          options = { mimeType: 'video/webm;codecs=vp8,opus' }
           if (!MediaRecorder.isTypeSupported(options.mimeType)) {
             logger.trace('startRecording', options.mimeType, 'is not Supported, trying webm')
             options = { mimeType: 'video/webm' }
