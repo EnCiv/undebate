@@ -1163,12 +1163,17 @@
     },
     "path": "/candidate-conversation-2",
     "subject": "Candidate Conversation with 2 participants",
-    "description": "A prototype Candidate Conversation for schoolboard",
+    "description": "A prototype Candidate Conversation for schoolboard, includes a custom donate button",
     "component": {
       "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
+      "donateButton": {
+        "url": "https://www.paypal.com/donate/?token=0jSAROyRh4xb0aOJyweWalSJZ56axU9FYYwTrxtoUI1g0qg_ciUviTYmlu4jGsHW3lCFd0&country.x=US&locale.x=US",
+        "name": "Contribute",
+        "callToAction": "Save democracy, save the World!"
+      },
       "opening": {
         "line1": "You are about to experience a new kind of conversation",
         "line2": "This is how voters can learn about candidates in a more human way",
