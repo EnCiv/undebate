@@ -48,53 +48,6 @@
   },
   {
     "_id": {
-      "$oid": "5e7e88a67c213e3443f11dbf"
-    },
-    "path": "/candidate-conversation",
-    "subject": "Candidate Conversation",
-    "description": "A prototype Candidate Conversation for schoolboard",
-    "component": {
-      "component": "MergeChildren"
-    },
-    "webComponent": {
-      "webComponent": "CandidateConversation",
-      "opening": {
-        "line1": "You are about to experience a new kind of conversation",
-        "line2": "This is how voters can learn about candidates in a more human way",
-        "line3": "And this is how we can efficiently facilitate 500K conversations all over the country, every election season",
-        "line4": "The topic of the discussion is:",
-        "bigLine": "US School Board Candidate Conversation",
-        "subLine": "This is a mock conversation, these are not real candidates"
-      },
-      "participants": {
-        "moderator": {
-          "name": "David Fridley",
-          "speaking": [
-            "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788682/candidate-conversation-moderator-0_at5un1.mp4",
-            "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788667/candidate-converation-moderator-1_z2kjhr.mp4",
-            "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788659/candidate-confersation-moderator-2_cid3dq.mp4",
-            "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788634/candidate-conversation-moderator-3_iq0npa.mp4"
-          ],
-          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
-          "agenda": [
-            [
-              "Introductions",
-              "1- Who you are",
-              "2- Where you are",
-              "3- One word to describe yourself",
-              "4- What office you are running for"
-            ],
-            ["What type of skills should students be learning for success in the 21st century?"],
-            ["Closing Remarks"],
-            ["Thank you"]
-          ],
-          "timeLimits": [10, 60, 60]
-        }
-      }
-    }
-  },
-  {
-    "_id": {
       "$oid": "5d63521ce7179a084ef376f4"
     },
     "path": "/candidate-conversation-candidate-recorder",
@@ -1210,12 +1163,17 @@
     },
     "path": "/candidate-conversation-2",
     "subject": "Candidate Conversation with 2 participants",
-    "description": "A prototype Candidate Conversation for schoolboard",
+    "description": "A prototype Candidate Conversation for schoolboard, includes a custom donate button",
     "component": {
       "component": "MergeChildren"
     },
     "webComponent": {
       "webComponent": "CandidateConversation",
+      "donateButton": {
+        "url": "https://www.paypal.com/donate/?token=0jSAROyRh4xb0aOJyweWalSJZ56axU9FYYwTrxtoUI1g0qg_ciUviTYmlu4jGsHW3lCFd0&country.x=US&locale.x=US",
+        "name": "Contribute",
+        "callToAction": "Save democracy, save the World!"
+      },
       "opening": {
         "line1": "You are about to experience a new kind of conversation",
         "line2": "This is how voters can learn about candidates in a more human way",
@@ -2072,6 +2030,20 @@
   },
   {
     "_id": {
+      "$oid": "5f0512f67c213e16a464d66c"
+    },
+    "path": "/hartford/about",
+    "subject": "Important information regarding relevant organizations and general information for the city election in Hartford CT",
+    "description": "About page for elections in the city of Hartford CT",
+    "webComponent": {
+      "webComponent": "About",
+      "banner": "url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat",
+      "homelink": "/hartford",
+      "content": "<p><i>In response to the current pandemic, the following organizations have collaborated to develop this site to keep Hartford’s residents and their candidates for elected office safe and informed</i></p><h3><div style='height: 4.5em; text-align:center; '><img style='height: 100%; ' src=\"https://res.cloudinary.com/hf6mryjpf/image/upload/v1591726798/assets/HVC_Logo-1.png\" alt=\"Hartford Votes ~ Vota Coalition logo\"/></div></h3><p>The Hartford Votes/Hartford Vota Coalition includes thirteen organizations and agencies that work together to increase voter engagement in Hartford CT. The Coalition is nonpartisan.</p> <h3> <div style='height: 3.5em; text-align:center;'><img style='height: 100%;' src=\"https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png\" alt=\"EnCiv logo\"/></div></h3> <p>EnCiv is a non-profit, transpartisan organization that develops online tools for citizen engagement. EnCiv's Candidate Conversation tool is being made available on Ballotpedia's website. </p> <h3> <div style='height: 2.5em; text-align:center;'><img style='height: 100%;' src=\"https://ballotpedia.org/wiki/skins/Ballotpedia/images/bp-logo.svg\" alt=\"Ballotpedia logo\"/></div></h3> <p>Ballotpedia is the digital encyclopedia of American politics and elections. Ballotpedia connects people with politics by changing the way they access the information they need to be informed about federal, state, and local politics. Ballotpedia currently has over 303,000 encyclopedic articles and offers daily, weekly, and monthly email newsletters on a variety of specialized topics.</p><p>Questions: <a href=\"HartfordVota@gmail.com\" target=\"_blank\">HartfordVota@gmail.com</a></p>"
+    }
+  },
+  {
+    "_id": {
       "$oid": "5ecd55eb7c213e044cbeebdf"
     },
     "component": {
@@ -2301,6 +2273,99 @@
   },
   {
     "_id": {
+      "$oid": "5efc0c407c213e1ed4286ca9"
+    },
+    "component": {
+      "component": "UndebateCreator",
+      "participants": {
+        "moderator": {
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356978/5dfbd2cade08bc00174be9c2-0-speaking20200408T144249408Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356979/5dfbd2cade08bc00174be9c2-1-speaking20200408T144257711Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356980/5dfbd2cade08bc00174be9c2-2-speaking20200408T144259342Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356982/5dfbd2cade08bc00174be9c2-3-speaking20200408T144300057Z.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356985/5dfbd2cade08bc00174be9c2-4-speaking20200408T144302312Z.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1586356987/5dfbd2cade08bc00174be9c2-5-speaking20200408T144305156Z.mp4",
+          "name": "Sarah Rosier",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Name",
+              "2- City and State",
+              "3- One word to describe yourself",
+              "4- What office are you running for?"
+            ],
+            ["What do you love most about where you live?"],
+            ["What inspired you to run for office?"],
+            [
+              "1- Look into the camera while listening to the example speaker as your placeholder video is recorded",
+              "2- If elected, how will you know you that you've succeeded in this position?"
+            ],
+            ["Thank you!"]
+          ],
+          "timeLimits": [15, 30, 30, 30]
+        },
+        "audience1": {
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385606/5e41e44a19c15800177fad8b-0-speaking20200210T231647860Z_osr2mn.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385627/5e41e44a19c15800177fad8b-1-speaking20200210T231648772Z_c8kowz.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385643/5e41e44a19c15800177fad8b-2-speaking20200210T231649635Z_jaagja.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1581385666/5e41e44a19c15800177fad8b-3-speaking20200210T231650542Z_afvnxr.mp4"
+          ],
+          "name": "Adolf Gundersen",
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto,so_0,eo_6/v1581385689/5e41e44a19c15800177fad8b-0-listening20200210T231652250Z_fwq1dq.mp4"
+        },
+        "human": {
+          "listening": {
+            "round": 3,
+            "seat": "nextUp"
+          }
+        }
+      }
+    },
+    "webComponent": {
+      "webComponent": "Undebate",
+      "participants": {},
+      "opening": {
+        "line1": "Thank you for taking the lead in this <strong>new</strong> way to engage with voters",
+        "line2": "We want voters to learn about candidates in a more personal way, and candidates to have an easy way to reach voters",
+        "line3": "And we want to host Candidate Conversations for every election, every election season",
+        "line4": "So, we invite you to speak in this Candidate Conversation about:",
+        "subLine": "After you hit Begin, your browser may ask you to authorize the camera and mic for use by this application."
+      },
+      "closing": {
+        "thanks": "Thank You.",
+        "link": {
+          "name": "Your feedback would help us make this even better",
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeMNX1zEUAVuI3aZY9qreBfqMaXsS-yMLf7WYiylqVjHvoP2g/viewform"
+        },
+        "iframe": {
+          "src": "https://docs.google.com/forms/d/e/1FAIpQLSeMNX1zEUAVuI3aZY9qreBfqMaXsS-yMLf7WYiylqVjHvoP2g/viewform?embedded=true",
+          "width": 700,
+          "height": 1122
+        }
+      }
+    },
+    "path": "/candidate-conversation-candidate-recorder-questions-test",
+    "subject": "U.S. House Maryland District 1 Republican Party",
+    "description": "A Candidate Conversation Recorder for: U.S. House Maryland District 1 Republican Party Election Date:2020-06-02",
+    "bp_info": {
+      "office": "U.S. House Maryland District 1",
+      "party": "Republican Party",
+      "election_date": "2020-06-02",
+      "candidate_name": "Andrew Harris",
+      "last_name": "Harris",
+      "first_name": "Andrew",
+      "bp_url": "https://ballotpedia.org/Andrew_Harris",
+      "profession": "Doctor",
+      "candidate_emails": ["example@example.com"],
+      "person_emails": []
+    },
+    "parentId": "5e7e88a67c213e3443f11dbf"
+  },
+  {
+    "_id": {
       "$oid": "5ef28004e7179a4006925fb4"
     },
     "component": {
@@ -2372,16 +2437,3064 @@
   },
   {
     "_id": {
-      "$oid": "5f0512f67c213e16a464d66c"
+      "$oid": "5efe80e7cec3871e8acefdc8"
     },
-    "path": "/hartford/about",
-    "subject": "Important information regarding relevant organizations and general information for the city election in Hartford CT",
-    "description": "About page for elections in the city of Hartford CT",
+    "parentId": "5e7e88a67c213e3443f11dbf",
+    "subject": "Participant:Candidate Recorder for Candidate Conversation",
+    "description": "A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeParticipants",
+      "participant": {
+        "speaking": [
+          "https://res.cloudinary.com/hvi2k2swg/video/upload/q_auto/v1593737421/5ed587e53bfd4f38408669da-0-speaking20200703T005018613Z.mp4",
+          "https://res.cloudinary.com/hvi2k2swg/video/upload/q_auto/v1593737438/5ed587e53bfd4f38408669da-1-speaking20200703T005019744Z.mp4",
+          "https://res.cloudinary.com/hvi2k2swg/video/upload/q_auto/v1593737443/5ed587e53bfd4f38408669da-2-speaking20200703T005038363Z.mp4"
+        ],
+        "name": "firstvictim",
+        "listening": "https://res.cloudinary.com/hvi2k2swg/video/upload/q_auto/v1593737446/5ed587e53bfd4f38408669da-0-listening20200703T005044397Z.mp4"
+      }
+    },
+    "userId": "5ed587e53bfd4f38408669da"
+  },
+  {
+    "_id": {
+      "$oid": "5efe8104cec3871e8acefdc9"
+    },
+    "parentId": "5e7e88a67c213e3443f11dbf",
+    "subject": "Speech to text for: Participant:Candidate Recorder for Candidate Conversation",
+    "description": "Transcription for: A participant in the following discussion:A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "Transcription",
+      "participantId": "5efe80e7cec3871e8acefdc8",
+      "transcriptions": [
+        {
+          "transcript": "1 2 3 4 5 6",
+          "confidence": 0.9090145230293274,
+          "words": [
+            {
+              "startTime": {
+                "seconds": "1",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "2",
+                "nanos": 700000000
+              },
+              "word": "1"
+            },
+            {
+              "startTime": {
+                "seconds": "2",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "2",
+                "nanos": 900000000
+              },
+              "word": "2"
+            },
+            {
+              "startTime": {
+                "seconds": "2",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "3",
+                "nanos": 200000000
+              },
+              "word": "3"
+            },
+            {
+              "startTime": {
+                "seconds": "3",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "3",
+                "nanos": 400000000
+              },
+              "word": "4"
+            },
+            {
+              "startTime": {
+                "seconds": "3",
+                "nanos": 400000000
+              },
+              "endTime": {
+                "seconds": "3",
+                "nanos": 700000000
+              },
+              "word": "5"
+            },
+            {
+              "startTime": {
+                "seconds": "3",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "4"
+              },
+              "word": "6"
+            }
+          ]
+        },
+        {
+          "transcript": "in theatres a monologue is a speech presented by Single Character most often to express in mental thoughts aloud those sometimes also directly against another character or the is monologues are common across the range of dramatic media as well as in not dramatic media such as poetry monologue share much in common with several other literary devices including soliloquies apostrophe and a sides there are however distinctions between each of these devices",
+          "confidence": 0.9306946992874146,
+          "words": [
+            {
+              "startTime": {
+                "seconds": "3",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "4",
+                "nanos": 400000000
+              },
+              "word": "in"
+            },
+            {
+              "startTime": {
+                "seconds": "4",
+                "nanos": 400000000
+              },
+              "endTime": {
+                "seconds": "4",
+                "nanos": 800000000
+              },
+              "word": "theatres"
+            },
+            {
+              "startTime": {
+                "seconds": "4",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "5"
+              },
+              "word": "a"
+            },
+            {
+              "startTime": {
+                "seconds": "5"
+              },
+              "endTime": {
+                "seconds": "5",
+                "nanos": 600000000
+              },
+              "word": "monologue"
+            },
+            {
+              "startTime": {
+                "seconds": "5",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "6",
+                "nanos": 200000000
+              },
+              "word": "is"
+            },
+            {
+              "startTime": {
+                "seconds": "6",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "6",
+                "nanos": 300000000
+              },
+              "word": "a"
+            },
+            {
+              "startTime": {
+                "seconds": "6",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "6",
+                "nanos": 600000000
+              },
+              "word": "speech"
+            },
+            {
+              "startTime": {
+                "seconds": "6",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "6",
+                "nanos": 800000000
+              },
+              "word": "presented"
+            },
+            {
+              "startTime": {
+                "seconds": "6",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "7",
+                "nanos": 200000000
+              },
+              "word": "by"
+            },
+            {
+              "startTime": {
+                "seconds": "7",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "7",
+                "nanos": 700000000
+              },
+              "word": "Single"
+            },
+            {
+              "startTime": {
+                "seconds": "7",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "8",
+                "nanos": 200000000
+              },
+              "word": "Character"
+            },
+            {
+              "startTime": {
+                "seconds": "8",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "8",
+                "nanos": 700000000
+              },
+              "word": "most"
+            },
+            {
+              "startTime": {
+                "seconds": "8",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "9"
+              },
+              "word": "often"
+            },
+            {
+              "startTime": {
+                "seconds": "9"
+              },
+              "endTime": {
+                "seconds": "9",
+                "nanos": 200000000
+              },
+              "word": "to"
+            },
+            {
+              "startTime": {
+                "seconds": "9",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "9",
+                "nanos": 400000000
+              },
+              "word": "express"
+            },
+            {
+              "startTime": {
+                "seconds": "9",
+                "nanos": 400000000
+              },
+              "endTime": {
+                "seconds": "9",
+                "nanos": 600000000
+              },
+              "word": "in"
+            },
+            {
+              "startTime": {
+                "seconds": "9",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "10"
+              },
+              "word": "mental"
+            },
+            {
+              "startTime": {
+                "seconds": "10"
+              },
+              "endTime": {
+                "seconds": "10",
+                "nanos": 200000000
+              },
+              "word": "thoughts"
+            },
+            {
+              "startTime": {
+                "seconds": "10",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "10",
+                "nanos": 500000000
+              },
+              "word": "aloud"
+            },
+            {
+              "startTime": {
+                "seconds": "10",
+                "nanos": 500000000
+              },
+              "endTime": {
+                "seconds": "11",
+                "nanos": 500000000
+              },
+              "word": "those"
+            },
+            {
+              "startTime": {
+                "seconds": "11",
+                "nanos": 500000000
+              },
+              "endTime": {
+                "seconds": "12"
+              },
+              "word": "sometimes"
+            },
+            {
+              "startTime": {
+                "seconds": "12"
+              },
+              "endTime": {
+                "seconds": "12",
+                "nanos": 300000000
+              },
+              "word": "also"
+            },
+            {
+              "startTime": {
+                "seconds": "12",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "12",
+                "nanos": 900000000
+              },
+              "word": "directly"
+            },
+            {
+              "startTime": {
+                "seconds": "12",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "13",
+                "nanos": 300000000
+              },
+              "word": "against"
+            },
+            {
+              "startTime": {
+                "seconds": "13",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "13",
+                "nanos": 600000000
+              },
+              "word": "another"
+            },
+            {
+              "startTime": {
+                "seconds": "13",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "13",
+                "nanos": 800000000
+              },
+              "word": "character"
+            },
+            {
+              "startTime": {
+                "seconds": "13",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "14",
+                "nanos": 200000000
+              },
+              "word": "or"
+            },
+            {
+              "startTime": {
+                "seconds": "14",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "14",
+                "nanos": 500000000
+              },
+              "word": "the"
+            },
+            {
+              "startTime": {
+                "seconds": "14",
+                "nanos": 500000000
+              },
+              "endTime": {
+                "seconds": "14",
+                "nanos": 800000000
+              },
+              "word": "is"
+            },
+            {
+              "startTime": {
+                "seconds": "14",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "16"
+              },
+              "word": "monologues"
+            },
+            {
+              "startTime": {
+                "seconds": "16"
+              },
+              "endTime": {
+                "seconds": "16",
+                "nanos": 100000000
+              },
+              "word": "are"
+            },
+            {
+              "startTime": {
+                "seconds": "16",
+                "nanos": 100000000
+              },
+              "endTime": {
+                "seconds": "16",
+                "nanos": 500000000
+              },
+              "word": "common"
+            },
+            {
+              "startTime": {
+                "seconds": "16",
+                "nanos": 500000000
+              },
+              "endTime": {
+                "seconds": "16",
+                "nanos": 700000000
+              },
+              "word": "across"
+            },
+            {
+              "startTime": {
+                "seconds": "16",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "17"
+              },
+              "word": "the"
+            },
+            {
+              "startTime": {
+                "seconds": "17"
+              },
+              "endTime": {
+                "seconds": "17",
+                "nanos": 200000000
+              },
+              "word": "range"
+            },
+            {
+              "startTime": {
+                "seconds": "17",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "17",
+                "nanos": 200000000
+              },
+              "word": "of"
+            },
+            {
+              "startTime": {
+                "seconds": "17",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "17",
+                "nanos": 700000000
+              },
+              "word": "dramatic"
+            },
+            {
+              "startTime": {
+                "seconds": "17",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "18",
+                "nanos": 100000000
+              },
+              "word": "media"
+            },
+            {
+              "startTime": {
+                "seconds": "18",
+                "nanos": 100000000
+              },
+              "endTime": {
+                "seconds": "18",
+                "nanos": 600000000
+              },
+              "word": "as"
+            },
+            {
+              "startTime": {
+                "seconds": "18",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "18",
+                "nanos": 800000000
+              },
+              "word": "well"
+            },
+            {
+              "startTime": {
+                "seconds": "18",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "19",
+                "nanos": 200000000
+              },
+              "word": "as"
+            },
+            {
+              "startTime": {
+                "seconds": "19",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "19",
+                "nanos": 400000000
+              },
+              "word": "in"
+            },
+            {
+              "startTime": {
+                "seconds": "19",
+                "nanos": 400000000
+              },
+              "endTime": {
+                "seconds": "19",
+                "nanos": 700000000
+              },
+              "word": "not"
+            },
+            {
+              "startTime": {
+                "seconds": "19",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "20",
+                "nanos": 100000000
+              },
+              "word": "dramatic"
+            },
+            {
+              "startTime": {
+                "seconds": "20",
+                "nanos": 100000000
+              },
+              "endTime": {
+                "seconds": "20",
+                "nanos": 400000000
+              },
+              "word": "media"
+            },
+            {
+              "startTime": {
+                "seconds": "20",
+                "nanos": 400000000
+              },
+              "endTime": {
+                "seconds": "20",
+                "nanos": 700000000
+              },
+              "word": "such"
+            },
+            {
+              "startTime": {
+                "seconds": "20",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "20",
+                "nanos": 700000000
+              },
+              "word": "as"
+            },
+            {
+              "startTime": {
+                "seconds": "20",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "21",
+                "nanos": 300000000
+              },
+              "word": "poetry"
+            },
+            {
+              "startTime": {
+                "seconds": "21",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "22",
+                "nanos": 800000000
+              },
+              "word": "monologue"
+            },
+            {
+              "startTime": {
+                "seconds": "22",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "23"
+              },
+              "word": "share"
+            },
+            {
+              "startTime": {
+                "seconds": "23"
+              },
+              "endTime": {
+                "seconds": "23",
+                "nanos": 300000000
+              },
+              "word": "much"
+            },
+            {
+              "startTime": {
+                "seconds": "23",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "23",
+                "nanos": 400000000
+              },
+              "word": "in"
+            },
+            {
+              "startTime": {
+                "seconds": "23",
+                "nanos": 400000000
+              },
+              "endTime": {
+                "seconds": "23",
+                "nanos": 600000000
+              },
+              "word": "common"
+            },
+            {
+              "startTime": {
+                "seconds": "23",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "23",
+                "nanos": 900000000
+              },
+              "word": "with"
+            },
+            {
+              "startTime": {
+                "seconds": "23",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "24",
+                "nanos": 500000000
+              },
+              "word": "several"
+            },
+            {
+              "startTime": {
+                "seconds": "24",
+                "nanos": 500000000
+              },
+              "endTime": {
+                "seconds": "24",
+                "nanos": 700000000
+              },
+              "word": "other"
+            },
+            {
+              "startTime": {
+                "seconds": "24",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "25",
+                "nanos": 100000000
+              },
+              "word": "literary"
+            },
+            {
+              "startTime": {
+                "seconds": "25",
+                "nanos": 100000000
+              },
+              "endTime": {
+                "seconds": "25",
+                "nanos": 600000000
+              },
+              "word": "devices"
+            },
+            {
+              "startTime": {
+                "seconds": "25",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "26",
+                "nanos": 100000000
+              },
+              "word": "including"
+            },
+            {
+              "startTime": {
+                "seconds": "26",
+                "nanos": 100000000
+              },
+              "endTime": {
+                "seconds": "26",
+                "nanos": 700000000
+              },
+              "word": "soliloquies"
+            },
+            {
+              "startTime": {
+                "seconds": "26",
+                "nanos": 700000000
+              },
+              "endTime": {
+                "seconds": "27",
+                "nanos": 900000000
+              },
+              "word": "apostrophe"
+            },
+            {
+              "startTime": {
+                "seconds": "27",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "28",
+                "nanos": 800000000
+              },
+              "word": "and"
+            },
+            {
+              "startTime": {
+                "seconds": "28",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "28",
+                "nanos": 900000000
+              },
+              "word": "a"
+            },
+            {
+              "startTime": {
+                "seconds": "28",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "29",
+                "nanos": 400000000
+              },
+              "word": "sides"
+            },
+            {
+              "startTime": {
+                "seconds": "29",
+                "nanos": 400000000
+              },
+              "endTime": {
+                "seconds": "30",
+                "nanos": 300000000
+              },
+              "word": "there"
+            },
+            {
+              "startTime": {
+                "seconds": "30",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "30",
+                "nanos": 500000000
+              },
+              "word": "are"
+            },
+            {
+              "startTime": {
+                "seconds": "30",
+                "nanos": 500000000
+              },
+              "endTime": {
+                "seconds": "31",
+                "nanos": 100000000
+              },
+              "word": "however"
+            },
+            {
+              "startTime": {
+                "seconds": "31",
+                "nanos": 100000000
+              },
+              "endTime": {
+                "seconds": "32",
+                "nanos": 200000000
+              },
+              "word": "distinctions"
+            },
+            {
+              "startTime": {
+                "seconds": "32",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "32",
+                "nanos": 300000000
+              },
+              "word": "between"
+            },
+            {
+              "startTime": {
+                "seconds": "32",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "32",
+                "nanos": 800000000
+              },
+              "word": "each"
+            },
+            {
+              "startTime": {
+                "seconds": "32",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "32",
+                "nanos": 900000000
+              },
+              "word": "of"
+            },
+            {
+              "startTime": {
+                "seconds": "32",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "33",
+                "nanos": 100000000
+              },
+              "word": "these"
+            },
+            {
+              "startTime": {
+                "seconds": "33",
+                "nanos": 100000000
+              },
+              "endTime": {
+                "seconds": "33",
+                "nanos": 600000000
+              },
+              "word": "devices"
+            }
+          ]
+        },
+        {
+          "transcript": "testing testing 1 2 3 test",
+          "confidence": 0.9929308295249939,
+          "words": [
+            {
+              "startTime": {
+                "seconds": "1",
+                "nanos": 800000000
+              },
+              "endTime": {
+                "seconds": "2",
+                "nanos": 600000000
+              },
+              "word": "testing"
+            },
+            {
+              "startTime": {
+                "seconds": "2",
+                "nanos": 600000000
+              },
+              "endTime": {
+                "seconds": "2",
+                "nanos": 900000000
+              },
+              "word": "testing"
+            },
+            {
+              "startTime": {
+                "seconds": "2",
+                "nanos": 900000000
+              },
+              "endTime": {
+                "seconds": "3",
+                "nanos": 200000000
+              },
+              "word": "1"
+            },
+            {
+              "startTime": {
+                "seconds": "3",
+                "nanos": 200000000
+              },
+              "endTime": {
+                "seconds": "3",
+                "nanos": 300000000
+              },
+              "word": "2"
+            },
+            {
+              "startTime": {
+                "seconds": "3",
+                "nanos": 300000000
+              },
+              "endTime": {
+                "seconds": "3",
+                "nanos": 500000000
+              },
+              "word": "3"
+            },
+            {
+              "startTime": {
+                "seconds": "3",
+                "nanos": 500000000
+              },
+              "endTime": {
+                "seconds": "4",
+                "nanos": 300000000
+              },
+              "word": "test"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5e7e88a67c213e3443f11dbf"
+    },
+    "path": "/candidate-conversation",
+    "subject": "Candidate Conversation",
+    "description": "A prototype Candidate Conversation for schoolboard",
+    "component": {
+      "component": "MergeChildren"
+    },
     "webComponent": {
-      "webComponent": "About",
-      "banner": "url(https://res.cloudinary.com/hf6mryjpf/image/upload/w_1700/q_auto:best/v1591726876/assets/HVC_Banner-1.jpg) center center no-repeat",
-      "homelink": "/hartford",
-      "content": "<p><i>In response to the current pandemic, the following organizations have collaborated to develop this site to keep Hartford’s residents and their candidates for elected office safe and informed</i></p><h3><div style='height: 4.5em; text-align:center; '><img style='height: 100%; ' src=\"https://res.cloudinary.com/hf6mryjpf/image/upload/v1591726798/assets/HVC_Logo-1.png\" alt=\"Hartford Votes ~ Vota Coalition logo\"/></div></h3><p>The Hartford Votes/Hartford Vota Coalition includes thirteen organizations and agencies that work together to increase voter engagement in Hartford CT. The Coalition is nonpartisan.</p> <h3> <div style='height: 3.5em; text-align:center;'><img style='height: 100%;' src=\"https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png\" alt=\"EnCiv logo\"/></div></h3> <p>EnCiv is a non-profit, transpartisan organization that develops online tools for citizen engagement. EnCiv's Candidate Conversation tool is being made available on Ballotpedia's website. </p> <h3> <div style='height: 2.5em; text-align:center;'><img style='height: 100%;' src=\"https://ballotpedia.org/wiki/skins/Ballotpedia/images/bp-logo.svg\" alt=\"Ballotpedia logo\"/></div></h3> <p>Ballotpedia is the digital encyclopedia of American politics and elections. Ballotpedia connects people with politics by changing the way they access the information they need to be informed about federal, state, and local politics. Ballotpedia currently has over 303,000 encyclopedic articles and offers daily, weekly, and monthly email newsletters on a variety of specialized topics.</p><p>Questions: <a href=\"HartfordVota@gmail.com\" target=\"_blank\">HartfordVota@gmail.com</a></p>"
+      "webComponent": "CandidateConversation",
+      "opening": {
+        "line1": "You are about to experience a new kind of conversation",
+        "line2": "This is how voters can learn about candidates in a more human way",
+        "line3": "And this is how we can efficiently facilitate 500K conversations all over the country, every election season",
+        "line4": "The topic of the discussion is:",
+        "bigLine": "US School Board Candidate Conversation",
+        "subLine": "This is a mock conversation, these are not real candidates"
+      },
+      "participants": {
+        "moderator": {
+          "name": "David Fridley",
+          "speaking": [
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788682/candidate-conversation-moderator-0_at5un1.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788667/candidate-converation-moderator-1_z2kjhr.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788659/candidate-confersation-moderator-2_cid3dq.mp4",
+            "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788634/candidate-conversation-moderator-3_iq0npa.mp4"
+          ],
+          "listening": "https://res.cloudinary.com/hf6mryjpf/video/upload/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4",
+          "agenda": [
+            [
+              "Introductions",
+              "1- Who you are",
+              "2- Where you are",
+              "3- One word to describe yourself",
+              "4- What office you are running for"
+            ],
+            ["What type of skills should students be learning for success in the 21st century?"],
+            ["Closing Remarks"],
+            ["Thank you"]
+          ],
+          "timeLimits": [10, 60, 60],
+          "transcriptions": [
+            {
+              "confidence": 0.9644811749458313,
+              "transcript": "Hello, I'm David Fridley. This is a Mont candidate conversation about an election for school board. These volunteers are acting as candidates to help us demonstrate how we can create a more human way of learning about our candidates online. And this can be easily deployed for all 511000 elected offices in the US. We will Begin by letting each candidate. Give a quick introduction.",
+              "words": [
+                {
+                  "startTime": {
+                    "seconds": "0",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "1",
+                    "nanos": 300000000
+                  },
+                  "word": "Hello,",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "1",
+                    "nanos": 300000000
+                  },
+                  "endTime": {
+                    "seconds": "1",
+                    "nanos": 900000000
+                  },
+                  "word": "I'm",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "1",
+                    "nanos": 900000000
+                  },
+                  "endTime": {
+                    "seconds": "2",
+                    "nanos": 300000000
+                  },
+                  "word": "David",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "2",
+                    "nanos": 300000000
+                  },
+                  "endTime": {
+                    "seconds": "2",
+                    "nanos": 700000000
+                  },
+                  "word": "Fridley.",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "2",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "3",
+                    "nanos": 500000000
+                  },
+                  "word": "This",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "3",
+                    "nanos": 500000000
+                  },
+                  "endTime": {
+                    "seconds": "3",
+                    "nanos": 700000000
+                  },
+                  "word": "is",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "3",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "3",
+                    "nanos": 800000000
+                  },
+                  "word": "a",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "3",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "4",
+                    "nanos": 200000000
+                  },
+                  "word": "Mont",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "4",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "5",
+                    "nanos": 0
+                  },
+                  "word": "candidate",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "5",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "5",
+                    "nanos": 800000000
+                  },
+                  "word": "conversation",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "5",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "6",
+                    "nanos": 100000000
+                  },
+                  "word": "about",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "6",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "6",
+                    "nanos": 400000000
+                  },
+                  "word": "an",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "6",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "6",
+                    "nanos": 600000000
+                  },
+                  "word": "election",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "6",
+                    "nanos": 600000000
+                  },
+                  "endTime": {
+                    "seconds": "7",
+                    "nanos": 0
+                  },
+                  "word": "for",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "7",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "7",
+                    "nanos": 400000000
+                  },
+                  "word": "school",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "7",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "7",
+                    "nanos": 800000000
+                  },
+                  "word": "board.",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "7",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "8",
+                    "nanos": 500000000
+                  },
+                  "word": "These",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "8",
+                    "nanos": 500000000
+                  },
+                  "endTime": {
+                    "seconds": "8",
+                    "nanos": 900000000
+                  },
+                  "word": "volunteers",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "8",
+                    "nanos": 900000000
+                  },
+                  "endTime": {
+                    "seconds": "9",
+                    "nanos": 500000000
+                  },
+                  "word": "are",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "9",
+                    "nanos": 500000000
+                  },
+                  "endTime": {
+                    "seconds": "9",
+                    "nanos": 900000000
+                  },
+                  "word": "acting",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "9",
+                    "nanos": 900000000
+                  },
+                  "endTime": {
+                    "seconds": "10",
+                    "nanos": 0
+                  },
+                  "word": "as",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "10",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "10",
+                    "nanos": 700000000
+                  },
+                  "word": "candidates",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "10",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "10",
+                    "nanos": 800000000
+                  },
+                  "word": "to",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "10",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "10",
+                    "nanos": 900000000
+                  },
+                  "word": "help",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "10",
+                    "nanos": 900000000
+                  },
+                  "endTime": {
+                    "seconds": "11",
+                    "nanos": 100000000
+                  },
+                  "word": "us",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "11",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "11",
+                    "nanos": 400000000
+                  },
+                  "word": "demonstrate",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "11",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "12",
+                    "nanos": 200000000
+                  },
+                  "word": "how",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "12",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "12",
+                    "nanos": 400000000
+                  },
+                  "word": "we",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "12",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "12",
+                    "nanos": 500000000
+                  },
+                  "word": "can",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "12",
+                    "nanos": 500000000
+                  },
+                  "endTime": {
+                    "seconds": "13",
+                    "nanos": 0
+                  },
+                  "word": "create",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "13",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "13",
+                    "nanos": 200000000
+                  },
+                  "word": "a",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "13",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "13",
+                    "nanos": 500000000
+                  },
+                  "word": "more",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "13",
+                    "nanos": 500000000
+                  },
+                  "endTime": {
+                    "seconds": "14",
+                    "nanos": 0
+                  },
+                  "word": "human",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "14",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "14",
+                    "nanos": 200000000
+                  },
+                  "word": "way",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "14",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "14",
+                    "nanos": 400000000
+                  },
+                  "word": "of",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "14",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "14",
+                    "nanos": 600000000
+                  },
+                  "word": "learning",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "14",
+                    "nanos": 600000000
+                  },
+                  "endTime": {
+                    "seconds": "15",
+                    "nanos": 0
+                  },
+                  "word": "about",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "15",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "15",
+                    "nanos": 200000000
+                  },
+                  "word": "our",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "15",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "15",
+                    "nanos": 800000000
+                  },
+                  "word": "candidates",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "15",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "16",
+                    "nanos": 600000000
+                  },
+                  "word": "online.",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "16",
+                    "nanos": 600000000
+                  },
+                  "endTime": {
+                    "seconds": "17",
+                    "nanos": 700000000
+                  },
+                  "word": "And",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "17",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "17",
+                    "nanos": 800000000
+                  },
+                  "word": "this",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "17",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "18",
+                    "nanos": 100000000
+                  },
+                  "word": "can",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "18",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "18",
+                    "nanos": 300000000
+                  },
+                  "word": "be",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "18",
+                    "nanos": 300000000
+                  },
+                  "endTime": {
+                    "seconds": "19",
+                    "nanos": 0
+                  },
+                  "word": "easily",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "19",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "19",
+                    "nanos": 700000000
+                  },
+                  "word": "deployed",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "19",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "19",
+                    "nanos": 900000000
+                  },
+                  "word": "for",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "19",
+                    "nanos": 900000000
+                  },
+                  "endTime": {
+                    "seconds": "20",
+                    "nanos": 0
+                  },
+                  "word": "all",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "20",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "21",
+                    "nanos": 900000000
+                  },
+                  "word": "511000",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "21",
+                    "nanos": 900000000
+                  },
+                  "endTime": {
+                    "seconds": "22",
+                    "nanos": 200000000
+                  },
+                  "word": "elected",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "22",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "22",
+                    "nanos": 700000000
+                  },
+                  "word": "offices",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "22",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "22",
+                    "nanos": 900000000
+                  },
+                  "word": "in",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "22",
+                    "nanos": 900000000
+                  },
+                  "endTime": {
+                    "seconds": "23",
+                    "nanos": 0
+                  },
+                  "word": "the",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "23",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "23",
+                    "nanos": 200000000
+                  },
+                  "word": "US.",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "24",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "24",
+                    "nanos": 600000000
+                  },
+                  "word": "We",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "24",
+                    "nanos": 600000000
+                  },
+                  "endTime": {
+                    "seconds": "24",
+                    "nanos": 800000000
+                  },
+                  "word": "will",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "24",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "25",
+                    "nanos": 0
+                  },
+                  "word": "Begin",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "25",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "25",
+                    "nanos": 400000000
+                  },
+                  "word": "by",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "25",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "25",
+                    "nanos": 700000000
+                  },
+                  "word": "letting",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "25",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "26",
+                    "nanos": 200000000
+                  },
+                  "word": "each",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "26",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "26",
+                    "nanos": 700000000
+                  },
+                  "word": "candidate.",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "26",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "27",
+                    "nanos": 0
+                  },
+                  "word": "Give",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "27",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "27",
+                    "nanos": 200000000
+                  },
+                  "word": "a",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "27",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "27",
+                    "nanos": 400000000
+                  },
+                  "word": "quick",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "27",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "27",
+                    "nanos": 900000000
+                  },
+                  "word": "introduction.",
+                  "speakerTag": 0
+                }
+              ]
+            },
+            {
+              "confidence": 0.9631034731864929,
+              "transcript": "Thank you for that. Next we have a question that was the result of a voter engagement initiative in Chicago. We will invite each candidate to take a turn answering it.",
+              "words": [
+                {
+                  "startTime": {
+                    "seconds": "0",
+                    "nanos": 500000000
+                  },
+                  "endTime": {
+                    "seconds": "1",
+                    "nanos": 0
+                  },
+                  "word": "Thank",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "1",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "1",
+                    "nanos": 100000000
+                  },
+                  "word": "you",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "1",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "1",
+                    "nanos": 300000000
+                  },
+                  "word": "for",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "1",
+                    "nanos": 300000000
+                  },
+                  "endTime": {
+                    "seconds": "1",
+                    "nanos": 500000000
+                  },
+                  "word": "that.",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "1",
+                    "nanos": 500000000
+                  },
+                  "endTime": {
+                    "seconds": "1",
+                    "nanos": 900000000
+                  },
+                  "word": "Next",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "1",
+                    "nanos": 900000000
+                  },
+                  "endTime": {
+                    "seconds": "2",
+                    "nanos": 100000000
+                  },
+                  "word": "we",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "2",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "2",
+                    "nanos": 300000000
+                  },
+                  "word": "have",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "2",
+                    "nanos": 300000000
+                  },
+                  "endTime": {
+                    "seconds": "2",
+                    "nanos": 400000000
+                  },
+                  "word": "a",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "2",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "2",
+                    "nanos": 600000000
+                  },
+                  "word": "question",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "2",
+                    "nanos": 600000000
+                  },
+                  "endTime": {
+                    "seconds": "3",
+                    "nanos": 300000000
+                  },
+                  "word": "that",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "3",
+                    "nanos": 300000000
+                  },
+                  "endTime": {
+                    "seconds": "3",
+                    "nanos": 500000000
+                  },
+                  "word": "was",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "3",
+                    "nanos": 500000000
+                  },
+                  "endTime": {
+                    "seconds": "3",
+                    "nanos": 600000000
+                  },
+                  "word": "the",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "3",
+                    "nanos": 600000000
+                  },
+                  "endTime": {
+                    "seconds": "4",
+                    "nanos": 100000000
+                  },
+                  "word": "result",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "4",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "4",
+                    "nanos": 100000000
+                  },
+                  "word": "of",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "4",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "4",
+                    "nanos": 300000000
+                  },
+                  "word": "a",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "4",
+                    "nanos": 300000000
+                  },
+                  "endTime": {
+                    "seconds": "4",
+                    "nanos": 700000000
+                  },
+                  "word": "voter",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "4",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "5",
+                    "nanos": 100000000
+                  },
+                  "word": "engagement",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "5",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "5",
+                    "nanos": 800000000
+                  },
+                  "word": "initiative",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "5",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "6",
+                    "nanos": 200000000
+                  },
+                  "word": "in",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "6",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "6",
+                    "nanos": 800000000
+                  },
+                  "word": "Chicago.",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "6",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "7",
+                    "nanos": 600000000
+                  },
+                  "word": "We",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "7",
+                    "nanos": 600000000
+                  },
+                  "endTime": {
+                    "seconds": "7",
+                    "nanos": 800000000
+                  },
+                  "word": "will",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "7",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "8",
+                    "nanos": 100000000
+                  },
+                  "word": "invite",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "8",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "8",
+                    "nanos": 900000000
+                  },
+                  "word": "each",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "8",
+                    "nanos": 900000000
+                  },
+                  "endTime": {
+                    "seconds": "9",
+                    "nanos": 400000000
+                  },
+                  "word": "candidate",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "9",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "10",
+                    "nanos": 0
+                  },
+                  "word": "to",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "10",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "10",
+                    "nanos": 300000000
+                  },
+                  "word": "take",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "10",
+                    "nanos": 300000000
+                  },
+                  "endTime": {
+                    "seconds": "10",
+                    "nanos": 400000000
+                  },
+                  "word": "a",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "10",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "10",
+                    "nanos": 800000000
+                  },
+                  "word": "turn",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "10",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "11",
+                    "nanos": 200000000
+                  },
+                  "word": "answering",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "11",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "11",
+                    "nanos": 500000000
+                  },
+                  "word": "it.",
+                  "speakerTag": 0
+                }
+              ]
+            },
+            {
+              "confidence": 0.9202861785888672,
+              "transcript": "Great. Now we have reached our final round in a real Kennedy conversation. We would have more rounds and different formats. So I'm with speedball speaking all at the same time and others like this within speaking one by one. Let's conclude with a closing statement from each candidate.",
+              "words": [
+                {
+                  "startTime": {
+                    "seconds": "1",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "1",
+                    "nanos": 800000000
+                  },
+                  "word": "Great.",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "1",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "2",
+                    "nanos": 400000000
+                  },
+                  "word": "Now",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "2",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "2",
+                    "nanos": 600000000
+                  },
+                  "word": "we",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "2",
+                    "nanos": 600000000
+                  },
+                  "endTime": {
+                    "seconds": "2",
+                    "nanos": 800000000
+                  },
+                  "word": "have",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "2",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "3",
+                    "nanos": 0
+                  },
+                  "word": "reached",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "3",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "3",
+                    "nanos": 200000000
+                  },
+                  "word": "our",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "3",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "3",
+                    "nanos": 600000000
+                  },
+                  "word": "final",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "3",
+                    "nanos": 600000000
+                  },
+                  "endTime": {
+                    "seconds": "4",
+                    "nanos": 100000000
+                  },
+                  "word": "round",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "4",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "4",
+                    "nanos": 800000000
+                  },
+                  "word": "in",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "4",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "4",
+                    "nanos": 900000000
+                  },
+                  "word": "a",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "4",
+                    "nanos": 900000000
+                  },
+                  "endTime": {
+                    "seconds": "5",
+                    "nanos": 300000000
+                  },
+                  "word": "real",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "5",
+                    "nanos": 300000000
+                  },
+                  "endTime": {
+                    "seconds": "5",
+                    "nanos": 700000000
+                  },
+                  "word": "Kennedy",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "5",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "6",
+                    "nanos": 500000000
+                  },
+                  "word": "conversation.",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "6",
+                    "nanos": 500000000
+                  },
+                  "endTime": {
+                    "seconds": "6",
+                    "nanos": 600000000
+                  },
+                  "word": "We",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "6",
+                    "nanos": 600000000
+                  },
+                  "endTime": {
+                    "seconds": "6",
+                    "nanos": 800000000
+                  },
+                  "word": "would",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "6",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "7",
+                    "nanos": 0
+                  },
+                  "word": "have",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "7",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "7",
+                    "nanos": 200000000
+                  },
+                  "word": "more",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "7",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "7",
+                    "nanos": 800000000
+                  },
+                  "word": "rounds",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "7",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "8",
+                    "nanos": 300000000
+                  },
+                  "word": "and",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "8",
+                    "nanos": 300000000
+                  },
+                  "endTime": {
+                    "seconds": "8",
+                    "nanos": 700000000
+                  },
+                  "word": "different",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "8",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "9",
+                    "nanos": 200000000
+                  },
+                  "word": "formats.",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "9",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "9",
+                    "nanos": 900000000
+                  },
+                  "word": "So",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "9",
+                    "nanos": 900000000
+                  },
+                  "endTime": {
+                    "seconds": "10",
+                    "nanos": 100000000
+                  },
+                  "word": "I'm",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "10",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "10",
+                    "nanos": 200000000
+                  },
+                  "word": "with",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "10",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "11",
+                    "nanos": 0
+                  },
+                  "word": "speedball",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "11",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "11",
+                    "nanos": 600000000
+                  },
+                  "word": "speaking",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "11",
+                    "nanos": 600000000
+                  },
+                  "endTime": {
+                    "seconds": "11",
+                    "nanos": 800000000
+                  },
+                  "word": "all",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "11",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "12",
+                    "nanos": 0
+                  },
+                  "word": "at",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "12",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "12",
+                    "nanos": 0
+                  },
+                  "word": "the",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "12",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "12",
+                    "nanos": 100000000
+                  },
+                  "word": "same",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "12",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "12",
+                    "nanos": 400000000
+                  },
+                  "word": "time",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "12",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "12",
+                    "nanos": 700000000
+                  },
+                  "word": "and",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "12",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "13",
+                    "nanos": 100000000
+                  },
+                  "word": "others",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "13",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "13",
+                    "nanos": 300000000
+                  },
+                  "word": "like",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "13",
+                    "nanos": 300000000
+                  },
+                  "endTime": {
+                    "seconds": "13",
+                    "nanos": 700000000
+                  },
+                  "word": "this",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "13",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "14",
+                    "nanos": 100000000
+                  },
+                  "word": "within",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "14",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "14",
+                    "nanos": 500000000
+                  },
+                  "word": "speaking",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "14",
+                    "nanos": 500000000
+                  },
+                  "endTime": {
+                    "seconds": "14",
+                    "nanos": 800000000
+                  },
+                  "word": "one",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "14",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "15",
+                    "nanos": 0
+                  },
+                  "word": "by",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "15",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "15",
+                    "nanos": 400000000
+                  },
+                  "word": "one.",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "16",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "16",
+                    "nanos": 900000000
+                  },
+                  "word": "Let's",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "16",
+                    "nanos": 900000000
+                  },
+                  "endTime": {
+                    "seconds": "17",
+                    "nanos": 100000000
+                  },
+                  "word": "conclude",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "17",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "17",
+                    "nanos": 800000000
+                  },
+                  "word": "with",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "17",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "18",
+                    "nanos": 0
+                  },
+                  "word": "a",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "18",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "18",
+                    "nanos": 500000000
+                  },
+                  "word": "closing",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "18",
+                    "nanos": 500000000
+                  },
+                  "endTime": {
+                    "seconds": "18",
+                    "nanos": 700000000
+                  },
+                  "word": "statement",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "18",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "19",
+                    "nanos": 400000000
+                  },
+                  "word": "from",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "19",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "19",
+                    "nanos": 500000000
+                  },
+                  "word": "each",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "19",
+                    "nanos": 500000000
+                  },
+                  "endTime": {
+                    "seconds": "20",
+                    "nanos": 100000000
+                  },
+                  "word": "candidate.",
+                  "speakerTag": 0
+                }
+              ]
+            },
+            {
+              "confidence": 0.9393698573112488,
+              "transcript": "Awesome. Thank you. And let's thank our volunteers for helping us with this and let's think each other for showing up for democracy.",
+              "words": [
+                {
+                  "startTime": {
+                    "seconds": "0",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "1",
+                    "nanos": 0
+                  },
+                  "word": "Awesome.",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "1",
+                    "nanos": 0
+                  },
+                  "endTime": {
+                    "seconds": "2",
+                    "nanos": 100000000
+                  },
+                  "word": "Thank",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "2",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "2",
+                    "nanos": 200000000
+                  },
+                  "word": "you.",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "2",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "3",
+                    "nanos": 100000000
+                  },
+                  "word": "And",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "3",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "3",
+                    "nanos": 300000000
+                  },
+                  "word": "let's",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "3",
+                    "nanos": 300000000
+                  },
+                  "endTime": {
+                    "seconds": "3",
+                    "nanos": 400000000
+                  },
+                  "word": "thank",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "3",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "3",
+                    "nanos": 600000000
+                  },
+                  "word": "our",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "3",
+                    "nanos": 600000000
+                  },
+                  "endTime": {
+                    "seconds": "4",
+                    "nanos": 300000000
+                  },
+                  "word": "volunteers",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "4",
+                    "nanos": 300000000
+                  },
+                  "endTime": {
+                    "seconds": "4",
+                    "nanos": 500000000
+                  },
+                  "word": "for",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "4",
+                    "nanos": 500000000
+                  },
+                  "endTime": {
+                    "seconds": "4",
+                    "nanos": 900000000
+                  },
+                  "word": "helping",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "4",
+                    "nanos": 900000000
+                  },
+                  "endTime": {
+                    "seconds": "5",
+                    "nanos": 100000000
+                  },
+                  "word": "us",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "5",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "5",
+                    "nanos": 300000000
+                  },
+                  "word": "with",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "5",
+                    "nanos": 300000000
+                  },
+                  "endTime": {
+                    "seconds": "5",
+                    "nanos": 400000000
+                  },
+                  "word": "this",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "5",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "6",
+                    "nanos": 400000000
+                  },
+                  "word": "and",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "6",
+                    "nanos": 400000000
+                  },
+                  "endTime": {
+                    "seconds": "6",
+                    "nanos": 700000000
+                  },
+                  "word": "let's",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "6",
+                    "nanos": 700000000
+                  },
+                  "endTime": {
+                    "seconds": "6",
+                    "nanos": 800000000
+                  },
+                  "word": "think",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "6",
+                    "nanos": 800000000
+                  },
+                  "endTime": {
+                    "seconds": "7",
+                    "nanos": 100000000
+                  },
+                  "word": "each",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "7",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "7",
+                    "nanos": 200000000
+                  },
+                  "word": "other",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "7",
+                    "nanos": 200000000
+                  },
+                  "endTime": {
+                    "seconds": "7",
+                    "nanos": 600000000
+                  },
+                  "word": "for",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "7",
+                    "nanos": 600000000
+                  },
+                  "endTime": {
+                    "seconds": "7",
+                    "nanos": 900000000
+                  },
+                  "word": "showing",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "7",
+                    "nanos": 900000000
+                  },
+                  "endTime": {
+                    "seconds": "8",
+                    "nanos": 100000000
+                  },
+                  "word": "up",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "8",
+                    "nanos": 100000000
+                  },
+                  "endTime": {
+                    "seconds": "8",
+                    "nanos": 300000000
+                  },
+                  "word": "for",
+                  "speakerTag": 0
+                },
+                {
+                  "startTime": {
+                    "seconds": "8",
+                    "nanos": 300000000
+                  },
+                  "endTime": {
+                    "seconds": "8",
+                    "nanos": 700000000
+                  },
+                  "word": "democracy.",
+                  "speakerTag": 0
+                }
+              ]
+            }
+          ]
+        }
+      }
     }
   },
   {

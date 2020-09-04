@@ -57,6 +57,7 @@ typings/
 # dotenv environment variables file
 .env
 .bashrc
+enciv-transcribe.json
 
 # next.js build output
 .next
@@ -74,7 +75,7 @@ backups/
 
 #private stuff 
 _netrc
-
+.vscode/launch.*
 yarn.lock
 
 # svgr files are generated from assets/svg using svgr

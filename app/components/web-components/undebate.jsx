@@ -41,6 +41,8 @@ import supportsVideoType from '../lib/supports-video-type'
 
 import { auto_quality, placeholder_image } from '../lib/cloudinary-urls'
 import createParticipant from '../lib/create-participant'
+import Modal from './Modal'
+import Icon from '../lib/icon'
 
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
@@ -105,6 +107,10 @@ const styles = {
     fontFamily: "'Montserrat', sans-serif",
     '&$scrollableIframe': {
       height: 'auto',
+      pointerEvents: 'all',
+      '& button': {
+        cursor: 'pointer',
+      },
     },
   },
   innerImageOverlay: {
@@ -723,6 +729,7 @@ class Undebate extends React.Component {
     allPaused: true, // so the play button shows
     warmup: false,
     isRecording: false,
+    isPortraitPhoneRecording: false,
 
     seatStyle: {
       speaking: {
@@ -1045,6 +1052,7 @@ class Undebate extends React.Component {
       let calculatedStyles = this.calculateStyles(width, height, maxerHeight, fontSize)
       this.setState({ left: -x + 'px', fontSize, ...calculatedStyles })
     }
+    this.preventPortraitRecording()
   }
 
   calculateStyles(width, height, maxerHeight, fontSize) {
@@ -1378,7 +1386,7 @@ class Undebate extends React.Component {
         if (this.participants.human && this.participants.human.speakingObjectURLs[round] && !this.rerecord) {
           objectURL = this.participants.human.speakingObjectURLs[round]
         } else {
-          objectURL = 'cameraStream' // set it to something - but this.camera.cameraStream should really be used
+          objectURL = 'cameraStream' // set it to something - but this.cameraStream should really be used
         }
       } else if (!(objectURL = this.participants[part].speakingObjectURLs[round])) {
         this.participants[part].speakingImmediate[round] = true
@@ -1387,7 +1395,7 @@ class Undebate extends React.Component {
       }
     } else {
       if (part === 'human' && (!reviewing || (reviewing && this.rerecord))) objectURL = 'cameraStream'
-      //set it to something - but this.camera.cameraStream should really be used
+      //set it to something - but this.cameraStream should really be used
       else if (!(objectURL = this.participants[part].listeningObjectURL))
         if (this.props.participants[part].listening) {
           // listeningObject hasn't loaded yet
@@ -1537,7 +1545,7 @@ class Undebate extends React.Component {
       //element.src=null;
       if (part === 'human' && !speaking && !reviewing) {
         // human is not speaking
-        if (element.srcObject === this.camera.cameraStream) {
+        if (element.srcObject === this.cameraStream) {
           if (element.muted && element.loop) return
           element.muted = true
           element.loop = true
@@ -1545,7 +1553,7 @@ class Undebate extends React.Component {
           element.src = ''
           element.muted = true
           element.loop = true
-          element.srcObject = this.camera.cameraStream // objectURL should be camera
+          element.srcObject = this.cameraStream // objectURL should be camera
         }
         return // not need to play - source is a stream
       } else if (part === 'human' && !speaking && reviewing) {
@@ -1554,7 +1562,7 @@ class Undebate extends React.Component {
           element.src = ''
           element.muted = true
           element.loop = true
-          element.srcObject = this.camera.cameraStream // objectURL should be camera
+          element.srcObject = this.cameraStream // objectURL should be camera
         } else {
           element.srcObject = null
           element.src = objectURL
@@ -1568,7 +1576,7 @@ class Undebate extends React.Component {
       ) {
         // human is speaking (not playing back what was spoken)
         element.src = ''
-        element.srcObject = this.camera.cameraStream // objectURL should be camera
+        element.srcObject = this.cameraStream // objectURL should be camera
         element.muted = true
         element.loop = false
         return // no need to play source is a stream
@@ -1605,9 +1613,10 @@ class Undebate extends React.Component {
           this.requestPermissionElements.push(element)
           if (!this.state.requestPermission) this.setState({ requestPermission: true })
         } else if (err.name === 'AbortError') {
-          if (element.loop && element.autoplay && element.muted) return // safari generates this error but plays anyway - chome does not generate an error
+          return
+          /*if (element.loop && element.autoplay && element.muted) return // safari generates this error but plays anyway - chome does not generate an error
           this.requestPermissionElements.push(element)
-          if (!this.state.requestPermission) this.setState({ requestPermission: true })
+          if (!this.state.requestPermission) this.setState({ requestPermission: true })*/
         } else {
           logger.error('Undebate.playObjectURL caught error', err.name, err)
         }
@@ -1935,6 +1944,7 @@ class Undebate extends React.Component {
   startRecording(cb, visible = false) {
     this.camera.startRecording(cb)
     if (visible) this.setState({ isRecording: true })
+    this.preventPortraitRecording()
   }
 
   stopRecording() {
@@ -2023,7 +2033,7 @@ class Undebate extends React.Component {
   }
 
   maybeEnableRecording(newChair, listeningSeat, round, listeningRound, timeLimit) {
-    if (newChair === listeningSeat && round === listeningRound) {
+    if (this.isRecordingPlaceHolder()) {
       this.recordFromSpeakersSeat(listeningSeat, timeLimit, round)
     } else if (newChair === 'speaking') {
       if (this.rerecord) {
@@ -2168,22 +2178,11 @@ class Undebate extends React.Component {
 
   async getCameraMedia() {
     if (this.props.participants.human) {
-      // if we have a human in this debate
-      const constraints = {
-        audio: {
-          echoCancellation: { exact: true },
-        },
-        video: {
-          width: 640,
-          height: 360,
-        },
-      }
-      logger.trace('Using media constraints:', constraints)
-
+      // if we have a human in this debate then we are using the camera
       try {
-        await this.camera.getCameraStream(constraints, () => this.nextMediaState('human'))
+        await this.camera.getCameraStream()
         const { listeningRound, listeningSeat } = this.listening()
-        logger.trace('getUserMedia() got stream:', this.camera.cameraStream)
+        logger.trace('getUserMedia() got stream:', this.cameraStream)
         //it will be set by nextMediaState this.human.current.src = stream;
         Object.keys(this.props.participants).forEach(part => this.nextMediaState(part))
         // special case where human is in seat2 initially - because seat2 is where we record their silence
@@ -2370,6 +2369,55 @@ class Undebate extends React.Component {
     } else this.setState({ intro: true, stylesSet: true, allPaused: false }, () => this.onIntroEnd())
   }
 
+  preventPortraitRecording = () => {
+    if (this.props.browserConfig.type !== 'phone') return // nothing to do here if not a phone
+    const { isPortraitPhoneRecording } = this.state
+    const portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
+    if (isPortraitPhoneRecording && !portraitMode) {
+      if (this.isRecordingSpeaking()) {
+        this.setState({ isPortraitPhoneRecording: false }, () => this.rerecordButton())
+      } else if (this.isRecordingPlaceHolder()) {
+        const speakingNow = this.speakingNow()
+        if (speakingNow !== 'human') this.participants[speakingNow].element.current.currentTime = 0 // rewind the speaker
+        this.setState({ isPortraitPhoneRecording: false }, () =>
+          setTimeout(() => {
+            this.allPlay()
+            setTimeout(() => this.rerecordButton(), 1000)
+          }, TransitionTime)
+        ) // wait for the user to settle before starting to record the place holder video
+      }
+    } else if (!isPortraitPhoneRecording && portraitMode) {
+      if (this.isRecordingSpeaking()) {
+        this.ensurePaused()
+        this.setState({ isPortraitPhoneRecording: true })
+      } else if (this.isRecordingPlaceHolder()) {
+        this.ensurePaused()
+        this.setState({ isPortraitPhoneRecording: true })
+      }
+    }
+  }
+
+  isRecording() {
+    return this.isRecordingPlaceHolder() || this.isRecordingSpeaking()
+  }
+
+  isRecordingPlaceHolder() {
+    const { participants } = this.props
+    const { round, reviewing } = this.state
+    if (participants.human) {
+      const { listeningRound, listeningSeat } = this.listening()
+      if (listeningRound === round && listeningSeat === this.seatOfParticipant('human')) {
+        const reviewingAndNotReRecording = reviewing && !this.rerecord
+        if (!reviewingAndNotReRecording) return true
+      }
+    }
+    return false
+  }
+
+  isRecordingSpeaking() {
+    return this.speakingNow() === 'human'
+  }
+
   render() {
     const {
       className,
@@ -2405,6 +2453,7 @@ class Undebate extends React.Component {
       stylesSet,
       conversationTopicStyle,
       isRecording,
+      isPortraitPhoneRecording,
       reviewing,
       uploadComplete,
       hungUp,
@@ -2428,12 +2477,12 @@ class Undebate extends React.Component {
       Object.assign({}, stylesSet && { transition: IntroTransition }, introStyle[name], intro && introSeatStyle[name])
     const innerWidth = typeof window !== 'undefined' ? window.innerWidth : 1920
     const humanSpeaking = this.speakingNow() === 'human'
-
-    const scrollableIframe = done && participants.human
+    const ifShowPreamble = this.participants.human && !opening.noPreamble && !intro && !begin && !done
+    const scrollableIframe = (done && participants.human) || ifShowPreamble
     const bot = browserConfig.type === 'bot'
     const noOverlay = this.noOverlay
 
-    if (this.canNotRecordHere || (this.camera && this.camera.canNotRecordHere)) {
+    if (this.canNotRecordHere) {
       return (
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
           <ConversationHeader subject={subject} bp_info={bp_info} logo={logo} />
@@ -2752,7 +2801,7 @@ class Undebate extends React.Component {
           )}
           key={participant}
         >
-          {this.seat(i) === 'speaking' ? (
+          {this.seat(i) === 'speaking' && !participants.human ? (
             <SocialShareBtn
               metaData={{
                 path: path,
@@ -2925,6 +2974,7 @@ class Undebate extends React.Component {
       )
 
     const renderHangupButton = () =>
+      !ifShowPreamble &&
       !hungUp &&
       this.participants.human && (
         <div className={classes['hangUpButton']}>
@@ -3027,7 +3077,35 @@ class Undebate extends React.Component {
         style={{ fontSize: fontSize }}
         className={cx(classes['wrapper'], scrollableIframe && classes['scrollableIframe'])}
       >
-        {participants.human && <ReactCameraRecorder ref={this.getCamera} />}
+        {isPortraitPhoneRecording ? (
+          <Modal
+            render={() => (
+              <>
+                <div>
+                  <Icon style={{ padding: '15% 0' }} icon={'redo'} flip={'horizontal'}></Icon>
+                </div>
+                Recording will start from the top after switching to landscape orientation
+              </>
+            )}
+          ></Modal>
+        ) : null}
+        {participants.human && (
+          <ReactCameraRecorder
+            ref={this.getCamera}
+            onCanNotRecordHere={status => (this.canNotRecordHere = status)}
+            onCameraStream={stream => (this.cameraStream = stream)}
+            onCameraChange={() => this.nextMediaState('human')}
+            constraints={{
+              audio: {
+                echoCancellation: { exact: true },
+              },
+              video: {
+                width: 640,
+                height: 360,
+              },
+            }}
+          />
+        )}
         <section
           id="syn-ask-webrtc"
           key="began"
@@ -3040,7 +3118,7 @@ class Undebate extends React.Component {
           {((this.participants.human && (preambleAgreed || opening.noPreamble)) || !this.participants.human) &&
             !bot &&
             beginOverlay()}
-          {this.participants.human && !opening.noPreamble && !intro && !begin && !done && (
+          {ifShowPreamble && (
             <CandidatePreamble
               subject={subject}
               bp_info={bp_info}

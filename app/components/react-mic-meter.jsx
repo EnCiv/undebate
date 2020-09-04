@@ -24,8 +24,6 @@ export const useAverageVolume = () => {
 
 export const ChangeMic = ({
   audioinputs,
-  getCameraStream,
-  cameraStream,
   micIndex,
   switchMic,
   calcConstraints = {
@@ -52,8 +50,7 @@ export const ChangeMic = ({
 
   const micValues = async () => {
     console.log('getting new mic Values for mic', micIndex)
-    const stream = cameraStream ? cameraStream : await navigator.mediaDevices.getUserMedia(audioOnly)
-    console.log(cameraStream)
+    const stream = await navigator.mediaDevices.getUserMedia(audioOnly)
     console.log(stream)
     try {
       if (sourceAudioContext) {
@@ -104,9 +101,9 @@ export const ChangeMic = ({
 
   useEffect(() => {
     micValues()
-  }, [cameraStream])
+  }, [micIndex, audioinputs])
 
-  return typeof micIndex !== 'undefined' && getCameraStream ? (
+  return typeof micIndex !== 'undefined' ? (
     <div
       style={{
         zIndex: 10,
