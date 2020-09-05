@@ -1,38 +1,12 @@
 'use strict;'
-import React, { useContext, useEffect, createContext, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 
-const defaultValue = {
-  averageVolume: 0,
-}
-
-const AppAudioContext = createContext(defaultValue)
-export const AppAudioProvider = ({ children, value }) => {
-  let [averageVolume, setAverageVolume] = useState(value ? value.averageVolume : 0)
-  const store = {
-    averageVolume: [averageVolume, setAverageVolume],
-  }
-  return <AppAudioContext.Provider value={store}>{children}</AppAudioContext.Provider>
-}
-
-export const useAverageVolume = () => {
-  const {
-    averageVolume: [averageVolume, setAverageVolume],
-  } = useContext(AppAudioContext)
-  return { averageVolume, setAverageVolume }
-}
-
-export const ChangeMic = ({
-  audioinputs,
-  micIndex,
-  switchMic,
-  calcConstraints = {
+const ReactMicMeter = ({
+  style,
+  constraints = {
     audio: {
       echoCancellation: { exact: true },
-    },
-    video: {
-      width: 640,
-      height: 360,
     },
   },
 }) => {
@@ -44,17 +18,17 @@ export const ChangeMic = ({
     scriptNode: null,
     sourceAnalyser: null,
   })
-  const [changeMic, setChangeMic] = useState(false)
-  const { averageVolume, setAverageVolume } = useAverageVolume()
-  const audioOnly = { audio: { ...calcConstraints.audio, noiseSuppression: true } }
+  const [averageVolume, setAverageVolume] = useState(0)
+  const audioOnly = { audio: { ...constraints.audio, noiseSuppression: true } }
+  const [reactThis, neverSetReactThis] = useState({
+    interval: undefined,
+  })
 
-  const micValues = async () => {
-    console.log('getting new mic Values for mic', micIndex)
+  const startAnalyzer = async () => {
     const stream = await navigator.mediaDevices.getUserMedia(audioOnly)
     console.log(stream)
     try {
       if (sourceAudioContext) {
-        console.log('disconnecting microphone')
         await sourceMicrophone.disconnect(sourceAnalyser)
         await sourceAnalyser.disconnect(scriptNode)
         await scriptNode.disconnect(sourceAudioContext.destination)
@@ -69,90 +43,66 @@ export const ChangeMic = ({
 
       microphone.connect(analyser)
       analyser.connect(javascriptNode)
+      let sum = 0
+      let length = 0
+      let max = 100
       javascriptNode.connect(audioContext.destination)
       javascriptNode.onaudioprocess = () => {
-        //console.log('onaudioprocess')
         let array = new Uint8Array(analyser.frequencyBinCount)
         analyser.getByteFrequencyData(array)
-        let values = 0
-
-        let length = array.length
-        for (let i = 0; i < length; i++) {
-          values += array[i]
-        }
-
-        let average = values / length
-        //averageVolume = average
-        setAverageVolume(average)
-
-        //console.log(Math.round(average))
-        // colorPids(average);
+        sum += array.reduce((sum, val) => sum + val, 0)
+        length += array.length
       }
+
       setAudioContext({
         sourceAudioContext: audioContext,
         sourceMicrophone: microphone,
         scriptNode: javascriptNode,
         sourceAnalyser: analyser,
       })
+      if (!reactThis.interval)
+        reactThis.interval = setInterval(() => {
+          // the analyzer gets data very often and we don't want to overload the CPU with rerenders
+          let average = sum / length
+          // mostly the average is below 100 but when you make a loud noise it may jump up
+          // probably this is some interaction with the automatic gain control - but in our meter - we don't want it jumping out of the box
+          // so we scale it down based on the max average value if over 100
+          if (average > max) {
+            max = average
+          }
+          average = (average / max) * 100
+          sum = 0
+          length = 0
+          setAverageVolume(average)
+        }, 100)
     } catch (error) {
       logger.error('micValues caught error:', error)
     }
   }
 
   useEffect(() => {
-    micValues()
-  }, [micIndex, audioinputs])
+    startAnalyzer()
+    return () => {
+      if (reactThis.interval) {
+        clearInterval(reactThis.interval)
+        reactThis.interval = undefined
+      }
+    }
+  }, [constraints])
 
-  return typeof micIndex !== 'undefined' ? (
+  return (
     <div
       style={{
-        zIndex: 10,
-        margin: '1em',
-        padding: '.1em',
-        cursor: 'pointer',
-        pointerEvents: 'auto',
-        position: 'absolute',
-        bottom: '1em',
+        border: '1px solid #808080',
+        borderRadius: '3px',
+        color: 'black',
+        backgroundColor: 'white',
+        width: '100%',
+        height: '100%',
       }}
-      title={audioinputs[micIndex] && audioinputs[micIndex].label}
     >
-      {!changeMic ? (
-        <button
-          style={{
-            border: '1px solid #808080',
-            borderRadius: '3px',
-            color: 'black',
-
-            backgroundImage: `linear-gradient(to right, #ffffff ${(averageVolume / 2) *
-              100}%, #ffffff ${(averageVolume / 2) * 100}%, #fbae9e ${(1 - averageVolume / 2) * 100}%)`,
-            backgroundColor: `${averageVolume === 0 ? 'red' : null}`,
-            //backgroundImage: `linear-gradient(to right, #fbae9e 0%, #fbae9e 0%, #ffffff ${(1 - averageVolume / 70) *
-            //100}%)`,
-          }}
-          onClick={() => setChangeMic(true)}
-        >
-          Change Mic?
-        </button>
-      ) : (
-        <select
-          value={micIndex}
-          onChange={event => {
-            switchMic(event.target.value)
-            setChangeMic(false)
-          }}
-        >
-          {audioinputs.length > 0
-            ? audioinputs.slice(1).map((input, index) => (
-                <option value={index + 1} key={index + 1}>
-                  {input.label}
-                </option>
-              ))
-            : null}
-        </select>
-      )}
+      <p style={{ height: '100%', width: averageVolume + '%', backgroundColor: 'green', margin: 0, padding: 0 }}></p>
     </div>
-  ) : (
-    <></>
   )
 }
-//<input type="range" min="0" max="70" value={averageVolume} className="slider" style={{ pointerEvents: 'none' }} />
+export default ReactMicMeter

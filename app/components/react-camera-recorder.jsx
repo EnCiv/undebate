@@ -2,7 +2,7 @@
 import React, { useImperativeHandle, useEffect, useState } from 'react'
 import supportsVideoType from './lib/supports-video-type'
 import cloneDeep from 'lodash/cloneDeep'
-import { ChangeMic, AppAudioProvider } from './react-mic-meter'
+import ReactMicMeter from './react-mic-meter'
 
 /***
  *
@@ -298,54 +298,54 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
 
   return (
     <>
-      <AppAudioProvider>
-        {typeof cameraIndex !== 'undefined' && cameraIsStreaming && (
+      {typeof cameraIndex !== 'undefined' && cameraIsStreaming && (
+        <div
+          style={{
+            zIndex: 10,
+            margin: '1em',
+            border: '1px solid #808080',
+            borderRadius: '3px',
+            padding: '.1em',
+            cursor: 'pointer',
+            pointerEvents: 'auto',
+            position: 'absolute',
+            bottom: '3em',
+          }}
+          title={inputDevices.videoinputs[cameraIndex] && inputDevices.videoinputs[cameraIndex].label}
+          onClick={nextCamera}
+        >
+          Change Camera
+        </div>
+      )}
+      {typeof micIndex !== 'undefined' && cameraIsStreaming && (
+        <div
+          style={{
+            zIndex: 10,
+            position: 'absolute',
+            bottom: '1em',
+          }}
+        >
           <div
             style={{
-              zIndex: 10,
-              margin: '1em',
+              display: 'inline-block',
+              marginLeft: '1em',
               border: '1px solid #808080',
               borderRadius: '3px',
               padding: '.1em',
               cursor: 'pointer',
               pointerEvents: 'auto',
-              position: 'absolute',
-              bottom: '3em',
+              verticalAlign: 'text-bottom',
             }}
-            title={inputDevices.videoinputs[cameraIndex] && inputDevices.videoinputs[cameraIndex].label}
-            onClick={nextCamera}
+            title={inputDevices.audioinputs[micIndex] && inputDevices.audioinputs[micIndex].label}
+            onClick={nextMic}
           >
-            Change Camera
+            Change Mic
           </div>
-        )}
-        {typeof micIndex !== 'undefined' && cameraIsStreaming && (
-          <>
-            <div
-              style={{
-                zIndex: 10,
-                margin: '1em',
-                border: '1px solid #808080',
-                borderRadius: '3px',
-                padding: '.1em',
-                cursor: 'pointer',
-                pointerEvents: 'auto',
-                position: 'absolute',
-                bottom: '1em',
-              }}
-              title={inputDevices.audioinputs[micIndex] && inputDevices.audioinputs[micIndex].label}
-              onClick={nextMic}
-            >
-              Change Mic
-            </div>
-            <ChangeMic
-              switchMic={nextMic}
-              audioinputs={inputDevices.audioinputs}
-              micIndex={micIndex}
-              calcConstraints={calculateConstraints()}
-            />
-          </>
-        )}
-      </AppAudioProvider>
+          <div style={{ display: 'inline-block', width: '10vw', height: '1.5em', verticalAlign: 'text-bottom' }}>
+            <ReactMicMeter constraints={calculateConstraints()} />
+          </div>
+        </div>
+      )}
     </>
   )
 })
