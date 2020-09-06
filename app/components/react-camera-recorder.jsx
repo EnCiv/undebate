@@ -342,7 +342,7 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
             Change Mic
           </div>
           <div style={{ display: 'inline-block', width: '10vw', height: '1.5em', verticalAlign: 'text-bottom' }}>
-            <ReactMicMeter constraints={calculateConstraints()} />
+            <ReactMicMeter constraints={calculateConstraints()} color={'blue'} style={{ backgroundColor: 'red' }} />
           </div>
         </div>
       )}
