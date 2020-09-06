@@ -718,7 +718,6 @@ class Undebate extends React.Component {
   }
 
   state = {
-    errorMsg: '',
     seatOffset: 0,
     round: 0,
     countDown: 0,
@@ -2468,7 +2467,6 @@ class Undebate extends React.Component {
       waitingPercent,
       totalSize_before_hangup,
       countDown,
-      errorMsg,
       left,
       preambleAgreed,
     } = this.state
@@ -3065,9 +3063,6 @@ class Undebate extends React.Component {
             )}
           >
             {(warmup ? '-' : '') + TimeFormat.fromS(Math.round(countDown), 'mm:ss')}
-          </div>
-          <div style={{ whiteSpace: 'pre-wrap' }}>
-            <span>{errorMsg}</span>
           </div>
         </>
       )
