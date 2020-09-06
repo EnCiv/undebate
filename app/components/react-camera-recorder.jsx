@@ -1,5 +1,5 @@
 'use strict;'
-import React, { useImperativeHandle, useEffect, useState } from 'react'
+import React, { useImperativeHandle, useEffect, useState, useMemo } from 'react'
 import supportsVideoType from './lib/supports-video-type'
 import cloneDeep from 'lodash/cloneDeep'
 import ReactMicMeter from './react-mic-meter'
@@ -119,6 +119,7 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
   }
 
   const calculateConstraints = () => {
+    if (!inputDevices.initialized) return props.constraints // uninitialized on initial render
     let calcConstraints = cloneDeep(props.constraints)
     if (typeof cameraIndex !== 'undefined') {
       if (inputDevices.videoinputs[cameraIndex].deviceId)
@@ -136,9 +137,10 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
     }
     return calcConstraints
   }
+  const calculatedConstraints = useMemo(calculateConstraints, [props.constraints, cameraIndex, micIndex]) // reduce rerenders of micMeter - don't calc the value on every render
 
   const getCameraStreamFromCalculatedConstraints = async (ok, ko) => {
-    const calcConstraints = calculateConstraints()
+    const calcConstraints = calculatedConstraints
     try {
       const stream = await navigator.mediaDevices.getUserMedia(calcConstraints)
       logger.trace('getUserMedia() got stream:', stream)
@@ -342,7 +344,7 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
             Change Mic
           </div>
           <div style={{ display: 'inline-block', width: '10vw', height: '1.5em', verticalAlign: 'text-bottom' }}>
-            <ReactMicMeter constraints={calculateConstraints()} color={'green'} style={{ backgroundColor: 'white' }} />
+            <ReactMicMeter constraints={calculatedConstraints} color={'green'} style={{ backgroundColor: 'white' }} />
           </div>
         </div>
       )}
