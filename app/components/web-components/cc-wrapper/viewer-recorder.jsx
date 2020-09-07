@@ -638,53 +638,6 @@ class ViewerRecorder extends React.Component {
       overflow: 'hidden',
       textOverflow: 'clip',
     },
-
-    introSeatStyle: {
-      speaking: {
-        top: `-30vw`,
-      },
-      nextUp: {
-        left: '-20vw',
-      },
-      seat2: {
-        left: '-20vw',
-      },
-      seat3: {
-        top: '100vw',
-      },
-      seat4: {
-        top: '130vw',
-      },
-      seat5: {
-        top: '150vw',
-      },
-      seat6: {
-        top: '170vw',
-      },
-      seat7: {
-        top: '190vw',
-      },
-      finishUp: {},
-      conversationTopic: {
-        top: '-32vw',
-      },
-      agenda: {
-        top: `calc( -1 * 25vw *  ${HDRatio} -${TopMargin})`,
-        left: '100vw',
-      },
-      introLeft: {
-        left: '-50vw',
-      },
-      introRight: {
-        right: '-50vw',
-      },
-      introTopLeft: {
-        top: '-50vh',
-      },
-      introTopRight: {
-        top: '-50vh',
-      },
-    },
   }
 
   getCamera(ref) {
@@ -854,7 +807,6 @@ class ViewerRecorder extends React.Component {
     var agendaStyle = cloneDeep(this.state.agendaStyle)
     var buttonBarStyle = cloneDeep(this.state.buttonBarStyle)
     var recorderButtonBarStyle = cloneDeep(this.state.recorderButtonBarStyle)
-    var introSeatStyle = cloneDeep(this.state.introSeatStyle)
     var conversationTopicStyle = cloneDeep(this.state.conversationTopicStyle)
     if (width / height > 0.8) {
       // landscape mode
@@ -874,13 +826,11 @@ class ViewerRecorder extends React.Component {
         seatStyle.speaking.left = ((1 - speakingWidthRatio) * width) / 2 /// centered
         seatStyle.speaking.top = navBarHeightRatio * height // TopMargin;
         seatStyle.speaking.width = speakingWidthRatio * 100 + 'vw'
-        introSeatStyle.speaking = { top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox) }
 
         seatStyle.nextUp.top =
           speakingWidthRatio * HDRatio * width - nextUpWidthRatio * HDRatio * width - verticalSeatSpace
         seatStyle.nextUp.width = nextUpWidthRatio * 100 + 'vw'
         seatStyle.nextUp.left = (seatStyle.speaking.left - nextUpWidthRatio * width) / 2 // depends on width
-        introSeatStyle.nextUp = { left: -(seatStyle.nextUp.left + nextUpWidthRatio * width + ShadowBox) }
 
         let seat = 2
 
@@ -893,7 +843,6 @@ class ViewerRecorder extends React.Component {
           seatStyle['seat' + seat].top = seatTop
           seatStyle['seat' + seat].left = seatLeft
           seatStyle['seat' + seat].width = seatWidthRatio * 100 + 'vw'
-          introSeatStyle['seat' + seat] = { left: -(seatWidthRatio * width + horizontalSeatSpace + ShadowBox) }
           seatTop += seatVerticalPitch
           seat++
         }
@@ -908,9 +857,6 @@ class ViewerRecorder extends React.Component {
           seatStyle['seat' + seat].top = seatTop
           seatStyle['seat' + seat].left = seatLeft
           seatStyle['seat' + seat].width = seatWidthRatio * 100 + 'vw'
-          introSeatStyle['seat' + seat] = {
-            top: maxerHeight + i * (seatWidthRatio * HDRatio * width + verticalSeatSpace),
-          } // along the bottom, each seat is further away as you move to the right
           seatLeft += seatHorizontalPitch
           seat++
           i++
@@ -929,8 +875,6 @@ class ViewerRecorder extends React.Component {
           agendaStyle.width = width - agendaStyle.left - 2 * horizontalSeatSpace
         agendaStyle.height = agendaStyle.width
 
-        introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
-
         buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25
         buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.1
         buttonBarStyle.width = seatStyle.nextUp.width
@@ -940,9 +884,6 @@ class ViewerRecorder extends React.Component {
         recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
         recorderButtonBarStyle.width = seatStyle.speaking.width
         recorderButtonBarStyle.height = buttonBarStyle.height
-
-        introSeatStyle.introLeft.left = '-50vw'
-        introSeatStyle.introRight.right = '-50vw'
       } else {
         const speakingWidthRatio = 0.5
         const nextUpWidthRatio = 0.2
@@ -957,12 +898,10 @@ class ViewerRecorder extends React.Component {
         seatStyle.speaking.left = ((2.5 + 20 + 2.5) / 100) * width
         seatStyle.speaking.top = navBarHeightRatio * height //TopMargin;
         seatStyle.speaking.width = speakingWidthRatio * 100 + 'vw'
-        introSeatStyle.speaking = { top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox) }
 
         seatStyle.nextUp.left = horizontalSeatSpace //(2.5 /100) * width;
         seatStyle.nextUp.top = TopMargin + speakingWidthRatio * HDRatio * width - nextUpWidthRatio * HDRatio * width
         seatStyle.nextUp.width = nextUpWidthRatio * 100 + 'vw'
-        introSeatStyle.nextUp = { left: -(seatStyle.nextUp.left + nextUpWidthRatio * width + ShadowBox) }
 
         let seat = 2
         let seatTop = seatStyle.nextUp.top + nextUpWidthRatio * HDRatio * width + verticalSeatSpace
@@ -975,7 +914,6 @@ class ViewerRecorder extends React.Component {
           seatStyle['seat' + seat].top = seatTop
           seatStyle['seat' + seat].left = seatLeft
           seatStyle['seat' + seat].width = seatWidthRatio * 100 + 'vw'
-          introSeatStyle['seat' + seat] = { left: -(seatWidthRatio * width + horizontalSeatSpace + ShadowBox) }
           seatTop += seatVerticalPitch
           seat++
         }
@@ -990,9 +928,6 @@ class ViewerRecorder extends React.Component {
           seatStyle['seat' + seat].top = seatTop
           seatStyle['seat' + seat].left = seatLeft
           seatStyle['seat' + seat].width = seatWidthRatio * 100 + 'vw'
-          introSeatStyle['seat' + seat] = {
-            top: maxerHeight + i * (seatWidthRatio * HDRatio * width + verticalSeatSpace),
-          } // along the bottom, each seat is further away as you move to the right
           seatLeft += seatHorizontalPitch
           seat++
           i++
@@ -1008,7 +943,6 @@ class ViewerRecorder extends React.Component {
         if (agendaStyle.left + agendaStyle.width > width)
           agendaStyle.width = width - agendaStyle.left - 2 * horizontalSeatSpace
         agendaStyle.height = Math.max(0.175 * width, 20 * fontSize)
-        introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
         buttonBarStyle.width = speakingWidthRatio * 50 + 'vw'
         buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25
@@ -1032,10 +966,6 @@ class ViewerRecorder extends React.Component {
         recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
         recorderButtonBarStyle.width = seatStyle.speaking.width
         recorderButtonBarStyle.height = buttonBarStyle.height
-
-        introSeatStyle.introLeft.left = '-50vw'
-
-        introSeatStyle.introRight.right = '-50vw'
       }
     } else {
       // portrait mode
@@ -1052,12 +982,10 @@ class ViewerRecorder extends React.Component {
       seatStyle.speaking.left = ((1 - speakingWidthRatio) * width) / 2 /// centered
       seatStyle.speaking.top = navBarHeightRatio * height //TopMargin;
       seatStyle.speaking.width = speakingWidthRatio * 100 + 'vw'
-      introSeatStyle.speaking = { top: -(speakingWidthRatio * HDRatio * width + verticalSeatSpace + ShadowBox) }
 
       seatStyle.nextUp.left = horizontalSeatSpace
       seatStyle.nextUp.top = speakingWidthRatio * HDRatio * width + verticalSeatSpace + navBarHeightRatio * height
       seatStyle.nextUp.width = nextUpWidthRatio * 100 + 'vw'
-      introSeatStyle.nextUp = { left: -(nextUpWidthRatio * width + horizontalSeatSpace + ShadowBox) }
 
       let seat = 2
 
@@ -1069,7 +997,6 @@ class ViewerRecorder extends React.Component {
         seatStyle['seat' + seat].top = seatTop
         seatStyle['seat' + seat].left = horizontalSeatSpace
         seatStyle['seat' + seat].width = seatWidthRatio * 100 + 'vw'
-        introSeatStyle['seat' + seat] = { left: -(seatWidthRatio * width + horizontalSeatSpace + ShadowBox) }
         seatTop += seatVerticalPitch
         seat++
       }
@@ -1084,9 +1011,6 @@ class ViewerRecorder extends React.Component {
         seatStyle['seat' + seat].top = seatTop
         seatStyle['seat' + seat].left = seatLeft
         seatStyle['seat' + seat].width = seatWidthRatio * 100 + 'vw'
-        introSeatStyle['seat' + seat] = {
-          top: maxerHeight + i * (seatWidthRatio * HDRatio * width + verticalSeatSpace),
-        } // along the bottom, each seat is further away as you move to the right
         seatLeft += seatHorizontalPitch
         seat++
         i++
@@ -1103,7 +1027,6 @@ class ViewerRecorder extends React.Component {
           ? fontSize * 20
           : width - agendaStyle.left - 2 * horizontalSeatSpace // don't go too wide
       agendaStyle.height = agendaStyle.width //fontSize * 20;
-      introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
       buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25
       buttonBarStyle.top = speakingWidthRatio * HDRatio * width + verticalSeatSpace * 1.2 //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
@@ -1114,17 +1037,12 @@ class ViewerRecorder extends React.Component {
       recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
       recorderButtonBarStyle.width = buttonBarStyle.width
       recorderButtonBarStyle.height = buttonBarStyle.height
-
-      introSeatStyle.introLeft.left = '-50vw'
-
-      introSeatStyle.introRight.right = '-50vw'
     }
     return {
       seatStyle,
       agendaStyle,
       buttonBarStyle,
       recorderButtonBarStyle,
-      introSeatStyle,
       conversationTopicStyle,
     }
   }
@@ -2220,13 +2138,11 @@ class ViewerRecorder extends React.Component {
       agendaStyle,
       buttonBarStyle,
       recorderButtonBarStyle,
-      introSeatStyle,
       stylesSet,
       conversationTopicStyle,
       isRecording,
       isPortraitPhoneRecording,
       reviewing,
-      uploadComplete,
       hungUp,
       preFetchQueue,
       name,
@@ -2508,7 +2424,7 @@ class ViewerRecorder extends React.Component {
           >
             {hangupButton.name || 'Hang Up'}
           </button>
-          {totalSize_before_hangup && !uploadComplete ? (
+          {totalSize_before_hangup ? (
             <div className={classes['hangUpButtonReally']}>
               {hangupButton.question ||
                 'You have recorded video, did you really want to exit and delete it, rather than finish this and post it?'}
