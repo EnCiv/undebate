@@ -49,8 +49,8 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
 
   const [inputDevices, setInputDevices] = useState({
     initialized: false,
-    inputdevices: [],
-    videodevices: [],
+    audioinputs: [],
+    videoinputs: [],
   })
 
   function updateDevices(devices) {
