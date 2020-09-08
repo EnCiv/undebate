@@ -13,11 +13,9 @@ const ResolutionToFontSizeTable = require('../../../../resolution-to-font-size-t
 
 const TransitionTime = 500
 const TopMargin = 0
-const IntroTransition = 'all 5s ease'
+const IntroTransition = 'none'
 const HDRatio = 1080 / 1920 //0.5625
 const ShadowBox = 10
-
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser'
 
 import IconPrevSpeaker from '../../../svgr/icon-prev-speaker'
 import IconPrevSection from '../../../svgr/icon-prev-session'
@@ -33,10 +31,13 @@ import ConversationHeader from '../../conversation-header'
 
 import ReactCameraRecorder from '../../react-camera-recorder'
 import supportsVideoType from '../../lib/supports-video-type'
+import ReactMicMeter from '../../react-mic-meter'
 
 import { auto_quality, placeholder_image } from '../../lib/cloudinary-urls'
 import Modal from '../Modal'
 import Icon from '../../lib/icon'
+
+import Agenda from '../../agenda-nav'
 
 const styles = {
   conversationTopic: {
@@ -63,28 +64,11 @@ const styles = {
     position: 'relative',
     width: '100vw',
     height: '100vh',
-    backgroundImage: 'url(/assets/images/marble_table_top.png)',
-    backgroundSize: 'cover',
+    //backgroundImage: 'url(/assets/images/marble_table_top.png)',
+    //backgroundSize: 'cover',
+    backgroundColor: 'white',
     overflow: 'hidden',
     fontFamily: "'Montserrat', sans-serif",
-  },
-  innerImageOverlay: {
-    pointerEvents: 'none',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100vw',
-    height: '100vh',
-    backgroundImage:
-      'url(https://res.cloudinary.com/hf6mryjpf/image/upload/v1572029099/experienced-candidate-conversations-960x492_mworw9.png)',
-    opacity: 0.1,
-    backgroundSize: 'cover',
-    overflow: 'hidden',
-    fontFamily: "'Montserrat', sans-serif",
-    transition: `all ${TransitionTime}ms linear`,
-    '&$intro': {
-      opacity: 0,
-    },
   },
   participant: {
     display: 'block',
@@ -102,7 +86,7 @@ const styles = {
     display: 'block',
     position: 'relative',
     textAlign: 'center',
-    backgroundColor: '#dbdfe0', // this color is taken to match the the background image if you change the image, you should re-evaluate this color
+    backgroundColor: 'white', // this color is taken to match the the background image if you change the image, you should re-evaluate this color
     '&$stylesSet': {
       transition: `all ${TransitionTime}ms linear`,
     },
@@ -213,10 +197,14 @@ const styles = {
   warmup: {},
   videoFoot: {
     'text-align': 'center',
-    color: '#404',
-    'font-weight': '600',
-    'font-size': '100%',
-    'background-color': 'white',
+    color: 'white',
+    'font-weight': 'normal',
+    'font-size': '2rem',
+    'padding-top': '0.25rem',
+    'padding-bottom': '0.25rem',
+    'line-height': '3rem',
+    'background-color': 'black',
+    color: 'white',
     overflow: 'hidden',
     'text-overflow': 'ellipsis',
     'white-space': 'nowrap',
@@ -229,14 +217,6 @@ const styles = {
   },
   agenda: {
     position: 'absolute',
-    'background-color': 'white',
-    padding: '1em',
-    'box-shadow': `${ShadowBox}px ${ShadowBox}px ${ShadowBox}px grey`,
-    'box-sizing': 'border-box',
-    //transform: 'rotate(-2deg)',
-    //'font-family': 'Comic Sans MS',
-    'font-weight': '600',
-    display: 'table',
     '&$finishUp': {
       left: '50vw',
       top: '50vh',
@@ -248,24 +228,12 @@ const styles = {
       transition: `all ${TransitionTime}ms linear`,
     },
     '&$begin': {
-      transition: `${IntroTransition}`,
+      //transition: `${IntroTransition}`,
     },
     '&$intro': {
       top: `calc( -1 * 25vw *  ${HDRatio} -${TopMargin})`,
       left: '100vw',
     },
-  },
-  innerAgenda: {
-    'vertical-align': 'middle',
-    display: 'table-cell',
-  },
-  agendaTitle: {
-    'font-size': '125%',
-  },
-  agendaItem: {
-    'font-weight': '200',
-    'list-style-type': 'none',
-    'padding-left': '1em',
   },
   thanks: {
     'font-size': '200%',
@@ -498,6 +466,7 @@ class ViewerRecorder extends React.Component {
             placeholderUrl:
               (participant !== 'human' &&
                 !youtube &&
+                (this.props.participants[participant].listening || this.props.participants[participant].speaking[0]) &&
                 placeholder_image(
                   this.props.participants[participant].listening || this.props.participants[participant].speaking[0]
                 )) ||
@@ -514,6 +483,12 @@ class ViewerRecorder extends React.Component {
       // non need to do anything --this.props.ccState.participants = {}
     }
     this.numParticipants = Object.keys(this.props.participants).length
+    this.numRounds =
+      (this.props.participants.moderator &&
+        this.props.participants.moderator.speaking &&
+        this.props.participants.moderator.speaking.length) ||
+      (this.props.agenda && this.props.agenda.length) ||
+      0
     this.seating = ['speaking', 'nextUp']
     this.seatToName = { speaking: 'Speaking', nextUp: 'Next Up' }
     for (let i = 2; i < this.numParticipants; i++) {
@@ -550,7 +525,7 @@ class ViewerRecorder extends React.Component {
     seatOffset: 0,
     round: 0,
     countDown: 0,
-    moderatorReadyToStart: false,
+    moderatorReadyToStart: !this.props.participants.moderator, // if no moderators, no need to wait
     stylesSet: false,
     intro: false,
     begin: false,
@@ -659,9 +634,10 @@ class ViewerRecorder extends React.Component {
       if (participant === 'human') return
       this.preFetchObjectURL(participant, participant === 'moderator', 0)
     })
-    this.preFetchObjectURL('moderator', false, 0) // then load the moderator's listening parts
+    if (this.props.participants.moderator && this.props.participants.moderator.listening)
+      this.preFetchObjectURL('moderator', false, 0) // then load the moderator's listening parts
     if (this.props.audio) this.preFetchAudio(this.props.audio)
-    for (let i = 0; i < this.props.participants.moderator.speaking.length; i++) {
+    for (let i = 0; i < this.numRounds; i++) {
       // then load the rest of the speaking parts
       Object.keys(this.props.participants).forEach(participant => {
         if (participant === 'moderator' && i === 0) return // moderator's first speaking part was loaded first
@@ -669,7 +645,14 @@ class ViewerRecorder extends React.Component {
         if (this.props.participants[participant].speaking[i]) this.preFetchObjectURL(participant, true, i)
       })
     }
-    if (this.props.participants.human) this.beginButton() // there use to be abutton click that started this -but  now we just go after being mounted
+    /*if (this.props.participants.human && !this.props.participants.moderator.speaking.length)
+      this.setState({ intro: true, stylesSet: true, allPaused: false, seatOffset: this.numParticipants - 1 }, () =>
+        this.onIntroEnd()
+      )
+    else*/ if (
+      this.props.participants.human
+    )
+      this.beginButton() // there use to be a button click that started this -but  now we just go after being mounted
   }
 
   onYouTubeIframeAPIReady() {
@@ -808,6 +791,7 @@ class ViewerRecorder extends React.Component {
     var buttonBarStyle = cloneDeep(this.state.buttonBarStyle)
     var recorderButtonBarStyle = cloneDeep(this.state.recorderButtonBarStyle)
     var conversationTopicStyle = cloneDeep(this.state.conversationTopicStyle)
+    const titleHeight = 3 * fontSize
     if (width / height > 0.8) {
       // landscape mode
       if (width / height > 1.8) {
@@ -820,7 +804,7 @@ class ViewerRecorder extends React.Component {
         const horizontalSeatSpaceRatio = 0.025
         const navBarHeightRatio = 0.11
 
-        const verticalSeatSpace = Math.max(verticalSeatSpaceRatio * height, 2.5 * fontSize)
+        const verticalSeatSpace = Math.max(verticalSeatSpaceRatio * height, titleHeight)
         const horizontalSeatSpace = horizontalSeatSpaceRatio * width
 
         seatStyle.speaking.left = ((1 - speakingWidthRatio) * width) / 2 /// centered
@@ -862,9 +846,16 @@ class ViewerRecorder extends React.Component {
           i++
         }
 
-        seatStyle.finishUp.left = 0.5 * width
-        seatStyle.finishUp.top = 0.5 * height
-        seatStyle.finishUp.width = '1vw'
+        if (!this.props.participants.moderator) {
+          // this is a hack - but if we are doing the precheck with only a human - finishup should go to seat2
+          seatStyle.finishUp.left = seatStyle['seat2'].left
+          seatStyle.finishUp.top = seatStyle['seat2'].top
+          seatStyle.finishUp.width = seatStyle['seat2'].width
+        } else {
+          seatStyle.finishUp.left = 0.5 * width
+          seatStyle.finishUp.top = 0.5 * height
+          seatStyle.finishUp.width = '1vw'
+        }
 
         agendaStyle.top = navBarHeightRatio * height //speakingWidthRatio * HDRatio * width * 0.10;
         agendaStyle.left = seatStyle.speaking.left + speakingWidthRatio * width + 2 * horizontalSeatSpace // 2 because it's rotated
@@ -881,7 +872,7 @@ class ViewerRecorder extends React.Component {
         buttonBarStyle.height = Math.max(0.05 * height, 4 * fontSize)
 
         recorderButtonBarStyle.left = seatStyle.speaking.left
-        recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
+        recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25 + titleHeight
         recorderButtonBarStyle.width = seatStyle.speaking.width
         recorderButtonBarStyle.height = buttonBarStyle.height
       } else {
@@ -892,7 +883,7 @@ class ViewerRecorder extends React.Component {
         const horizontalSeatSpaceRatio = 0.0125
         const navBarHeightRatio = 0.08
 
-        const verticalSeatSpace = Math.max(verticalSeatSpaceRatio * height, 3 * fontSize)
+        const verticalSeatSpace = Math.max(verticalSeatSpaceRatio * height, titleHeight)
         const horizontalSeatSpace = Math.max(horizontalSeatSpaceRatio * width, fontSize)
 
         seatStyle.speaking.left = ((2.5 + 20 + 2.5) / 100) * width
@@ -933,9 +924,16 @@ class ViewerRecorder extends React.Component {
           i++
         }
 
-        seatStyle.finishUp.left = 0.5 * width
-        seatStyle.finishUp.top = ((0.5 + 0.15) * width * HDRatio + (0.05 + 0.015) * height + TopMargin) / 2
-        seatStyle.finishUp.width = '1vw'
+        if (!this.props.participants.moderator) {
+          // this is a hack - but if we are doing the precheck with only a human - finishup should go to seat2
+          seatStyle.finishUp.left = seatStyle['seat2'].left
+          seatStyle.finishUp.top = seatStyle['seat2'].top
+          seatStyle.finishUp.width = seatStyle['seat2'].width
+        } else {
+          seatStyle.finishUp.left = 0.5 * width
+          seatStyle.finishUp.top = ((0.5 + 0.15) * width * HDRatio + (0.05 + 0.015) * height + TopMargin) / 2
+          seatStyle.finishUp.width = '1vw'
+        }
 
         agendaStyle.top = 0.08 * height
         agendaStyle.left = seatStyle.speaking.left + speakingWidthRatio * width + horizontalSeatSpace
@@ -963,7 +961,7 @@ class ViewerRecorder extends React.Component {
         buttonBarStyle.height = Math.max(0.035 * height, 4 * fontSize)
 
         recorderButtonBarStyle.left = seatStyle.speaking.left
-        recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
+        recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25 + titleHeight
         recorderButtonBarStyle.width = seatStyle.speaking.width
         recorderButtonBarStyle.height = buttonBarStyle.height
       }
@@ -976,7 +974,7 @@ class ViewerRecorder extends React.Component {
       const horizontalSeatSpaceRatio = 0.025
       const navBarHeightRatio = 0.11
 
-      const verticalSeatSpace = Math.max(verticalSeatSpaceRatio * height, 3 * fontSize)
+      const verticalSeatSpace = Math.max(verticalSeatSpaceRatio * height, titleHeight)
       const horizontalSeatSpace = Math.max(horizontalSeatSpaceRatio * width, fontSize)
 
       seatStyle.speaking.left = ((1 - speakingWidthRatio) * width) / 2 /// centered
@@ -1016,10 +1014,16 @@ class ViewerRecorder extends React.Component {
         i++
       }
 
-      seatStyle.finishUp.left = 0.5 * width
-      seatStyle.finishUp.top = 0.5 * height
-      seatStyle.finishUp.width = '1vw'
-
+      if (!this.props.participants.moderator) {
+        // this is a hack - but if we are doing the precheck with only a human - finishup should go to seat2
+        seatStyle.finishUp.left = seatStyle['seat2'].left
+        seatStyle.finishUp.top = seatStyle['seat2'].top
+        seatStyle.finishUp.width = seatStyle['seat2'].width
+      } else {
+        seatStyle.finishUp.left = 0.5 * width
+        seatStyle.finishUp.top = 0.5 * height
+        seatStyle.finishUp.width = '1vw'
+      }
       agendaStyle.top = seatStyle.nextUp.top
       agendaStyle.left = horizontalSeatSpace + nextUpWidthRatio * width + 2 * horizontalSeatSpace
       agendaStyle.width =
@@ -1034,7 +1038,7 @@ class ViewerRecorder extends React.Component {
       buttonBarStyle.height = '5vh'
 
       recorderButtonBarStyle.left = buttonBarStyle.left
-      recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
+      recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25 + titleHeight
       recorderButtonBarStyle.width = buttonBarStyle.width
       recorderButtonBarStyle.height = buttonBarStyle.height
     }
@@ -1071,7 +1075,8 @@ class ViewerRecorder extends React.Component {
     logger.trace(`nextMediaState part:${part}`)
     //if (part === 'human') return;
     // humans won't get here
-    const { round, reviewing } = this.state
+    const { round } = this.state
+    const { reviewing } = this.props.ccState
 
     let speaking = this.seatOfParticipant(part) === 'speaking'
 
@@ -1381,6 +1386,13 @@ class ViewerRecorder extends React.Component {
     this.setState({ requestPermission: false, stalled: false })
   }
 
+  getTimeLimit() {
+    const { timeLimits } = this.props.participants.moderator ? this.props.participants.moderator : this.props
+    const { round } = this.state
+    if (timeLimits && typeof timeLimits[round] === 'number') return timeLimits[round]
+    return 60
+  }
+
   seat(i, seatOffset) {
     if (this.state.finishUp) return 'finishUp'
     if (typeof seatOffset === 'undefined') seatOffset = this.state.seatOffset
@@ -1430,7 +1442,7 @@ class ViewerRecorder extends React.Component {
       name: () => 'Redo',
       func: this.rerecordButton,
       title: () => 'Re-record',
-      disabled: () => this.speakingNow() !== 'human' || this.state.warmup,
+      disabled: () => this.speakingNow() !== 'human' || this.state.warmup || !this.getTimeLimit(),
     },
     { name: () => 'key1', func: null, title: () => '' }, // keyN because react keys have to have unigue names
     { name: () => 'key2', func: null, title: () => '' },
@@ -1439,7 +1451,7 @@ class ViewerRecorder extends React.Component {
       name: () => 'Finished Speaking',
       func: this.finishedSpeaking,
       title: () => 'Done Speaking',
-      disabled: () => this.speakingNow() !== 'human' || (this.state.reviewing && !this.rerecord),
+      disabled: () => this.speakingNow() !== 'human' || (this.props.ccState.reviewing && !this.rerecord),
     },
   ]
 
@@ -1563,11 +1575,11 @@ class ViewerRecorder extends React.Component {
     logger.info('Undebate.nextSection', seatOffset, round)
     if (this.numParticipants === 1) {
       round += 1
-      if (!this.props.participants.moderator.speaking[round]) return this.finished()
+      if (round >= this.numRounds) return this.finished()
     } else {
       round += 1
       seatOffset = 0
-      if (!this.props.participants.moderator.speaking[round]) return this.finished()
+      if (round >= this.numRounds) return this.finished()
     }
     this.stopRecording(false)
     this.newOrder(seatOffset, round)
@@ -1578,12 +1590,12 @@ class ViewerRecorder extends React.Component {
     logger.info('Undebate.nextSpeaker', seatOffset, round)
     if (this.numParticipants === 1) {
       round += 1
-      if (!this.props.participants.moderator.speaking[round]) return this.finished()
+      if (round >= this.numRounds) return this.finished()
     } else {
       seatOffset -= 1
       if (seatOffset === 0) round += 1 // back to the moderator, switch to the next round
       if (seatOffset < 0) {
-        if (this.props.participants.moderator.speaking[round + 1]) seatOffset = this.numParticipants - 1
+        if (round + 1 < this.numRounds) seatOffset = this.numParticipants - 1
         // moderator just finished, he moves to the back of the order
         else return this.finished()
       }
@@ -1597,12 +1609,12 @@ class ViewerRecorder extends React.Component {
     logger.trace('Undebate.autoNextSpeaker', seatOffset, round)
     if (this.numParticipants === 1) {
       round += 1
-      if (!this.props.participants.moderator.speaking[round]) return this.finished()
+      if (round >= this.numRounds) return this.finished()
     } else {
       seatOffset -= 1
       if (seatOffset === 0) round += 1 // back to the moderator, switch to the next round
       if (seatOffset < 0) {
-        if (this.props.participants.moderator.speaking[round + 1]) seatOffset = this.numParticipants - 1
+        if (round + 1 < this.numRounds) seatOffset = this.numParticipants - 1
         // moderator just finished, he moves to the back of the order
         else return this.finished()
       }
@@ -1688,8 +1700,7 @@ class ViewerRecorder extends React.Component {
       logger.trace('rotateOrder', round, seatOffset, participant, oldChair, newChair)
 
       if (participant === 'human') {
-        const { timeLimits } = participants.moderator
-        const timeLimit = (timeLimits && timeLimits[round]) || 60
+        const timeLimit = this.getTimeLimit()
         const { listeningRound, listeningSeat } = this.listening()
         if (oldChair === 'speaking' && newChair === 'speaking' && this.rerecord) {
           // the user is initiating a rerecord
@@ -1700,7 +1711,7 @@ class ViewerRecorder extends React.Component {
           // the oldChair and the old round
           //this.rerecord = false
           //this.stopRecording()
-        } else if (oldChair === listeningSeat && this.state.round === listeningRound && !this.state.reviewing) {
+        } else if (oldChair === listeningSeat && this.state.round === listeningRound && !this.props.ccState.reviewing) {
           // the oldChair and the old round
           //this.rerecord = false
           //this.stopRecording()
@@ -1742,6 +1753,7 @@ class ViewerRecorder extends React.Component {
   }
 
   maybeEnableRecording(newChair, listeningSeat, round, listeningRound, timeLimit) {
+    if (!timeLimit) return
     if (this.isRecordingPlaceHolder()) {
       this.recordFromSpeakersSeat(listeningSeat, timeLimit, round)
     } else if (newChair === 'speaking') {
@@ -1754,17 +1766,20 @@ class ViewerRecorder extends React.Component {
   }
 
   recordWithCountdown(timeLimit, round, delay) {
+    if (!timeLimit) return
     this.startCountDown(timeLimit, () => this.autoNextSpeaker(), delay)
     this.startTalkativeTimeout(timeLimit * 0.75)
     this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs), true)
   }
 
   recordWithWarmup(timeLimit, round) {
+    if (!timeLimit) return
     const warmupSeconds = 3
     this.warmupCountDown(warmupSeconds, () => this.recordWithCountdown(timeLimit, round, 0))
   }
 
   recordFromSpeakersSeat(listeningSeat, timeLimit, round) {
+    if (!timeLimit) return
     if (listeningSeat === 'speaking') {
       // recording the listening segment from the speakers seat
       this.startCountDown(timeLimit, () => this.autoNextSpeaker(), TransitionTime)
@@ -1780,7 +1795,7 @@ class ViewerRecorder extends React.Component {
     setTimeout(() => {
       this.camera && this.camera.releaseCamera()
       this.setState({ done: true })
-      this.props.dispatch({ type: 'Done' })
+      this.props.dispatch({ type: 'Next' })
     }, 1.5 * TransitionTime)
     return this.setState({ finishUp: true })
   }
@@ -2094,7 +2109,8 @@ class ViewerRecorder extends React.Component {
 
   isRecordingPlaceHolder() {
     const { participants } = this.props
-    const { round, reviewing } = this.state
+    const { round } = this.state
+    const { reviewing } = this.props.ccState
     if (participants.human) {
       const { listeningRound, listeningSeat } = this.listening()
       if (listeningRound === round && listeningSeat === this.seatOfParticipant('human')) {
@@ -2123,6 +2139,10 @@ class ViewerRecorder extends React.Component {
       hangupButton = {},
       logo,
       path,
+      ccState,
+      micCameraConstraintsState,
+      micCameraConstraintsDispatch,
+      showMicCamera,
     } = this.props
     const {
       round,
@@ -2142,7 +2162,6 @@ class ViewerRecorder extends React.Component {
       conversationTopicStyle,
       isRecording,
       isPortraitPhoneRecording,
-      reviewing,
       hungUp,
       preFetchQueue,
       name,
@@ -2155,6 +2174,8 @@ class ViewerRecorder extends React.Component {
       countDown,
       left,
     } = this.state
+
+    const { reviewing } = ccState
 
     const innerWidth = typeof window !== 'undefined' ? window.innerWidth : 1920
     const humanSpeaking = this.speakingNow() === 'human'
@@ -2333,37 +2354,8 @@ class ViewerRecorder extends React.Component {
             </>
           )}
           <div className={cx(classes['videoFoot'], stylesSet && classes['stylesSet'], finishUp && classes['finishUp'])}>
-            <span>{!finishUp && this.seatToName[this.seat(i)] + ': '}</span>
+            <span>{this.seatToName[this.seat(i)] + ': '}</span>
             <span>{participant_name}</span>
-          </div>
-        </div>
-      )
-    }
-
-    var agenda = agendaStyle => {
-      const style = finishUp ? {} : agendaStyle
-      return (
-        <div
-          style={style}
-          className={cx(
-            classes['agenda'],
-            stylesSet && classes['stylesSet'],
-            finishUp && classes['finishUp'],
-            begin && classes['begin'],
-            !intro && classes['intro']
-          )}
-          key={'agenda' + round + agendaStyle.left}
-        >
-          <div className={classes['innerAgenda']}>
-            {participants.moderator.agenda[round] && (
-              <>
-                <span className={classes['agendaTitle']}>Agenda</span>
-                <ul className={classes['agendaItem']}>
-                  {participants.moderator.agenda[round] &&
-                    participants.moderator.agenda[round].map((item, i) => <li key={item + i}>{item}</li>)}
-                </ul>
-              </>
-            )}
           </div>
         </div>
       )
@@ -2485,18 +2477,100 @@ class ViewerRecorder extends React.Component {
       )
     }
 
+    const micButton = () =>
+      showMicCamera &&
+      participants.human &&
+      typeof micCameraConstraintsState.micIndex !== 'undefined' && (
+        <div
+          style={{
+            zIndex: 10,
+            position: 'absolute',
+            bottom: '1em',
+          }}
+        >
+          <div
+            style={{
+              display: 'inline-block',
+              marginLeft: '1em',
+              border: '1px solid #808080',
+              borderRadius: '3px',
+              padding: '.1em',
+              cursor: 'pointer',
+              pointerEvents: 'auto',
+              verticalAlign: 'text-bottom',
+            }}
+            title={
+              micCameraConstraintsState.audioinputs[micCameraConstraintsState.micIndex] &&
+              micCameraConstraintsState.audioinputs[micCameraConstraintsState.micIndex].label
+            }
+            onClick={() => micCameraConstraintsDispatch({ type: 'NextMic' })}
+          >
+            Change Mic
+          </div>
+          <div style={{ display: 'inline-block', width: '10vw', height: '1.5em', verticalAlign: 'text-bottom' }}>
+            <ReactMicMeter
+              constraints={micCameraConstraintsState.constraints}
+              color={'green'}
+              style={{ backgroundColor: 'white' }}
+            />
+          </div>
+        </div>
+      )
+
+    const cameraButton = () =>
+      showMicCamera &&
+      participants.human &&
+      typeof micCameraConstraintsState.cameraIndex !== 'undefined' && (
+        <div
+          style={{
+            zIndex: 10,
+            margin: '1em',
+            border: '1px solid #808080',
+            borderRadius: '3px',
+            padding: '.1em',
+            cursor: 'pointer',
+            pointerEvents: 'auto',
+            position: 'absolute',
+            bottom: '3em',
+          }}
+          title={
+            micCameraConstraintsState.videoinputs[micCameraConstraintsState.cameraIndex] &&
+            micCameraConstraintsState.videoinputs[micCameraConstraintsState.cameraIndex].label
+          }
+          onClick={() => micCameraConstraintsDispatch({ type: 'NextCamera' })}
+        >
+          Change Camera
+        </div>
+      )
+
     var videos = () =>
       !done && (
         <>
-          {conversationTopic(conversationTopicStyle)}
+          <ConversationHeader subject={subject} bp_info={bp_info} logo={logo} />
           <div className={classes['outerBox']}>
             {Object.keys(participants).map((participant, i) => videoBox(participant, i, seatStyle))}
-            {agenda(agendaStyle)}
+            <Agenda
+              className={cx(
+                classes['agenda'],
+                stylesSet && classes['stylesSet'],
+                finishUp && classes['finishUp'],
+                begin && classes['begin'],
+                !intro && classes['intro']
+              )}
+              style={agendaStyle}
+              agendaItem={
+                (participants.moderator && participants.moderator.agenda && participants.moderator.agenda[round]) ||
+                (this.props.agenda && this.props.agenda[round])
+              }
+              prevSection={this.prevSection.bind(this)}
+              nextSection={this.nextSection.bind(this)}
+            />
           </div>
           <div
             className={cx(
               classes['countdown'],
               humanSpeaking &&
+                this.getTimeLimit() &&
                 (this.rerecord || !this.props.ccState.participants.human.speakingObjectURLs[round]) &&
                 classes['counting'],
               talkative && classes['talkative'],
@@ -2523,23 +2597,19 @@ class ViewerRecorder extends React.Component {
           ></Modal>
         ) : null}
         {participants.human && (
-          <ReactCameraRecorder
-            ref={this.getCamera}
-            onCanNotRecordHere={status => (
-              props.dispatch({ type: 'CanNotRecordHere' }), (this.canNotRecordHere = status)
-            )}
-            onCameraStream={stream => (this.cameraStream = stream)}
-            onCameraChange={() => this.nextMediaState('human')}
-            constraints={{
-              audio: {
-                echoCancellation: { exact: true },
-              },
-              video: {
-                width: 640,
-                height: 360,
-              },
-            }}
-          />
+          <>
+            <ReactCameraRecorder
+              ref={this.getCamera}
+              onCanNotRecordHere={status => (
+                props.dispatch({ type: 'CanNotRecordHere' }), (this.canNotRecordHere = status)
+              )}
+              onCameraStream={stream => (this.cameraStream = stream)}
+              onCameraChange={() => this.nextMediaState('human')}
+              constraints={micCameraConstraintsState.constraints}
+            />
+            {cameraButton()}
+            {micButton()}
+          </>
         )}
         <section
           id="syn-ask-webrtc"

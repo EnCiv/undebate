@@ -44,35 +44,6 @@ import ReactMicMeter from './react-mic-meter'
 const WebRTCMediaRecordPeriod = 100
 
 const ReactCameraRecorder = React.forwardRef((props, ref) => {
-  const [cameraIndex, setCameraIndex] = useState(undefined)
-  const [micIndex, setMicIndex] = useState(undefined)
-
-  const [inputDevices, setInputDevices] = useState({
-    initialized: false,
-    audioinputs: [],
-    videoinputs: [],
-  })
-
-  function updateDevices(devices) {
-    var newState = Object.assign({}, inputDevices) // a shallow copy because we know it's not deep at initialization
-    newState.initialized = true
-    newState.videoinputs = devices.reduce((acc, device) => (device.kind === 'videoinput' && acc.push(device), acc), [])
-    if (newState.videoinputs.length > 1) setCameraIndex(0)
-    newState.audioinputs = devices.reduce((acc, device) => (device.kind === 'audioinput' && acc.push(device), acc), [])
-    if (newState.audioinputs.length > 1) setMicIndex(0)
-    logger.info('reactCameraRecorder devices', JSON.stringify(devices, null, 2))
-    setInputDevices(newState)
-  }
-
-  // the values for inputDevices need to be set asynchronously because mediaDevices.enumerateDevices returns a promise
-  // once set these values are not changed - but it would be better to find an event for when a camera or mic is connected/disconnected and use that to update this list
-  if (!inputDevices.initialized) {
-    if (typeof navigator !== 'undefined') {
-      navigator.mediaDevices.enumerateDevices().then(updateDevices)
-      //register an event listener such that update devices is called when a new device is plugged in or another decice gets removed.
-      navigator.mediaDevices.addEventListener('devicechange', updateDevices)
-    }
-  }
   const [startRecorderState, neverSetStartRecorderState] = useState({ state: 'READY', cb: undefined }) // //"BLOCK", "QUEUED" - never call the setter, we  use the same object through the life of this component and set it in realtime
 
   const [canNotRecordHere, setCanNotRecordHere] = useState(() => {
@@ -118,31 +89,9 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
     }
   }
 
-  const calculateConstraints = () => {
-    if (!inputDevices.initialized) return props.constraints // uninitialized on initial render
-    let calcConstraints = cloneDeep(props.constraints)
-    if (typeof cameraIndex !== 'undefined') {
-      if (inputDevices.videoinputs[cameraIndex].deviceId)
-        calcConstraints.video.deviceId = inputDevices.videoinputs[cameraIndex].deviceId
-      else if (inputDevices.videoinputs[cameraIndex].groupId)
-        calcConstraints.video.groupId = inputDevices.videoinputs[cameraIndex].groupId
-      else logger.error('video device has no device or group id', inputDevices.videoinputs[micIndex])
-    }
-    if (typeof micIndex !== 'undefined') {
-      if (inputDevices.audioinputs[micIndex].deviceId)
-        calcConstraints.audio.deviceId = inputDevices.audioinputs[micIndex].deviceId
-      else if (inputDevices.audioinputs[micIndex].groupId)
-        calcConstraints.audio.groupId = inputDevices.audioinputs[micIndex].groupId
-      else logger.error('audio device has no device or group id', inputDevices.audioinputs[micIndex])
-    }
-    return calcConstraints
-  }
-  const calculatedConstraints = useMemo(calculateConstraints, [props.constraints, cameraIndex, micIndex]) // reduce rerenders of micMeter - don't calc the value on every render
-
   const getCameraStreamFromCalculatedConstraints = async (ok, ko) => {
-    const calcConstraints = calculatedConstraints
     try {
-      const stream = await navigator.mediaDevices.getUserMedia(calcConstraints)
+      const stream = await navigator.mediaDevices.getUserMedia(props.constraints)
       logger.trace('getUserMedia() got stream:', stream)
       reactThis.cameraStream = stream
       let audioTracks = stream.getAudioTracks()
@@ -267,24 +216,6 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
     }
   }
 
-  const nextCamera = e => {
-    logger.info('ReactCameraRecorder.nextCamera')
-    releaseCamera()
-    let index = cameraIndex || 0
-    if (++index >= inputDevices.videoinputs.length) index = 0
-    setCameraIndex(index)
-  }
-
-  const nextMic = e => {
-    // e is either an event, from onClick, or it's a number passed by another function call
-    logger.info('ReactCameraRecorder.nextMic')
-    releaseCamera()
-    let index = micIndex || 0
-    if (typeof e === 'number') index = e
-    else if (++index >= inputDevices.audioinputs.length) index = 0
-    setMicIndex(index)
-  }
-
   // the properties below are methods that the parent component can access
   useImperativeHandle(ref, () => ({
     getCameraStream,
@@ -296,60 +227,8 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
   // if a camera or mic index changes, get the new stream - but don't do it initially only do this on index changes after the camera is streaming
   useEffect(() => {
     if (cameraIsStreaming) getCameraStreamFromCalculatedConstraints(props.onCameraChange)
-  }, [cameraIndex, micIndex])
-
-  return (
-    <>
-      {typeof cameraIndex !== 'undefined' && cameraIsStreaming && (
-        <div
-          style={{
-            zIndex: 10,
-            margin: '1em',
-            border: '1px solid #808080',
-            borderRadius: '3px',
-            padding: '.1em',
-            cursor: 'pointer',
-            pointerEvents: 'auto',
-            position: 'absolute',
-            bottom: '3em',
-          }}
-          title={inputDevices.videoinputs[cameraIndex] && inputDevices.videoinputs[cameraIndex].label}
-          onClick={nextCamera}
-        >
-          Change Camera
-        </div>
-      )}
-      {typeof micIndex !== 'undefined' && cameraIsStreaming && (
-        <div
-          style={{
-            zIndex: 10,
-            position: 'absolute',
-            bottom: '1em',
-          }}
-        >
-          <div
-            style={{
-              display: 'inline-block',
-              marginLeft: '1em',
-              border: '1px solid #808080',
-              borderRadius: '3px',
-              padding: '.1em',
-              cursor: 'pointer',
-              pointerEvents: 'auto',
-              verticalAlign: 'text-bottom',
-            }}
-            title={inputDevices.audioinputs[micIndex] && inputDevices.audioinputs[micIndex].label}
-            onClick={nextMic}
-          >
-            Change Mic
-          </div>
-          <div style={{ display: 'inline-block', width: '10vw', height: '1.5em', verticalAlign: 'text-bottom' }}>
-            <ReactMicMeter constraints={calculatedConstraints} color={'green'} style={{ backgroundColor: 'white' }} />
-          </div>
-        </div>
-      )}
-    </>
-  )
+  }, [props.constraints])
+  return false
 })
 
 export default ReactCameraRecorder
