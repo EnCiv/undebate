@@ -40,26 +40,6 @@ import Icon from '../../lib/icon'
 import Agenda from '../../agenda-nav'
 
 const styles = {
-  conversationTopic: {
-    fontSize: '150%',
-    fontWeight: 'bold',
-    position: 'absolute',
-    top: '0',
-    left: '0',
-    marginTop: '0px',
-    //'transition': "all 5s ease"
-  },
-  conversationTopicContent: {
-    width: '100vw',
-    textAlign: 'center',
-    margin: '1rem 0 1rem 0',
-  },
-  logo: {
-    marginRight: '0.2rem',
-    marginTop: '0.2rem',
-    height: '6vh',
-    float: 'right',
-  },
   innerWrapper: {
     position: 'relative',
     width: '100vw',
@@ -356,23 +336,6 @@ const styles = {
   },
   stalledNow: {},
   stalledBox: {},
-  'enciv-logo': {
-    padding: '.25em',
-    marginRight: '.25em',
-    height: '3.5vh',
-    float: 'right',
-    paddingTop: '.3em',
-  },
-  instructionLink: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    margin: '1rem 0 0 1rem',
-  },
-  instructionIcon: {
-    fontSize: '3rem',
-    color: 'gray',
-  },
   recordingPlaceholderBar: {
     position: 'absolute',
     width: '100%',
@@ -580,10 +543,6 @@ class ViewerRecorder extends React.Component {
         top: `calc(((50vw + 15vw) *  ${HDRatio} + 5vh + 1.5vw + ${TopMargin}) / 2)`,
         width: '1vw',
       },
-    },
-
-    conversationTopic: {
-      top: `${TopMargin}`,
     },
 
     agendaStyle: {
@@ -2430,52 +2389,6 @@ class ViewerRecorder extends React.Component {
           ) : null}
         </div>
       )
-
-    const conversationTopic = topicStyle => {
-      return (
-        <>
-          {instructionLink && (
-            <div className={classes['instructionLink']}>
-              <a target="#" href={instructionLink}>
-                <i
-                  className={cx('far', 'fa-question-circle', classes['instructionIcon'])}
-                  onClick={() => {
-                    this.ensurePaused()
-                    let win = window.open(instructionLink, '_blank')
-                    win.focus()
-                  }}
-                />
-              </a>
-            </div>
-          )}
-          <div style={topicStyle} className={classes['conversationTopic']}>
-            <p className={classes['conversationTopicContent']}>{subject}</p>
-          </div>
-          <a target="#" href="https://www.EnCiv.org">
-            <img className={classes['enciv-logo']} src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png" />
-          </a>
-          {logo === 'undebate' ? (
-            <a target="#" href="https://enciv.org/undebate">
-              <img
-                className={classes['logo']}
-                src="https://res.cloudinary.com/hf6mryjpf/image/upload/c_scale,h_100/v1585602937/Undebate_Logo.png"
-              />
-            </a>
-          ) : logo === 'none' ? (
-            false
-          ) : logo === 'CandidateConversations' || typeof logo === 'undefined' ? (
-            <a target="#" href="https://ballotpedia.org/Candidate_Conversations">
-              <img
-                className={classes['logo']}
-                src="https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png"
-              />
-            </a>
-          ) : (
-            false
-          )}
-        </>
-      )
-    }
 
     const micButton = () =>
       showMicCamera &&
