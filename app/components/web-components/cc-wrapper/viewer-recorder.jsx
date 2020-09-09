@@ -761,7 +761,7 @@ class ViewerRecorder extends React.Component {
         const seatWidthRatio = speakingWidthRatio * 0.5
         const verticalSeatSpaceRatio = 0.025
         const horizontalSeatSpaceRatio = 0.025
-        const navBarHeightRatio = 0.11
+        const navBarHeightRatio = 0.06
 
         const verticalSeatSpace = Math.max(verticalSeatSpaceRatio * height, titleHeight)
         const horizontalSeatSpace = horizontalSeatSpaceRatio * width
@@ -816,7 +816,7 @@ class ViewerRecorder extends React.Component {
           seatStyle.finishUp.width = '1vw'
         }
 
-        agendaStyle.top = navBarHeightRatio * height //speakingWidthRatio * HDRatio * width * 0.10;
+        agendaStyle.top = seatStyle.nextUp.top //speakingWidthRatio * HDRatio * width * 0.10;
         agendaStyle.left = seatStyle.speaking.left + speakingWidthRatio * width + 2 * horizontalSeatSpace // 2 because it's rotated
         //agendaStyle.height=speakingWidthRatio * HDRatio * width * 0.8;
 
@@ -826,9 +826,9 @@ class ViewerRecorder extends React.Component {
         agendaStyle.height = agendaStyle.width
 
         buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25
-        buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.1
-        buttonBarStyle.width = seatStyle.nextUp.width
         buttonBarStyle.height = Math.max(0.05 * height, 4 * fontSize)
+        buttonBarStyle.top = seatStyle.speaking.top + speakingWidthRatio * HDRatio * width - buttonBarStyle.height
+        buttonBarStyle.width = seatStyle.nextUp.width
 
         recorderButtonBarStyle.left = seatStyle.speaking.left
         recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25 + titleHeight

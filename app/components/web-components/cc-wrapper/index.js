@@ -2,31 +2,12 @@
 import React, { useReducer, useMemo } from 'react'
 import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
-import CandidatePreamble from '../../candidate-preamble'
+import WrappedCandidatePreamble from './candidate-preamble'
 import { Ending, HungUp } from './ending'
 import CanNotRecordHere from './can-not-record-here'
 import ViewerRecorder from './viewer-recorder'
 import Precheck from './precheck'
 import useMicCameraConstraints from './mic-camera-constraints'
-
-// don't want to rewire Candidate Preamble yet so here's a wrapper for now
-const WrappedCandidatePreamble = props => {
-  const { subject, bp_info = {}, participants, instructionLink, dispatch } = props
-  return (
-    <CandidatePreamble
-      subject={subject}
-      bp_info={bp_info}
-      agreed={false}
-      onClick={() => {
-        logger.info('CcWrapped preambleAgreed true')
-        dispatch({ type: 'Next' })
-      }}
-      candidate_questions={participants.moderator.agenda}
-      instructionLink={instructionLink}
-      timeLimits={participants.moderator.timeLimits}
-    />
-  )
-}
 
 const pages = {
   CandidatePreamble: WrappedCandidatePreamble,
