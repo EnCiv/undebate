@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createUseStyles } from 'react-jss'
 import FindDistrict from '../HartfordVotes/FindDistrict'
-import { AddressProvider } from '../HartfordVotes/user-address-context'
+import { AddressProvider, useCandidates } from '../HartfordVotes/user-address-context'
 
 const useStyles = createUseStyles({
   landingPage: {
@@ -31,10 +31,19 @@ const HartfordViewers = ({}) => {
   return (
     <>
       <AddressProvider>
-        <FindDistrict />
+        <DisplayViewers />
       </AddressProvider>
     </>
   )
+}
+
+const DisplayViewers = ({}) => {
+  const { candidates } = useCandidates()
+
+  //useEffect(() => {}, [candidates])
+  //<iframe src={candidates.viewers[0][0]}/>
+  //<div>{candidates.viewers[0][0]}</div>
+  return <div>{candidates.viewers ? <iframe src={candidates.viewers[0][0]} /> : <FindDistrict />}</div>
 }
 
 export default HartfordViewers
