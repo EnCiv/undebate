@@ -3,6 +3,6 @@ FROM ruby:2.7-slim
 COPY iota.json .
 COPY pathfinder.rb .
 
-ENV BASE_URI=http://localhost:3031
+ENV BASE_URI=http://localhost:3011
 
 CMD [ "ruby", "pathfinder.rb" ]

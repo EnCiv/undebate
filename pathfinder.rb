@@ -2,7 +2,7 @@ require('json')
 
 json = JSON.load(File.read("iota.json"))
 
-base_uri = ENV["BASE_URI"].nil? ? "http://localhost:3031" : ENV["BASE_URI"]
+base_uri = ENV["BASE_URI"].nil? ? "http://localhost:3011" : ENV["BASE_URI"]
 
 sleep(5)
 puts "Available paths:"
