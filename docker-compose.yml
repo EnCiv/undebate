@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   mongo:
-    image: mongo:latest
+    image: mongo:3.6
     restart: always
     ports:
       - "27017-27019:27017-27019"
