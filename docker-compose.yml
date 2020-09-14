@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017-27019:27017-27019"
+  undebate:
+    build: .
+    ports:
+      - "3011:3011"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017
+      - PORT=3011
+  helper:
+    build: 
+      context: .
+      dockerfile: Dockerfile-pathfinder
+    depends_on: 
+      - undebate

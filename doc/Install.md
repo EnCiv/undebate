@@ -7,6 +7,7 @@ You will need to install the following, if you do not already have them.
 3. Heroku: https://devcenter.heroku.com/articles/heroku-cli
 4. I use visual studio code, but you can use another environment, but you will need to be able to run git-bash terminal windows in your environment.
    https://code.visualstudio.com/
+5. Docker: https://www.docker.com/products/docker-desktop for a quick containerized local setup.
 
 ## Setup
 
@@ -102,6 +103,20 @@ Here is the list as of the time of this writing:
 ```
 
 Just take the url part, like "what-is-democracy" and add either localhost:3011 or https://undebate-[something unique].herokuapp.com at the beginning and you will be able to check it out.
+
+## Running application in a Docker container.
+Everything that is needed to run the application is conveniently provided by `docker-compose`. This will boot up your mongo instance, run the undebate project, and provide a convenient helper log that will print out all the available paths in the project.
+
+Spinning up local container environment. Install Docker Desktop (If you are on a Windows machine, depending on your motherboard you will need to enable HyperV or SVM in your BIOS)
+
+    git clone https://github.com/EnCiv/undebate
+    cd undebate
+    docker-compose up
+
+By default, the project loads over port 3011.
+
+If you have made modifications to the core app, you can run `docker-compose up --build --force-recreate`
+
 
 # Prettier
 
