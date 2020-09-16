@@ -532,7 +532,6 @@ class ViewerRecorder extends ViewerRecorderLogic {
     var agendaStyle = cloneDeep(this.state.agendaStyle)
     var buttonBarStyle = cloneDeep(this.state.buttonBarStyle)
     var recorderButtonBarStyle = cloneDeep(this.state.recorderButtonBarStyle)
-    var conversationTopicStyle = cloneDeep(this.state.conversationTopicStyle)
     const titleHeight = 3 * fontSize
     if (width / height > 0.8) {
       // landscape mode
@@ -789,7 +788,6 @@ class ViewerRecorder extends ViewerRecorderLogic {
       agendaStyle,
       buttonBarStyle,
       recorderButtonBarStyle,
-      conversationTopicStyle,
     }
   }
 
@@ -948,22 +946,22 @@ class ViewerRecorder extends ViewerRecorderLogic {
       showMicCamera,
     } = this.props
     const {
-      round,
-      finishUp,
-      done,
-      begin,
+      round, // from logic
+      moderatorReadyToStart, // from logic
+      begin, // from logic
+      finishUp, // from logic
+      done, // from logic
+      allPaused, // from logic
+      isRecording,
       requestPermission,
       talkative,
       warmup,
-      moderatorReadyToStart,
       intro,
       seatStyle,
       agendaStyle,
       buttonBarStyle,
       recorderButtonBarStyle,
       stylesSet,
-      conversationTopicStyle,
-      isRecording,
       isPortraitPhoneRecording,
       hungUp,
       preFetchQueue,
