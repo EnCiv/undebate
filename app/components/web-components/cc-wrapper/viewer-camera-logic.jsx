@@ -50,6 +50,30 @@ state:
     isRecording
 
 
+Usage:
+  class ViewerRecorderRender extends ViewerRecorderLogic{
+    constructor(props){
+      super(props
+        ...)
+    }
+    ...
+    render(){
+      ...
+    }
+  }
+
+ this really helps explain round and seatOffset, example of  4 participants.  time increases as you go down.
+     round  seatOffset
+        0      0  Moderator is speaking
+        0      3  First participant is speaking
+        0      2  Second participant is speaking
+        0      1  Third participant is speaking
+        1      0  Moderator is speaking
+        1      3  First participant is speaking
+        1      2  Second participant is speaking
+        1      1  Third participant is speaking
+        2      0  Moderator is speaking
+   
 *******************/
 
 const TransitionTime = 500
@@ -198,6 +222,20 @@ export default class ViewerRecorderLogic extends React.Component {
     return this.speakingNow() === 'human'
   }
 
+  listening() {
+    const listeningRound =
+      this.props.participants.human.listening && typeof this.props.participants.human.listening.round !== 'undefined'
+        ? this.props.participants.human.listening.round
+        : Infinity // 0 is a valid round
+    const listeningSeat =
+      (this.props.participants.human.listening && this.props.participants.human.listening.seat) || 'seat2'
+    return { listeningRound, listeningSeat }
+  }
+
+  seatOfParticipant(participant) {
+    return this.seat(Object.keys(this.props.participants).indexOf(participant))
+  }
+
   getCamera(ref) {
     if (ref)
       // in olden days ref might be null
@@ -224,6 +262,11 @@ export default class ViewerRecorderLogic extends React.Component {
     if (this.props.participants.human) this.beginButton() // there use to be a button click that started this -but  now we just go after being mounted
   }
 
+  /****************************************************************************************************************
+    Youtube videos can be speaking segments. But the logo that keeps poping up makes them un pleasant.
+    This code is here in case we want to evaluate it agian
+
+   ***************************************************************************************************************/
   onYouTubeIframeAPIReady() {
     const seatStyle = this.state.seatStyle
     const innerWidth = typeof window !== 'undefined' ? window.innerWidth : 1920
@@ -288,25 +331,6 @@ export default class ViewerRecorderLogic extends React.Component {
     }
   }
 
-  saveRecordingToParticipants(speaking, round, blobs) {
-    logger.trace('saveRecordingToParticipants (locally)', speaking, round)
-    if (!blobs.length) return logger.error('saveRecordingToParticipants found no blobs', blobs)
-    logger.trace(
-      'save Recorded Blobs: ',
-      blobs.length,
-      blobs.length && blobs[0].type,
-      blobs.reduce((acc, blob) => acc + blob.size || 0, 0)
-    )
-    const blob = new Blob(blobs, { type: blobs[0].type }) // use the type from the blob because it might be different than the type we asked for - eg safari gives your video/mp4 no matter what
-    if (!speaking) {
-      this.props.ccState.participants.human.listeningBlob = blob
-      this.props.ccState.participants.human.listeningObjectURL = URL.createObjectURL(blob)
-    } else {
-      this.props.ccState.participants.human.speakingBlobs[round] = blob
-      this.props.ccState.participants.human.speakingObjectURLs[round] = URL.createObjectURL(blob)
-    }
-  }
-
   // for the given seatOffset and round, fetch the object, or start the media
   nextMediaState(part) {
     logger.trace(`nextMediaState part:${part}`)
@@ -349,13 +373,13 @@ export default class ViewerRecorderLogic extends React.Component {
     if (objectURL) this.playObjectURL(part, objectURL, speaking, reviewing)
   }
 
-  /**
-   * Prefect Video
+  /*****************************************************************************************************************************
+   * Prefetch Video
    *
    * Prefect video is for slow links where you can't play it in real time, or where you might want to load it now and watch it later.
    * But we haven't used this in a while so it may have issues.  The logic remains, and the code remains for future implementation
    *
-   */
+   ***************************************************************************************************************************/
 
   prefetchRetries = {}
   preFetchList = []
@@ -652,19 +676,6 @@ export default class ViewerRecorderLogic extends React.Component {
     })
   }
 
-  /** this really helps explain round and seatOffset, example of  4 participants.  time increases as you go down.
-   *  round  seatOffset
-   *     0      0  Moderator is speaking
-   *     0      3  First participant is speaking
-   *     0      2  Second participant is speaking
-   *     0      1  Third participant is speaking
-   *     1      0  Moderator is speaking
-   *     1      3  First participant is speaking
-   *     1      2  Second participant is speaking
-   *     1      1  Third participant is speaking
-   *     2      0  Moderator is speaking
-   */
-
   prevSection() {
     var { seatOffset, round } = this.state
     logger.info('Undebate.prevSection', seatOffset, round)
@@ -805,20 +816,6 @@ export default class ViewerRecorderLogic extends React.Component {
     this.setState({ isRecording: false })
   }
 
-  listening() {
-    const listeningRound =
-      this.props.participants.human.listening && typeof this.props.participants.human.listening.round !== 'undefined'
-        ? this.props.participants.human.listening.round
-        : Infinity // 0 is a valid round
-    const listeningSeat =
-      (this.props.participants.human.listening && this.props.participants.human.listening.seat) || 'seat2'
-    return { listeningRound, listeningSeat }
-  }
-
-  seatOfParticipant(participant) {
-    return this.seat(Object.keys(this.props.participants).indexOf(participant))
-  }
-
   newOrder(seatOffset, round) {
     const { participants } = this.props
 
@@ -892,6 +889,25 @@ export default class ViewerRecorderLogic extends React.Component {
     }
   }
 
+  saveRecordingToParticipants(speaking, round, blobs) {
+    logger.trace('saveRecordingToParticipants (locally)', speaking, round)
+    if (!blobs.length) return logger.error('saveRecordingToParticipants found no blobs', blobs)
+    logger.trace(
+      'save Recorded Blobs: ',
+      blobs.length,
+      blobs.length && blobs[0].type,
+      blobs.reduce((acc, blob) => acc + blob.size || 0, 0)
+    )
+    const blob = new Blob(blobs, { type: blobs[0].type }) // use the type from the blob because it might be different than the type we asked for - eg safari gives your video/mp4 no matter what
+    if (!speaking) {
+      this.props.ccState.participants.human.listeningBlob = blob
+      this.props.ccState.participants.human.listeningObjectURL = URL.createObjectURL(blob)
+    } else {
+      this.props.ccState.participants.human.speakingBlobs[round] = blob
+      this.props.ccState.participants.human.speakingObjectURLs[round] = URL.createObjectURL(blob)
+    }
+  }
+
   recordWithCountdown(timeLimit, round, delay) {
     if (!timeLimit) return
     this.startCountDown(timeLimit, () => this.autoNextSpeaker(), delay)
@@ -912,6 +928,27 @@ export default class ViewerRecorderLogic extends React.Component {
       this.startCountDown(timeLimit, () => this.autoNextSpeaker(), TransitionTime)
     }
     this.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
+  }
+
+  async getCameraMedia() {
+    if (this.props.participants.human) {
+      // if we have a human in this debate then we are using the camera
+      try {
+        await this.camera.getCameraStream()
+        const { listeningRound, listeningSeat } = this.listening()
+        logger.trace('getUserMedia() got stream:', this.cameraStream)
+        //it will be set by nextMediaState this.human.current.src = stream;
+        Object.keys(this.props.participants).forEach(part => this.nextMediaState(part))
+        // special case where human is in seat2 initially - because seat2 is where we record their silence
+        if (listeningRound === 0 && this.seatOfParticipant('human') === listeningSeat)
+          this.startRecording(blobs => this.saveRecordingToParticipants(false, 0, blobs)) // listening is not speaking
+      } catch (e) {
+        logger.error('getCameraMedia', e.name, e.message)
+      }
+    } else {
+      // if we don't have a human - kick off the players
+      Object.keys(this.props.participants).forEach(part => this.nextMediaState(part))
+    }
   }
 
   finished() {
@@ -981,27 +1018,6 @@ export default class ViewerRecorderLogic extends React.Component {
     this.setState({ begin: true }, () => {
       this.getCameraMedia()
     })
-  }
-
-  async getCameraMedia() {
-    if (this.props.participants.human) {
-      // if we have a human in this debate then we are using the camera
-      try {
-        await this.camera.getCameraStream()
-        const { listeningRound, listeningSeat } = this.listening()
-        logger.trace('getUserMedia() got stream:', this.cameraStream)
-        //it will be set by nextMediaState this.human.current.src = stream;
-        Object.keys(this.props.participants).forEach(part => this.nextMediaState(part))
-        // special case where human is in seat2 initially - because seat2 is where we record their silence
-        if (listeningRound === 0 && this.seatOfParticipant('human') === listeningSeat)
-          this.startRecording(blobs => this.saveRecordingToParticipants(false, 0, blobs)) // listening is not speaking
-      } catch (e) {
-        logger.error('getCameraMedia', e.name, e.message)
-      }
-    } else {
-      // if we don't have a human - kick off the players
-      Object.keys(this.props.participants).forEach(part => this.nextMediaState(part))
-    }
   }
 
   videoError(participant, e) {
