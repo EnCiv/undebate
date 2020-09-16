@@ -80,9 +80,16 @@ export default function useMicCameraConstraints(
       ...calculateConstraints({ audioinputs, videoinputs, micIndex, cameraIndex, constraints }),
     })
   }
-  const onDeviceChange = () => navigator.mediaDevices.enumerateDevices().then(updateDevices)
+  const supportsEnumerateDevices = () => {
+    // some browsers don't support navigator.mediaDevices.enumerateDevices
+    return typeof navigator !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices
+  }
+
+  const onDeviceChange = () =>
+    supportsEnumerateDevices() && navigator.mediaDevices.enumerateDevices().then(updateDevices) // some browsers don't support navigator.mediaDevices.enumerateDevices
+
   useEffect(() => {
-    if (typeof navigator !== 'undefined') {
+    if (supportsEnumerateDevices()) {
       // the values for inputDevices need to be set asynchronously because mediaDevices.enumerateDevices returns a promise
       navigator.mediaDevices.enumerateDevices().then(updateDevices)
       //register an event listener such that update devices is called when a new device is plugged in or another decice gets removed.
