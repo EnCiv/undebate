@@ -359,6 +359,7 @@ const styles = {
 class ViewerRecorder extends ViewerRecorderLogic {
   constructor(props) {
     super(props)
+    if (this.canNotRecordHere) return // don't render anything if can't record
     //this.createDefaults();
     this.calculatePositionAndStyle = this.calculatePositionAndStyle.bind(this)
     this.beginButton = this.beginButton.bind(this)
@@ -927,6 +928,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
   }
 
   render() {
+    if (this.canNotRecordHere) return null
     const {
       className,
       classes,

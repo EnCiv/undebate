@@ -2,6 +2,7 @@
 
 import { createUseStyles } from 'react-jss'
 import ConversationHeader from '../../conversation-header'
+import cx from 'classnames'
 
 const ShadowBox = 10
 
