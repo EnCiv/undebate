@@ -7,17 +7,18 @@ import { auto_quality, placeholder_image } from '../../lib/cloudinary-urls'
 
 methods:
 
-About the state
+About the state -- this.
     seat
     getTimeLimit
     speakingNow
     listening
     seatOfParticipant
     isRecordingSpeaking
+    isRecording (calculated based on state)
 
-
-nextMediaState
-requestPermission
+other methods:
+  nextMediaState
+  requestPermission
 
 User Interaction Buttons
     allPause
@@ -43,12 +44,23 @@ Properties:
     numParticipants
 
 state:
-    round
-    moderatorReadyToStart
-    begin
-    allPaused
-    isRecording
-
+    round - the round of Question and answer - starting at 0
+    moderatorReadyToStart - the moderators first speaking part is ready to play
+    begin - set at the beginning of playing the undebate
+    allPaused - playing is paused
+    isRecording - true when video is being recorded
+    finishUp - a temporary state before done - allow videos to move to center
+    done - playing the undebate is complete
+    seatStyle -- styles to be applied to the seats - used by youtube player not set here
+    requestPermission -- set by logic is viewer should show a button for user to click on to continue playing
+    talkative - true during the last part of the speaking time
+    warmup - if counting down seconds before recording will start
+    countDown - the seconds remaining in the recording time
+  state not used in viewer: 
+    seatOffset
+    stalled
+    waitingPercent
+    preFetchQueue
 
 Usage:
   class ViewerRecorderRender extends ViewerRecorderLogic{
