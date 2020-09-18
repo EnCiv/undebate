@@ -24,15 +24,15 @@ const ShadowBox = 10
 
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser'
 
-import IconPrevSpeaker from '../../svgr/icon-prev-speaker'
-import IconPrevSection from '../../svgr/icon-prev-session'
-import IconPlay from '../../svgr/icon-play'
-import IconPause from '../../svgr/icon-pause'
-import IconStop from '../../svgr/icon-stop'
-import IconSkipSpeaker from '../../svgr/icon-skip-speaker'
-import IconNextSection from '../../svgr/icon-skip-session'
-import IconRedo from '../../svgr/icon-redo'
-import IconFinishRecording from '../../svgr/icon-finish-recording'
+import IconPrevSpeaker from '../../svgr/prev-speaker-icon'
+import IconPrevSection from '../../svgr/prev-section-icon'
+import IconPlay from '../../svgr/play-icon'
+import IconPause from '../../svgr/pause-icon'
+import IconStop from '../../svgr/stop-icon'
+import IconSkipSpeaker from '../../svgr/next-speaker-icon'
+import IconNextSection from '../../svgr/next-section-icon'
+import IconRedo from '../../svgr/redo-icon'
+import IconFinishRecording from '../../svgr/finish-speaking-icon'
 import IconRecording from '../../svgr/icon-recording'
 import ConversationHeader from '../conversation-header'
 
@@ -445,14 +445,39 @@ const styles = {
       color: 'lime',
     },
   },
+  iconButton: {
+    color: 'white',
+    pointerEvents: 'auto',
+    '& rect': {
+      stroke: '#000',
+      fill: '#000',
+    },
+    '& rect:hover': {
+      fill: '	#565656',
+    },
+    '& circle:hover': {
+      fill: '	#565656',
+    },
+  },
+  iconButtonDisabled: {
+    cursor: 'no-drop',
+    '& rect': {
+      stroke: '#878686',
+      fill: '#878686',
+    },
+    '& circle': {
+      stroke: '#878686',
+      fill: '#878686',
+    },
+  },
   buttonBar: {
     //display: "table",
     textAlign: 'center',
     position: 'absolute',
-    width: '50vw',
+    width: '35vw',
     left: '25vw',
-    top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
-    height: '3.5vh',
+    // top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
+    height: '10vh',
     overflow: 'hidden',
     'text-overflow': 'clip',
     '& button': {
@@ -790,10 +815,11 @@ class Undebate extends React.Component {
     },
 
     buttonBarStyle: {
-      width: '50vw',
-      left: '25vw',
-      top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
-      height: '3.5vh',
+      // width: '35vw',
+      // left: '25vw',
+      // top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
+      bottom: '5vh',
+      height: '10vh',
       position: 'absolute',
       overflow: 'hidden',
       textOverflow: 'clip',
@@ -1137,10 +1163,10 @@ class Undebate extends React.Component {
 
         introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
-        buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25
-        buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.1
-        buttonBarStyle.width = seatStyle.nextUp.width
-        buttonBarStyle.height = Math.max(0.05 * height, 4 * fontSize)
+        buttonBarStyle.left = seatStyle.speaking.left
+        // buttonBarStyle.width = seatStyle.nextUp.width
+        buttonBarStyle.width = seatStyle.speaking.width
+        // buttonBarStyle.height = Math.max(0.05 * height, 4 * fontSize) + 20
 
         recorderButtonBarStyle.left = seatStyle.speaking.left
         recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
@@ -1223,23 +1249,23 @@ class Undebate extends React.Component {
         agendaStyle.height = Math.max(0.175 * width, 20 * fontSize)
         introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
-        buttonBarStyle.width = speakingWidthRatio * 50 + 'vw'
-        buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25
-        // buttonBarStyle.top= speakingWidthRatio * HDRatio * width;
-        if (width / height < 0.87) {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.18
-        } else if (width / height < 1) {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.13
-        } else if (width / height < 1.2) {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.08
-        } else if (width / height < 1.4) {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.04
-        } else if (width / height < 1.6) {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1
-        } else {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width
-        }
-        buttonBarStyle.height = Math.max(0.035 * height, 4 * fontSize)
+        buttonBarStyle.width = seatStyle.speaking.width
+        buttonBarStyle.left = seatStyle.speaking.left
+        // buttonBarStyle.top = speakingWidthRatio * HDRatio * width
+        // if (width / height < 0.87) {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.18
+        // } else if (width / height < 1) {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.13
+        // } else if (width / height < 1.2) {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.08
+        // } else if (width / height < 1.4) {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.04
+        // } else if (width / height < 1.6) {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1
+        // } else {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width
+        // }
+        // buttonBarStyle.height = Math.max(0.035 * height, 4 * fontSize)
 
         recorderButtonBarStyle.left = seatStyle.speaking.left
         recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
@@ -1319,13 +1345,13 @@ class Undebate extends React.Component {
         agendaStyle.left + fontSize * 20 + 2 * horizontalSeatSpace <= width
           ? fontSize * 20
           : width - agendaStyle.left - 2 * horizontalSeatSpace // don't go too wide
-      agendaStyle.height = agendaStyle.width //fontSize * 20;
+      agendaStyle.height = agendaStyle.width - 30 //fontSize * 20;
       introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
-      buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25
-      buttonBarStyle.top = speakingWidthRatio * HDRatio * width + verticalSeatSpace * 1.2 //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
-      buttonBarStyle.width = speakingWidthRatio * 50 + 'vw'
-      buttonBarStyle.height = '5vh'
+      buttonBarStyle.left = 15
+      // buttonBarStyle.top = speakingWidthRatio * HDRatio * width + verticalSeatSpace * 1.2 //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
+      buttonBarStyle.width = speakingWidthRatio * 80 + 'vw'
+      // buttonBarStyle.height = '5vh'
 
       recorderButtonBarStyle.left = buttonBarStyle.left
       recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
@@ -1683,43 +1709,55 @@ class Undebate extends React.Component {
 
   buttons = [
     {
-      name: () => <IconPrevSection width="60%" height="60%" />,
+      name: props => <IconRedo width="60%" height="60%" className={props} />,
+      func: this.rerecordButton,
+      title: () => 'Re-record',
+      disabled: () => this.speakingNow() !== 'human' || this.state.warmup,
+    },
+    {
+      name: props => <IconPrevSection width="60%" height="60%" className={props} />,
       func: this.prevSection,
       title: () => 'Previous Question',
     },
     {
-      name: () => <IconPrevSpeaker width="60%" height="60%" />,
+      name: props => <IconPrevSpeaker width="60%" height="60%" className={props} />,
       func: this.prevSpeaker,
       title: () => 'Previous Speaker',
     },
     {
-      name: () =>
+      name: props =>
         this.state.isRecording ? (
-          <IconStop width="75%" height="75%" />
+          <IconStop width="60%" height="60%" className={props} />
         ) : this.state.allPaused ? (
-          <IconPlay width="75%" height="75%" />
+          <IconPlay width="60%" height="60%" className={props} />
         ) : (
-          <IconPause width="75%" height="75%" />
+          <IconPause width="60%" height="60%" className={props} />
         ),
       func: this.allPause,
       title: () => (this.state.isRecording ? 'Stop' : this.state.allPaused ? 'Play' : 'Pause'),
     },
     {
-      name: () => <IconSkipSpeaker width="60%" height="60%" />,
+      name: props => <IconSkipSpeaker width="60%" height="60%" className={props} />,
       func: this.nextSpeaker,
       title: () => 'Next Speaker',
     },
     {
-      name: () => <IconNextSection width="60%" height="60%" />,
+      name: props => <IconNextSection width="60%" height="60%" className={props} />,
       func: this.nextSection,
       title: () => 'Next Question',
       disabled: () => this.participants.human && !this.participants.human.speakingObjectURLs[this.state.round],
+    },
+    {
+      name: props => <IconFinishRecording width="60%" height="60%" className={props} />,
+      func: this.finishedSpeaking,
+      title: () => 'Done Speaking',
+      disabled: () => this.speakingNow() !== 'human' || (this.state.reviewing && !this.rerecord),
     },
   ]
 
   recorderButtons = [
     {
-      name: () => 'Redo',
+      name: props => <IconRedo width="100%" height="100%" className={props} />,
       func: this.rerecordButton,
       title: () => 'Re-record',
       disabled: () => this.speakingNow() !== 'human' || this.state.warmup,
@@ -1728,7 +1766,7 @@ class Undebate extends React.Component {
     { name: () => 'key2', func: null, title: () => '' },
     { name: () => 'key3', func: null, title: () => '' },
     {
-      name: () => 'Finished Speaking',
+      name: props => <IconFinishRecording width="100%" height="100%" className={props} />,
       func: this.finishedSpeaking,
       title: () => 'Done Speaking',
       disabled: () => this.speakingNow() !== 'human' || (this.state.reviewing && !this.rerecord),
@@ -2931,15 +2969,22 @@ class Undebate extends React.Component {
 
     const buttonBar = buttonBarStyle =>
       (bot || ((noOverlay || (begin && intro)) && !finishUp && !done)) && (
-        <div style={buttonBarStyle} className={classes['buttonBar']} key="buttonBar">
+        <div style={buttonBarStyle} className={classes['']} key="buttonBar">
           {this.buttons.map(button => (
             <div
-              style={{ width: 100 / this.buttons.length + '%', display: 'inline-block', height: '100%' }}
+              style={{
+                width: 100 / this.buttons.length + '%',
+                display: 'inline-block',
+                height: '100%',
+                textAlign: 'center',
+              }}
               title={button.title()}
               key={button.title()}
             >
-              <div disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
-                {button.name()}
+              <div onClick={button.func.bind(this)}>
+                {button.disabled && button.disabled()
+                  ? button.name(classes.iconButtonDisabled)
+                  : button.name(classes.iconButton)}
               </div>
             </div>
           ))}
@@ -2960,9 +3005,9 @@ class Undebate extends React.Component {
               title={button.title()}
             >
               {button.func ? (
-                <button disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
-                  {button.name()}
-                </button>
+                <div disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
+                  {button.name(classes.iconButton)}
+                </div>
               ) : (
                 <div></div>
               )}
@@ -3132,7 +3177,7 @@ class Undebate extends React.Component {
           {ending()}
           {((this.participants.human && (preambleAgreed || opening.noPreamble)) || !this.participants.human) &&
             buttonBar(buttonBarStyle)}
-          {recorderButtonBar(recorderButtonBarStyle)}
+          {/* {recorderButtonBar(recorderButtonBarStyle)} */}
           {permissionOverlay()}
           {waitingOnModeratorOverlay()}
           {renderHangupButton()}
