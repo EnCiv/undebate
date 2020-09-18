@@ -1412,7 +1412,7 @@ class Undebate extends React.Component {
         if (this.participants.human && this.participants.human.speakingObjectURLs[round] && !this.rerecord) {
           objectURL = this.participants.human.speakingObjectURLs[round]
         } else {
-          objectURL = 'cameraStream' // set it to something - but this.camera.cameraStream should really be used
+          objectURL = 'cameraStream' // set it to something - but this.cameraStream should really be used
         }
       } else if (!(objectURL = this.participants[part].speakingObjectURLs[round])) {
         this.participants[part].speakingImmediate[round] = true
@@ -1421,7 +1421,7 @@ class Undebate extends React.Component {
       }
     } else {
       if (part === 'human' && (!reviewing || (reviewing && this.rerecord))) objectURL = 'cameraStream'
-      //set it to something - but this.camera.cameraStream should really be used
+      //set it to something - but this.cameraStream should really be used
       else if (!(objectURL = this.participants[part].listeningObjectURL))
         if (this.props.participants[part].listening) {
           // listeningObject hasn't loaded yet
@@ -1571,7 +1571,7 @@ class Undebate extends React.Component {
       //element.src=null;
       if (part === 'human' && !speaking && !reviewing) {
         // human is not speaking
-        if (element.srcObject === this.camera.cameraStream) {
+        if (element.srcObject === this.cameraStream) {
           if (element.muted && element.loop) return
           element.muted = true
           element.loop = true
@@ -1579,7 +1579,7 @@ class Undebate extends React.Component {
           element.src = ''
           element.muted = true
           element.loop = true
-          element.srcObject = this.camera.cameraStream // objectURL should be camera
+          element.srcObject = this.cameraStream // objectURL should be camera
         }
         return // not need to play - source is a stream
       } else if (part === 'human' && !speaking && reviewing) {
@@ -1588,7 +1588,7 @@ class Undebate extends React.Component {
           element.src = ''
           element.muted = true
           element.loop = true
-          element.srcObject = this.camera.cameraStream // objectURL should be camera
+          element.srcObject = this.cameraStream // objectURL should be camera
         } else {
           element.srcObject = null
           element.src = objectURL
@@ -1602,7 +1602,7 @@ class Undebate extends React.Component {
       ) {
         // human is speaking (not playing back what was spoken)
         element.src = ''
-        element.srcObject = this.camera.cameraStream // objectURL should be camera
+        element.srcObject = this.cameraStream // objectURL should be camera
         element.muted = true
         element.loop = false
         return // no need to play source is a stream
@@ -2071,7 +2071,7 @@ class Undebate extends React.Component {
   }
 
   maybeEnableRecording(newChair, listeningSeat, round, listeningRound, timeLimit) {
-    if (newChair === listeningSeat && round === listeningRound) {
+    if (this.isRecordingPlaceHolder()) {
       this.recordFromSpeakersSeat(listeningSeat, timeLimit, round)
     } else if (newChair === 'speaking') {
       if (this.rerecord) {
@@ -2216,22 +2216,11 @@ class Undebate extends React.Component {
 
   async getCameraMedia() {
     if (this.props.participants.human) {
-      // if we have a human in this debate
-      const constraints = {
-        audio: {
-          echoCancellation: { exact: true },
-        },
-        video: {
-          width: 640,
-          height: 360,
-        },
-      }
-      logger.trace('Using media constraints:', constraints)
-
+      // if we have a human in this debate then we are using the camera
       try {
-        await this.camera.getCameraStream(constraints, () => this.nextMediaState('human'))
+        await this.camera.getCameraStream()
         const { listeningRound, listeningSeat } = this.listening()
-        logger.trace('getUserMedia() got stream:', this.camera.cameraStream)
+        logger.trace('getUserMedia() got stream:', this.cameraStream)
         //it will be set by nextMediaState this.human.current.src = stream;
         Object.keys(this.props.participants).forEach(part => this.nextMediaState(part))
         // special case where human is in seat2 initially - because seat2 is where we record their silence
@@ -2531,7 +2520,7 @@ class Undebate extends React.Component {
     const bot = browserConfig.type === 'bot'
     const noOverlay = this.noOverlay
 
-    if (this.canNotRecordHere || (this.camera && this.camera.canNotRecordHere)) {
+    if (this.canNotRecordHere) {
       return (
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
           <ConversationHeader subject={subject} bp_info={bp_info} logo={logo} />
@@ -3145,7 +3134,23 @@ class Undebate extends React.Component {
             )}
           ></Modal>
         ) : null}
-        {participants.human && <ReactCameraRecorder ref={this.getCamera} />}
+        {participants.human && (
+          <ReactCameraRecorder
+            ref={this.getCamera}
+            onCanNotRecordHere={status => (this.canNotRecordHere = status)}
+            onCameraStream={stream => (this.cameraStream = stream)}
+            onCameraChange={() => this.nextMediaState('human')}
+            constraints={{
+              audio: {
+                echoCancellation: { exact: true },
+              },
+              video: {
+                width: 640,
+                height: 360,
+              },
+            }}
+          />
+        )}
         <section
           id="syn-ask-webrtc"
           key="began"
