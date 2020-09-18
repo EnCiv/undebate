@@ -12,7 +12,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'flex-end',
     width: '99%',
-    bottom: '1rem',
+    marginTop: '0.5em',
   },
   shareDropDown: {
     backgroundColor: 'rgba(255, 255, 255, 0.6)',

@@ -391,7 +391,7 @@ const styles = {
     width: '50vw',
     left: '25vw',
     top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
-    height: '3.5vh',
+    height: '10vh',
     overflow: 'hidden',
     'text-overflow': 'clip',
     '& button': {
@@ -407,6 +407,9 @@ const styles = {
       overflow: 'hidden',
       textOverflow: 'clip',
     },
+  },
+  buttonBarInner: {
+    height: '10vh', // same as button bar height
   },
   recorderButtonBar: {
     //display: "table",
@@ -542,7 +545,7 @@ const styles = {
   portrait: {},
 }
 
-class CandidateConversation2 extends React.Component {
+class CandidateConversation extends React.Component {
   render() {
     return <RASPUndebate {...this.props} />
   }
@@ -687,7 +690,7 @@ class RASPUndebate extends React.Component {
       width: '50vw',
       left: '25vw',
       top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
-      height: 'auto',
+      height: '10vh',
       position: 'absolute',
       overflow: 'hidden',
       textOverflow: 'clip',
@@ -938,24 +941,33 @@ class RASPUndebate extends React.Component {
       let seatWidthRatio = 0.25
       const seatHeight = () => seatWidthRatio * width * HDRatio
       const navBarHeight = 0.06 * height
-      const agendaMaxWidth = 32 * fontSize
       const vGap = fontSize
       const hGap = fontSize
+      const agendaMaxWidth = Math.min(32 * fontSize, (1 - speakingWidthRatio) * width - 3 * hGap) //  be sure there is a little white space on the left and right
       const numOfParticipants = Object.keys(this.props.participants).length - 1 // without the speaker
+      const buttonBarHeight = (parseInt(buttonBarStyle.height) * height) / 100 // expect this to be vh
 
       let calcHeight =
-        navBarHeight + vGap + seatHeight() + titleHeight + vGap + speakingHeight() + titleHeight + vGap + 90
+        navBarHeight +
+        vGap +
+        seatHeight() +
+        titleHeight +
+        vGap +
+        speakingHeight() +
+        titleHeight +
+        vGap +
+        buttonBarHeight +
+        vGap
       if (calcHeight > height) {
         // if the window is really wide - squish the video height so it still fits
-        let heightForVideo = height - navBarHeight - vGap - /*titleHeight -*/ vGap - vGap - 90
+        let heightForVideo = height - navBarHeight - vGap - /*titleHeight -*/ vGap - vGap - buttonBarHeight - vGap
         let calcHeightForVideo = seatHeight() + speakingHeight()
         seatWidthRatio = (seatWidthRatio * heightForVideo) / calcHeightForVideo
         speakingWidthRatio = (speakingWidthRatio * heightForVideo) / calcHeightForVideo
       }
 
       // seatStyle.speaking.left centers the speaker box and the agenda
-      seatStyle.speaking.left =
-        (width - speakingWidthRatio * width - titleHeight * (1 / HDRatio) - agendaMaxWidth - hGap) / 2
+      seatStyle.speaking.left = (width - speakingWidthRatio * width - hGap - agendaMaxWidth) / 2
       seatStyle.speaking.width = speakingWidthRatio * width + titleHeight * (1 / HDRatio)
       seatStyle.speaking.top = navBarHeight + vGap + width * seatWidthRatio * HDRatio + vGap
       seatStyle.speaking['--speaking-height'] = speakingHeight() + 'px' // tell child div's what the speaking-height is
@@ -1005,16 +1017,11 @@ class RASPUndebate extends React.Component {
 
       buttonBarStyle.width = seatStyle.speaking.width * 0.6
       buttonBarStyle.left = seatStyle.speaking.left + seatStyle.speaking.width * 0.2 // center it
-      buttonBarStyle.top =
-        fontSize +
-        seatStyle.speaking.top +
-        seatStyle.speaking.width * HDRatio -
-        (buttonBarStyle.width / this.buttons.length) * 0.05 - // there are 5 buttons and they are essentially square
-        0.5 * vGap
-      recorderButtonBarStyle.left = seatStyle.speaking.left
-      recorderButtonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
-      recorderButtonBarStyle.width = seatStyle.speaking.width
-      recorderButtonBarStyle.height = buttonBarStyle.height
+      buttonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
+      recorderButtonBarStyle.left = buttonBarStyle.left
+      recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarHeight + vGap
+      recorderButtonBarStyle.width = buttonBarStyle.width
+      recorderButtonBarStyle.height = buttonBarHeight
 
       introStyle.introLeft.width = 'auto'
       introStyle.introLeft.height = '50vh'
@@ -1030,7 +1037,7 @@ class RASPUndebate extends React.Component {
       const vGap = fontSize
       let speakerLeftEdge = hGap
       let speakerRightEdge = hGap
-      let speakingWidthRatio = (width - 2 * hGap) / width // as wide as the screen less gaps on edges
+      let speakingWidthRatio = (width - speakerLeftEdge - speakerRightEdge) / width // as wide as the screen less gaps on edges
       const speakingWidth = () => speakingWidthRatio * width
       const speakingHeight = () => speakingWidthRatio * width * HDRatio
       const seatHorizontalPitch = () => seatWidthRatio * width + hGap
@@ -1041,23 +1048,35 @@ class RASPUndebate extends React.Component {
       let rows = 2
       let seat = 1
       let rowLeftEdge = hGap
+      const buttonBarHeight = (parseInt(buttonBarStyle.height) * height) / 100 // expect this to be vh
 
-      const maxAgendaHeight = fontSize * 20 - 90
+      const maxAgendaHeight = Math.min(fontSize * 20, speakingHeight())
       const numOfParticipants = Object.keys(this.props.participants).length - 1 // without the speaker/moderator
 
       if (numOfParticipants * seatHorizontalPitch() - hGap <= width) rows = 1
 
       let calcHeight =
         navBarHeight +
-        maxAgendaHeight +
+        vGap +
         rows * seatHeight() +
         (rows + 1) * titleHeight +
         (rows + 2) * vGap +
-        speakingHeight()
+        speakingHeight() +
+        buttonBarHeight +
+        maxAgendaHeight
       if (calcHeight > height) {
         // if calcHeight is taller than height - squish the video height so it still fits
-        let heightForVideo = height - navBarHeight - 6 * vGap - 3 * titleHeight - maxAgendaHeight
-        let calcHeightForVideo = 2 * seatHeight() + speakingHeight()
+        let heightForVideo =
+          height -
+          navBarHeight -
+          rows * (vGap + titleHeight) -
+          vGap -
+          vGap -
+          maxAgendaHeight -
+          vGap -
+          buttonBarHeight -
+          vGap
+        let calcHeightForVideo = rows * seatHeight() + speakingHeight()
         seatWidthRatio = (seatWidthRatio * heightForVideo) / calcHeightForVideo
         speakingWidthRatio = (speakingWidthRatio * heightForVideo) / calcHeightForVideo
         speakerRightEdge = speakerLeftEdge = (width - speakingWidth()) / 2 // it will be thiner than the width, so center it
@@ -1083,7 +1102,8 @@ class RASPUndebate extends React.Component {
       let i = 0 // for calculating the intro
 
       // figure out where to start the top line of participants
-      let topLineParticipants = numOfParticipants % 2 ? (numOfParticipants + 1) / 2 : numOfParticipants / 2
+      let topLineParticipants =
+        rows === 1 ? numOfParticipants : numOfParticipants % 2 ? (numOfParticipants + 1) / 2 : numOfParticipants / 2
       if (rows === 2 && numOfParticipants == 3) topLineParticipants = 1
       let topLineWidth = (rows === 1 ? numOfParticipants : topLineParticipants) * seatHorizontalPitch() - hGap
       if (topLineWidth <= width)
@@ -1148,21 +1168,20 @@ class RASPUndebate extends React.Component {
       seatStyle.finishUp.top = 0.5 * height
       seatStyle.finishUp.width = 0.01 * width
 
-      agendaStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap + 50
+      buttonBarStyle.width = seatStyle.speaking.width
+      buttonBarStyle.left = (width - buttonBarStyle.width) / 2 // center it
+      buttonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
+      recorderButtonBarStyle.left = seatStyle.speaking.left
+      recorderButtonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
+      recorderButtonBarStyle.width = seatStyle.speaking.width
+      recorderButtonBarStyle.height = buttonBarStyle.height
+
+      agendaStyle.top = buttonBarStyle.top + buttonBarHeight + vGap
       agendaStyle.left = seatStyle.speaking.left
       agendaStyle.width = seatStyle.speaking.width
       agendaStyle.height = Math.max(maxAgendaHeight, height - agendaStyle.top - vGap)
 
       introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
-
-      buttonBarStyle.width = seatStyle.speaking.width * 0.6
-      buttonBarStyle.left = seatStyle.speaking.left + seatStyle.speaking.width * 0.2 // center it
-      buttonBarStyle.top =
-        seatStyle.speaking.top + seatStyle.speaking.width * HDRatio - buttonBarStyle.width / this.buttons.length + 70 // there are 5 buttons and they are essentially square
-      recorderButtonBarStyle.left = seatStyle.speaking.left
-      recorderButtonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
-      recorderButtonBarStyle.width = seatStyle.speaking.width
-      recorderButtonBarStyle.height = buttonBarStyle.height
 
       introStyle.introLeft.width = '25vw'
       introStyle.introLeft.height = 'auto'
@@ -1530,7 +1549,7 @@ class RASPUndebate extends React.Component {
         this.state.allPaused ? (
           <IconPlay width="60%" height="auto" className={props} />
         ) : (
-          <IconPause width="60%" height="60%" className={props} />
+          <IconPause width="60%" height="auto" className={props} />
         ),
       func: this.allPause,
       title: () => (this.state.isRecording ? 'Stop' : this.state.allPaused ? 'Play' : 'Pause'),
@@ -2348,14 +2367,6 @@ class RASPUndebate extends React.Component {
       let chair = this.seat(i)
       let videoWidth = pxSeatStyleWidth(this.seat(i))
       let videoHeight = pxSeatStyleWidth(this.seat(i)) * HDRatio
-      let marginTopForSpeaking = 0
-      let marginLeftForSpeaking = 0
-      // if (this.seat(i) === 'speaking') {
-      //   videoWidth = pxSeatStyleWidth(this.seat(i)) - 280
-      //   videoHeight = (pxSeatStyleWidth(this.seat(i)) - 280) * HDRatio
-      //   marginTopForSpeaking = '-105px'
-      //   marginLeftForSpeaking = '150px'
-      // }
       const speaking = this.seat(i) === 'speaking'
       if (participant === 'human' && speaking) humanSpeaking = true
       const style = seatStyle[chair] //noOverlay || bot || intro ? seatStyle[chair] : Object.assign({},seatStyle[chair],introSeatStyle[chair])
@@ -2403,8 +2414,6 @@ class RASPUndebate extends React.Component {
               style={{
                 transition: `all ${TransitionTime}ms linear`,
                 height: videoHeight,
-                marginTop: marginTopForSpeaking,
-                marginLeft: marginLeftForSpeaking,
               }}
               height={pxSeatStyleWidth('speaking') * HDRatio}
               width="auto"
@@ -2457,7 +2466,14 @@ class RASPUndebate extends React.Component {
                 </div>
               </div>
 
-              <div className={cx(classes['title'], stylesSet && classes['stylesSet'], finishUp && classes['finishUp'])}>
+              <div
+                className={cx(
+                  classes['title'],
+                  speaking && classes['title-speaking'],
+                  stylesSet && classes['stylesSet'],
+                  finishUp && classes['finishUp']
+                )}
+              >
                 <span>{participant_name}</span>
               </div>
             </>
@@ -2475,7 +2491,11 @@ class RASPUndebate extends React.Component {
               title={button.title()}
               key={button.title()}
             >
-              <div disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
+              <div
+                className={classes.buttonBarInner}
+                disabled={button.disabled && button.disabled()}
+                onClick={button.func.bind(this)}
+              >
                 {button.name(classes.iconButton)}
               </div>
             </div>
@@ -2652,4 +2672,4 @@ class RASPUndebate extends React.Component {
   }
 }
 
-export default injectSheet(styles)(CandidateConversation2)
+export default injectSheet(styles)(CandidateConversation)
