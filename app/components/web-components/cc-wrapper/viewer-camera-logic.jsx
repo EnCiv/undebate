@@ -105,13 +105,13 @@ export default class ViewerRecorderLogic extends React.Component {
         if (supportsVideoType('mp4')) this.forceMP4 = true
         else {
           this.canNotRecordHere = true
-          props.dispatch({ type: 'CanNotRecordHere' })
+          props.dispatch({ type: props.dispatch.TYPES.CanNotRecordHere })
         }
       }
       if (props.participants.human) {
         if (typeof MediaRecorder === 'undefined') {
           this.canNotRecordHere = true
-          props.dispatch({ type: 'CanNotRecordHere' })
+          props.dispatch({ type: props.dispatch.TYPES.CanNotRecordHere })
         }
       }
     }
@@ -970,7 +970,7 @@ export default class ViewerRecorderLogic extends React.Component {
     setTimeout(() => {
       this.camera && this.camera.releaseCamera()
       this.setState({ done: true })
-      this.props.dispatch({ type: 'Next' })
+      this.props.dispatch({ type: this.props.dispatch.TYPES.Next })
     }, 1.5 * TransitionTime)
     return this.setState({ finishUp: true })
   }

@@ -12,7 +12,7 @@ const WrappedCandidatePreamble = props => {
       agreed={false}
       onClick={() => {
         logger.info('CcWrapped preambleAgreed true')
-        dispatch({ type: 'Next' })
+        dispatch({ type: dispatch.TYPES.Next })
       }}
       candidate_questions={participants.moderator.agenda}
       instructionLink={instructionLink}

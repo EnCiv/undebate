@@ -1,5 +1,5 @@
 'use strict;'
-import React, { useReducer, useMemo } from 'react'
+import React, { useReducer } from 'react'
 import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
 import WrappedCandidatePreamble from './candidate-preamble'
@@ -18,26 +18,46 @@ const pages = {
   Precheck: Precheck,
 }
 
+const PTS = Object.keys(pages).reduce((PTS, k) => ((PTS[k] = k), PTS), {}) //
+
+// through an error if someone tries to get a property that isn't defined
+const throwIfUndefined = {
+  get: function(obj, prop) {
+    if (prop in obj) return obj[prop]
+    throw Error('undefined action TYPE: ' + prop)
+  },
+}
+
+const TYPES = new Proxy(
+  {
+    HangUp: 'HangUp',
+    CanNotRecordHere: 'CanNotRecordHere',
+    ReviewIt: 'ReviewIt',
+    Next: 'Next',
+  },
+  throwIfUndefined
+)
+
 function reducer(state, action) {
   switch (action.type) {
-    case 'HangUp':
-      return { ...state, pageToShow: 'HungUp' }
-    case 'CanNotRecordHere':
-      return { ...state, pageToShow: 'CanNotRecordHere' }
-    case 'ReviewIt':
-      return { ...state, pageToShow: 'ViewerRecorder', reviewing: true }
-    case 'Next':
+    case TYPES.HangUp:
+      return { ...state, pageToShow: PTS.HungUp }
+    case TYPES.CanNotRecordHere:
+      return { ...state, pageToShow: PTS.CanNotRecordHere }
+    case TYPES.ReviewIt:
+      return { ...state, pageToShow: PTS.ViewerRecorder, reviewing: true }
+    case TYPES.Next:
       switch (state.pageToShow) {
-        case 'CandidatePreamble':
-          return { ...state, pageToShow: 'Precheck' }
-        case 'Precheck':
-          return { ...state, pageToShow: 'ViewerRecorder' }
-        case 'HungUp':
-        case 'Ending':
-        case 'CanNotRecordHere':
+        case PTS.CandidatePreamble:
+          return { ...state, pageToShow: PTS.Precheck }
+        case PTS.Precheck:
+          return { ...state, pageToShow: PTS.ViewerRecorder }
+        case PTS.HungUp:
+        case PTS.Ending:
+        case PTS.CanNotRecordHere:
           return state
-        case 'ViewerRecorder':
-          return { ...state, pageToShow: 'Ending' }
+        case PTS.ViewerRecorder:
+          return { ...state, pageToShow: PTS.Ending }
       }
     default:
       throw new Error()
@@ -47,14 +67,15 @@ function reducer(state, action) {
 function CcWrapper(props) {
   const classes = useStyles()
   const [ccState, dispatch] = useReducer(reducer, {
-    pageToShow: props.participants.human ? 'CandidatePreamble' : 'ViewerRecorder',
+    pageToShow: props.participants.human ? PTS.CandidatePreamble : PTS.ViewerRecorder,
     reviewing: false, // true then ViewerRecorder is in review mode rather than record mode
     participants: {}, // this is written directly by ViewerRecorder to preserve stored video, and computed video url, referenced by Ending to upload the videos
   })
+  dispatch.TYPES = TYPES // pass the TYPES to the children - they can't be imported from here because this includes the children
   const Page = pages[ccState.pageToShow]
   const [micCameraConstraintsState, micCameraConstraintsDispatch] = useMicCameraConstraints()
   return (
-    <div className={cx(classes['wrapper'], ccState.pageToShow !== 'ViewerRecorder' && classes['scrollable'])}>
+    <div className={cx(classes['wrapper'], ccState.pageToShow !== PTS.ViewerRecorder && classes['scrollable'])}>
       <Page
         {...props}
         dispatch={dispatch}

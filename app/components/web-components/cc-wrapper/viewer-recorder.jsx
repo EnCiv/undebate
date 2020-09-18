@@ -38,324 +38,6 @@ import Icon from '../../lib/icon'
 
 import Agenda from '../../agenda-nav'
 
-const styles = {
-  innerWrapper: {
-    position: 'relative',
-    width: '100vw',
-    height: '100vh',
-    //backgroundImage: 'url(/assets/images/marble_table_top.png)',
-    //backgroundSize: 'cover',
-    backgroundColor: 'white',
-    overflow: 'hidden',
-    fontFamily: "'Montserrat', sans-serif",
-  },
-  participant: {
-    display: 'block',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    '&$stylesSet': {
-      transition: `all ${TransitionTime}ms linear`,
-    },
-    '&$begin': {
-      transition: `${IntroTransition}`,
-    },
-  },
-  participantBackground: {
-    display: 'block',
-    position: 'relative',
-    textAlign: 'center',
-    backgroundColor: 'white', // this color is taken to match the the background image if you change the image, you should re-evaluate this color
-    '&$stylesSet': {
-      transition: `all ${TransitionTime}ms linear`,
-    },
-    '&$begin': {
-      transition: `${IntroTransition}`,
-    },
-  },
-  box: {
-    display: 'inline',
-    'vertical-align': 'top',
-    position: 'absolute',
-    'box-shadow': `${ShadowBox}px ${ShadowBox}px ${ShadowBox}px gray`,
-    '&$stylesSet': {
-      transition: `all ${TransitionTime}ms linear`,
-    },
-    '&$begin': {
-      transition: `${IntroTransition}`,
-    },
-  },
-  outerBox: {
-    display: 'block',
-    width: '100vw',
-    height: '100vh',
-    boxSizing: 'border-box',
-  },
-  beginBox: {
-    position: 'absolute',
-    top: 0,
-  },
-  beginButton: {
-    cursor: 'pointer',
-    color: 'white',
-    background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
-    'border-radius': '7px',
-    'border-width': '2px',
-    'border-color': 'white',
-    'font-size': '1.25em',
-    padding: '1em',
-    'margin-top': '1em',
-    '&:disabled': {
-      'text-decoration': 'none',
-      background: 'lightgray',
-    },
-  },
-  hangUpButton: {
-    width: '12vw',
-    position: 'absolute',
-    left: '85vw',
-    bottom: '5vh',
-    '& button': {
-      cursor: 'pointer',
-      height: '5.5rem',
-      color: 'white',
-      background: 'linear-gradient(to bottom, #ff6745 0%,#ff5745 51%,#ff4745 100%)',
-      'border-radius': '7px',
-      'border-width': '2px',
-      'border-color': 'white',
-      'font-size': '1.25em',
-      padding: '1em',
-      height: '100%',
-      whiteSpace: 'no-wrap',
-    },
-  },
-  hangUpButtonReally: {
-    cursor: 'pointer',
-    display: 'inline-block',
-    position: 'absolute',
-    left: 0,
-    height: 'auto',
-    bottom: '12vh',
-    backgroundColor: 'white',
-    color: 'red',
-    borderRadius: '7px',
-    borderWidth: '2px',
-    borderColor: 'black',
-    borderStyle: 'solid',
-    padding: '0.5rem',
-  },
-  hangUpButtonReallyClose: {
-    top: 0,
-    right: 0,
-    position: 'absolute',
-    marginRight: '0.2rem',
-    cursor: 'pointer',
-    pointerEvents: 'auto',
-  },
-  finishButton: {
-    cursor: 'pointer',
-    width: '12vw',
-    position: 'absolute',
-    right: '25vw',
-    top: '68vh',
-    color: 'white',
-    background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
-    'border-radius': '7px',
-    'border-width': '2px',
-    'border-color': 'white',
-    'font-size': '1.25em',
-    padding: '1em',
-    '&:disabled': {
-      'text-decoration': 'none',
-      background: 'lightgray',
-    },
-  },
-  talkative: {
-    background: 'yellow',
-  },
-  warmup: {},
-  videoFoot: {
-    'text-align': 'center',
-    color: 'white',
-    'font-weight': 'normal',
-    'font-size': '2rem',
-    'padding-top': '0.25rem',
-    'padding-bottom': '0.25rem',
-    'line-height': '3rem',
-    'background-color': 'black',
-    color: 'white',
-    overflow: 'hidden',
-    'text-overflow': 'ellipsis',
-    'white-space': 'nowrap',
-    '&$finishUp': {
-      'font-size': '1%',
-    },
-    '&$stylesSet': {
-      transition: `all ${TransitionTime}ms linear`,
-    },
-  },
-  agenda: {
-    position: 'absolute',
-    '&$finishUp': {
-      left: '50vw',
-      top: '50vh',
-      height: '1vh',
-      width: '1vw',
-      'font-size': '1%',
-    },
-    '&$stylesSet': {
-      transition: `all ${TransitionTime}ms linear`,
-    },
-    '&$begin': {
-      //transition: `${IntroTransition}`,
-    },
-    '&$intro': {
-      top: `calc( -1 * 25vw *  ${HDRatio} -${TopMargin})`,
-      left: '100vw',
-    },
-  },
-  thanks: {
-    'font-size': '200%',
-    'font-weight': '600',
-  },
-  begin: {
-    transition: `${IntroTransition}`,
-  },
-  counting: {},
-  countdown: {
-    display: 'none',
-    position: 'absolute',
-    color: 'yellow',
-    fontSize: '2em',
-    left: 'calc( 50vw - 1em)',
-    top: '10vh',
-    transition: '0.5s all linear',
-    background: 'rgba(0,0,0,0)',
-    '&$counting': {
-      display: 'block',
-    },
-    '&$talkative': {
-      left: 'calc( 50vw - 1em)',
-      fontSize: '4em',
-      background: 'rgba(128,128,128,0.7)',
-    },
-    '&$warmup': {
-      color: 'lime',
-    },
-  },
-  buttonBar: {
-    //display: "table",
-    textAlign: 'center',
-    position: 'absolute',
-    width: '50vw',
-    left: '25vw',
-    top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
-    height: '3.5vh',
-    overflow: 'hidden',
-    'text-overflow': 'clip',
-    '& button': {
-      pointer: 'cursor',
-      display: 'inline-block',
-      verticalAlign: 'top',
-      height: '100%',
-      width: '100%',
-      fontSize: 'inherit',
-      textAlign: 'center',
-      '-webkit-appearance': 'none',
-      // 'border-radius': "1px",
-      backgroundColor: 'rgba(0, 0, 0, 0)',
-      overflow: 'hidden',
-      textOverflow: 'clip',
-    },
-  },
-  recorderButtonBar: {
-    //display: "table",
-    cursor: 'pointer',
-    position: 'absolute',
-    width: '50vw',
-    left: '25vw',
-    top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
-    height: '3.5vh',
-    overflow: 'hidden',
-    'text-overflow': 'clip',
-    border: 'none',
-    backgroundColor: 'transparent',
-    '& button': {
-      cursor: 'pointer',
-      display: 'inline-block',
-      verticalAlign: 'middle',
-      height: '100%',
-      width: '100%',
-      fontSize: 'inherit',
-      textAlign: 'center',
-      '-webkit-appearance': 'none',
-      'border-radius': '1px',
-      //'backgroundColor': 'lightgray',
-      overflow: 'hidden',
-      textOverflow: 'clip',
-      color: 'white',
-      background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
-      'border-radius': '7px',
-      'border-width': '2px',
-      'border-color': 'white',
-      'font-size': '1.25em',
-      //'padding': '1em',
-      '&:disabled': {
-        'text-decoration': 'none',
-        background: 'lightgray',
-        cursor: 'default',
-      },
-    },
-    '& div': {
-      display: 'inline-block',
-      verticalAlign: 'top',
-      height: '100%',
-      width: '100%',
-      '-webkit-appearance': 'none',
-      background: 'transparent',
-    },
-  },
-  intro: {},
-
-  finishUp: {},
-  stylesSet: {},
-  stalledOverlay: {
-    position: 'absolute',
-    top: 0,
-    display: 'none',
-    backgroundColor: 'rgba(255,255,255,0.8)',
-    '&$stalledNow': {
-      display: 'table',
-    },
-    '& $stalledBox': {
-      display: 'table-cell',
-      verticalAlign: 'middle',
-      textAlign: 'center',
-    },
-  },
-  stalledNow: {},
-  stalledBox: {},
-  recordingPlaceholderBar: {
-    position: 'absolute',
-    width: '100%',
-    top: 0,
-    textAlign: 'center',
-    '& button': {
-      display: 'inline-block',
-      border: '1px solid gray',
-      padding: '.5rem',
-      backgroundColor: 'lightgreen',
-      fontSize: '2rem',
-      fontWeight: 'bolder',
-    },
-  },
-  reviewing: {
-    '& button': {
-      background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
-    },
-  },
-}
-
 class ViewerRecorder extends ViewerRecorderLogic {
   constructor(props) {
     super(props)
@@ -871,7 +553,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
     this.camera && this.camera.releaseCamera()
     this.allStop()
     this.setState({ hungUp: true, done: true })
-    return this.props.dispatch({ type: 'HangUp' })
+    return this.props.dispatch({ type: this.props.dispatch.TYPES.HangUp })
     //return this.setState({ hungUp: true, done: true })
   }
 
@@ -1260,7 +942,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
               micCameraConstraintsState.audioinputs[micCameraConstraintsState.micIndex] &&
               micCameraConstraintsState.audioinputs[micCameraConstraintsState.micIndex].label
             }
-            onClick={() => micCameraConstraintsDispatch({ type: 'NextMic' })}
+            onClick={() => micCameraConstraintsDispatch({ type: micCameraConstraintsDispatch.TYPES.NextMic })}
           >
             Change Mic
           </div>
@@ -1294,7 +976,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
             micCameraConstraintsState.videoinputs[micCameraConstraintsState.cameraIndex] &&
             micCameraConstraintsState.videoinputs[micCameraConstraintsState.cameraIndex].label
           }
-          onClick={() => micCameraConstraintsDispatch({ type: 'NextCamera' })}
+          onClick={() => micCameraConstraintsDispatch({ type: micCameraConstraintsDispatch.TYPES.NextCamera })}
         >
           Change Camera
         </div>
@@ -1358,7 +1040,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
             <ReactCameraRecorder
               ref={this.getCamera}
               onCanNotRecordHere={status => (
-                props.dispatch({ type: 'CanNotRecordHere' }), (this.canNotRecordHere = status)
+                props.dispatch({ type: props.dispatch.TYPES.CanNotRecordHere }), (this.canNotRecordHere = status)
               )}
               onCameraStream={stream => (this.cameraStream = stream)}
               onCameraChange={() => this.nextMediaState('human')}
@@ -1386,6 +1068,324 @@ class ViewerRecorder extends ViewerRecorderLogic {
       </div>
     )
   }
+}
+
+const styles = {
+  innerWrapper: {
+    position: 'relative',
+    width: '100vw',
+    height: '100vh',
+    //backgroundImage: 'url(/assets/images/marble_table_top.png)',
+    //backgroundSize: 'cover',
+    backgroundColor: 'white',
+    overflow: 'hidden',
+    fontFamily: "'Montserrat', sans-serif",
+  },
+  participant: {
+    display: 'block',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    '&$stylesSet': {
+      transition: `all ${TransitionTime}ms linear`,
+    },
+    '&$begin': {
+      transition: `${IntroTransition}`,
+    },
+  },
+  participantBackground: {
+    display: 'block',
+    position: 'relative',
+    textAlign: 'center',
+    backgroundColor: 'white', // this color is taken to match the the background image if you change the image, you should re-evaluate this color
+    '&$stylesSet': {
+      transition: `all ${TransitionTime}ms linear`,
+    },
+    '&$begin': {
+      transition: `${IntroTransition}`,
+    },
+  },
+  box: {
+    display: 'inline',
+    'vertical-align': 'top',
+    position: 'absolute',
+    'box-shadow': `${ShadowBox}px ${ShadowBox}px ${ShadowBox}px gray`,
+    '&$stylesSet': {
+      transition: `all ${TransitionTime}ms linear`,
+    },
+    '&$begin': {
+      transition: `${IntroTransition}`,
+    },
+  },
+  outerBox: {
+    display: 'block',
+    width: '100vw',
+    height: '100vh',
+    boxSizing: 'border-box',
+  },
+  beginBox: {
+    position: 'absolute',
+    top: 0,
+  },
+  beginButton: {
+    cursor: 'pointer',
+    color: 'white',
+    background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
+    'border-radius': '7px',
+    'border-width': '2px',
+    'border-color': 'white',
+    'font-size': '1.25em',
+    padding: '1em',
+    'margin-top': '1em',
+    '&:disabled': {
+      'text-decoration': 'none',
+      background: 'lightgray',
+    },
+  },
+  hangUpButton: {
+    width: '12vw',
+    position: 'absolute',
+    left: '85vw',
+    bottom: '5vh',
+    '& button': {
+      cursor: 'pointer',
+      height: '5.5rem',
+      color: 'white',
+      background: 'linear-gradient(to bottom, #ff6745 0%,#ff5745 51%,#ff4745 100%)',
+      'border-radius': '7px',
+      'border-width': '2px',
+      'border-color': 'white',
+      'font-size': '1.25em',
+      padding: '1em',
+      height: '100%',
+      whiteSpace: 'no-wrap',
+    },
+  },
+  hangUpButtonReally: {
+    cursor: 'pointer',
+    display: 'inline-block',
+    position: 'absolute',
+    left: 0,
+    height: 'auto',
+    bottom: '12vh',
+    backgroundColor: 'white',
+    color: 'red',
+    borderRadius: '7px',
+    borderWidth: '2px',
+    borderColor: 'black',
+    borderStyle: 'solid',
+    padding: '0.5rem',
+  },
+  hangUpButtonReallyClose: {
+    top: 0,
+    right: 0,
+    position: 'absolute',
+    marginRight: '0.2rem',
+    cursor: 'pointer',
+    pointerEvents: 'auto',
+  },
+  finishButton: {
+    cursor: 'pointer',
+    width: '12vw',
+    position: 'absolute',
+    right: '25vw',
+    top: '68vh',
+    color: 'white',
+    background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
+    'border-radius': '7px',
+    'border-width': '2px',
+    'border-color': 'white',
+    'font-size': '1.25em',
+    padding: '1em',
+    '&:disabled': {
+      'text-decoration': 'none',
+      background: 'lightgray',
+    },
+  },
+  talkative: {
+    background: 'yellow',
+  },
+  warmup: {},
+  videoFoot: {
+    'text-align': 'center',
+    color: 'white',
+    'font-weight': 'normal',
+    'font-size': '2rem',
+    'padding-top': '0.25rem',
+    'padding-bottom': '0.25rem',
+    'line-height': '3rem',
+    'background-color': 'black',
+    color: 'white',
+    overflow: 'hidden',
+    'text-overflow': 'ellipsis',
+    'white-space': 'nowrap',
+    '&$finishUp': {
+      'font-size': '1%',
+    },
+    '&$stylesSet': {
+      transition: `all ${TransitionTime}ms linear`,
+    },
+  },
+  agenda: {
+    position: 'absolute',
+    '&$finishUp': {
+      left: '50vw',
+      top: '50vh',
+      height: '1vh',
+      width: '1vw',
+      'font-size': '1%',
+    },
+    '&$stylesSet': {
+      transition: `all ${TransitionTime}ms linear`,
+    },
+    '&$begin': {
+      //transition: `${IntroTransition}`,
+    },
+    '&$intro': {
+      top: `calc( -1 * 25vw *  ${HDRatio} -${TopMargin})`,
+      left: '100vw',
+    },
+  },
+  thanks: {
+    'font-size': '200%',
+    'font-weight': '600',
+  },
+  begin: {
+    transition: `${IntroTransition}`,
+  },
+  counting: {},
+  countdown: {
+    display: 'none',
+    position: 'absolute',
+    color: 'yellow',
+    fontSize: '2em',
+    left: 'calc( 50vw - 1em)',
+    top: '10vh',
+    transition: '0.5s all linear',
+    background: 'rgba(0,0,0,0)',
+    '&$counting': {
+      display: 'block',
+    },
+    '&$talkative': {
+      left: 'calc( 50vw - 1em)',
+      fontSize: '4em',
+      background: 'rgba(128,128,128,0.7)',
+    },
+    '&$warmup': {
+      color: 'lime',
+    },
+  },
+  buttonBar: {
+    //display: "table",
+    textAlign: 'center',
+    position: 'absolute',
+    width: '50vw',
+    left: '25vw',
+    top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
+    height: '3.5vh',
+    overflow: 'hidden',
+    'text-overflow': 'clip',
+    '& button': {
+      pointer: 'cursor',
+      display: 'inline-block',
+      verticalAlign: 'top',
+      height: '100%',
+      width: '100%',
+      fontSize: 'inherit',
+      textAlign: 'center',
+      '-webkit-appearance': 'none',
+      // 'border-radius': "1px",
+      backgroundColor: 'rgba(0, 0, 0, 0)',
+      overflow: 'hidden',
+      textOverflow: 'clip',
+    },
+  },
+  recorderButtonBar: {
+    //display: "table",
+    cursor: 'pointer',
+    position: 'absolute',
+    width: '50vw',
+    left: '25vw',
+    top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
+    height: '3.5vh',
+    overflow: 'hidden',
+    'text-overflow': 'clip',
+    border: 'none',
+    backgroundColor: 'transparent',
+    '& button': {
+      cursor: 'pointer',
+      display: 'inline-block',
+      verticalAlign: 'middle',
+      height: '100%',
+      width: '100%',
+      fontSize: 'inherit',
+      textAlign: 'center',
+      '-webkit-appearance': 'none',
+      'border-radius': '1px',
+      //'backgroundColor': 'lightgray',
+      overflow: 'hidden',
+      textOverflow: 'clip',
+      color: 'white',
+      background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
+      'border-radius': '7px',
+      'border-width': '2px',
+      'border-color': 'white',
+      'font-size': '1.25em',
+      //'padding': '1em',
+      '&:disabled': {
+        'text-decoration': 'none',
+        background: 'lightgray',
+        cursor: 'default',
+      },
+    },
+    '& div': {
+      display: 'inline-block',
+      verticalAlign: 'top',
+      height: '100%',
+      width: '100%',
+      '-webkit-appearance': 'none',
+      background: 'transparent',
+    },
+  },
+  intro: {},
+
+  finishUp: {},
+  stylesSet: {},
+  stalledOverlay: {
+    position: 'absolute',
+    top: 0,
+    display: 'none',
+    backgroundColor: 'rgba(255,255,255,0.8)',
+    '&$stalledNow': {
+      display: 'table',
+    },
+    '& $stalledBox': {
+      display: 'table-cell',
+      verticalAlign: 'middle',
+      textAlign: 'center',
+    },
+  },
+  stalledNow: {},
+  stalledBox: {},
+  recordingPlaceholderBar: {
+    position: 'absolute',
+    width: '100%',
+    top: 0,
+    textAlign: 'center',
+    '& button': {
+      display: 'inline-block',
+      border: '1px solid gray',
+      padding: '.5rem',
+      backgroundColor: 'lightgreen',
+      fontSize: '2rem',
+      fontWeight: 'bolder',
+    },
+  },
+  reviewing: {
+    '& button': {
+      background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
+    },
+  },
 }
 
 export default injectSheet(styles)(ViewerRecorder)

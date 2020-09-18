@@ -65,7 +65,7 @@ export const Ending = props => {
         <button
           className={classes.beginButton}
           onClick={
-            () => dispatch({ type: 'ReviewIt' })
+            () => dispatch({ type: dispatch.TYPES.ReviewIt })
             /* going to need to reset the viewer/recorder somehow
           this.setState(
             {

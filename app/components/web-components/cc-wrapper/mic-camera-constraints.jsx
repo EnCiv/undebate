@@ -28,18 +28,27 @@ function calculateConstraints(state) {
   }
   return { ...state, constraints }
 }
+const throwIfUndefined = {
+  get: function(obj, prop) {
+    if (prop in obj) return obj[prop]
+    throw Error('undefined action TYPE: ' + prop)
+  },
+}
+
+const TYPES = new Proxy({}, throwIfUndefined)
+;['NextMic', 'NextCamera', 'UpdateDevices'].forEach(k => (TYPES[k] = k))
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'NextMic': {
+    case TYPES.NextMic: {
       const micIndex = calcNextIndex(state, 'audioinputs', 'micIndex')
       return calculateConstraints({ ...state, micIndex })
     }
-    case 'NextCamera': {
+    case TYPES.NextCamera: {
       const cameraIndex = calcNextIndex(state, 'videoinputs', 'cameraIndex')
       return calculateConstraints({ ...state, cameraIndex })
     }
-    case 'UpdateDevices': {
+    case TYPES.UpdateDevices: {
       const { micIndex, cameraIndex, audioinputs, videoinputs, constraints } = action
       return { ...state, micIndex, cameraIndex, audioinputs, videoinputs, constraints }
     }
@@ -66,6 +75,7 @@ export default function useMicCameraConstraints(
     cameraIndex: undefined,
     constraints,
   })
+  dispatch.TYPES = TYPES
   const updateDevices = devices => {
     let micIndex
     let cameraIndex
@@ -76,7 +86,7 @@ export default function useMicCameraConstraints(
     logger.info('InputDeviceManager.updateDevices', JSON.stringify(devices, null, 2))
     // calculate constraints
     dispatch({
-      type: 'UpdateDevices',
+      type: dispatch.TYPES.UpdateDevices,
       ...calculateConstraints({ audioinputs, videoinputs, micIndex, cameraIndex, constraints }),
     })
   }
