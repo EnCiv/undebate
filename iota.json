@@ -5645,5 +5645,16 @@
         }
       ]
     }
+  },
+  {
+    "_id": {
+      "$oid": "5f6587d27c213e54713bf614"
+    },
+    "path": "/candidate-conversation-candidate-recorder/instructions",
+    "subject": "Instruction page for candidate recorder",
+    "description": "Instructions for recording candidate's conversation",
+    "webComponent": {
+      "webComponent": "RecorderInstructions"
+    }
   }
 ]
