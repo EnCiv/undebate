@@ -3,6 +3,10 @@
 import { createUseStyles } from 'react-jss'
 import ConversationHeader from '../../conversation-header'
 import cx from 'classnames'
+import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows'
+import LaptopIcon from '@material-ui/icons/Laptop'
+import ChromeIcon from '../../../svgr/chrome-icon'
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 
 const ShadowBox = 10
 
@@ -18,16 +22,44 @@ const useStyles = createUseStyles({
   },
   note: {
     position: 'absolute',
-    'background-color': 'lightyellow',
+    'background-color': 'white',
     top: 'calc( ( 100vh - min( 50vw, 50vh)) / 2 )',
-    padding: '1em',
-    width: 'calc( min(50vw, 50vh) )',
-    height: 'calc( min(50vw, 50vh) )',
-    'box-shadow': `${ShadowBox}px ${ShadowBox}px ${ShadowBox}px grey`,
-    left: 'calc( ( 100vw - min( 50vw, 50vh)) / 2 )',
-    'font-weight': '600',
-    display: 'table',
+    width: 'calc( min(60vw, 60vh) )',
+    height: 'calc( min(70vw, 70vh) )',
+    'box-shadow': `0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)`,
+    left: 'calc( ( 100vw - min( 60vw, 60vh)) / 2 )',
+    display: 'inline',
     transition: 'all .5s linear',
+    fontSize: '2rem',
+  },
+  title: {
+    'background-color': '#e5a650',
+    'font-weight': '600',
+    padding: '1em',
+    display: 'flex',
+    justifyContent: 'center',
+    fontSize: '3rem',
+  },
+  titleText: {
+    height: '35px',
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: '.5rem',
+  },
+  text: {
+    padding: '2rem',
+  },
+  middle: {
+    display: 'flex',
+    padding: '2rem',
+  },
+  chrome: {
+    height: '35px',
+    float: 'left',
+    width: '60%',
+    display: 'flex',
+    paddingLeft: '.5rem',
+    alignItems: 'center',
   },
 })
 
@@ -38,9 +70,36 @@ export const CanNotRecordHere = props => {
     <div className={cx(classes['outerBox'], classes['beginBox'])}>
       <ConversationHeader subject={subject} bp_info={bp_info} logo={logo} />
       <div className={classes['note']}>
-        <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-          <p style={{ fontSize: '150%' }}>Recording video from this device or browser is not yet supported.</p>
-          <p>Please come back to this link from a Windows 10 PC or a Mac using the Chrome browser.</p>
+        <div className={classes['title']}>
+          <ErrorOutlineIcon style={{ fontSize: 30 }} />
+          <div className={classes['titleText']}>Device not supported</div>
+        </div>
+        <div>
+          <div className={classes['text']}>We recommend visiting this link from a:</div>
+          <div className={classes['middle']}>
+            <div style={{ float: 'left', width: '40%', textAlign: 'center' }}>
+              <DesktopWindowsIcon style={{ fontSize: 50 }} />
+              <div>Desktop</div>
+            </div>
+            <div style={{ display: 'block', float: 'left', width: '20%', textAlign: 'center' }}>
+              <div>|</div>
+              <div>OR</div>
+              <div>|</div>
+            </div>
+            <div style={{ float: 'left', width: '40%', textAlign: 'center' }}>
+              <LaptopIcon style={{ fontSize: 50 }} />
+              <div>Laptop</div>
+            </div>
+          </div>
+          <div className={classes['text']}>With the following browser:</div>
+          <div style={{ paddingLeft: '2rem', paddingRight: '2rem' }}>
+            <div style={{ float: 'left', width: '30%', textAlign: 'right' }}>
+              <ChromeIcon width="50%" height="50%" />
+            </div>
+            <div className={classes['chrome']}>
+              <div>Google Chrome</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
