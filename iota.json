@@ -3419,7 +3419,7 @@
       "component": "MergeChildren"
     },
     "webComponent": {
-      "webComponent": "CandidateConversation",
+      "webComponent": "CcWrapper",
       "opening": {
         "line1": "You are about to experience a new kind of conversation",
         "line2": "This is how voters can learn about candidates in a more human way",

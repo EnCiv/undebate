@@ -18,16 +18,6 @@ const IntroTransition = 'none'
 const HDRatio = 1080 / 1920 //0.5625
 const ShadowBox = 10
 
-import IconPrevSpeaker from '../../../svgr/prev-speaker-icon'
-import IconPrevSection from '../../../svgr/prev-section-icon'
-import IconPlay from '../../../svgr/play-icon'
-import IconPause from '../../../svgr/pause-icon'
-import IconStop from '../../../svgr/stop-icon'
-import IconSkipSpeaker from '../../../svgr/next-speaker-icon'
-import IconNextSection from '../../../svgr/next-section-icon'
-import IconRedo from '../../../svgr/redo-icon'
-import IconFinishRecording from '../../../svgr/finish-speaking-icon'
-import IconRecording from '../../../svgr/icon-recording'
 import ConversationHeader from '../../conversation-header'
 
 import ReactCameraRecorder from '../../react-camera-recorder'
@@ -37,6 +27,7 @@ import Modal from '../Modal'
 import Icon from '../../lib/icon'
 
 import Agenda from '../../agenda-nav'
+import ButtonBar from './button-bar' // lowercase because using .call to pass this.
 
 class ViewerRecorder extends ViewerRecorderLogic {
   constructor(props) {
@@ -49,6 +40,13 @@ class ViewerRecorder extends ViewerRecorderLogic {
     this.hangup = this.hangup.bind(this)
     this.reallyHangup = this.reallyHangup.bind(this)
     if (typeof window !== 'undefined') window.onresize = this.onResize.bind(this)
+
+    // bind all the functions in buttonLogic buttons to this so we don't have to do it while rendering
+    Object.values(this.buttonLogic).forEach(button => {
+      Object.keys(button).forEach(key => {
+        if (typeof button[key] === 'function') button[key] = button[key].bind(this)
+      })
+    })
 
     if (typeof window !== 'undefined') this.calcFontSize()
     else {
@@ -126,25 +124,9 @@ class ViewerRecorder extends ViewerRecorderLogic {
       },
 
       buttonBarStyle: {
-        //width: '50vw',
-        //left: '25vw',
-        //top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
         bottom: '5vh',
-        height: '10vh',
+        height: '14vh',
         position: 'absolute',
-        overflow: 'hidden',
-        textOverflow: 'clip',
-        cursor: 'pointer',
-      },
-
-      recorderButtonBarStyle: {
-        width: '50vw',
-        left: '25vw',
-        top: `calc(50vw *  ${HDRatio} + 3.5vh + 3.5vh + 1.75vh)`,
-        height: '3.5vh',
-        position: 'absolute',
-        overflow: 'hidden',
-        textOverflow: 'clip',
       },
     })
   }
@@ -215,7 +197,6 @@ class ViewerRecorder extends ViewerRecorderLogic {
     var seatStyle = cloneDeep(this.state.seatStyle)
     var agendaStyle = cloneDeep(this.state.agendaStyle)
     var buttonBarStyle = cloneDeep(this.state.buttonBarStyle)
-    var recorderButtonBarStyle = cloneDeep(this.state.recorderButtonBarStyle)
     const titleHeight = 3 * fontSize
     if (width / height > 0.8) {
       // landscape mode
@@ -291,15 +272,9 @@ class ViewerRecorder extends ViewerRecorderLogic {
           agendaStyle.width = width - agendaStyle.left - 2 * horizontalSeatSpace
         agendaStyle.height = agendaStyle.width
 
-        buttonBarStyle.left = seatStyle.speaking.left
-        // buttonBarStyle.width = seatStyle.nextUp.width
-        buttonBarStyle.width = seatStyle.speaking.width
-        // buttonBarStyle.height = Math.max(0.05 * height, 4 * fontSize) + 20
-
-        recorderButtonBarStyle.left = seatStyle.speaking.left
-        recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25 + titleHeight
-        recorderButtonBarStyle.width = seatStyle.speaking.width
-        recorderButtonBarStyle.height = buttonBarStyle.height
+        buttonBarStyle.width = (parseInt(seatStyle.speaking.width) * 7) / 5 + 'vw' // three are 7 buttons, 5 should be under the speaking window
+        buttonBarStyle.left = (100 - parseInt(buttonBarStyle.width)) / 2 + 'vw'
+        buttonBarStyle.height = ((((parseInt(buttonBarStyle.width) / 7) * 140) / 100) * width * 0.8) / 100 + 'px' // there are 7 buttons. the aspect ratio of the button is 100 wide by 140 tall and we are scaling the icon to 80% of it's div
       } else {
         const speakingWidthRatio = 0.5
         const nextUpWidthRatio = 0.2
@@ -367,28 +342,9 @@ class ViewerRecorder extends ViewerRecorderLogic {
           agendaStyle.width = width - agendaStyle.left - 2 * horizontalSeatSpace
         agendaStyle.height = Math.max(0.175 * width, 20 * fontSize)
 
-        buttonBarStyle.width = seatStyle.speaking.width
-        buttonBarStyle.left = seatStyle.speaking.left
-        // buttonBarStyle.top = speakingWidthRatio * HDRatio * width
-        // if (width / height < 0.87) {
-        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.18
-        // } else if (width / height < 1) {
-        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.13
-        // } else if (width / height < 1.2) {
-        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.08
-        // } else if (width / height < 1.4) {
-        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.04
-        // } else if (width / height < 1.6) {
-        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1
-        // } else {
-        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width
-        // }
-        // buttonBarStyle.height = Math.max(0.035 * height, 4 * fontSize)
-
-        recorderButtonBarStyle.left = seatStyle.speaking.left
-        recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25 + titleHeight
-        recorderButtonBarStyle.width = seatStyle.speaking.width
-        recorderButtonBarStyle.height = buttonBarStyle.height
+        buttonBarStyle.width = (parseInt(seatStyle.speaking.width) * 7) / 5 + 'vw' // three are 7 buttons, 5 should be under the speaking window
+        buttonBarStyle.left = (100 - parseInt(buttonBarStyle.width)) / 2 + 'vw'
+        buttonBarStyle.height = ((((parseInt(buttonBarStyle.width) / 7) * 140) / 100) * width * 0.8) / 100 + 'px' // there are 7 buttons. the aspect ratio of the button is 100 wide by 140 tall and we are scaling the icon to 80% of it's div
       }
     } else {
       // portrait mode
@@ -461,69 +417,13 @@ class ViewerRecorder extends ViewerRecorderLogic {
       // buttonBarStyle.top = speakingWidthRatio * HDRatio * width + verticalSeatSpace * 1.2 //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
       buttonBarStyle.width = speakingWidthRatio * 80 + 'vw'
       // buttonBarStyle.height = '5vh'
-
-      recorderButtonBarStyle.left = buttonBarStyle.left
-      recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25 + titleHeight
-      recorderButtonBarStyle.width = buttonBarStyle.width
-      recorderButtonBarStyle.height = buttonBarStyle.height
     }
     return {
       seatStyle,
       agendaStyle,
       buttonBarStyle,
-      recorderButtonBarStyle,
     }
   }
-
-  buttons = [
-    {
-      name: props => <IconRedo width="60%" height="60%" className={props} />,
-      func: this.rerecordButton,
-      title: () => 'Re-record',
-      disabled: () => this.speakingNow() !== 'human' || this.state.warmup,
-    },
-    {
-      name: props => <IconPrevSection width="60%" height="60%" className={props} />,
-      func: this.prevSection,
-      title: () => 'Previous Question',
-    },
-    {
-      name: props => <IconPrevSpeaker width="60%" height="60%" className={props} />,
-      func: this.prevSpeaker,
-      title: () => 'Previous Speaker',
-    },
-    {
-      name: props =>
-        this.state.isRecording ? (
-          <IconStop width="60%" height="60%" className={props} />
-        ) : this.state.allPaused ? (
-          <IconPlay width="60%" height="60%" className={props} />
-        ) : (
-          <IconPause width="60%" height="60%" className={props} />
-        ),
-      func: this.allPause,
-      title: () => (this.state.isRecording ? 'Stop' : this.state.allPaused ? 'Play' : 'Pause'),
-    },
-    {
-      name: props => <IconSkipSpeaker width="60%" height="60%" className={props} />,
-      func: this.nextSpeaker,
-      title: () => 'Next Speaker',
-    },
-    {
-      name: props => <IconNextSection width="60%" height="60%" className={props} />,
-      func: this.nextSection,
-      title: () => 'Next Question',
-      disabled: () =>
-        this.props.ccState.participants.human &&
-        !this.props.ccState.participants.human.speakingObjectURLs[this.state.round],
-    },
-    {
-      name: props => <IconFinishRecording width="60%" height="60%" className={props} />,
-      func: this.finishedSpeaking,
-      title: () => 'Done Speaking',
-      disabled: () => this.speakingNow() !== 'human' || (this.props.ccState.reviewing && !this.rerecord),
-    },
-  ]
 
   recorderButtons = [
     {
@@ -657,7 +557,6 @@ class ViewerRecorder extends ViewerRecorderLogic {
       seatStyle,
       agendaStyle,
       buttonBarStyle,
-      recorderButtonBarStyle,
       stylesSet,
       isPortraitPhoneRecording,
       hungUp,
@@ -859,55 +758,6 @@ class ViewerRecorder extends ViewerRecorderLogic {
       )
     }
 
-    const buttonBar = buttonBarStyle =>
-      (bot || (begin && intro && !finishUp && !done)) && (
-        <div style={buttonBarStyle} className={classes['']} key="buttonBar">
-          {this.buttons.map(button => (
-            <div
-              style={{
-                width: 100 / this.buttons.length + '%',
-                display: 'inline-block',
-                height: '100%',
-                textAlign: 'center',
-              }}
-              title={button.title()}
-              key={button.title()}
-            >
-              <div onClick={button.func.bind(this)}>
-                {button.disabled && button.disabled()
-                  ? button.name(classes.iconButtonDisabled)
-                  : button.name(classes.iconButton)}
-              </div>
-            </div>
-          ))}
-        </div>
-      )
-
-    const recorderButtonBar = recorderButtonBarStyle =>
-      this.props.ccState.participants.human &&
-      begin &&
-      intro &&
-      !finishUp &&
-      !done && (
-        <div style={recorderButtonBarStyle} className={classes['recorderButtonBar']} key="recorderButtonBar">
-          {this.recorderButtons.map(button => (
-            <div
-              style={{ width: 100 / this.recorderButtons.length + '%', display: 'inline-block', height: '100%' }}
-              key={button.title() || button.name}
-              title={button.title()}
-            >
-              {button.func ? (
-                <div disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
-                  {button.name(classes.iconButton)}
-                </div>
-              ) : (
-                <div></div>
-              )}
-            </div>
-          ))}
-        </div>
-      )
-
     const renderHangupButton = () =>
       !ifShowPreamble &&
       !hungUp &&
@@ -1077,8 +927,14 @@ class ViewerRecorder extends ViewerRecorderLogic {
           ref={this.calculatePositionAndStyle}
         >
           {videos()}
-          {buttonBar(buttonBarStyle)}
-          {/*recorderButtonBar(recorderButtonBarStyle)*/}
+          {(bot || (begin && intro && !finishUp && !done)) && (
+            <ButtonBar
+              style={buttonBarStyle}
+              allPaused={allPaused}
+              isRecording={isRecording}
+              buttonLogic={this.buttonLogic}
+            />
+          )}
           {permissionOverlay()}
           {waitingOnModeratorOverlay()}
           {renderHangupButton()}
@@ -1294,103 +1150,7 @@ const styles = {
       color: 'lime',
     },
   },
-  iconButton: {
-    color: 'white',
-    pointerEvents: 'auto',
-    '& rect': {
-      stroke: '#000',
-      fill: '#000',
-    },
-    '& rect:hover': {
-      fill: '	#565656',
-    },
-    '& circle:hover': {
-      fill: '	#565656',
-    },
-  },
-  iconButtonDisabled: {
-    cursor: 'no-drop',
-    '& rect': {
-      stroke: '#878686',
-      fill: '#878686',
-    },
-    '& circle': {
-      stroke: '#878686',
-      fill: '#878686',
-    },
-  },
-  buttonBar: {
-    //display: "table",
-    textAlign: 'center',
-    position: 'absolute',
-    width: '35vw',
-    left: '25vw',
-    //top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
-    height: '10vh',
-    overflow: 'hidden',
-    'text-overflow': 'clip',
-    '& button': {
-      pointer: 'cursor',
-      display: 'inline-block',
-      verticalAlign: 'top',
-      height: '100%',
-      width: '100%',
-      fontSize: 'inherit',
-      textAlign: 'center',
-      '-webkit-appearance': 'none',
-      // 'border-radius': "1px",
-      backgroundColor: 'rgba(0, 0, 0, 0)',
-      overflow: 'hidden',
-      textOverflow: 'clip',
-    },
-  },
-  recorderButtonBar: {
-    //display: "table",
-    cursor: 'pointer',
-    position: 'absolute',
-    width: '50vw',
-    left: '25vw',
-    top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
-    height: '3.5vh',
-    overflow: 'hidden',
-    'text-overflow': 'clip',
-    border: 'none',
-    backgroundColor: 'transparent',
-    '& button': {
-      cursor: 'pointer',
-      display: 'inline-block',
-      verticalAlign: 'middle',
-      height: '100%',
-      width: '100%',
-      fontSize: 'inherit',
-      textAlign: 'center',
-      '-webkit-appearance': 'none',
-      'border-radius': '1px',
-      //'backgroundColor': 'lightgray',
-      overflow: 'hidden',
-      textOverflow: 'clip',
-      color: 'white',
-      background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
-      'border-radius': '7px',
-      'border-width': '2px',
-      'border-color': 'white',
-      'font-size': '1.25em',
-      //'padding': '1em',
-      '&:disabled': {
-        'text-decoration': 'none',
-        background: 'lightgray',
-        cursor: 'default',
-      },
-    },
-    '& div': {
-      display: 'inline-block',
-      verticalAlign: 'top',
-      height: '100%',
-      width: '100%',
-      '-webkit-appearance': 'none',
-      background: 'transparent',
-    },
-  },
+
   intro: {},
 
   finishUp: {},

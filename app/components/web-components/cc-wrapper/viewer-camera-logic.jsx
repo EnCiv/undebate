@@ -11,7 +11,7 @@ About the state -- this.
     seat
     getTimeLimit
     speakingNow
-    listening
+    listening - returns[seat, round] for placeholder recording
     seatOfParticipant
     isRecordingSpeaking
     isRecording (calculated based on state)
@@ -826,6 +826,42 @@ export default class ViewerRecorderLogic extends React.Component {
     this.stopCountDown()
     this.camera && this.camera.stopRecording(true) // true=don't generate error messages if called when not recording
     this.setState({ isRecording: false })
+  }
+
+  buttonLogic = {
+    rerecord: {
+      func: this.rerecordButton,
+      title: () => 'Re-record',
+      disabled: () => this.speakingNow() !== 'human' || this.state.warmup,
+    },
+    prevSection: {
+      func: this.prevSection,
+      title: () => 'Previous Question',
+    },
+    prevSpeaker: {
+      func: this.prevSpeaker,
+      title: () => 'Previous Speaker',
+    },
+    allPause: {
+      func: this.allPause,
+      title: () => (this.state.isRecording ? 'Stop' : this.state.allPaused ? 'Play' : 'Pause'),
+    },
+    nextSpeaker: {
+      func: this.nextSpeaker,
+      title: () => 'Next Speaker',
+    },
+    nextSection: {
+      func: this.nextSection,
+      title: () => 'Next Question',
+      disabled: () =>
+        this.props.ccState.participants.human &&
+        !this.props.ccState.participants.human.speakingObjectURLs[this.state.round],
+    },
+    finishedSpeaking: {
+      func: this.finishedSpeaking,
+      title: () => 'Done Speaking',
+      disabled: () => this.speakingNow() !== 'human' || (this.props.ccState.reviewing && !this.rerecord),
+    },
   }
 
   newOrder(seatOffset, round) {
