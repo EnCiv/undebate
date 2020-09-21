@@ -1184,6 +1184,7 @@ const styles = {
       fontSize: '2rem',
       fontWeight: 'bolder',
     },
+    zIndex: '11', // make sure it is on top of the conversation header
   },
   reviewing: {
     '& button': {

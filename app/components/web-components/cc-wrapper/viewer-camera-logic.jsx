@@ -579,7 +579,7 @@ export default class ViewerRecorderLogic extends React.Component {
       try {
         // we have to stallWatch before we play because play might not return right away for lack of data
         let stallWatchPlayed
-        if (speaking) stallWatchPlayed = this.stallWatch(part)
+        if (speaking && part !== 'human') stallWatchPlayed = this.stallWatch(part)
         await element.play()
         if (stallWatchPlayed) stallWatchPlayed()
       } catch (err) {
@@ -1099,6 +1099,7 @@ export default class ViewerRecorderLogic extends React.Component {
   // the video.stalled event just doesn't respond to all the situations, and it doesn't tell you when the stall has ended
   stallWatch(speaker) {
     if (this.props.ccState.participants[speaker].youtube) return
+    if (speaker === 'human') return // don't stall watch the local video
 
     if (this.props.ccState.participants[speaker].speakingImmediate[this.state.round] && this.stallWatchTimeout)
       // was called because preFetch hadn't completed when it was time to play
