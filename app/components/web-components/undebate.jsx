@@ -7,6 +7,7 @@ import Join from '../join'
 import Input from '../lib/input'
 import SocialShareBtn from '../lib/socialShareBtn'
 import { AuthForm } from '../auth-form/index'
+import { CandidateLookup } from '../candidate-lookup/index'
 
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep'
@@ -2744,6 +2745,8 @@ class Undebate extends React.Component {
         </>
       )
 
+    const candidateLookup = () => <CandidateLookup />
+
     const ending = () =>
       done &&
       !hungUp && (
@@ -3119,20 +3122,23 @@ class Undebate extends React.Component {
             !bot &&
             beginOverlay()}
           {ifShowPreamble && (
-            <CandidatePreamble
-              subject={subject}
-              bp_info={bp_info}
-              agreed={preambleAgreed}
-              classes={classes}
-              onClick={() => {
-                logger.info('Undebate preambleAgreed true')
-                this.setState({ preambleAgreed: true })
-                noOverlay && this.beginButton()
-              }}
-              candidate_questions={participants.moderator.agenda}
-              instructionLink={instructionLink}
-              timeLimits={participants.moderator.timeLimits}
-            />
+            <>
+              <CandidatePreamble
+                subject={subject}
+                bp_info={bp_info}
+                agreed={preambleAgreed}
+                classes={classes}
+                onClick={() => {
+                  logger.info('Undebate preambleAgreed true')
+                  this.setState({ preambleAgreed: true })
+                  noOverlay && this.beginButton()
+                }}
+                candidate_questions={participants.moderator.agenda}
+                instructionLink={instructionLink}
+                timeLimits={participants.moderator.timeLimits}
+              />
+              <div style={{ display: 'flex', justifyContent: 'center', margin: '20px' }}>{candidateLookup()}</div>
+            </>
           )}
           {ending()}
           {((this.participants.human && (preambleAgreed || opening.noPreamble)) || !this.participants.human) &&
