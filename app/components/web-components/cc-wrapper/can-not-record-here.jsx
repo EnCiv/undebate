@@ -8,8 +8,6 @@ import LaptopIcon from '@material-ui/icons/Laptop'
 import ChromeIcon from '../../../svgr/chrome-icon'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 
-const ShadowBox = 10
-
 const useStyles = createUseStyles({
   outerBox: {
     display: 'block',
@@ -23,9 +21,9 @@ const useStyles = createUseStyles({
   note: {
     position: 'absolute',
     'background-color': 'white',
-    top: 'calc( ( 100vh - min( 50vw, 50vh)) / 2 )',
+    top: 'calc( ( 100vh - min( 60vw, 60vh)) / 2 )',
     width: 'calc( min(60vw, 60vh) )',
-    height: 'calc( min(70vw, 70vh) )',
+    height: 'calc( min(60vw, 60vh) )',
     'box-shadow': `0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)`,
     left: 'calc( ( 100vw - min( 60vw, 60vh)) / 2 )',
     display: 'inline',
@@ -35,13 +33,13 @@ const useStyles = createUseStyles({
   title: {
     'background-color': '#e5a650',
     'font-weight': '600',
-    padding: '1em',
+    padding: '1rem',
     display: 'flex',
     justifyContent: 'center',
     fontSize: '3rem',
   },
   titleText: {
-    height: '35px',
+    height: '5rem',
     display: 'flex',
     alignItems: 'center',
     paddingLeft: '.5rem',
@@ -54,7 +52,7 @@ const useStyles = createUseStyles({
     padding: '2rem',
   },
   chrome: {
-    height: '35px',
+    height: '6rem',
     float: 'left',
     width: '60%',
     display: 'flex',
@@ -71,7 +69,7 @@ export const CanNotRecordHere = props => {
       <ConversationHeader subject={subject} bp_info={bp_info} logo={logo} />
       <div className={classes['note']}>
         <div className={classes['title']}>
-          <ErrorOutlineIcon style={{ fontSize: 30 }} />
+          <ErrorOutlineIcon style={{ fontSize: 25 }} />
           <div className={classes['titleText']}>Device not supported</div>
         </div>
         <div>
