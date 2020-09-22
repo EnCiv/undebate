@@ -22,6 +22,7 @@ function Precheck(props) {
   return (
     <ViewerRecorder
       {...props}
+      buttons={['', '', '', '', '', 'nextSection', '']}
       participants={participants}
       agenda={agenda}
       timeLimits={timeLimits}

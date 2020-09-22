@@ -68,7 +68,7 @@ export default function ButtonBar(props) {
   const width = 100 / Object.keys(buttons).length + '%'
   return (
     <div style={style} className={classes['buttonBar']} key="buttonBar">
-      {Object.values(buttons).map(button => (
+      {Object.values(buttons).map((button, i) => (
         <div
           style={{
             width,
@@ -76,13 +76,14 @@ export default function ButtonBar(props) {
             height: '100%',
             textAlign: 'center',
           }}
-          title={button.title()}
-          key={button.title()}
+          title={button.title && button.title()}
+          key={(button.title && button.title()) || 'empty' + i}
         >
           <div onClick={button.func}>
-            {button.disabled && button.disabled()
-              ? button.name(classes.iconButtonDisabled)
-              : button.name(classes.iconButton)}
+            {button.name &&
+              (button.disabled && button.disabled()
+                ? button.name(classes.iconButtonDisabled)
+                : button.name(classes.iconButton))}
           </div>
         </div>
       ))}

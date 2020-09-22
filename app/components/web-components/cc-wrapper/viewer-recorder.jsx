@@ -62,6 +62,19 @@ class ViewerRecorder extends ViewerRecorderLogic {
       }
     }
 
+    this.buttonList =
+      (this.props.buttons &&
+        this.props.buttons.reduce(
+          (buttons, buttonName, i) => (
+            buttonName && this.buttonLogic[buttonName]
+              ? (buttons[buttonName] = this.buttonLogic[buttonName])
+              : (buttons['empty' + i] = null),
+            buttons
+          ),
+          {}
+        )) ||
+      this.buttonLogic
+
     // there is already a state from the parent component, don't clobber it, but add to it
     Object.assign(this.state, {
       stylesSet: false,
@@ -538,9 +551,11 @@ class ViewerRecorder extends ViewerRecorderLogic {
       logo,
       path,
       ccState,
+      dispatch,
       micCameraConstraintsState,
       micCameraConstraintsDispatch,
       showMicCamera,
+      buttons,
     } = this.props
     const {
       round, // from logic
@@ -909,7 +924,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
             <ReactCameraRecorder
               ref={this.getCamera}
               onCanNotRecordHere={status => (
-                props.dispatch({ type: props.dispatch.TYPES.CanNotRecordHere }), (this.canNotRecordHere = status)
+                dispatch({ type: dispatch.TYPES.CanNotRecordHere }), (this.canNotRecordHere = status)
               )}
               onCameraStream={stream => (this.cameraStream = stream)}
               onCameraChange={() => this.nextMediaState('human')}
@@ -932,7 +947,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
               style={buttonBarStyle}
               allPaused={allPaused}
               isRecording={isRecording}
-              buttonLogic={this.buttonLogic}
+              buttonLogic={this.buttonList}
             />
           )}
           {permissionOverlay()}
