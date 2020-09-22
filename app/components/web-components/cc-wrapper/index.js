@@ -73,7 +73,15 @@ function CcWrapper(props) {
   })
   dispatch.TYPES = TYPES // pass the TYPES to the children - they can't be imported from here because this includes the children
   const Page = pages[ccState.pageToShow]
-  const [micCameraConstraintsState, micCameraConstraintsDispatch] = useMicCameraConstraints()
+  const [micCameraConstraintsState, micCameraConstraintsDispatch] = useMicCameraConstraints({
+    audio: {
+      echoCancellation: { exact: true },
+    },
+    video: {
+      width: { exact: 640 },
+      height: { exact: 360 },
+    },
+  })
   return (
     <div className={cx(classes['wrapper'], ccState.pageToShow !== PTS.ViewerRecorder && classes['scrollable'])}>
       <Page

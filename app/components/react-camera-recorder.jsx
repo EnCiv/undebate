@@ -107,7 +107,9 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
       if (props.onCameraStream) props.onCameraStream(stream)
       ok && ok(stream)
     } catch (e) {
+      setCanNotRecordHere(true)
       logger.error('navigator.getUserMedia error:', e.name, e.message)
+      if (props.onCanNotRecordHere) props.onCanNotRecordHere(true)
       ko && ko(e)
     }
   }
