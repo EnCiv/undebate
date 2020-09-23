@@ -38,7 +38,7 @@ export default function HangupButton({ style, className, title, disabled, onClic
           className={cx(classes.iconButton, valueOf(disabled) && classes.iconButtonDisabled)}
         />
       </div>
-      {interrogateIf && showPopUp && (
+      {interrogateIf && showPopUp ? (
         <div className={classes['hangUpButtonReally']}>
           {question ||
             'You have recorded video, did you really want to exit and delete it, rather than finish this and post it?'}
@@ -46,7 +46,7 @@ export default function HangupButton({ style, className, title, disabled, onClic
             x
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   )
 }
