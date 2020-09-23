@@ -29,6 +29,8 @@ import Icon from '../../lib/icon'
 import Agenda from '../../agenda-nav'
 import ButtonBar from './button-bar' // lowercase because using .call to pass this.
 
+import HangupButton from '../../hangup-button'
+
 class ViewerRecorder extends ViewerRecorderLogic {
   constructor(props) {
     super(props)
@@ -474,6 +476,20 @@ class ViewerRecorder extends ViewerRecorderLogic {
     this.reallyHangup()
   }
 
+  totalRecordedSize() {
+    let totalSize = 0
+    for (let round = 0; round < this.props.ccState.participants.human.speakingBlobs.length; round++) {
+      totalSize +=
+        (this.props.ccState.participants.human.speakingBlobs[round] &&
+          this.props.ccState.participants.human.speakingBlobs[round].size) ||
+        0
+    }
+    if (this.props.ccState.participants.human.listeningBlob) {
+      totalSize += this.props.ccState.participants.human.listeningBlob.size
+    }
+    return totalSize
+  }
+
   reallyHangup() {
     logger.info('Undebate.reallyHangup')
     this.camera && this.camera.releaseCamera()
@@ -777,27 +793,18 @@ class ViewerRecorder extends ViewerRecorderLogic {
       !ifShowPreamble &&
       !hungUp &&
       this.props.ccState.participants.human && (
-        <div className={classes['hangUpButton']}>
-          <button
-            onClick={this.hangup}
-            key="hangup"
-            title={hangupButton.title || 'Stop recording and delete all video stored in the browser.'}
-          >
-            {hangupButton.name || 'Hang Up'}
-          </button>
-          {totalSize_before_hangup ? (
-            <div className={classes['hangUpButtonReally']}>
-              {hangupButton.question ||
-                'You have recorded video, did you really want to exit and delete it, rather than finish this and post it?'}
-              <div
-                className={classes['hangUpButtonReallyClose']}
-                onClick={() => this.setState({ totalSize_before_hangup: 0 })}
-              >
-                x
-              </div>
-            </div>
-          ) : null}
-        </div>
+        <HangupButton
+          style={{
+            bottom: buttonBarStyle.bottom,
+            width: parseInt(buttonBarStyle.width) / Object.keys(this.buttonList).length + 'vw',
+            height: buttonBarStyle.height,
+          }}
+          className={classes.hangUpButton}
+          onClick={this.reallyHangup}
+          title={hangupButton.title || 'Stop recording and delete all video stored in the browser.'}
+          interrogateIf={this.totalRecordedSize()}
+          question={hangupButton.question}
+        />
       )
 
     const micButton = () =>
@@ -1033,46 +1040,8 @@ const styles = {
     },
   },
   hangUpButton: {
-    width: '12vw',
-    position: 'absolute',
-    left: '85vw',
-    bottom: '5vh',
-    '& button': {
-      cursor: 'pointer',
-      height: '5.5rem',
-      color: 'white',
-      background: 'linear-gradient(to bottom, #ff6745 0%,#ff5745 51%,#ff4745 100%)',
-      'border-radius': '7px',
-      'border-width': '2px',
-      'border-color': 'white',
-      'font-size': '1.25em',
-      padding: '1em',
-      height: '100%',
-      whiteSpace: 'no-wrap',
-    },
-  },
-  hangUpButtonReally: {
-    cursor: 'pointer',
-    display: 'inline-block',
-    position: 'absolute',
-    left: 0,
-    height: 'auto',
-    bottom: '12vh',
-    backgroundColor: 'white',
-    color: 'red',
-    borderRadius: '7px',
-    borderWidth: '2px',
-    borderColor: 'black',
-    borderStyle: 'solid',
-    padding: '0.5rem',
-  },
-  hangUpButtonReallyClose: {
-    top: 0,
     right: 0,
     position: 'absolute',
-    marginRight: '0.2rem',
-    cursor: 'pointer',
-    pointerEvents: 'auto',
   },
   finishButton: {
     cursor: 'pointer',
