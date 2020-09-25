@@ -8,22 +8,19 @@ const converter = new sd.Converter()
 
 const useStyles = createUseStyles({
   wrapper: {
+    fontFamily: 'Libre Franklin',
     margin: '4em',
+    '& p': {
+      width: '100%',
+      '& img': {
+        width: '100%',
+      },
+    },
   },
 })
 
 const RecorderInstructions = ({ defaultRecorderInstructions: { post } }) => {
   const { wrapper } = useStyles()
-  const text = `
-  **convert**
-
-  *this*
-
-    - text
-  + to 
-
-  # markdown
-  `
 
   const html = converter.makeHtml(post)
   return <div className={wrapper}>{ReactHtmlParser(html)}</div>
