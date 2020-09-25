@@ -9,7 +9,14 @@ const converter = new sd.Converter()
 const useStyles = createUseStyles({
   wrapper: {
     fontFamily: 'Libre Franklin',
+    fontSize: '1.3em',
     margin: '4em',
+    '& h1': {
+      fontSize: '2em',
+      textAlign: 'center',
+      marginBottom: '1em',
+    },
+    '& li': { marginTop: '0.6em' },
     '& p': {
       width: '100%',
       '& img': {
