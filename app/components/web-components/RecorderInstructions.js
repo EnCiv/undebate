@@ -10,19 +10,27 @@ const useStyles = createUseStyles({
   wrapper: {
     fontFamily: 'Libre Franklin',
     fontSize: '1.3em',
-    margin: '4em',
+    margin: '4em auto',
+    maxWidth: '1200px',
+    width: '88vw',
+
     '& h1': {
       fontSize: '2em',
       textAlign: 'center',
       marginBottom: '1em',
     },
+
     '& li': { marginTop: '0.6em' },
+
     '& p': {
       width: '100%',
+
       '& img': {
         width: '100%',
       },
     },
+
+    '@media (min-width: 800px)': { fontSize: '2em' },
   },
 })
 
