@@ -5648,7 +5648,7 @@
   },
   {
     "_id": {
-      "$oid": "5f63f2f3b1ca8900179ceac0"
+      "$oid": "5f74cc787c213e54713d7fc7"
     },
     "component": {
       "component": "MergeChildren"
@@ -5696,7 +5696,7 @@
       },
       "metaTags": ["property=\"og:title\" content=\"Connecticut House of Representatives District 1\""]
     },
-    "path": "/country:us/state:ct/state-legislative-lower:connecticut-house-of-representatives-district-1/stage:general/2020-11-03",
+    "path": "/test/country:us/state:ct/state-legislative-lower:connecticut-house-of-representatives-district-1/stage:general/2020-11-03",
     "subject": "Connecticut House of Representatives District 1",
     "bp_info": {
       "stage_id": "39472",
