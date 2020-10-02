@@ -153,6 +153,12 @@ class HttpServer extends EventEmitter {
   router() {
     /*if ( process.env.NODE_ENV !== 'production' ) */ this.timeout()
     this.getBrowserConfig()
+    // Loader.io on Heroku requires the server to respond to their token request in order to validate
+    if (process.env.LOADERIO_TOKEN)
+      this.app.get('/' + process.env.LOADERIO_TOKEN + '/', (req, res) => {
+        res.type('text/plain')
+        res.send(process.env.LOADERIO_TOKEN)
+      })
     this.app.get('/robots.txt', (req, res) => {
       res.type('text/plain')
       res.send('User-agent: *\nAllow: /')
