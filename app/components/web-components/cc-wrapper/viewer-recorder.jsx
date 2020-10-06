@@ -30,6 +30,7 @@ import Agenda from '../../agenda-nav'
 import ButtonBar from './button-bar' // lowercase because using .call to pass this.
 
 import HangupButton from '../../hangup-button'
+import BeginButton from '../../begin-button'
 
 class ViewerRecorder extends ViewerRecorderLogic {
   constructor(props) {
@@ -647,6 +648,18 @@ class ViewerRecorder extends ViewerRecorderLogic {
         </div>
       )
 
+    const beginOverlay = () =>
+      !begin &&
+      !done && (
+        <div className={cx(classes['outerBox'], classes['beginBox'])}>
+          <div style={{ width: '100%', height: '100%', display: 'table' }}>
+            <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
+              <BeginButton onClick={this.beginButton} {...this.props.beginButton} />
+            </div>
+          </div>
+        </div>
+      )
+
     const permissionOverlay = () =>
       requestPermission && (
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
@@ -949,14 +962,13 @@ class ViewerRecorder extends ViewerRecorderLogic {
           ref={this.calculatePositionAndStyle}
         >
           {videos()}
-          {(bot || (begin && intro && !finishUp && !done)) && (
-            <ButtonBar
-              style={buttonBarStyle}
-              allPaused={allPaused}
-              isRecording={isRecording}
-              buttonLogic={this.buttonList}
-            />
-          )}
+          <ButtonBar
+            style={buttonBarStyle}
+            allPaused={allPaused}
+            isRecording={isRecording}
+            buttonLogic={this.buttonList}
+          />
+          {!participants.human && !bot && beginOverlay()}
           {permissionOverlay()}
           {waitingOnModeratorOverlay()}
           {renderHangupButton()}
