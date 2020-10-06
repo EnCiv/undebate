@@ -31,7 +31,7 @@ if (typeof window !== 'undefined') {
     window.NoSocket = true
     window.socket = {
       emit: (...args) => {
-        logger.error('emit was called with', ...args)
+        console.error('emit was called with', ...args)
       },
     }
   }
@@ -46,7 +46,20 @@ window.reactSetPath = path => {
 
 // process has to be defined before log4js is imported on the browser side.
 if (typeof window !== 'undefined') {
-  if (typeof __webpack_public_path__ !== 'undefined') {
+  if (window.NoSocket) {
+    log4js.configure({
+      appenders: { bconsole: { type: bconsole }, socketlogger: { type: socketlogger } },
+      categories: {
+        default: { appenders: ['bconsole', 'socketlogger'], level: window.env === 'production' ? 'info' : 'trace' },
+      },
+      disableClustering: true,
+    })
+  } else if (typeof __webpack_public_path__ !== 'undefined') {
+    console.error(
+      '__webpack_public_path__',
+      typeof __webpack_public_path__,
+      typeof __webpack_public_path__ && __webpack_public_path__
+    )
     // if using web pack, this will be set on the browser. Dont' set it on the server
     __webpack_public_path__ = 'http://localhost:3011/assets/webpack/'
     process.env.LOG4JS_CONFIG = { appenders: [] } // webpack doesn't initialize the socket logger right - so just prevent log4js from initializing loggers
@@ -62,23 +75,13 @@ if (typeof window !== 'undefined') {
     //process.env.LOG4JS_CONFIG= {appenders: [{ type: 'bconsole' }, {type: 'socketlogger'}]};
     process.env.LOG4JS_CONFIG = { appenders: [] } // webpack doesn't initialize the socket logger right - so just prevent log4js from initializing loggers
     var log4js = require('log4js')
-    if (window.NoSocket) {
-      log4js.configure({
-        appenders: { bconsole: { type: bconsole }, socketlogger: { type: socketlogger } },
-        categories: {
-          default: { appenders: ['bconsole', 'socketlogger'], level: window.env === 'production' ? 'info' : 'trace' },
-        },
-        disableClustering: true,
-      })
-    } else {
-      log4js.configure({
-        appenders: { bconsole: { type: bconsole } },
-        categories: {
-          default: { appenders: ['bconsole'], level: 'error' },
-        },
-        disableClustering: true,
-      })
-    }
+    log4js.configure({
+      appenders: { bconsole: { type: bconsole } },
+      categories: {
+        default: { appenders: ['bconsole'], level: 'error' },
+      },
+      disableClustering: true,
+    })
   }
 
   window.logger = log4js.getLogger('browser')
