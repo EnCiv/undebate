@@ -20,7 +20,7 @@ const ShadowBox = 10
 
 import ConversationHeader from '../../conversation-header'
 
-import ReactCameraRecorder from '../../react-camera-recorder'
+import ReactCameraRecorder from './react-camera-recorder'
 import ReactMicMeter from '../../react-mic-meter'
 
 import Modal from '../Modal'
