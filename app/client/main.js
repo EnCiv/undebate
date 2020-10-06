@@ -46,6 +46,8 @@ window.reactSetPath = path => {
 
 // process has to be defined before log4js is imported on the browser side.
 if (typeof window !== 'undefined') {
+  process.env.LOG4JS_CONFIG = { appenders: [] } // webpack doesn't initialize the socket logger right - so just prevent log4js from initializing loggers
+  var log4js = require('log4js')
   if (window.NoSocket) {
     log4js.configure({
       appenders: { bconsole: { type: bconsole }, socketlogger: { type: socketlogger } },
@@ -62,8 +64,6 @@ if (typeof window !== 'undefined') {
     )
     // if using web pack, this will be set on the browser. Dont' set it on the server
     __webpack_public_path__ = 'http://localhost:3011/assets/webpack/'
-    process.env.LOG4JS_CONFIG = { appenders: [] } // webpack doesn't initialize the socket logger right - so just prevent log4js from initializing loggers
-    var log4js = require('log4js')
     log4js.configure({
       appenders: { bconsole: { type: bconsole }, socketlogger: { type: socketlogger } },
       categories: {
@@ -72,9 +72,6 @@ if (typeof window !== 'undefined') {
       disableClustering: true,
     })
   } else {
-    //process.env.LOG4JS_CONFIG= {appenders: [{ type: 'bconsole' }, {type: 'socketlogger'}]};
-    process.env.LOG4JS_CONFIG = { appenders: [] } // webpack doesn't initialize the socket logger right - so just prevent log4js from initializing loggers
-    var log4js = require('log4js')
     log4js.configure({
       appenders: { bconsole: { type: bconsole } },
       categories: {
