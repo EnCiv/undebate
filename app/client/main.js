@@ -50,9 +50,9 @@ if (typeof window !== 'undefined') {
   var log4js = require('log4js')
   if (window.NoSocket) {
     log4js.configure({
-      appenders: { bconsole: { type: bconsole }, socketlogger: { type: socketlogger } },
+      appenders: { bconsole: { type: bconsole } },
       categories: {
-        default: { appenders: ['bconsole', 'socketlogger'], level: window.env === 'production' ? 'info' : 'trace' },
+        default: { appenders: ['bconsole'], level: 'error' },
       },
       disableClustering: true,
     })
@@ -73,9 +73,9 @@ if (typeof window !== 'undefined') {
     })
   } else {
     log4js.configure({
-      appenders: { bconsole: { type: bconsole } },
+      appenders: { bconsole: { type: bconsole }, socketlogger: { type: socketlogger } },
       categories: {
-        default: { appenders: ['bconsole'], level: 'error' },
+        default: { appenders: ['bconsole', 'socketlogger'], level: window.env === 'production' ? 'info' : 'trace' },
       },
       disableClustering: true,
     })
