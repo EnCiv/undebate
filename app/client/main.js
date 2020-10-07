@@ -9,81 +9,65 @@ import App from '../components/app'
 import bconsole from './bconsole'
 import socketlogger from './socketlogger'
 
-if (typeof window !== 'undefined') {
-  if (!(location.hostname.startsWith('cc2020') || location.hostname.startsWith('undebate-stage1'))) {
-    window.socket = io()
-    if (typeof window !== 'undefined') {
-      window.addEventListener('unload', e => {
-        // Cancel the event
-        //e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
-        // Chrome requires returnValue to be set
-        e.returnValue = ''
-        window.socket.disconnect(true) // disconnect the socket so we don't see fewer connection timeouts on the server
-      })
-    }
-    window.socket.on('welcome', user => {
-      /*if ( ! user ) {
+if (!(location.hostname.startsWith('cc2020') || location.hostname.startsWith('undebate-stage1'))) {
+  // do not use socket.io if connecting through the CDN. socket.io will not connect and it will get an error
+  window.socket = io()
+  window.addEventListener('unload', e => {
+    // Cancel the event
+    //e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+    // Chrome requires returnValue to be set
+    e.returnValue = ''
+    window.socket.disconnect(true) // disconnect the socket so we don't see fewer connection timeouts on the server
+  })
+  window.socket.on('welcome', user => {
+    /*if ( ! user ) {
         new Facebook().on('ready', () => Facebook.connect(false));
       }*/
-      render(Object.assign({}, reactProps, { user }))
-    })
-  } else {
-    window.NoSocket = true
-    window.socket = {
-      emit: (...args) => {
-        console.error('emit was called with', ...args)
-      },
-    }
+    render(Object.assign({}, reactProps, { user }))
+  })
+} else {
+  window.NoSocket = true
+  window.socket = {
+    emit: (...args) => {
+      console.error('emit was called with', ...args)
+    },
   }
-}
-
-window.reactSetPath = path => {
-  ReactDOM.unmountComponentAtNode(window.reactContainer)
-  reactProps.path = path
-  window.history.pushState({}, '', path)
-  render(reactProps)
 }
 
 // process has to be defined before log4js is imported on the browser side.
-if (typeof window !== 'undefined') {
-  process.env.LOG4JS_CONFIG = { appenders: [] } // webpack doesn't initialize the socket logger right - so just prevent log4js from initializing loggers
-  var log4js = require('log4js')
-  if (window.NoSocket) {
-    log4js.configure({
-      appenders: { bconsole: { type: bconsole } },
-      categories: {
-        default: { appenders: ['bconsole'], level: 'error' },
-      },
-      disableClustering: true,
-    })
-  } else if (typeof __webpack_public_path__ !== 'undefined') {
-    console.error(
-      '__webpack_public_path__',
-      typeof __webpack_public_path__,
-      typeof __webpack_public_path__ && __webpack_public_path__
-    )
-    // if using web pack, this will be set on the browser. Dont' set it on the server
-    __webpack_public_path__ = 'http://localhost:3011/assets/webpack/'
-    log4js.configure({
-      appenders: { bconsole: { type: bconsole }, socketlogger: { type: socketlogger } },
-      categories: {
-        default: { appenders: ['bconsole', 'socketlogger'], level: window.env === 'production' ? 'info' : 'trace' },
-      },
-      disableClustering: true,
-    })
-  } else {
-    log4js.configure({
-      appenders: { bconsole: { type: bconsole }, socketlogger: { type: socketlogger } },
-      categories: {
-        default: { appenders: ['bconsole', 'socketlogger'], level: window.env === 'production' ? 'info' : 'trace' },
-      },
-      disableClustering: true,
-    })
-  }
-
-  window.logger = log4js.getLogger('browser')
-  logger.info('client main running on browser', window.location.pathname, reactProps.browserConfig)
+process.env.LOG4JS_CONFIG = { appenders: [] } // webpack doesn't initialize the socket logger right - so just prevent log4js from initializing loggers
+var log4js = require('log4js')
+if (window.NoSocket) {
+  log4js.configure({
+    appenders: { bconsole: { type: bconsole } },
+    categories: {
+      default: { appenders: ['bconsole'], level: 'error' },
+    },
+    disableClustering: true,
+  })
+} else if (typeof __webpack_public_path__ !== 'undefined') {
+  // if using web pack, this will be set on the browser. Dont' set it on the server
+  __webpack_public_path__ = 'http://localhost:3011/assets/webpack/'
+  log4js.configure({
+    appenders: { bconsole: { type: bconsole }, socketlogger: { type: socketlogger } },
+    categories: {
+      default: { appenders: ['bconsole', 'socketlogger'], level: window.env === 'production' ? 'info' : 'trace' },
+    },
+    disableClustering: true,
+  })
+} else {
+  // haven't seen this case in a while. mostly, __webpack_public_path is ''
+  log4js.configure({
+    appenders: { bconsole: { type: bconsole }, socketlogger: { type: socketlogger } },
+    categories: {
+      default: { appenders: ['bconsole', 'socketlogger'], level: window.env === 'production' ? 'info' : 'trace' },
+    },
+    disableClustering: true,
+  })
 }
+
+window.logger = log4js.getLogger('browser')
+logger.info('client main running on browser', window.location.pathname, reactProps.browserConfig)
 
 function render(props) {
   try {
