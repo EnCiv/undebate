@@ -31,13 +31,14 @@ if (!(location.hostname.startsWith('cc2020') || location.hostname.startsWith('un
     emit: (...args) => {
       console.error('emit was called with', ...args)
     },
+    NoSocket: true,
   }
 }
 
 // process has to be defined before log4js is imported on the browser side.
 process.env.LOG4JS_CONFIG = { appenders: [] } // webpack doesn't initialize the socket logger right - so just prevent log4js from initializing loggers
 var log4js = require('log4js')
-if (window.NoSocket) {
+if (window.socket.NoSocket) {
   log4js.configure({
     appenders: { bconsole: { type: bconsole } },
     categories: {

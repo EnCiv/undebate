@@ -208,6 +208,7 @@ class SiteFeedback extends React.Component {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   render() {
+    if (typeof window !== 'undefined' && window.socket.NoSocket) return null
     const { className, classes } = this.props
     let w,
       h,
