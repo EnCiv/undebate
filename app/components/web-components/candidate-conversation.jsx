@@ -1576,6 +1576,11 @@ class RASPUndebate extends React.Component {
   ]
 
   allPause() {
+    gtag('event', 'button', {
+      event_category: 'viewer',
+      event_label: 'AllPause',
+      value: this.state.allPause ? 1 : 0,
+    })
     if (!this.state.begin) {
       this.beginButton()
     } else if (!this.state.allPaused) {
