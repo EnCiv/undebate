@@ -63,7 +63,7 @@ function serverReactRender(req, res, next) {
     const googleAnalytics = () =>
       process.env.GOOGLE_ANALYTICS
         ? `<!-- Global site tag (gtag.js) - Google Analytics -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-158107083-2"></script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS}"></script>
       <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -80,6 +80,7 @@ function serverReactRender(req, res, next) {
                     <title>${(props.iota && props.iota.subject) || 'Candidate Conversations'}</title>
                     <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
                     <meta name='viewport' content='width=device-width, maximum-scale=1.0, initial-scale=1.0' />
+                    ${googleAnalytics()}
                     <link rel='icon' type='image.png' href='/assets/images/favicon-16x16.png' sizes='16x16'/>
                     <link rel='icon' type='image/png' href='/assets/images/favicon-32x32.png' sizes='32x32'/>
                     <link rel="apple-touch-icon" sizes="180x180"  href="/assets/images/apple-touch-icon.png" />
@@ -103,7 +104,6 @@ function serverReactRender(req, res, next) {
                     <script src='/socket.io/socket.io.js' ></script>
                     <script src='/assets/webpack/main.js' ></script>
                     <script src='/assets/js/socket.io-stream.js'></script>
-                    ${googleAnalytics()}
                     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
                 </body>
             </html>`
