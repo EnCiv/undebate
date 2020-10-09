@@ -3137,7 +3137,11 @@ class Undebate extends React.Component {
                 instructionLink={instructionLink}
                 timeLimits={participants.moderator.timeLimits}
               />
-              <div style={{ display: 'flex', justifyContent: 'center', margin: '20px' }}>{candidateLookup()}</div>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', margin: '2rem 0' }}>
+                  {candidateLookup()}
+                </div>
+              </div>
             </>
           )}
           {ending()}

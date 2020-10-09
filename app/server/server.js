@@ -17,6 +17,7 @@ import tempIdRoute from './routes/temp-id'
 import signOutRoute from './routes/sign-out'
 import setUserCookie from './routes/set-user-cookie'
 import serverReactRender from './routes/server-react-render'
+import sendLinkRoute from './routes/send-recorder-link-route'
 
 import User from '../models/user'
 import Iota from '../models/iota'
@@ -139,6 +140,8 @@ class HttpServer extends EventEmitter {
     this.app.all('/tempid', tempIdRoute, this.setUserCookie, sendUserId)
 
     this.app.all('/sign/out', signOutRoute)
+
+    this.app.post('/send/recorder-link', sendLinkRoute)
   }
 
   router() {
