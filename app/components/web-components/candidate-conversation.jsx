@@ -2110,6 +2110,7 @@ class RASPUndebate extends React.Component {
 
   beginButton(e) {
     logger.info('CandidateConversation.beginButton')
+    dataLayer.push({ event: 'beginButton' })
     if (this.audioSets && this.audioSets.intro) {
       this.setState({ intro: true, stylesSet: true }, () => {
         this.playAudioObject('audio', this.audioSets.intro, this.onIntroEnd.bind(this))
