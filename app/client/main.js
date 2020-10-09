@@ -9,7 +9,20 @@ import App from '../components/app'
 import bconsole from './bconsole'
 import socketlogger from './socketlogger'
 
-if (!(location.hostname.startsWith('cc2020') || location.hostname.startsWith('undebate-stage1'))) {
+if (
+  !(
+    // don't do sockets in these cases
+    (
+      location.hostname.startsWith('cc2020') || // host is the CDN
+      location.hostname.startsWith('undebate-stage1') || // host is stage-1 for testing
+      (reactProps.iota &&
+        reactProps.iota.webComponent &&
+        reactProps.iota.webComponent.participants &&
+        !reactProps.iota.webComponent.participants.human &&
+        window.env === 'production')
+    ) // production this is a viewer and not a recorder
+  )
+) {
   // do not use socket.io if connecting through the CDN. socket.io will not connect and it will get an error
   window.socket = io()
   window.addEventListener('unload', e => {

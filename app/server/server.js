@@ -251,6 +251,10 @@ class HttpServer extends EventEmitter {
           next(err)
         }
       },
+      (req, res, next) => {
+        if (process.env.NODE_ENV === 'production') res.set('Cache-Control', `public, max-age=${60 * 60}`)
+        next()
+      }, // age in seconds - only an hour because candidates may be added, or rerecord
       serverReactRender
     )
   }
@@ -302,7 +306,10 @@ class HttpServer extends EventEmitter {
   }
 
   cdn() {
-    this.app.use('/assets/', express.static('assets'))
+    this.app.use(
+      '/assets/',
+      express.static('assets', { maxAge: process.env.NODE_ENV === 'production' ? 14 * 24 * 60 * 60 * 1000 : 0 })
+    ) // max-age in ms - 14 days these things only change through development
   }
 
   notFound() {
