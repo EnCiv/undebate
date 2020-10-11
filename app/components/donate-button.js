@@ -47,10 +47,11 @@ function DonateButton({
         <button
           onClick={() => {
             logger.info('DonateButton.onClick from', window.location.pathname, url, name, callToAction)
-            gtag('event', 'button', {
-              event_category: 'viewer',
-              event_label: 'Donate',
-            })
+            window.gtag &&
+              window.gtag('event', 'button', {
+                event_category: 'viewer',
+                event_label: 'Donate',
+              })
             let win = window.open(url, '_blank')
             win.focus()
           }}
