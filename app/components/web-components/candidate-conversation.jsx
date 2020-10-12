@@ -1576,11 +1576,12 @@ class RASPUndebate extends React.Component {
   ]
 
   allPause() {
-    gtag('event', 'button', {
-      event_category: 'viewer',
-      event_label: 'AllPause',
-      value: this.state.allPause ? 1 : 0,
-    })
+    window.gtag &&
+      window.gtag('event', 'button', {
+        event_category: 'viewer',
+        event_label: 'AllPause',
+        value: this.state.allPause ? 1 : 0,
+      })
     if (!this.state.begin) {
       this.beginButton()
     } else if (!this.state.allPaused) {
@@ -1653,11 +1654,12 @@ class RASPUndebate extends React.Component {
   prevSection() {
     var { seatOffset, round } = this.state
     logger.info('CandidateConversation.prevSection', seatOffset, round)
-    gtag('event', 'button', {
-      event_category: 'viewer',
-      event_label: 'PrevSection',
-      value: round,
-    })
+    window.gtag &&
+      window.gtag('event', 'button', {
+        event_category: 'viewer',
+        event_label: 'PrevSection',
+        value: round,
+      })
     seatOffset = 0
     round -= 1
     if (round < 0) round = 0
@@ -1667,11 +1669,12 @@ class RASPUndebate extends React.Component {
   prevSpeaker() {
     var { seatOffset, round } = this.state
     logger.info('CandidateConversation.prevSpeaker', seatOffset, round)
-    gtag('event', 'button', {
-      event_category: 'viewer',
-      event_label: 'PrevSpeaker',
-      value: seatOffset,
-    })
+    window.gtag &&
+      window.gtag('event', 'button', {
+        event_category: 'viewer',
+        event_label: 'PrevSpeaker',
+        value: seatOffset,
+      })
     if (this.numParticipants === 1) {
       round -= 1
       if (round < 0) round = 0
@@ -1695,11 +1698,12 @@ class RASPUndebate extends React.Component {
 
   nextSection() {
     var { seatOffset, round } = this.state
-    gtag('event', 'button', {
-      event_category: 'viewer',
-      event_label: 'NextSection',
-      value: round,
-    })
+    window.gtag &&
+      window.gtag('event', 'button', {
+        event_category: 'viewer',
+        event_label: 'NextSection',
+        value: round,
+      })
     logger.info('CandidateConversation.nextSection', seatOffset, round)
     if (this.numParticipants === 1) {
       round += 1
@@ -1714,11 +1718,12 @@ class RASPUndebate extends React.Component {
 
   nextSpeaker() {
     var { seatOffset, round } = this.state
-    gtag('event', 'button', {
-      event_category: 'viewer',
-      event_label: 'NextSpeaker',
-      value: seatOffset,
-    })
+    window.gtag &&
+      window.gtag('event', 'button', {
+        event_category: 'viewer',
+        event_label: 'NextSpeaker',
+        value: seatOffset,
+      })
     logger.info('CandidateConversation.nextSpeaker', seatOffset, round)
     if (this.numParticipants === 1) {
       round += 1
@@ -2135,10 +2140,11 @@ class RASPUndebate extends React.Component {
 
   beginButton(e) {
     logger.info('CandidateConversation.beginButton')
-    gtag('event', 'button', {
-      event_category: 'viewer',
-      event_label: 'BeginButton',
-    })
+    window.gtag &&
+      window.gtag('event', 'button', {
+        event_category: 'viewer',
+        event_label: 'BeginButton',
+      })
     if (this.audioSets && this.audioSets.intro) {
       this.setState({ intro: true, stylesSet: true }, () => {
         this.playAudioObject('audio', this.audioSets.intro, this.onIntroEnd.bind(this))
