@@ -8,6 +8,7 @@ const Preinject = props => {
   const [formValues, setFormValues] = useState({
     email: 'hello',
     name: '',
+    message: '',
   })
   const [infoMessage, setInfoMessage] = useState(null)
   const { classes } = props
@@ -26,6 +27,10 @@ const Preinject = props => {
           logger.error('Send recorder link error', err)
         }
         setInfoMessage(null)
+        if (res.statusCode === 200) {
+          logger.info('successfully posted')
+          setFormValues({ message: res.body.message })
+        }
       })
   }
 
@@ -76,4 +81,4 @@ const styles = {
   },
 }
 
-export const CandidateLookup = injectSheet(styles)(Preinject)
+export default injectSheet(styles)(Preinject)

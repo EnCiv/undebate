@@ -5645,5 +5645,16 @@
         }
       ]
     }
+  },
+  {
+    "_id": {
+      "$oid": "5eb5ae7fe7179a42f1751995"
+    },
+    "path": "/send-recording-link",
+    "subject": "Sends the candidate a link to the recording",
+    "description": "Did you forget where your link is located, type in your email and name to retrieve it.",
+    "webComponent": {
+      "webComponent": "SendRecordingLink"
+    }
   }
 ]

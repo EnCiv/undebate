@@ -3,7 +3,7 @@ import { FormInput } from './formInput'
 import { LookupBtn } from './lookupBtn'
 
 export const LookupForm = ({ isDisabled, classes, formValues, handleChange, handleLogin }) => {
-  const { email, name } = formValues
+  const { email, name, message } = formValues
   return (
     <>
       <FormInput
@@ -29,8 +29,7 @@ export const LookupForm = ({ isDisabled, classes, formValues, handleChange, hand
           handleClick={handleLogin}
         />
       </div>
-      <h3>{email}</h3>
-      <h2>{name}</h2>
+      <h3>{message}</h3>
     </>
   )
 }

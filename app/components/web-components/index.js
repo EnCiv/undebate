@@ -16,6 +16,7 @@ const WebComponents = {
   HartfordVotes: require('./HartfordVotes'),
   FAQ: require('./FAQ'),
   About: require('./About'),
+  SendRecordingLink: require('./candidate-lookup'),
 }
 
 import React from 'react'
