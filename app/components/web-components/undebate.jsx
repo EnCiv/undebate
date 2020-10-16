@@ -7,7 +7,6 @@ import Join from '../join'
 import Input from '../lib/input'
 import SocialShareBtn from '../lib/socialShareBtn'
 import { AuthForm } from '../auth-form/index'
-import { CandidateLookup } from '../candidate-lookup/index'
 
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep'
@@ -2745,8 +2744,6 @@ class Undebate extends React.Component {
         </>
       )
 
-    const candidateLookup = () => <CandidateLookup />
-
     const ending = () =>
       done &&
       !hungUp && (
@@ -3137,11 +3134,6 @@ class Undebate extends React.Component {
                 instructionLink={instructionLink}
                 timeLimits={participants.moderator.timeLimits}
               />
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', margin: '2rem 0' }}>
-                  {candidateLookup()}
-                </div>
-              </div>
             </>
           )}
           {ending()}
