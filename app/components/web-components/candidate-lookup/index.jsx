@@ -6,7 +6,7 @@ import { LookupForm } from './lookupForm'
 const Preinject = props => {
   const [isDiabled, setIsDisabled] = useState(true)
   const [formValues, setFormValues] = useState({
-    email: 'hello',
+    email: '',
     name: '',
     message: '',
   })
@@ -35,15 +35,22 @@ const Preinject = props => {
   }
 
   return (
-    <div className={props.classes.LookupContainer}>
-      <form onSubmit={handleLogin}>
+    <div className={props.classes.Container}>
+      <form onSubmit={handleLogin} className={props.classes.LookupForm}>
         <LookupForm classes={classes} formValues={formValues} handleChange={handleChange} handleLogin={handleLogin} />
       </form>
     </div>
   )
 }
 const styles = {
-  LookupContainer: {
+  Container: {
+    display: 'flex',
+    justifyContent: 'center',
+    fontFamily: 'Montserrat , sans-serif',
+    fontSize: '13px',
+    marginTop: '3rem',
+  },
+  LookupForm: {
     border: '0.5px solid black',
     padding: '3rem',
     display: 'flex',
