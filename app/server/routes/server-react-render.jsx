@@ -72,6 +72,18 @@ function serverReactRender(req, res, next) {
       </script>`
         : ''
 
+    const ifLoadSockets = () =>
+      req.hostname.startsWith('cc2020') || // host is the CDN
+      req.hostname.startsWith('undebate-stage1') || // host is stage-1 for testing
+      (props.env === 'production' &&
+        props.iota &&
+        props.iota.webComponent &&
+        props.iota.webComponent.participants &&
+        !props.iota.webComponent.participants.human)
+        ? ''
+        : `                   <script src='/socket.io/socket.io.js' ></script>
+                    <script src='/assets/js/socket.io-stream.js'></script>`
+
     return res.send(
       `<!doctype html>
             <html>
@@ -101,9 +113,8 @@ function serverReactRender(req, res, next) {
                 <body style="margin: 0; padding: 0">
                     <div id="synapp">${body}</div>
                     ${ifES6()}
-                    <script src='/socket.io/socket.io.js' ></script>
+                    ${ifLoadSockets()}
                     <script src='/assets/webpack/main.js' ></script>
-                    <script src='/assets/js/socket.io-stream.js'></script>
                     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
                 </body>
             </html>`
