@@ -27,18 +27,33 @@ const Preinject = props => {
           logger.error('Send recorder link error', err)
         }
         setInfoMessage(null)
-        if (res.statusCode === 200) {
-          logger.info('successfully posted')
-          setFormValues({ message: res.body.message })
+        switch (res.statusCode) {
+          case 200:
+            logger.info('successfully posted')
+            setFormValues({ message: res.body.message })
+            break
+          case 429:
+            setFormValues({
+              message: 'Too many attempts logging in, try again in 24 hrs',
+            })
+            break
+          default:
+            setFormValues({
+              message: 'Make sure the information you entered is correct.',
+            })
+            break
         }
       })
   }
 
   return (
     <div className={props.classes.Container}>
-      <form onSubmit={handleLogin} className={props.classes.LookupForm}>
-        <LookupForm classes={classes} formValues={formValues} handleChange={handleChange} handleLogin={handleLogin} />
-      </form>
+      <div className={props.classes.Form}>
+        <h1>Email Recording Link</h1>
+        <form onSubmit={handleLogin} className={props.classes.LookupForm}>
+          <LookupForm classes={classes} formValues={formValues} handleChange={handleChange} handleLogin={handleLogin} />
+        </form>
+      </div>
     </div>
   )
 }
@@ -49,6 +64,11 @@ const styles = {
     fontFamily: 'Montserrat , sans-serif',
     fontSize: '13px',
     marginTop: '3rem',
+  },
+  Form: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginBottom: '1rem',
   },
   LookupForm: {
     border: '0.5px solid black',

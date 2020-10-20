@@ -141,7 +141,7 @@ class HttpServer extends EventEmitter {
 
     this.app.all('/sign/out', signOutRoute)
 
-    this.app.post('/send/recorder-link', sendLinkRoute)
+    this.app.post('/send/recorder-link', apiLimiter, sendLinkRoute)
   }
 
   router() {
