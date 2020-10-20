@@ -27,10 +27,11 @@ function sendLinkRoute(req, res, next) {
 }
 
 async function FetchLink({ name, email }) {
+  let sendto
   if (process.env.NODE_ENV === 'development') {
-    let sendto = process.env.EMAIL_MANAGER
+    sendto = process.env.EMAIL_MANAGER
   } else {
-    let sendto = email
+    sendto = email
   }
 
   try {
@@ -92,6 +93,7 @@ async function FetchLink({ name, email }) {
       }
     )
   } catch (err) {
+    logger.info('here it is', sendto)
     let firstname = name.split(' ')[0]
     let sendBpInfo = {
       to: [
