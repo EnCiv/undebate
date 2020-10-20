@@ -114,7 +114,7 @@ function serverReactRender(req, res, next) {
                     ${ifES6()}
                     ${ifLoadSockets() ? '<script src="/socket.io/socket.io.js" ></script>' : ''}
                     <script src='/assets/webpack/main.js' ></script>
-                    ${ifLoadSockets() ? '<script src="/assets/js/socket.io-stream.js"></script>`' : ''}
+                    ${ifLoadSockets() ? '<script src="/assets/js/socket.io-stream.js"></script>' : ''}
                     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
                 </body>
             </html>`
