@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useLayoutEffect, useRef, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import cx from 'classnames'
 import { createUseStyles } from 'react-jss'
-import fitFontToRef from './lib/fit-font-to-ref'
+import FitFontToBottom from './lib/fit-font-to-bottom'
 
 function getSeconds(wordTimeObj) {
   return parseFloat(wordTimeObj.seconds + '.' + wordTimeObj.nanos)
@@ -65,10 +65,8 @@ const Transcription = ({ transcript, element, language }) => {
   const classes = useStyles()
   const { transcription } = classes
   const [currentTime, setCurrentTime] = useState(0)
-  const outerRef = useRef(null)
   const sentences = useMemo(() => getSentences(transcript, language), [transcript, language])
   const bottomForTranscription = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-  const fontSize = fitFontToRef(outerRef, defaultFontSize, bottomForTranscription, [transcript, bottomForTranscription])
 
   useEffect(() => {
     var timer
@@ -121,9 +119,14 @@ const Transcription = ({ transcript, element, language }) => {
     }, [])
 
   return (
-    <div className={transcription} ref={outerRef} style={{ fontSize: fontSize + 'rem' }}>
+    <FitFontToBottom
+      className={transcription}
+      startFontSize={defaultFontSize}
+      bottom={bottomForTranscription}
+      dependents={[transcript, bottomForTranscription]}
+    >
       {showSentences()}
-    </div>
+    </FitFontToBottom>
   )
 }
 

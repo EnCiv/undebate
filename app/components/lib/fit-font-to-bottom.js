@@ -1,28 +1,29 @@
 'use strict'
 
 /**
- * this function will return a fontSize.  It will iterate through hi-low gueses of the font size, until it comes to one where the bottom of ref is not below bottom.
+ * This function will render a div, with it's children, and adjust the fontSize of the div so that it's bottom doesn't go below bottom
  *
  * ref = the useRef of the element that needs to fit
- * minFontSize = if the calculated fontSize is bigger than minFontSize and the ref's bottom is less than bottom, the iteration is done.
+ * startFontSize = is the fontSize to start with. It should be a number of rem's.  If this font fits, no change is made. If it's too big, the iteration process begins
  * bottom = the bottom px measure not to go below  - as in clientBoundingRect().bottom of the ref you don't want to go below
  * dependents = and array [] of variables that should trigger a recalculation if they change
  *
  */
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useLayoutEffect, useRef } from 'react'
 
-export default function fitFontToRef(ref, minFontSize, bottom, dependents) {
-  const [fontSize, setFontSize] = useState(minFontSize)
+export default function FitFontToBottom({ className, style = {}, startFontSize, bottom, dependents, children }) {
+  const ref = useRef(null)
+  const [fontSize, setFontSize] = useState(startFontSize)
   const [fontResolved, setFontResolved] = useState(false)
-  const [highFontSize, setHighFontSize] = useState(minFontSize)
+  const [highFontSize, setHighFontSize] = useState(startFontSize)
   const [lowFontSize, setLowFontSize] = useState(0)
 
   useLayoutEffect(() => {
     // when we switch to a new transcript, after we have shrunk the fontSize for the previous transcription, when we need go back to the default font size because the new one may fit. But then we need to shrink if it doesn't
     if (fontResolved) {
-      setFontSize(minFontSize)
+      setFontSize(startFontSize)
       setLowFontSize(0)
-      setHighFontSize(minFontSize)
+      setHighFontSize(startFontSize)
       setFontResolved(false)
     }
   }, dependents)
@@ -35,7 +36,7 @@ export default function fitFontToRef(ref, minFontSize, bottom, dependents) {
       setHighFontSize(fontSize)
       setFontSize((fontSize - lowFontSize) / 2 + lowFontSize)
     } else {
-      if (fontSize >= minFontSize || Math.abs(highFontSize - lowFontSize) < 0.01) setFontResolved(true)
+      if (fontSize >= startFontSize || Math.abs(highFontSize - lowFontSize) < 0.01) setFontResolved(true)
       else {
         setLowFontSize(fontSize)
         setFontSize((highFontSize - fontSize) / 2 + fontSize)
@@ -43,5 +44,9 @@ export default function fitFontToRef(ref, minFontSize, bottom, dependents) {
     }
   }, [...dependents, fontSize, fontResolved, highFontSize, lowFontSize])
 
-  return fontSize
+  return (
+    <div className={className} style={{ ...style, fontSize: fontSize + 'rem' }} ref={ref}>
+      {children}
+    </div>
+  )
 }
