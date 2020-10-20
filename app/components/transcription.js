@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect, useRef, useMemo } from 'react'
 import cx from 'classnames'
 import { createUseStyles } from 'react-jss'
+import fitFontToRef from './lib/fit-font-to-ref'
 
 function getSeconds(wordTimeObj) {
   return parseFloat(wordTimeObj.seconds + '.' + wordTimeObj.nanos)
@@ -65,11 +66,9 @@ const Transcription = ({ transcript, element, language }) => {
   const { transcription } = classes
   const [currentTime, setCurrentTime] = useState(0)
   const outerRef = useRef(null)
-  const [fontSize, setFontSize] = useState(defaultFontSize)
-  const [fontResolved, setFontResolved] = useState(false)
-  const [maxFontSize, setMaxFontSize] = useState(defaultFontSize)
-  const [minFontSize, setMinFontSize] = useState(0)
   const sentences = useMemo(() => getSentences(transcript, language), [transcript, language])
+  const bottomForTranscription = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+  const fontSize = fitFontToRef(outerRef, defaultFontSize, bottomForTranscription, [transcript, bottomForTranscription])
 
   useEffect(() => {
     var timer
@@ -87,32 +86,6 @@ const Transcription = ({ transcript, element, language }) => {
       element.removeEventListener('play', onPlay)
     }
   }, [transcript, element])
-
-  useLayoutEffect(() => {
-    // when we switch to a new transcript, after we have shrunk the fontSize for the previous transcription, when we need go back to the default font size because the new one may fit. But then we need to shrink if it doesn't
-    if (fontResolved) {
-      setFontSize(defaultFontSize)
-      setMinFontSize(0)
-      setMaxFontSize(defaultFontSize)
-      setFontResolved(false)
-    }
-  }, [transcript])
-
-  useLayoutEffect(() => {
-    if (fontResolved) return // the transcript has changed but the fontSize has not been reset yet
-    const rect = outerRef.current.getBoundingClientRect()
-    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-    if (rect.bottom > vh) {
-      setMaxFontSize(fontSize)
-      setFontSize((fontSize - minFontSize) / 2 + minFontSize)
-    } else {
-      if (fontSize >= defaultFontSize || Math.abs(maxFontSize - minFontSize) < 0.01) setFontResolved(true)
-      else {
-        setMinFontSize(fontSize)
-        setFontSize((maxFontSize - fontSize) / 2 + fontSize)
-      }
-    }
-  }, [transcript, fontSize, fontResolved, maxFontSize, minFontSize])
 
   const showWords = () =>
     transcript &&
