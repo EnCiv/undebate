@@ -12,6 +12,20 @@ import Iota from '../../models/iota'
 
 var SibApiV3Sdk = require('sib-api-v3-sdk')
 
+SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = process.env.SENDINBLUE_API_KEY
+var SibSMTPApi = new SibApiV3Sdk.SMTPApi()
+
+function sendLinkRoute(req, res, next) {
+  try {
+    logger.info('####this is the link route#####', req.body)
+    FetchLink(req.body)
+    res.statusCode = 200
+    res.json({ message: 'successful, email is being sent' })
+  } catch (error) {
+    next(error)
+  }
+}
+
 async function FetchLink({ name, email }) {
   let sendto
   if (process.env.NODE_ENV === 'development') {
@@ -102,20 +116,6 @@ async function FetchLink({ name, email }) {
       }
     )
     logger.error('could not find the email in the database', err)
-  }
-}
-
-SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = process.env.SENDINBLUE_API_KEY
-var SibSMTPApi = new SibApiV3Sdk.SMTPApi()
-
-function sendLinkRoute(req, res, next) {
-  try {
-    logger.info('####this is the link route#####', req.body)
-    FetchLink(req.body)
-    res.statusCode = 200
-    res.json({ message: 'successful, email is being sent' })
-  } catch (error) {
-    next(error)
   }
 }
 
