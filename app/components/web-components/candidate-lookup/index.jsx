@@ -12,11 +12,11 @@ const Preinject = props => {
   })
   const [infoMessage, setInfoMessage] = useState(null)
   const { classes } = props
-  //useEffect([formValues])
   const handleChange = e => setFormValues({ ...formValues, [e.target.name]: e.target.value })
-  const handleLogin = e => {
+  const handleSendLink = e => {
     e.preventDefault()
     setInfoMessage('Sending you your recording url')
+    logger.info('on the browser', formValues)
     const { email, name } = formValues
     const userInfo = Object.assign({}, props.userInfo, { email, name })
     superagent
@@ -30,15 +30,17 @@ const Preinject = props => {
         switch (res.statusCode) {
           case 200:
             logger.info('successfully posted')
-            setFormValues({ message: res.body.message })
+            setFormValues({ ...formValues, message: res.body.message })
             break
           case 429:
             setFormValues({
+              ...formValues,
               message: 'Too many attempts logging in, try again in 24 hrs',
             })
             break
           default:
             setFormValues({
+              ...formValues,
               message: 'Make sure the information you entered is correct.',
             })
             break
@@ -50,8 +52,13 @@ const Preinject = props => {
     <div className={props.classes.Container}>
       <div className={props.classes.Form}>
         <h1>Email Recording Link</h1>
-        <form onSubmit={handleLogin} className={props.classes.LookupForm}>
-          <LookupForm classes={classes} formValues={formValues} handleChange={handleChange} handleLogin={handleLogin} />
+        <form onSubmit={handleSendLink} className={props.classes.LookupForm}>
+          <LookupForm
+            classes={classes}
+            formValues={formValues}
+            handleChange={handleChange}
+            handleSendLink={handleSendLink}
+          />
         </form>
       </div>
     </div>

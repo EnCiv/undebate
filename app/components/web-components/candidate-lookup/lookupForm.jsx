@@ -2,7 +2,7 @@ import React from 'react'
 import { FormInput } from './formInput'
 import { LookupBtn } from './lookupBtn'
 
-export const LookupForm = ({ isDisabled, classes, formValues, handleChange, handleLogin }) => {
+export const LookupForm = ({ isDisabled, classes, formValues, handleChange, handleSendLink }) => {
   const { email, name, message } = formValues
   return (
     <>
@@ -26,7 +26,7 @@ export const LookupForm = ({ isDisabled, classes, formValues, handleChange, hand
         <LookupBtn
           btnName="Send me Link"
           classes={isDisabled ? classes.disable : classes.activeBtn}
-          handleClick={handleLogin}
+          handleClick={handleSendLink}
         />
       </div>
       <h3>{message}</h3>
