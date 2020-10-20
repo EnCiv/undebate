@@ -28,20 +28,30 @@ const AgendaItem = ({ agendaItem }) => {
 
 export const AgendaTranscript = ({ className, style, agendaItem, transcript, element }) => {
   const classes = useAgendaStyles()
+  let tabs = [
+    {
+      name: 'Agenda',
+      contents: <AgendaItem agendaItem={agendaItem} />,
+    },
+  ]
+  if (transcript.languages && transcript.languages.es) {
+    tabs.push({
+      name: 'English',
+      contents: <Transcription transcript={transcript} element={element} language="en" />,
+    })
+    tabs.push({
+      name: 'Español',
+      contents: <Transcription transcript={transcript} element={element} language="es" />,
+    })
+  } else {
+    tabs.push({
+      name: 'Transcript',
+      contents: <Transcription transcript={transcript} element={element} language="en" />,
+    })
+  }
   return (
     <div style={{ ...style, border: '5px solid #1d3491' }} className={cx(className, classes.agenda)}>
-      <TabbedContainer
-        tabs={[
-          {
-            name: 'Agenda',
-            contents: <AgendaItem agendaItem={agendaItem} />,
-          },
-          {
-            name: 'Transcript',
-            contents: <Transcription transcript={transcript} element={element} />,
-          },
-        ]}
-      />
+      <TabbedContainer tabs={tabs} />
     </div>
   )
 }

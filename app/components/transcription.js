@@ -25,7 +25,42 @@ function emptySentence() {
 
 const endPunctuation = ['.', '?', '!']
 
-const Transcription = ({ transcript, element }) => {
+function timedStringsToSentences(timedStrings) {
+  if (!timedStrings || !timedStrings.length) return [emptySentence()]
+  return timedStrings.map(timedString => ({
+    startTime: timedString.startTime,
+    endTime: timedString.endTime,
+    words: timedString.string.split(' ').map(w => ({
+      word: w,
+      startTime: timedString.startTime,
+      endTime: timedString.endTime,
+    })),
+  }))
+}
+
+function getSentences(transcript, language) {
+  if (!transcript) return [emptySentence()]
+  if (transcript.languages && language && transcript.languages[language]) {
+    return timedStringsToSentences(transcript.languages[language].timedStrings)
+  } else if (transcript.words) {
+    return transcript.words.reduce(
+      (sentences, wordObj, idx, src) => {
+        const lastSentence = sentences[sentences.length - 1]
+        const endTime = getSeconds(wordObj.endTime)
+        if (!lastSentence.startTime) lastSentence.startTime = getSeconds(wordObj.startTime)
+        if (lastSentence.endTime < endTime) lastSentence.endTime = endTime
+        lastSentence.words.push(wordObj)
+        if (endPunctuation.includes(wordObj.word.slice(-1)) && idx < src.length - 1)
+          // don't start a new sentence if this is the last word
+          sentences.push(emptySentence())
+        return sentences
+      },
+      [emptySentence()]
+    )
+  } else return [emptySentence()]
+}
+
+const Transcription = ({ transcript, element, language }) => {
   const classes = useStyles()
   const { transcription } = classes
   const [currentTime, setCurrentTime] = useState(0)
@@ -34,26 +69,7 @@ const Transcription = ({ transcript, element }) => {
   const [fontResolved, setFontResolved] = useState(false)
   const [maxFontSize, setMaxFontSize] = useState(defaultFontSize)
   const [minFontSize, setMinFontSize] = useState(0)
-  const sentences = useMemo(
-    () =>
-      (transcript &&
-        transcript.words &&
-        transcript.words.reduce(
-          (sentences, wordObj, idx, src) => {
-            const lastSentence = sentences[sentences.length - 1]
-            const endTime = getSeconds(wordObj.endTime)
-            if (!lastSentence.startTime) lastSentence.startTime = getSeconds(wordObj.startTime)
-            if (lastSentence.endTime < endTime) lastSentence.endTime = endTime
-            lastSentence.words.push(wordObj)
-            if (endPunctuation.includes(wordObj.word.slice(-1)) && idx < src.length - 1)
-              // don't start a new sentence if this is the last word
-              sentences.push(emptySentence())
-            return sentences
-          },
-          [emptySentence()]
-        )) || [emptySentence()],
-    [transcript]
-  )
+  const sentences = useMemo(() => getSentences(transcript, language), [transcript, language])
 
   useEffect(() => {
     var timer
