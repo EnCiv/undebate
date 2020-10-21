@@ -34,7 +34,7 @@ export const AgendaTranscript = ({ className, style, agendaItem, transcript, ele
       contents: <AgendaItem agendaItem={agendaItem} />,
     },
   ]
-  if (transcript.languages && transcript.languages.es) {
+  if (transcript && transcript.languages && transcript.languages.es) {
     tabs.push({
       name: 'English',
       contents: <Transcription transcript={transcript} element={element} language="en" />,

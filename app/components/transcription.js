@@ -1,19 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useLayoutEffect, useRef } from 'react'
 import cx from 'classnames'
 import { createUseStyles } from 'react-jss'
-import FitFontToBottom from './lib/fit-font-to-bottom'
 
 function getSeconds(wordTimeObj) {
   return parseFloat(wordTimeObj.seconds + '.' + wordTimeObj.nanos)
-}
-
-const windowSeconds = 0
-const defaultFontSize = 2.0
-
-function withinTime(wordObj, currentTime) {
-  let startTime = getSeconds(wordObj.startTime)
-  let endTime = getSeconds(wordObj.endTime)
-  return currentTime >= startTime - windowSeconds && currentTime <= endTime + windowSeconds
 }
 
 function withinSentence(sentence, currentTime) {
@@ -61,12 +51,96 @@ function getSentences(transcript, language) {
   } else return [emptySentence()]
 }
 
-const Transcription = ({ transcript, element, language }) => {
+function ActiveWordDiv({ classes, wordObj, highlighted, bottom, setBottom }) {
+  const ref = useRef(null)
+
+  if (ref.current && highlighted) {
+    let newBottom = ref.current.offsetTop + ref.current.offsetHeight
+    if (newBottom > bottom) {
+      setBottom(newBottom) // this is not a setState which can't be used to set state of another (parent) component while rendering
+    }
+  }
+  return (
+    <div
+      ref={ref}
+      className={cx(
+        classes.word,
+        highlighted && classes.litWord,
+        endPunctuation.includes(wordObj.word.slice(-1)) && classes.sentenceEnd
+      )}
+    >
+      {wordObj.word}
+    </div>
+  )
+}
+
+const showSentences = (classes, sentences, bottom, setBottom, currentTime) => {
+  return sentences.reduce((wordDivs, sentence) => {
+    sentence.words.forEach(wordObj =>
+      wordDivs.push(
+        <ActiveWordDiv
+          classes={classes}
+          highlighted={withinSentence(sentence, currentTime)}
+          wordObj={wordObj}
+          bottom={bottom}
+          setBottom={setBottom}
+        />
+      )
+    )
+    return wordDivs
+  }, [])
+}
+
+function AutoScroll({ sentences, currentTime }) {
   const classes = useStyles()
   const { transcription } = classes
+  const ref = useRef()
+  const [height, setHeight] = useState(0)
+  const [rect, neverSetRect] = useState({ bottom: 0 })
+  const [top, setTop] = useState(0)
+  const bottom = rect.bottom
+  const setBottom = bottom => (rect.bottom = bottom) // this won't cause a rerender
+
+  //this is a kludge - we need the parent height to be fixed in order to make this work
+  // not ref need to be in the div with className={transcription} so we get the padding information
+  useLayoutEffect(() => {
+    let agendaHeight = ref.current.offsetParent.offsetParent.offsetParent.scrollHeight // the height of the Agenda object
+    let agendaContainerHeight = agendaHeight - ref.current.offsetParent.offsetParent.offsetTop // less height of the button bar
+    agendaContainerHeight -= ref.current.offsetParent.offsetParent.scrollHeight // less the padding - because this is initially empty before the sentences are rendered below
+    if (height !== agendaContainerHeight) setHeight(agendaContainerHeight)
+  }, [])
+
+  // scroll the div up as the text as the bottom gets bigger
+  useLayoutEffect(() => {
+    if (bottom > top + height) setTop(bottom - height)
+  }, [bottom, height])
+
+  // reset the start
+  useLayoutEffect(() => {
+    setBottom(0)
+    setTop(0)
+  }, [sentences])
+
+  return (
+    <div style={{ height: height + 'px' }}>
+      <div style={{ height: height + 'px', position: 'relative', overflow: 'hidden' }}>
+        <div
+          className={transcription}
+          style={{ top: -top + 'px', transition: 'top 0.5s linear', position: 'absolute' }}
+          ref={ref}
+        >
+          <div style={{ position: 'relative' }}>
+            {showSentences(classes, sentences, bottom, setBottom, currentTime)}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const Transcription = ({ transcript, element, language }) => {
   const [currentTime, setCurrentTime] = useState(0)
   const sentences = useMemo(() => getSentences(transcript, language), [transcript, language])
-  const bottomForTranscription = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
 
   useEffect(() => {
     var timer
@@ -82,52 +156,11 @@ const Transcription = ({ transcript, element, language }) => {
     return () => {
       clearInterval(timer)
       element.removeEventListener('play', onPlay)
+      setCurrentTime(0)
     }
   }, [transcript, element])
 
-  const showWords = () =>
-    transcript &&
-    transcript.words &&
-    transcript.words.map(wordObj => (
-      <div
-        className={cx(
-          classes.word,
-          withinTime(wordObj, currentTime) && classes.litWord,
-          endPunctuation.includes(wordObj.word.slice(-1)) && classes.sentenceEnd
-        )}
-      >
-        {wordObj.word}
-      </div>
-    ))
-
-  const showSentences = () =>
-    sentences.reduce((wordDivs, sentence) => {
-      sentence.words.forEach(wordObj =>
-        wordDivs.push(
-          <div
-            className={cx(
-              classes.word,
-              withinSentence(sentence, currentTime) && classes.litWord,
-              endPunctuation.includes(wordObj.word.slice(-1)) && classes.sentenceEnd
-            )}
-          >
-            {wordObj.word}
-          </div>
-        )
-      )
-      return wordDivs
-    }, [])
-
-  return (
-    <FitFontToBottom
-      className={transcription}
-      startFontSize={defaultFontSize}
-      bottom={bottomForTranscription}
-      dependents={[transcript, bottomForTranscription]}
-    >
-      {showSentences()}
-    </FitFontToBottom>
-  )
+  return <AutoScroll sentences={sentences} currentTime={currentTime}></AutoScroll>
 }
 
 export default Transcription
@@ -135,6 +168,7 @@ export default Transcription
 const useStyles = createUseStyles({
   transcription: {
     textAlign: 'justify',
+    fontSize: '2rem',
   },
   word: {
     color: '#333333',
