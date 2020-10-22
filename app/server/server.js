@@ -125,15 +125,21 @@ class HttpServer extends EventEmitter {
       })
     }
 
-    const apiLimiter = expressRateLimit({
+    const loginLimiter = expressRateLimit({
       windowMs: 60 * 1000,
-      max: 2,
-      message: 'Too many attempts logging in, please try again after 24 hours.',
+      max: 5,
+      message: 'Too many attempts logging in',
+    })
+
+    const linkRequestLimiter = expressRateLimit({
+      windowMs: 60 * 1000,
+      max: 5,
+      message: 'Too many requests',
     })
     //will need trust proxy for production
     this.app.set('trust proxy', 'loopback')
 
-    this.app.post('/sign/in', apiLimiter, signInRoute, this.setUserCookie, sendUserId)
+    this.app.post('/sign/in', loginLimiter, signInRoute, this.setUserCookie, sendUserId)
 
     this.app.all('/sign/up', signUpRoute, this.setUserCookie, sendUserId)
 
@@ -141,7 +147,7 @@ class HttpServer extends EventEmitter {
 
     this.app.all('/sign/out', signOutRoute)
 
-    this.app.post('/send/recorder-link', apiLimiter, sendLinkRoute)
+    this.app.post('/send/recorder-link', linkRequestLimiter, sendLinkRoute)
   }
 
   router() {

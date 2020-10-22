@@ -32,6 +32,10 @@ const Preinject = props => {
             logger.info('successfully posted')
             setFormValues({ ...formValues, message: res.body.message })
             break
+          case 401:
+            logger.info('invalid email')
+            setFormValues({ ...formValues, message: res.body.message })
+            break
           case 429:
             setFormValues({
               ...formValues,

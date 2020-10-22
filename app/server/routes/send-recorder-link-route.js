@@ -15,12 +15,18 @@ var SibApiV3Sdk = require('sib-api-v3-sdk')
 SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = process.env.SENDINBLUE_API_KEY
 var SibSMTPApi = new SibApiV3Sdk.SMTPApi()
 
-function sendLinkRoute(req, res, next) {
+async function sendLinkRoute(req, res, next) {
   try {
     logger.info('####this is the link route#####', req.body)
-    FetchLink(req.body)
-    res.statusCode = 200
-    res.json({ message: 'successful, email is being sent' })
+    let FetchStatus = await FetchLink(req.body)
+    logger.info('this is the fetch status ', FetchStatus)
+    if (FetchStatus === 'success') {
+      res.statusCode = 200
+      res.json({ message: 'successful, email is being sent' })
+    } else {
+      res.statusCode = 401
+      res.json({ message: 'The email you entered is invalid' })
+    }
   } catch (error) {
     next(error)
   }
@@ -92,30 +98,10 @@ async function FetchLink({ name, email }) {
         logger.error('Sendingblue API caught error:', error)
       }
     )
+    return 'success'
   } catch (err) {
-    logger.info('here it is', sendto)
-    let firstname = name.split(' ')[0]
-    let sendBpInfo = {
-      to: [
-        {
-          email: sendto,
-          name: name,
-        },
-      ],
-      templateId: parseInt(process.env.SENDINBLUE_TEMPLATE_ID_SEND_BP_INFO),
-      params: {
-        firstname: firstname,
-      },
-    }
-    SibSMTPApi.sendTransacEmail(sendBpInfo).then(
-      function(data) {
-        logger.trace('Sendinblue API called successfully. Returned data: ', data)
-      },
-      function(error) {
-        logger.error('Sendingblue API caught error:', error)
-      }
-    )
     logger.error('could not find the email in the database', err)
+    return 'fail'
   }
 }
 
