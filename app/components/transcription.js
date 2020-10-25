@@ -106,7 +106,8 @@ function AutoScroll({ sentences, currentTime }) {
   useLayoutEffect(() => {
     let agendaHeight = ref.current.offsetParent.offsetParent.offsetParent.scrollHeight // the height of the Agenda object
     let agendaContainerHeight = agendaHeight - ref.current.offsetParent.offsetParent.offsetTop // less height of the button bar
-    agendaContainerHeight -= ref.current.offsetParent.offsetParent.scrollHeight // less the padding - because this is initially empty before the sentences are rendered below
+    //agendaContainerHeight -= ref.current.offsetParent.offsetParent.scrollHeight // less the padding - because this is initially empty before the sentences are rendered below
+    agendaContainerHeight -= 10 // because there is a 5px border at the bottom of the Agenda
     if (height !== agendaContainerHeight) setHeight(agendaContainerHeight)
   }, [])
 
@@ -169,6 +170,7 @@ const useStyles = createUseStyles({
   transcription: {
     textAlign: 'justify',
     fontSize: '2rem',
+    padding: '1rem',
   },
   word: {
     color: '#333333',
