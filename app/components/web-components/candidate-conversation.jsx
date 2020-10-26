@@ -21,12 +21,12 @@ const IntroTransition = 'all 5s ease'
 const HDRatio = 1080 / 1920 //0.5625
 const ShadowBox = 10
 
-import IconPrevSpeaker from '../../svgr/icon-prev-speaker'
-import IconPrevSection from '../../svgr/icon-prev-session'
-import IconPlay from '../../svgr/icon-play'
-import IconPause from '../../svgr/icon-pause'
-import IconSkipSpeaker from '../../svgr/icon-skip-speaker'
-import IconNextSection from '../../svgr/icon-skip-session'
+import IconPrevSpeaker from '../../svgr/prev-speaker-icon'
+import IconPrevSection from '../../svgr/prev-section-icon'
+import IconPlay from '../../svgr/play-icon'
+import IconPause from '../../svgr/pause-icon'
+import IconSkipSpeaker from '../../svgr/next-speaker-icon'
+import IconNextSection from '../../svgr/next-section-icon'
 import IconRedo from '../../svgr/icon-redo'
 import IconFinishRecording from '../../svgr/icon-finish-recording'
 import IconRecording from '../../svgr/icon-recording'
@@ -39,7 +39,7 @@ import supportsVideoType from '../lib/supports-video-type'
 import { auto_quality, placeholder_image } from '../lib/cloudinary-urls'
 import createParticipant from '../lib/create-participant'
 import BeginButton from '../begin-button'
-import Transcription from '../transcription'
+import DonateButton from '../donate-button'
 
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
@@ -179,6 +179,17 @@ const styles = {
       top: '100vh',
     },
   },
+  iconButton: {
+    color: 'white',
+    pointerEvents: 'auto',
+    '& rect': {
+      stroke: '#000',
+      fill: '#000',
+    },
+    '& rect:hover': {
+      fill: '	#565656',
+    },
+  },
   beginButton: {
     color: 'white',
     opacity: '0.8',
@@ -247,32 +258,6 @@ const styles = {
       'text-decoration': 'none',
       background: 'lightgray',
     },
-  },
-  donateButton: {
-    width: '12vw',
-    '& button': {
-      height: '5.5rem',
-      color: 'white',
-      background: 'linear-gradient(to bottom, #ff6745 0%,#ff5745 51%,#ff4745 100%)',
-      'border-radius': '7px',
-      'border-width': '2px',
-      'border-color': 'white',
-      'font-size': '1.25rem',
-      padding: '1rem',
-      height: '100%',
-      whiteSpace: 'no-wrap',
-    },
-  },
-  donateCallToAction: {
-    fontSize: '1rem',
-    display: 'inline-block',
-    maxWidth: '32em',
-    verticalAlign: 'middle',
-    fontWeight: 'normal',
-    marginTop: '.5rem',
-    textAlign: 'justify',
-    paddingLeft: '1rem',
-    paddingRight: '1rem',
   },
   rerecordButton: {
     width: '12vw',
@@ -400,13 +385,13 @@ const styles = {
   },
   buttonBar: {
     //display: "table",
-    opacity: '0.6',
+    // opacity: '0.6',
     textAlign: 'center',
     position: 'absolute',
     width: '50vw',
     left: '25vw',
     top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
-    height: '3.5vh',
+    height: '10vh',
     overflow: 'hidden',
     'text-overflow': 'clip',
     '& button': {
@@ -422,6 +407,9 @@ const styles = {
       overflow: 'hidden',
       textOverflow: 'clip',
     },
+  },
+  buttonBarInner: {
+    height: '10vh', // same as button bar height
   },
   recorderButtonBar: {
     //display: "table",
@@ -702,7 +690,7 @@ class RASPUndebate extends React.Component {
       width: '50vw',
       left: '25vw',
       top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
-      height: 'auto',
+      height: '10vh',
       position: 'absolute',
       overflow: 'hidden',
       textOverflow: 'clip',
@@ -837,7 +825,7 @@ class RASPUndebate extends React.Component {
     Object.keys(this.participants).forEach((participant, i) => {
       if (this.participants[participant].youtube) {
         const videoId = getYouTubeID(this.props.participants[participant].listening)
-        logger.trace('Undebate.onYouTubeIframeAPIReady new player for:', participant, videoId)
+        logger.trace('CandidateConversation.onYouTubeIframeAPIReady new player for:', participant, videoId)
         try {
           this.participants[participant].youtubePlayer = new YT.Player('youtube-' + participant, {
             width: pxSeatStyleWidth(this.seat(i)),
@@ -863,13 +851,17 @@ class RASPUndebate extends React.Component {
               onReady: this.onYouTubePlayerReady.bind(this, participant),
               onStateChange: this.onYouTubePlayerStateChange.bind(this, participant),
               onError: e => {
-                logger.error('Undebate.onYouTubeIframeAPIReady onError', participant, e.data)
+                logger.error('CandidateConversation.onYouTubeIframeAPIReady onError', participant, e.data)
               },
             },
           })
-          logger.trace('Undebate.onYouTubeIframeAPIReady new Player completed')
+          logger.trace('CandidateConversation.onYouTubeIframeAPIReady new Player completed')
         } catch (error) {
-          logger.error('Undebate.onYouTubeIframeAPIReady caught error on new YT.Player', error.name, error.message)
+          logger.error(
+            'CandidateConversation.onYouTubeIframeAPIReady caught error on new YT.Player',
+            error.name,
+            error.message
+          )
         }
       }
     })
@@ -949,23 +941,33 @@ class RASPUndebate extends React.Component {
       let seatWidthRatio = 0.25
       const seatHeight = () => seatWidthRatio * width * HDRatio
       const navBarHeight = 0.06 * height
-      const agendaMaxWidth = 32 * fontSize
       const vGap = fontSize
       const hGap = fontSize
+      const agendaMaxWidth = Math.min(32 * fontSize, (1 - speakingWidthRatio) * width - 3 * hGap) //  be sure there is a little white space on the left and right
       const numOfParticipants = Object.keys(this.props.participants).length - 1 // without the speaker
+      const buttonBarHeight = (parseInt(buttonBarStyle.height) * height) / 100 // expect this to be vh
 
-      let calcHeight = navBarHeight + vGap + seatHeight() + titleHeight + vGap + speakingHeight() + titleHeight + vGap
+      let calcHeight =
+        navBarHeight +
+        vGap +
+        seatHeight() +
+        titleHeight +
+        vGap +
+        speakingHeight() +
+        titleHeight +
+        vGap +
+        buttonBarHeight +
+        vGap
       if (calcHeight > height) {
         // if the window is really wide - squish the video height so it still fits
-        let heightForVideo = height - navBarHeight - vGap - /*titleHeight -*/ vGap - vGap
+        let heightForVideo = height - navBarHeight - vGap - /*titleHeight -*/ vGap - vGap - buttonBarHeight - vGap
         let calcHeightForVideo = seatHeight() + speakingHeight()
         seatWidthRatio = (seatWidthRatio * heightForVideo) / calcHeightForVideo
         speakingWidthRatio = (speakingWidthRatio * heightForVideo) / calcHeightForVideo
       }
 
       // seatStyle.speaking.left centers the speaker box and the agenda
-      seatStyle.speaking.left =
-        (width - speakingWidthRatio * width - titleHeight * (1 / HDRatio) - agendaMaxWidth - hGap) / 2
+      seatStyle.speaking.left = (width - speakingWidthRatio * width - hGap - agendaMaxWidth) / 2
       seatStyle.speaking.width = speakingWidthRatio * width + titleHeight * (1 / HDRatio)
       seatStyle.speaking.top = navBarHeight + vGap + width * seatWidthRatio * HDRatio + vGap
       seatStyle.speaking['--speaking-height'] = speakingHeight() + 'px' // tell child div's what the speaking-height is
@@ -1015,16 +1017,11 @@ class RASPUndebate extends React.Component {
 
       buttonBarStyle.width = seatStyle.speaking.width * 0.6
       buttonBarStyle.left = seatStyle.speaking.left + seatStyle.speaking.width * 0.2 // center it
-      buttonBarStyle.top =
-        fontSize +
-        seatStyle.speaking.top +
-        seatStyle.speaking.width * HDRatio -
-        (buttonBarStyle.width / this.buttons.length) * 0.75 - // there are 5 buttons and they are essentially square
-        2 * vGap
-      recorderButtonBarStyle.left = seatStyle.speaking.left
-      recorderButtonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
-      recorderButtonBarStyle.width = seatStyle.speaking.width
-      recorderButtonBarStyle.height = buttonBarStyle.height
+      buttonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
+      recorderButtonBarStyle.left = buttonBarStyle.left
+      recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarHeight + vGap
+      recorderButtonBarStyle.width = buttonBarStyle.width
+      recorderButtonBarStyle.height = buttonBarHeight
 
       introStyle.introLeft.width = 'auto'
       introStyle.introLeft.height = '50vh'
@@ -1040,7 +1037,7 @@ class RASPUndebate extends React.Component {
       const vGap = fontSize
       let speakerLeftEdge = hGap
       let speakerRightEdge = hGap
-      let speakingWidthRatio = (width - 2 * hGap) / width // as wide as the screen less gaps on edges
+      let speakingWidthRatio = (width - speakerLeftEdge - speakerRightEdge) / width // as wide as the screen less gaps on edges
       const speakingWidth = () => speakingWidthRatio * width
       const speakingHeight = () => speakingWidthRatio * width * HDRatio
       const seatHorizontalPitch = () => seatWidthRatio * width + hGap
@@ -1051,23 +1048,35 @@ class RASPUndebate extends React.Component {
       let rows = 2
       let seat = 1
       let rowLeftEdge = hGap
+      const buttonBarHeight = (parseInt(buttonBarStyle.height) * height) / 100 // expect this to be vh
 
-      const maxAgendaHeight = fontSize * 20
+      const maxAgendaHeight = Math.min(fontSize * 20, speakingHeight())
       const numOfParticipants = Object.keys(this.props.participants).length - 1 // without the speaker/moderator
 
       if (numOfParticipants * seatHorizontalPitch() - hGap <= width) rows = 1
 
       let calcHeight =
         navBarHeight +
-        maxAgendaHeight +
+        vGap +
         rows * seatHeight() +
         (rows + 1) * titleHeight +
         (rows + 2) * vGap +
-        speakingHeight()
+        speakingHeight() +
+        buttonBarHeight +
+        maxAgendaHeight
       if (calcHeight > height) {
         // if calcHeight is taller than height - squish the video height so it still fits
-        let heightForVideo = height - navBarHeight - 6 * vGap - 3 * titleHeight - maxAgendaHeight
-        let calcHeightForVideo = 2 * seatHeight() + speakingHeight()
+        let heightForVideo =
+          height -
+          navBarHeight -
+          rows * (vGap + titleHeight) -
+          vGap -
+          vGap -
+          maxAgendaHeight -
+          vGap -
+          buttonBarHeight -
+          vGap
+        let calcHeightForVideo = rows * seatHeight() + speakingHeight()
         seatWidthRatio = (seatWidthRatio * heightForVideo) / calcHeightForVideo
         speakingWidthRatio = (speakingWidthRatio * heightForVideo) / calcHeightForVideo
         speakerRightEdge = speakerLeftEdge = (width - speakingWidth()) / 2 // it will be thiner than the width, so center it
@@ -1093,7 +1102,8 @@ class RASPUndebate extends React.Component {
       let i = 0 // for calculating the intro
 
       // figure out where to start the top line of participants
-      let topLineParticipants = numOfParticipants % 2 ? (numOfParticipants + 1) / 2 : numOfParticipants / 2
+      let topLineParticipants =
+        rows === 1 ? numOfParticipants : numOfParticipants % 2 ? (numOfParticipants + 1) / 2 : numOfParticipants / 2
       if (rows === 2 && numOfParticipants == 3) topLineParticipants = 1
       let topLineWidth = (rows === 1 ? numOfParticipants : topLineParticipants) * seatHorizontalPitch() - hGap
       if (topLineWidth <= width)
@@ -1158,24 +1168,20 @@ class RASPUndebate extends React.Component {
       seatStyle.finishUp.top = 0.5 * height
       seatStyle.finishUp.width = 0.01 * width
 
-      agendaStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
+      buttonBarStyle.width = seatStyle.speaking.width
+      buttonBarStyle.left = (width - buttonBarStyle.width) / 2 // center it
+      buttonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
+      recorderButtonBarStyle.left = seatStyle.speaking.left
+      recorderButtonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
+      recorderButtonBarStyle.width = seatStyle.speaking.width
+      recorderButtonBarStyle.height = buttonBarStyle.height
+
+      agendaStyle.top = buttonBarStyle.top + buttonBarHeight + vGap
       agendaStyle.left = seatStyle.speaking.left
       agendaStyle.width = seatStyle.speaking.width
       agendaStyle.height = Math.max(maxAgendaHeight, height - agendaStyle.top - vGap)
 
       introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
-
-      buttonBarStyle.width = seatStyle.speaking.width * 0.6
-      buttonBarStyle.left = seatStyle.speaking.left + seatStyle.speaking.width * 0.2 // center it
-      buttonBarStyle.top =
-        seatStyle.speaking.top +
-        seatStyle.speaking.width * HDRatio -
-        (buttonBarStyle.width / this.buttons.length) * 0.75 - // there are 5 buttons and they are essentially square
-        1 * vGap
-      recorderButtonBarStyle.left = seatStyle.speaking.left
-      recorderButtonBarStyle.top = seatStyle.speaking.top + seatStyle.speaking.width * HDRatio + vGap
-      recorderButtonBarStyle.width = seatStyle.speaking.width
-      recorderButtonBarStyle.height = buttonBarStyle.height
 
       introStyle.introLeft.width = '25vw'
       introStyle.introLeft.height = 'auto'
@@ -1236,7 +1242,7 @@ class RASPUndebate extends React.Component {
       } else if (!(objectURL = this.participants[part].speakingObjectURLs[round])) {
         this.participants[part].speakingImmediate[round] = true
         this.stallWatch(part)
-        logger.error('Undebate.nextMediaState need to do something about stallWatch with preFetch')
+        logger.error('CandidateConversation.nextMediaState need to do something about stallWatch with preFetch')
       }
     } else {
       if (part === 'human') objectURL = 'cameraStream'
@@ -1289,7 +1295,7 @@ class RASPUndebate extends React.Component {
 
     if (true /*window.env!=='production' || this.participants[part].youtube */) {
       // in development, don'e prefetch the videos because they won't be cached by the browser and you'll end up consuming a lot of extra cloudinary bandwith, on youtube we can't prefetch
-      logger.trace("undebate.preFetchObjectURl - in development we don't prefetch", part, speaking, round)
+      logger.trace("CandidateConversation.preFetchObjectURl - in development we don't prefetch", part, speaking, round)
       this.setExternalObjectURL(part, speaking, round)
       return
     } else {
@@ -1318,7 +1324,7 @@ class RASPUndebate extends React.Component {
       .then(res => res.blob()) // Gets the response and returns it as a blob
       .then(async blob => {
         logger.trace(
-          'Undebate.preFetchObjectURL fetch completed:',
+          'CandidateConversation.preFetchObjectURL fetch completed:',
           'part:',
           part,
           'url:',
@@ -1356,16 +1362,30 @@ class RASPUndebate extends React.Component {
         }
       })
       .catch(err => {
-        logger.error('Undebate.preFetchObjectURL fetch caught error', part, speaking, round, url, err.name, err.message)
+        logger.error(
+          'CandidateConversation.preFetchObjectURL fetch caught error',
+          part,
+          speaking,
+          round,
+          url,
+          err.name,
+          err.message
+        )
         this.preFetchQueue = Math.max(this.preFetchQueue - 1, 0)
         this.setState({ preFetchQueue: this.preFetchQueue + this.preFetchQueue + this.preFetchList.length })
         let retries = this.retries[part + speaking + round] || 0
         if (retries < 3) {
-          logger.trace('Undebate.preFetchObjectURL retrying', retries, part, speaking, round, url)
+          logger.trace('CandidateConversation.preFetchObjectURL retrying', retries, part, speaking, round, url)
           this.retries[part + speaking + round] = retries + 1
           this.preFetchList.push([part, speaking, round])
         } else {
-          logger.error('Undebate.preFetchObjectURL retries exceeded, using external link', part, speaking, round, url)
+          logger.error(
+            'CandidateConversation.preFetchObjectURL retries exceeded, using external link',
+            part,
+            speaking,
+            round,
+            url
+          )
           this.setExternalObjectURL(part, speaking, round)
         }
         shiftPreFetchList()
@@ -1449,7 +1469,7 @@ class RASPUndebate extends React.Component {
           this.requestPermissionElements.push(element)
           if (!this.state.requestPermission) this.setState({ requestPermission: true })
         } else {
-          logger.error('Undebate.playObjectURL caught error', err.name, err)
+          logger.error('CandidateConversation.playObjectURL caught error', err.name, err)
         }
       }
     }
@@ -1475,7 +1495,7 @@ class RASPUndebate extends React.Component {
         this.requestPermissionElements.push(element)
         if (!this.state.requestPermission) this.setState({ requestPermission: true })
       } else {
-        logger.error('Undebate.playAudioObject caught error', err.name, err)
+        logger.error('CandidateConversation.playAudioObject caught error', err.name, err)
       }
     }
   }
@@ -1515,24 +1535,32 @@ class RASPUndebate extends React.Component {
 
   buttons = [
     {
-      name: () => <IconPrevSection width="60%" height="auto" />,
+      name: props => <IconPrevSection width="60%" height="auto" className={props} />,
       func: this.prevSection,
       title: () => 'Previous Question',
     },
     {
-      name: () => <IconPrevSpeaker width="60%" height="auto" />,
+      name: props => <IconPrevSpeaker width="60%" height="auto" className={props} />,
       func: this.prevSpeaker,
       title: () => 'Previous Speaker',
     },
     {
-      name: () =>
-        this.state.allPaused ? <IconPlay width="75%" height="auto" /> : <IconPause width="75%" height="75%" />,
+      name: props =>
+        this.state.allPaused ? (
+          <IconPlay width="60%" height="auto" className={props} />
+        ) : (
+          <IconPause width="60%" height="auto" className={props} />
+        ),
       func: this.allPause,
       title: () => (this.state.isRecording ? 'Stop' : this.state.allPaused ? 'Play' : 'Pause'),
     },
-    { name: () => <IconSkipSpeaker width="60%" height="auto" />, func: this.nextSpeaker, title: () => 'Next Speaker' },
     {
-      name: () => <IconNextSection width="60%" height="auto" />,
+      name: props => <IconSkipSpeaker width="60%" height="auto" className={props} />,
+      func: this.nextSpeaker,
+      title: () => 'Next Speaker',
+    },
+    {
+      name: props => <IconNextSection width="60%" height="auto" className={props} />,
       func: this.nextSection,
       title: () => 'Next Question',
       disabled: () => this.participants.human && !this.participants.human.speakingObjectURLs[this.state.round],
@@ -1548,6 +1576,12 @@ class RASPUndebate extends React.Component {
   ]
 
   allPause() {
+    window.gtag &&
+      window.gtag('event', 'button', {
+        event_category: 'viewer',
+        event_label: 'AllPause',
+        value: this.state.allPause ? 1 : 0,
+      })
     if (!this.state.begin) {
       this.beginButton()
     } else if (!this.state.allPaused) {
@@ -1596,7 +1630,7 @@ class RASPUndebate extends React.Component {
               this.requestPermissionElements.push(element)
               this.setState({ requestPermission: true })
             } else {
-              logger.error('undebate.play() for ', participant, 'caught error', err)
+              logger.error('CandidateConversation.play() for ', participant, 'caught error', err)
             }
           }
         }
@@ -1619,7 +1653,13 @@ class RASPUndebate extends React.Component {
 
   prevSection() {
     var { seatOffset, round } = this.state
-    logger.info('Undebate.prevSection', seatOffset, round)
+    logger.info('CandidateConversation.prevSection', seatOffset, round)
+    window.gtag &&
+      window.gtag('event', 'button', {
+        event_category: 'viewer',
+        event_label: 'PrevSection',
+        value: round,
+      })
     seatOffset = 0
     round -= 1
     if (round < 0) round = 0
@@ -1628,7 +1668,13 @@ class RASPUndebate extends React.Component {
 
   prevSpeaker() {
     var { seatOffset, round } = this.state
-    logger.info('Undebate.prevSpeaker', seatOffset, round)
+    logger.info('CandidateConversation.prevSpeaker', seatOffset, round)
+    window.gtag &&
+      window.gtag('event', 'button', {
+        event_category: 'viewer',
+        event_label: 'PrevSpeaker',
+        value: seatOffset,
+      })
     if (this.numParticipants === 1) {
       round -= 1
       if (round < 0) round = 0
@@ -1652,7 +1698,13 @@ class RASPUndebate extends React.Component {
 
   nextSection() {
     var { seatOffset, round } = this.state
-    logger.info('Undebate.nextSection', seatOffset, round)
+    window.gtag &&
+      window.gtag('event', 'button', {
+        event_category: 'viewer',
+        event_label: 'NextSection',
+        value: round,
+      })
+    logger.info('CandidateConversation.nextSection', seatOffset, round)
     if (this.numParticipants === 1) {
       round += 1
       if (!this.props.participants.moderator.speaking[round]) return this.finished()
@@ -1666,7 +1718,13 @@ class RASPUndebate extends React.Component {
 
   nextSpeaker() {
     var { seatOffset, round } = this.state
-    logger.info('Undebate.nextSpeaker', seatOffset, round)
+    window.gtag &&
+      window.gtag('event', 'button', {
+        event_category: 'viewer',
+        event_label: 'NextSpeaker',
+        value: seatOffset,
+      })
+    logger.info('CandidateConversation.nextSpeaker', seatOffset, round)
     if (this.numParticipants === 1) {
       round += 1
       if (!this.props.participants.moderator.speaking[round]) return this.finished()
@@ -1684,7 +1742,7 @@ class RASPUndebate extends React.Component {
 
   autoNextSpeaker() {
     var { seatOffset, round } = this.state
-    logger.trace('Undebate.autoNextSpeaker', seatOffset, round)
+    logger.trace('CandidateConversation.autoNextSpeaker', seatOffset, round)
     if (this.numParticipants === 1) {
       round += 1
       if (!this.props.participants.moderator.speaking[round]) return this.finished()
@@ -1702,7 +1760,7 @@ class RASPUndebate extends React.Component {
 
   finishedSpeaking() {
     // this is different than nextSpeaker to avoid the race condition that one might hit the finished speaking button just after the timeout and things have already advanced
-    logger.info('Undebate.finishedSpeaking')
+    logger.info('CandidateConversation.finishedSpeaking')
     if (this.seat(Object.keys(this.props.participants).indexOf('human')) === 'speaking') return this.autoNextSpeaker()
   }
 
@@ -1713,7 +1771,7 @@ class RASPUndebate extends React.Component {
   }
 
   rerecordButton() {
-    logger.info('Undebate.rerecordButton')
+    logger.info('CandidateConversation.rerecordButton')
     this.camera && this.camera.stopRecording() // it might be recording when the user hit's rerecord
     this.rerecord = true
     const { seatOffset, round } = this.state
@@ -1800,7 +1858,7 @@ class RASPUndebate extends React.Component {
   }
 
   finished() {
-    logger.info('Undebate.finished')
+    logger.info('CandidateConversation.finished')
     this.audioSets && this.audioSets.ending && this.playAudioObject('audio', this.audioSets.ending)
     setTimeout(() => {
       this.camera && this.camera.releaseCamera()
@@ -1834,14 +1892,14 @@ class RASPUndebate extends React.Component {
   }
 
   onUserLogin(info) {
-    logger.info('Undebate.onUserLogin')
+    logger.info('CandidateConversation.onUserLogin')
     logger.trace('onUserLogin', info)
     const { userId } = info
     this.setState({ newUserId: userId })
   }
 
   onUserUpload() {
-    logger.info('Undebate.onUserUpload')
+    logger.info('CandidateConversation.onUserUpload')
     logger.trace('onUserUpload', this.props)
     const userId = (this.props.user && this.props.user.id) || this.state.newUserId
     createParticipant(this.props, this.participants.human, userId, this.state.name, progressObj =>
@@ -1954,7 +2012,7 @@ class RASPUndebate extends React.Component {
       return
 
     if (this.stallWatchTimeout) {
-      logger.error('Undebate.stallWatch called but timeout already set', this.stallWatchTimeout)
+      logger.error('CandidateConversation.stallWatch called but timeout already set', this.stallWatchTimeout)
     }
 
     const element = this.participants[speaker].element.current
@@ -1974,11 +2032,11 @@ class RASPUndebate extends React.Component {
       // this is called after the player has started
       if (this.state.stalled) {
         if (element.readyState === 4 || element.buffered.end(0) - element.currentTime > 15) {
-          logger.trace('Undebate.stallWatch.stallWatchPlayed unstalled', speaker)
+          logger.trace('CandidateConversation.stallWatch.stallWatchPlayed unstalled', speaker)
           this.setState({ stalled: false, waitingPercent: 0 })
         } else {
           element.pause()
-          logger.trace('Undebate.stallWatch.stallWatchPlayed paused', speaker)
+          logger.trace('CandidateConversation.stallWatch.stallWatchPlayed paused', speaker)
           this.setState({ waitingPercent: calcWaitingPercent() })
         }
       }
@@ -1991,11 +2049,11 @@ class RASPUndebate extends React.Component {
         // wait for the Meta Data to be ready
         let duration = element.duration || Infinity // it might be Infinity, it might be NAN if the Meta Data hasn't loaded yet
         if (currentTime === Infinity) {
-          logger.error('Undebate.stallWatch CurrentTime is Infinity') // it might be - so just come back again later
+          logger.error('CandidateConversation.stallWatch CurrentTime is Infinity') // it might be - so just come back again later
           this.stallWatchTimeout = setTimeout(updater, 250)
         } else if (currentTime >= duration) {
           if (this.state.stalled) {
-            logger.trace('Undebate.stallWatch unstalling on end', speaker)
+            logger.trace('CandidateConversation.stallWatch unstalling on end', speaker)
             this.setState({ stalled: false, waitPercent: 0 })
           }
           this.stallWatchTimeout = false
@@ -2006,7 +2064,7 @@ class RASPUndebate extends React.Component {
             this.stallWatchTimeout = setTimeout(updater, 250)
           } else if (this.state.stalled !== speaker) {
             element.pause()
-            logger.trace('Undebate.stallWatch stalled', speaker)
+            logger.trace('CandidateConversation.stallWatch stalled', speaker)
             this.setState({ stalled: speaker })
             this.stallWatchTimeout = setTimeout(updater, 250)
           } else {
@@ -2019,7 +2077,7 @@ class RASPUndebate extends React.Component {
                   this.setState({ stalled: false, waitingPercent: 0 })
                 })
                 .catch(err => {
-                  logger.error('Undebate.stallWatch.updater caught error on play', err.name, err.message)
+                  logger.error('CandidateConversation.stallWatch.updater caught error on play', err.name, err.message)
                 })
             } else {
               this.setState({ waitingPercent: calcWaitingPercent() })
@@ -2032,7 +2090,7 @@ class RASPUndebate extends React.Component {
           if (this.state.stalled === speaker) {
             // it was stalled and now its moved forward, but we don't want it to stall again too soon
             if (element.readyState === 4 || element.buffered.end(0) - currentTime > 15) {
-              logger.trace('Undebate.stallWatch unstalled', speaker)
+              logger.trace('CandidateConversation.stallWatch unstalled', speaker)
               this.setState({ stalled: false, waitingPercent: 0 })
             } else {
               this.setState({ waitingPercent: calcWaitingPercent() })
@@ -2081,7 +2139,12 @@ class RASPUndebate extends React.Component {
   }
 
   beginButton(e) {
-    logger.info('Undebate.beginButton')
+    logger.info('CandidateConversation.beginButton')
+    window.gtag &&
+      window.gtag('event', 'button', {
+        event_category: 'viewer',
+        event_label: 'BeginButton',
+      })
     if (this.audioSets && this.audioSets.intro) {
       this.setState({ intro: true, stylesSet: true }, () => {
         this.playAudioObject('audio', this.audioSets.intro, this.onIntroEnd.bind(this))
@@ -2090,7 +2153,7 @@ class RASPUndebate extends React.Component {
   }
 
   render() {
-    const { className, classes, opening = {}, closing = { thanks: 'Thank You' } } = this.props
+    const { className, classes, opening = {}, closing = { thanks: 'Thank You' }, logo, donateButton } = this.props
     const {
       round,
       finishUp,
@@ -2152,16 +2215,29 @@ class RASPUndebate extends React.Component {
     const surveyForm = () =>
       (closing.iframe &&
         (!this.participants.human || (this.participants.human && (this.state.uploadComplete || this.state.hungUp))) && (
-          <iframe
-            src={closing.iframe.src}
-            width={Math.min(closing.iframe.width, innerWidth)}
-            height={closing.iframe.height}
-            frameBorder="0"
-            marginHeight="0"
-            marginWidth="0"
-          >
-            Loading...
-          </iframe>
+          <>
+            <iframe
+              src={closing.iframe.src}
+              width={Math.min(closing.iframe.width, innerWidth)}
+              height={closing.iframe.height}
+              frameBorder="0"
+              marginHeight="0"
+              marginWidth="0"
+            >
+              Loading...
+            </iframe>
+            <span className={cx(classes['thanks'], scrollableIframe && classes['scrollableIframe'])}>
+              <p>{closing.thanks}</p>
+              <DonateButton
+                url={
+                  logo === 'undebate'
+                    ? 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H7XBVF5U2C9NJ&source=url'
+                    : 'https://ballotpedia.org/Donate:_Candidate_Conversations'
+                }
+                {...donateButton}
+              />
+            </span>
+          </>
         )) ||
       (closing.link &&
         (!this.participants.human || (this.participants.human && (this.state.uploadComplete || this.state.hungUp))) && (
@@ -2235,31 +2311,17 @@ class RASPUndebate extends React.Component {
           <div className={cx(classes['outerBox'], scrollableIframe && classes['scrollableIframe'])} key="ending">
             <div style={{ width: '100%', height: '100%', display: 'table' }}>
               <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-                <span className={cx(classes['thanks'], scrollableIframe && classes['scrollableIframe'])}>
+                <div className={cx(classes['thanks'], scrollableIframe && classes['scrollableIframe'])}>
                   <p>{closing.thanks}</p>
-                  <p>
-                    <span className={classes['donateButton']}>
-                      <button
-                        onClick={() => {
-                          let dst =
-                            this.props.logo === 'undebate'
-                              ? 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H7XBVF5U2C9NJ&source=url'
-                              : 'https://ballotpedia.org/Donate:_Candidate_Conversations'
-                          let win = window.open(dst, '_blank')
-                          win.focus()
-                        }}
-                      >
-                        Donate
-                      </button>
-                    </span>
-                    <span>
-                      <div className={classes['donateCallToAction']}>
-                        EnCiv is a 501(c)3 nonprofit working to bring free and fair candidate conversations to elections
-                        across the country. Donations will help us keep this going.
-                      </div>
-                    </span>
-                  </p>
-                </span>
+                  <DonateButton
+                    url={
+                      logo === 'undebate'
+                        ? 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H7XBVF5U2C9NJ&source=url'
+                        : 'https://ballotpedia.org/Donate:_Candidate_Conversations'
+                    }
+                    {...donateButton}
+                  />
+                </div>
                 {surveyForm()}
                 {this.participants.human && !this.state.uploadComplete && (
                   <>
@@ -2384,7 +2446,10 @@ class RASPUndebate extends React.Component {
             )}
           >
             <img
-              style={{ transition: `all ${TransitionTime}ms linear`, height: videoHeight }}
+              style={{
+                transition: `all ${TransitionTime}ms linear`,
+                height: videoHeight,
+              }}
               height={pxSeatStyleWidth('speaking') * HDRatio}
               width="auto"
               src={(this.participants[participant] && this.participants[participant].placeholderUrl) || undefined}
@@ -2419,7 +2484,10 @@ class RASPUndebate extends React.Component {
                 controls={false}
                 onEnded={this.autoNextSpeaker}
                 onError={this.videoError.bind(this, participant)}
-                style={{ width: videoWidth, height: videoHeight }}
+                style={{
+                  width: videoWidth,
+                  height: videoHeight,
+                }}
                 key={participant + '-video'}
               ></video>
               <div
@@ -2458,8 +2526,12 @@ class RASPUndebate extends React.Component {
               title={button.title()}
               key={button.title()}
             >
-              <div disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
-                {button.name()}
+              <div
+                className={classes.buttonBarInner}
+                disabled={button.disabled && button.disabled()}
+                onClick={button.func.bind(this)}
+              >
+                {button.name(classes.iconButton)}
               </div>
             </div>
           ))}
@@ -2555,7 +2627,7 @@ class RASPUndebate extends React.Component {
     var main = () =>
       !done && (
         <div>
-          <ConversationHeader subject={this.props.subject} bp_info={this.props.bp_info} logo={this.props.logo} />
+          <ConversationHeader subject={this.props.subject} bp_info={this.props.bp_info} logo={logo} />
           <div className={classes['outerBox']}>
             {Object.keys(this.props.participants).map((participant, i) => videoBox(participant, i, seatStyle))}
             <Agenda
@@ -2610,7 +2682,7 @@ class RASPUndebate extends React.Component {
             <Preamble
               agreed={this.state.preambleAgreed}
               onClick={() => {
-                logger.info('Undebate preambleAgreed true')
+                logger.info('CandidateConversation preambleAgreed true')
                 this.setState({ preambleAgreed: true })
                 noOverlay && this.beginButton()
               }}

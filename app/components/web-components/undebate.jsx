@@ -24,15 +24,15 @@ const ShadowBox = 10
 
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser'
 
-import IconPrevSpeaker from '../../svgr/icon-prev-speaker'
-import IconPrevSection from '../../svgr/icon-prev-session'
-import IconPlay from '../../svgr/icon-play'
-import IconPause from '../../svgr/icon-pause'
-import IconStop from '../../svgr/icon-stop'
-import IconSkipSpeaker from '../../svgr/icon-skip-speaker'
-import IconNextSection from '../../svgr/icon-skip-session'
-import IconRedo from '../../svgr/icon-redo'
-import IconFinishRecording from '../../svgr/icon-finish-recording'
+import IconPrevSpeaker from '../../svgr/prev-speaker-icon'
+import IconPrevSection from '../../svgr/prev-section-icon'
+import IconPlay from '../../svgr/play-icon'
+import IconPause from '../../svgr/pause-icon'
+import IconStop from '../../svgr/stop-icon'
+import IconSkipSpeaker from '../../svgr/next-speaker-icon'
+import IconNextSection from '../../svgr/next-section-icon'
+import IconRedo from '../../svgr/redo-icon'
+import IconFinishRecording from '../../svgr/finish-speaking-icon'
 import IconRecording from '../../svgr/icon-recording'
 import ConversationHeader from '../conversation-header'
 
@@ -107,6 +107,10 @@ const styles = {
     fontFamily: "'Montserrat', sans-serif",
     '&$scrollableIframe': {
       height: 'auto',
+      pointerEvents: 'all',
+      '& button': {
+        cursor: 'pointer',
+      },
     },
   },
   innerImageOverlay: {
@@ -441,14 +445,39 @@ const styles = {
       color: 'lime',
     },
   },
+  iconButton: {
+    color: 'white',
+    pointerEvents: 'auto',
+    '& rect': {
+      stroke: '#000',
+      fill: '#000',
+    },
+    '& rect:hover': {
+      fill: '	#565656',
+    },
+    '& circle:hover': {
+      fill: '	#565656',
+    },
+  },
+  iconButtonDisabled: {
+    cursor: 'no-drop',
+    '& rect': {
+      stroke: '#878686',
+      fill: '#878686',
+    },
+    '& circle': {
+      stroke: '#878686',
+      fill: '#878686',
+    },
+  },
   buttonBar: {
     //display: "table",
     textAlign: 'center',
     position: 'absolute',
-    width: '50vw',
+    width: '35vw',
     left: '25vw',
-    top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
-    height: '3.5vh',
+    // top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
+    height: '10vh',
     overflow: 'hidden',
     'text-overflow': 'clip',
     '& button': {
@@ -714,7 +743,6 @@ class Undebate extends React.Component {
   }
 
   state = {
-    errorMsg: '',
     seatOffset: 0,
     round: 0,
     countDown: 0,
@@ -787,10 +815,11 @@ class Undebate extends React.Component {
     },
 
     buttonBarStyle: {
-      width: '50vw',
-      left: '25vw',
-      top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
-      height: '3.5vh',
+      // width: '35vw',
+      // left: '25vw',
+      // top: `calc(50vw *  ${HDRatio} + 3.5vh)`,
+      bottom: '5vh',
+      height: '10vh',
       position: 'absolute',
       overflow: 'hidden',
       textOverflow: 'clip',
@@ -1134,10 +1163,10 @@ class Undebate extends React.Component {
 
         introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
-        buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25
-        buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.1
-        buttonBarStyle.width = seatStyle.nextUp.width
-        buttonBarStyle.height = Math.max(0.05 * height, 4 * fontSize)
+        buttonBarStyle.left = seatStyle.speaking.left
+        // buttonBarStyle.width = seatStyle.nextUp.width
+        buttonBarStyle.width = seatStyle.speaking.width
+        // buttonBarStyle.height = Math.max(0.05 * height, 4 * fontSize) + 20
 
         recorderButtonBarStyle.left = seatStyle.speaking.left
         recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
@@ -1220,23 +1249,23 @@ class Undebate extends React.Component {
         agendaStyle.height = Math.max(0.175 * width, 20 * fontSize)
         introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
-        buttonBarStyle.width = speakingWidthRatio * 50 + 'vw'
-        buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25
-        // buttonBarStyle.top= speakingWidthRatio * HDRatio * width;
-        if (width / height < 0.87) {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.18
-        } else if (width / height < 1) {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.13
-        } else if (width / height < 1.2) {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.08
-        } else if (width / height < 1.4) {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.04
-        } else if (width / height < 1.6) {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1
-        } else {
-          buttonBarStyle.top = speakingWidthRatio * HDRatio * width
-        }
-        buttonBarStyle.height = Math.max(0.035 * height, 4 * fontSize)
+        buttonBarStyle.width = seatStyle.speaking.width
+        buttonBarStyle.left = seatStyle.speaking.left
+        // buttonBarStyle.top = speakingWidthRatio * HDRatio * width
+        // if (width / height < 0.87) {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.18
+        // } else if (width / height < 1) {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.13
+        // } else if (width / height < 1.2) {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.08
+        // } else if (width / height < 1.4) {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1.04
+        // } else if (width / height < 1.6) {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width * 1
+        // } else {
+        //   buttonBarStyle.top = speakingWidthRatio * HDRatio * width
+        // }
+        // buttonBarStyle.height = Math.max(0.035 * height, 4 * fontSize)
 
         recorderButtonBarStyle.left = seatStyle.speaking.left
         recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
@@ -1316,13 +1345,13 @@ class Undebate extends React.Component {
         agendaStyle.left + fontSize * 20 + 2 * horizontalSeatSpace <= width
           ? fontSize * 20
           : width - agendaStyle.left - 2 * horizontalSeatSpace // don't go too wide
-      agendaStyle.height = agendaStyle.width //fontSize * 20;
+      agendaStyle.height = agendaStyle.width - 30 //fontSize * 20;
       introSeatStyle['agenda'] = { top: -(agendaStyle.top + agendaStyle.height + ShadowBox), left: width }
 
-      buttonBarStyle.left = seatStyle.speaking.left + speakingWidthRatio * width * 0.25
-      buttonBarStyle.top = speakingWidthRatio * HDRatio * width + verticalSeatSpace * 1.2 //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
-      buttonBarStyle.width = speakingWidthRatio * 50 + 'vw'
-      buttonBarStyle.height = '5vh'
+      buttonBarStyle.left = 15
+      // buttonBarStyle.top = speakingWidthRatio * HDRatio * width + verticalSeatSpace * 1.2 //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
+      buttonBarStyle.width = speakingWidthRatio * 80 + 'vw'
+      // buttonBarStyle.height = '5vh'
 
       recorderButtonBarStyle.left = buttonBarStyle.left
       recorderButtonBarStyle.top = buttonBarStyle.top + buttonBarStyle.height * 1.25
@@ -1382,7 +1411,7 @@ class Undebate extends React.Component {
         if (this.participants.human && this.participants.human.speakingObjectURLs[round] && !this.rerecord) {
           objectURL = this.participants.human.speakingObjectURLs[round]
         } else {
-          objectURL = 'cameraStream' // set it to something - but this.camera.cameraStream should really be used
+          objectURL = 'cameraStream' // set it to something - but this.cameraStream should really be used
         }
       } else if (!(objectURL = this.participants[part].speakingObjectURLs[round])) {
         this.participants[part].speakingImmediate[round] = true
@@ -1391,7 +1420,7 @@ class Undebate extends React.Component {
       }
     } else {
       if (part === 'human' && (!reviewing || (reviewing && this.rerecord))) objectURL = 'cameraStream'
-      //set it to something - but this.camera.cameraStream should really be used
+      //set it to something - but this.cameraStream should really be used
       else if (!(objectURL = this.participants[part].listeningObjectURL))
         if (this.props.participants[part].listening) {
           // listeningObject hasn't loaded yet
@@ -1541,7 +1570,7 @@ class Undebate extends React.Component {
       //element.src=null;
       if (part === 'human' && !speaking && !reviewing) {
         // human is not speaking
-        if (element.srcObject === this.camera.cameraStream) {
+        if (element.srcObject === this.cameraStream) {
           if (element.muted && element.loop) return
           element.muted = true
           element.loop = true
@@ -1549,7 +1578,7 @@ class Undebate extends React.Component {
           element.src = ''
           element.muted = true
           element.loop = true
-          element.srcObject = this.camera.cameraStream // objectURL should be camera
+          element.srcObject = this.cameraStream // objectURL should be camera
         }
         return // not need to play - source is a stream
       } else if (part === 'human' && !speaking && reviewing) {
@@ -1558,7 +1587,7 @@ class Undebate extends React.Component {
           element.src = ''
           element.muted = true
           element.loop = true
-          element.srcObject = this.camera.cameraStream // objectURL should be camera
+          element.srcObject = this.cameraStream // objectURL should be camera
         } else {
           element.srcObject = null
           element.src = objectURL
@@ -1572,7 +1601,7 @@ class Undebate extends React.Component {
       ) {
         // human is speaking (not playing back what was spoken)
         element.src = ''
-        element.srcObject = this.camera.cameraStream // objectURL should be camera
+        element.srcObject = this.cameraStream // objectURL should be camera
         element.muted = true
         element.loop = false
         return // no need to play source is a stream
@@ -1680,43 +1709,55 @@ class Undebate extends React.Component {
 
   buttons = [
     {
-      name: () => <IconPrevSection width="60%" height="60%" />,
+      name: props => <IconRedo width="60%" height="60%" className={props} />,
+      func: this.rerecordButton,
+      title: () => 'Re-record',
+      disabled: () => this.speakingNow() !== 'human' || this.state.warmup,
+    },
+    {
+      name: props => <IconPrevSection width="60%" height="60%" className={props} />,
       func: this.prevSection,
       title: () => 'Previous Question',
     },
     {
-      name: () => <IconPrevSpeaker width="60%" height="60%" />,
+      name: props => <IconPrevSpeaker width="60%" height="60%" className={props} />,
       func: this.prevSpeaker,
       title: () => 'Previous Speaker',
     },
     {
-      name: () =>
+      name: props =>
         this.state.isRecording ? (
-          <IconStop width="75%" height="75%" />
+          <IconStop width="60%" height="60%" className={props} />
         ) : this.state.allPaused ? (
-          <IconPlay width="75%" height="75%" />
+          <IconPlay width="60%" height="60%" className={props} />
         ) : (
-          <IconPause width="75%" height="75%" />
+          <IconPause width="60%" height="60%" className={props} />
         ),
       func: this.allPause,
       title: () => (this.state.isRecording ? 'Stop' : this.state.allPaused ? 'Play' : 'Pause'),
     },
     {
-      name: () => <IconSkipSpeaker width="60%" height="60%" />,
+      name: props => <IconSkipSpeaker width="60%" height="60%" className={props} />,
       func: this.nextSpeaker,
       title: () => 'Next Speaker',
     },
     {
-      name: () => <IconNextSection width="60%" height="60%" />,
+      name: props => <IconNextSection width="60%" height="60%" className={props} />,
       func: this.nextSection,
       title: () => 'Next Question',
       disabled: () => this.participants.human && !this.participants.human.speakingObjectURLs[this.state.round],
+    },
+    {
+      name: props => <IconFinishRecording width="60%" height="60%" className={props} />,
+      func: this.finishedSpeaking,
+      title: () => 'Done Speaking',
+      disabled: () => this.speakingNow() !== 'human' || (this.state.reviewing && !this.rerecord),
     },
   ]
 
   recorderButtons = [
     {
-      name: () => 'Redo',
+      name: props => <IconRedo width="100%" height="100%" className={props} />,
       func: this.rerecordButton,
       title: () => 'Re-record',
       disabled: () => this.speakingNow() !== 'human' || this.state.warmup,
@@ -1725,7 +1766,7 @@ class Undebate extends React.Component {
     { name: () => 'key2', func: null, title: () => '' },
     { name: () => 'key3', func: null, title: () => '' },
     {
-      name: () => 'Finished Speaking',
+      name: props => <IconFinishRecording width="100%" height="100%" className={props} />,
       func: this.finishedSpeaking,
       title: () => 'Done Speaking',
       disabled: () => this.speakingNow() !== 'human' || (this.state.reviewing && !this.rerecord),
@@ -2029,7 +2070,7 @@ class Undebate extends React.Component {
   }
 
   maybeEnableRecording(newChair, listeningSeat, round, listeningRound, timeLimit) {
-    if (newChair === listeningSeat && round === listeningRound) {
+    if (this.isRecordingPlaceHolder()) {
       this.recordFromSpeakersSeat(listeningSeat, timeLimit, round)
     } else if (newChair === 'speaking') {
       if (this.rerecord) {
@@ -2174,22 +2215,11 @@ class Undebate extends React.Component {
 
   async getCameraMedia() {
     if (this.props.participants.human) {
-      // if we have a human in this debate
-      const constraints = {
-        audio: {
-          echoCancellation: { exact: true },
-        },
-        video: {
-          width: 640,
-          height: 360,
-        },
-      }
-      logger.trace('Using media constraints:', constraints)
-
+      // if we have a human in this debate then we are using the camera
       try {
-        await this.camera.getCameraStream(constraints, () => this.nextMediaState('human'))
+        await this.camera.getCameraStream()
         const { listeningRound, listeningSeat } = this.listening()
-        logger.trace('getUserMedia() got stream:', this.camera.cameraStream)
+        logger.trace('getUserMedia() got stream:', this.cameraStream)
         //it will be set by nextMediaState this.human.current.src = stream;
         Object.keys(this.props.participants).forEach(part => this.nextMediaState(part))
         // special case where human is in seat2 initially - because seat2 is where we record their silence
@@ -2475,7 +2505,6 @@ class Undebate extends React.Component {
       waitingPercent,
       totalSize_before_hangup,
       countDown,
-      errorMsg,
       left,
       preambleAgreed,
     } = this.state
@@ -2484,12 +2513,12 @@ class Undebate extends React.Component {
       Object.assign({}, stylesSet && { transition: IntroTransition }, introStyle[name], intro && introSeatStyle[name])
     const innerWidth = typeof window !== 'undefined' ? window.innerWidth : 1920
     const humanSpeaking = this.speakingNow() === 'human'
-
-    const scrollableIframe = done && participants.human
+    const ifShowPreamble = this.participants.human && !opening.noPreamble && !intro && !begin && !done
+    const scrollableIframe = (done && participants.human) || ifShowPreamble
     const bot = browserConfig.type === 'bot'
     const noOverlay = this.noOverlay
 
-    if (this.canNotRecordHere || (this.camera && this.camera.canNotRecordHere)) {
+    if (this.canNotRecordHere) {
       return (
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
           <ConversationHeader subject={subject} bp_info={bp_info} logo={logo} />
@@ -2808,7 +2837,7 @@ class Undebate extends React.Component {
           )}
           key={participant}
         >
-          {this.seat(i) === 'speaking' ? (
+          {this.seat(i) === 'speaking' && !participants.human ? (
             <SocialShareBtn
               metaData={{
                 path: path,
@@ -2940,15 +2969,22 @@ class Undebate extends React.Component {
 
     const buttonBar = buttonBarStyle =>
       (bot || ((noOverlay || (begin && intro)) && !finishUp && !done)) && (
-        <div style={buttonBarStyle} className={classes['buttonBar']} key="buttonBar">
+        <div style={buttonBarStyle} className={classes['']} key="buttonBar">
           {this.buttons.map(button => (
             <div
-              style={{ width: 100 / this.buttons.length + '%', display: 'inline-block', height: '100%' }}
+              style={{
+                width: 100 / this.buttons.length + '%',
+                display: 'inline-block',
+                height: '100%',
+                textAlign: 'center',
+              }}
               title={button.title()}
               key={button.title()}
             >
-              <div disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
-                {button.name()}
+              <div onClick={button.func.bind(this)}>
+                {button.disabled && button.disabled()
+                  ? button.name(classes.iconButtonDisabled)
+                  : button.name(classes.iconButton)}
               </div>
             </div>
           ))}
@@ -2969,9 +3005,9 @@ class Undebate extends React.Component {
               title={button.title()}
             >
               {button.func ? (
-                <button disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
-                  {button.name()}
-                </button>
+                <div disabled={button.disabled && button.disabled()} onClick={button.func.bind(this)}>
+                  {button.name(classes.iconButton)}
+                </div>
               ) : (
                 <div></div>
               )}
@@ -2981,6 +3017,7 @@ class Undebate extends React.Component {
       )
 
     const renderHangupButton = () =>
+      !ifShowPreamble &&
       !hungUp &&
       this.participants.human && (
         <div className={classes['hangUpButton']}>
@@ -3072,9 +3109,6 @@ class Undebate extends React.Component {
           >
             {(warmup ? '-' : '') + TimeFormat.fromS(Math.round(countDown), 'mm:ss')}
           </div>
-          <div style={{ whiteSpace: 'pre-wrap' }}>
-            <span>{errorMsg}</span>
-          </div>
         </>
       )
 
@@ -3095,7 +3129,23 @@ class Undebate extends React.Component {
             )}
           ></Modal>
         ) : null}
-        {participants.human && <ReactCameraRecorder ref={this.getCamera} />}
+        {participants.human && (
+          <ReactCameraRecorder
+            ref={this.getCamera}
+            onCanNotRecordHere={status => (this.canNotRecordHere = status)}
+            onCameraStream={stream => (this.cameraStream = stream)}
+            onCameraChange={() => this.nextMediaState('human')}
+            constraints={{
+              audio: {
+                echoCancellation: { exact: true },
+              },
+              video: {
+                width: 640,
+                height: 360,
+              },
+            }}
+          />
+        )}
         <section
           id="syn-ask-webrtc"
           key="began"
@@ -3108,7 +3158,7 @@ class Undebate extends React.Component {
           {((this.participants.human && (preambleAgreed || opening.noPreamble)) || !this.participants.human) &&
             !bot &&
             beginOverlay()}
-          {this.participants.human && !opening.noPreamble && !intro && !begin && !done && (
+          {ifShowPreamble && (
             <CandidatePreamble
               subject={subject}
               bp_info={bp_info}
@@ -3127,7 +3177,7 @@ class Undebate extends React.Component {
           {ending()}
           {((this.participants.human && (preambleAgreed || opening.noPreamble)) || !this.participants.human) &&
             buttonBar(buttonBarStyle)}
-          {recorderButtonBar(recorderButtonBarStyle)}
+          {/* {recorderButtonBar(recorderButtonBarStyle)} */}
           {permissionOverlay()}
           {waitingOnModeratorOverlay()}
           {renderHangupButton()}

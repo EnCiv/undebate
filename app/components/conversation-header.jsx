@@ -61,7 +61,8 @@ const styles = {
   rightBoxContainer: {
     display: 'inline-block',
     '&$portrait': {
-      textOverflow: 'hidden',
+      textOverflow: 'clip',
+      textAlign: 'left',
       display: 'block',
       width: '100%',
     },
