@@ -139,6 +139,13 @@ class ViewerRecorder extends ViewerRecorderLogic {
         left: 'calc(2.5vw + 20vw + 2.5vw + 50vw + 2.5vw)',
       },
 
+      inputControls: {
+        top: '8vh',
+        width: '17.5vw',
+        height: '17.5vw',
+        right: 'calc(2.5vw + 20vw + 2.5vw + 50vw + 2.5vw)',
+      },
+
       buttonBarStyle: {
         bottom: '5vh',
         height: '14vh',
@@ -212,6 +219,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
   calculateStyles(width, height, maxerHeight, fontSize) {
     var seatStyle = cloneDeep(this.state.seatStyle)
     var agendaStyle = cloneDeep(this.state.agendaStyle)
+    var inputControls = cloneDeep(this.state.inputControls)
     var buttonBarStyle = cloneDeep(this.state.buttonBarStyle)
     const titleHeight = 3 * fontSize
     if (width / height > 0.8) {
@@ -288,6 +296,17 @@ class ViewerRecorder extends ViewerRecorderLogic {
           agendaStyle.width = width - agendaStyle.left - 2 * horizontalSeatSpace
         agendaStyle.height = agendaStyle.width
 
+        //inputControls styles are a mirror image of agendaStyle above
+        inputControls.top = seatStyle.nextUp.top //speakingWidthRatio * HDRatio * width * 0.10;
+        inputControls.right = seatStyle.speaking.right + speakingWidthRatio * width + 2 * horizontalSeatSpace // 2 because it's rotated
+        //inputControls.height=speakingWidthRatio * HDRatio * width * 0.8;
+
+        inputControls.width = Math.max(speakingWidthRatio * HDRatio * width * 0.8, 20 * fontSize)
+        if (inputControls.right + inputControls.width > width)
+          inputControls.width = width - inputControls.right - 2 * horizontalSeatSpace
+        inputControls.height = inputControls.width
+        //end of copying of agendaStyle for inputControls
+
         buttonBarStyle.width = (parseInt(seatStyle.speaking.width) * 7) / 5 + 'vw' // three are 7 buttons, 5 should be under the speaking window
         buttonBarStyle.left = (100 - parseInt(buttonBarStyle.width)) / 2 + 'vw'
         buttonBarStyle.height = ((((parseInt(buttonBarStyle.width) / 7) * 140) / 100) * width * 0.8) / 100 + 'px' // there are 7 buttons. the aspect ratio of the button is 100 wide by 140 tall and we are scaling the icon to 80% of it's div
@@ -357,6 +376,15 @@ class ViewerRecorder extends ViewerRecorderLogic {
         if (agendaStyle.left + agendaStyle.width > width)
           agendaStyle.width = width - agendaStyle.left - 2 * horizontalSeatSpace
         agendaStyle.height = Math.max(0.175 * width, 20 * fontSize)
+
+        //copying of agendaStyle for inputControls
+        inputControls.top = 0.08 * height
+        inputControls.right = seatStyle.speaking.right + speakingWidthRatio * width + horizontalSeatSpace
+        inputControls.width = Math.max(0.175 * width, 20 * fontSize)
+        if (inputControls.right + inputControls.width > width)
+          inputControls.width = width - inputControls.right - 2 * horizontalSeatSpace
+        inputControls.height = Math.max(0.175 * width, 20 * fontSize)
+        // end of copying of agendaStyle for inputControls
 
         buttonBarStyle.width = (parseInt(seatStyle.speaking.width) * 7) / 5 + 'vw' // three are 7 buttons, 5 should be under the speaking window
         buttonBarStyle.left = (100 - parseInt(buttonBarStyle.width)) / 2 + 'vw'
@@ -433,10 +461,25 @@ class ViewerRecorder extends ViewerRecorderLogic {
       // buttonBarStyle.top = speakingWidthRatio * HDRatio * width + verticalSeatSpace * 1.2 //agendaStyle.top+agendaStyle.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
       buttonBarStyle.width = speakingWidthRatio * 80 + 'vw'
       // buttonBarStyle.height = '5vh'
+      // copying of agendaStyle for inputControls style
+      inputControls.top = seatStyle.nextUp.top
+      inputControls.right = horizontalSeatSpace + nextUpWidthRatio * width + 2 * horizontalSeatSpace
+      inputControls.width =
+        inputControls.right + fontSize * 20 + 2 * horizontalSeatSpace <= width
+          ? fontSize * 20
+          : width - inputControls.right - 2 * horizontalSeatSpace // don't go too wide
+      inputControls.height = inputControls.width - 30 //fontSize * 20;
+
+      buttonBarStyle.right = 15
+      // buttonBarStyle.top = speakingWidthRatio * HDRatio * width + verticalSeatSpace * 1.2 //inputControls.top+inputControls.height+2*verticalSeatSpace;  // extra vertical space because the Agenda is rotated
+      buttonBarStyle.width = speakingWidthRatio * 80 + 'vw'
+      // buttonBarStyle.height = '5vh'
+      // end of copying of agendaStyle for inputControls style
     }
     return {
       seatStyle,
       agendaStyle,
+      inputControls,
       buttonBarStyle,
     }
   }
@@ -602,6 +645,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
       totalSize_before_hangup,
       countDown,
       left,
+      inputControls,
     } = this.state
 
     const { reviewing } = ccState
@@ -827,8 +871,6 @@ class ViewerRecorder extends ViewerRecorderLogic {
         <div
           style={{
             zIndex: 10,
-            position: 'absolute',
-            bottom: '1em',
           }}
         >
           <div
@@ -892,6 +934,34 @@ class ViewerRecorder extends ViewerRecorderLogic {
           <ConversationHeader subject={subject} bp_info={bp_info} logo={logo} />
           <div className={classes['outerBox']}>
             {Object.keys(participants).map((participant, i) => videoBox(participant, i, seatStyle))}
+
+            {participants.human && (
+              <>
+                <ReactCameraRecorder
+                  ref={this.getCamera}
+                  onCanNotRecordHere={status => (
+                    dispatch({ type: dispatch.TYPES.CanNotRecordHere }), (this.canNotRecordHere = status)
+                  )}
+                  onCameraStream={stream => (this.cameraStream = stream)}
+                  onCameraChange={() => this.nextMediaState('human')}
+                  constraints={micCameraConstraintsState.constraints}
+                />
+                <div
+                  className={cx(
+                    classes['inputs'],
+                    stylesSet && classes['stylesSet'],
+                    finishUp && classes['finishUp'],
+                    begin && classes['begin'],
+                    !intro && classes['intro']
+                  )}
+                  style={inputControls}
+                >
+                  <h3>Input Controls</h3>
+                  {cameraButton()}
+                  {micButton()}
+                </div>
+              </>
+            )}
             <Agenda
               className={cx(
                 classes['agenda'],
@@ -939,21 +1009,6 @@ class ViewerRecorder extends ViewerRecorderLogic {
             )}
           ></Modal>
         ) : null}
-        {participants.human && (
-          <>
-            <ReactCameraRecorder
-              ref={this.getCamera}
-              onCanNotRecordHere={status => (
-                dispatch({ type: dispatch.TYPES.CanNotRecordHere }), (this.canNotRecordHere = status)
-              )}
-              onCameraStream={stream => (this.cameraStream = stream)}
-              onCameraChange={() => this.nextMediaState('human')}
-              constraints={micCameraConstraintsState.constraints}
-            />
-            {cameraButton()}
-            {micButton()}
-          </>
-        )}
         <section
           id="syn-ask-webrtc"
           key="began"
@@ -1123,6 +1178,28 @@ const styles = {
   },
   begin: {
     transition: `${IntroTransition}`,
+  },
+  inputs: {
+    backgroundColor: 'red',
+    padding: '1em',
+    position: 'absolute',
+    '&$finishUp': {
+      right: '50vw',
+      top: '50vh',
+      height: '1vh',
+      width: '1vw',
+      'font-size': '1%',
+    },
+    '&$stylesSet': {
+      transition: `all ${TransitionTime}ms linear`,
+    },
+    '&$begin': {
+      //transition: `${IntroTransition}`,
+    },
+    '&$intro': {
+      top: `calc( -1 * 25vw *  ${HDRatio} -${TopMargin})`,
+      right: '100vw',
+    },
   },
   counting: {},
   countdown: {

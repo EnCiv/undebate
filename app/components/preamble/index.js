@@ -66,8 +66,8 @@ const Preamble = ({ onClick, agreed, bp_info }) => {
         )}
       </p>
       <p>
-        Dana and EnCiv are teaming up to create a better way for candidates to be heard, and voters to learn about their
-        candidates.
+        Ballotpedia and EnCiv are teaming up to create a better way for candidates to be heard, and voters to learn
+        about their candidates.
       </p>
       <p>
         You are invited to engage in an application that will include you, as part of a publicly available online video
