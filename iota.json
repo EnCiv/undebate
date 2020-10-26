@@ -5648,6 +5648,17 @@
   },
   {
     "_id": {
+      "$oid": "5f4c40287c213e40c31e752d"
+    },
+    "path": "/viewer/hartford",
+    "subject": "viewers for candidate conversations in Hartford CT",
+    "description": "for use within an iframe. Users enter their address and a viewer is returned that corresponds to the representational district",
+    "webComponent": {
+      "webComponent": "HartfordViewers"
+    }
+  },
+  {
+    "_id": {
       "$oid": "5f7ca481e7179a6ea5213f43"
     },
     "path": "/qa/ccwrapper",
@@ -5805,5 +5816,6 @@
       }
     },
     "parentId": "5f7ca481e7179a6ea5213f43"
+
   }
 ]

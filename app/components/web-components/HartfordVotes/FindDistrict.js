@@ -95,7 +95,7 @@ const useStyles = createUseStyles({
 const FindDistrict = () => {
   const classes = useStyles()
 
-  const { setCandidates } = useCandidates()
+  const { candidates, setCandidates } = useCandidates()
   const { error, setError } = useError()
   const { notification, setNotification } = useNotification()
   let isPortrait = useMode()
@@ -140,6 +140,7 @@ const FindDistrict = () => {
     '06167',
   ]
 
+  console.log(candidates)
   return (
     <form
       className={classes.findDistrict}
