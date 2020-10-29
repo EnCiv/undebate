@@ -5883,5 +5883,18 @@
       }
     },
     "parentId": "5f7ca481e7179a6ea5213f43"
+  },
+  {
+    "_id": {
+      "$oid": "5f97517671277a59b8b56c7f"
+    },
+    "path": "/note",
+    "subject": "A Note",
+    "description": "This is an example of using the Note web component",
+    "webComponent": {
+      "webComponent": "Note",
+      "title": "Note Title",
+      "content": "Note Content"
+    }
   }
 ]
