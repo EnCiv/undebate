@@ -40,10 +40,11 @@ async function main() {
   console.info('found:', recorders.length)
   recorders.forEach(recorder => {
     console.info(
-      recorder.bp_info.candidate_name,
-      recorder.bp_info.candidate_emails,
-      recorder.bp_info.person_emails,
-      recorder.bp_info.bp_url
+      recorder.path + ',',
+      recorder.bp_info.candidate_name + ',',
+      recorder.bp_info.candidate_emails + ',',
+      recorder.bp_info.person_emails + ',',
+      recorder.bp_info.bp_url + ','
     )
   })
   client.close()
