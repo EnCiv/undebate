@@ -17,6 +17,7 @@ const WebComponents = {
   FAQ: require('./FAQ'),
   About: require('./About'),
   CcWrapper: require('./cc-wrapper'),
+  Note: require('./note'),
 }
 
 import React from 'react'
