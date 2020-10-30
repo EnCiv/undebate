@@ -84,7 +84,11 @@ const useStyles = createUseStyles({
     'font-weight': '600',
     display: 'table',
   },
-  innerAgenda: {},
+  innerAgenda: {
+    paddingLeft: '1rem',
+    paddingRight: '1rem',
+    paddingTop: '1em',
+  },
   agendaList: {
     padding: '0',
     listStyleType: 'none',
