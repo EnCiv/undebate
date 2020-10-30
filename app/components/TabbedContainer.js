@@ -186,7 +186,7 @@ const TabbedContainer = ({ className, style, tabs }) => {
 
   const [height, setHeight] = useState(0)
   const handleResize = () => {
-    let agendaHeight = parseFloat(ref.current.offsetParent.style.height) // the height of the Agenda object
+    let agendaHeight = parseFloat(ref.current.offsetParent.style.height) || 0 // the height of the Agenda object
     let borderWidth = parseFloat(ref.current.offsetParent.style.borderWidth) || 0
     let agendaContainerHeight = agendaHeight - ref.current.offsetTop - 2 * borderWidth // less height of the button bar
     if (height !== agendaContainerHeight) setHeight(agendaContainerHeight)

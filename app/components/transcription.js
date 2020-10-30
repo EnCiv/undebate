@@ -101,13 +101,10 @@ function AutoScroll({ sentences, currentTime }) {
   const bottom = rect.bottom
   const setBottom = bottom => (rect.bottom = bottom) // this won't cause a rerender
 
-  //this is a kludge - we need the parent height to be fixed in order to make this work
-  // not ref need to be in the div with className={transcription} so we get the padding information
-
   useLayoutEffect(() => {
     let agendaContainerHeight = ref.current.offsetHeight // the height of the Agenda object
     if (height !== agendaContainerHeight) setHeight(agendaContainerHeight)
-  }, [])
+  }, [sentences, currentTime]) // the parent height may change, we should check evertime something changes
 
   // scroll the div up as the text as the bottom gets bigger
   useLayoutEffect(() => {
