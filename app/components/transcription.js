@@ -103,11 +103,9 @@ function AutoScroll({ sentences, currentTime }) {
 
   //this is a kludge - we need the parent height to be fixed in order to make this work
   // not ref need to be in the div with className={transcription} so we get the padding information
+
   useLayoutEffect(() => {
-    let agendaHeight = ref.current.offsetParent.offsetParent.offsetParent.scrollHeight // the height of the Agenda object
-    let agendaContainerHeight = agendaHeight - ref.current.offsetParent.offsetParent.offsetTop // less height of the button bar
-    //agendaContainerHeight -= ref.current.offsetParent.offsetParent.scrollHeight // less the padding - because this is initially empty before the sentences are rendered below
-    agendaContainerHeight -= 10 // because there is a 5px border at the bottom of the Agenda
+    let agendaContainerHeight = ref.current.offsetHeight // the height of the Agenda object
     if (height !== agendaContainerHeight) setHeight(agendaContainerHeight)
   }, [])
 
@@ -123,17 +121,9 @@ function AutoScroll({ sentences, currentTime }) {
   }, [sentences])
 
   return (
-    <div style={{ height: height + 'px' }}>
-      <div style={{ height: height + 'px', position: 'relative', overflow: 'hidden' }}>
-        <div
-          className={transcription}
-          style={{ top: -top + 'px', transition: 'top 0.5s linear', position: 'absolute' }}
-          ref={ref}
-        >
-          <div style={{ position: 'relative' }}>
-            {showSentences(classes, sentences, bottom, setBottom, currentTime)}
-          </div>
-        </div>
+    <div style={{ position: 'relative', overflow: 'hidden', height: '100%' }} ref={ref}>
+      <div className={transcription} style={{ top: -top + 'px', transition: 'top 0.5s linear', position: 'absolute' }}>
+        <div style={{ position: 'relative' }}>{showSentences(classes, sentences, bottom, setBottom, currentTime)}</div>
       </div>
     </div>
   )
@@ -171,6 +161,7 @@ const useStyles = createUseStyles({
     textAlign: 'justify',
     fontSize: '2rem',
     padding: '1rem',
+    paddingTop: 0,
   },
   word: {
     color: '#333333',

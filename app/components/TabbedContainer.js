@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
 import { useMode } from './phone-portrait-context'
@@ -15,6 +15,8 @@ const useStyles = createUseStyles({
     boxSizing: 'border-box',
     width: container_width,
     borderTop: 0,
+    margin: 0,
+    padding: 0,
     //padding: '1em',
     textAlign: 'center',
     backgroundColor: 'white',
@@ -157,12 +159,22 @@ const makeTabs = (tabs_and_contents, action, classes) => {
   return drop_down_menu
 }
 
-const TabbedContainer = ({ tabs }) => {
+const TabbedContainer = ({ className, style, tabs }) => {
   const isPortrait = useMode()
   const classes = useStyles()
   let [selectedTab, changeTab] = useState(0)
   let tabRow = makeTabs(tabs, changeTab, classes)
   const prevSelectedTabRef = useRef(selectedTab + 1)
+  const ref = useRef()
+  const changeTabAndLog = index => {
+    // log tab changes to google tags
+    window.gtag &&
+      window.gtag('event', 'button', {
+        event_category: 'tabs',
+        event_label: tabs[index].name,
+      })
+    changeTab(index)
+  }
 
   useEffect(() => {
     prevSelectedTabRef.current = selectedTab
@@ -172,17 +184,38 @@ const TabbedContainer = ({ tabs }) => {
     document.getElementById(`label_for_tab_${selectedTab}`).selected = true
   }, [isPortrait])
 
+  const [height, setHeight] = useState(0)
+  const handleResize = () => {
+    let agendaHeight = parseFloat(ref.current.offsetParent.style.height) // the height of the Agenda object
+    let borderWidth = parseFloat(ref.current.offsetParent.style.borderWidth) || 0
+    let agendaContainerHeight = agendaHeight - ref.current.offsetTop - 2 * borderWidth // less height of the button bar
+    if (height !== agendaContainerHeight) setHeight(agendaContainerHeight)
+  }
+
+  useLayoutEffect(() => {
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [style, className, tabs])
+
   const prevSelectedTab = prevSelectedTabRef.current
   const renderedTab = tabs[selectedTab].contents
 
   return (
-    <div>
+    <div className={className} style={style}>
       {isPortrait ? (
         tabRow
       ) : (
-        <TabButtons selected_tab={selectedTab} prev_selected_tab={prevSelectedTab} tabs={tabs} action={changeTab} />
+        <TabButtons
+          selected_tab={selectedTab}
+          prev_selected_tab={prevSelectedTab}
+          tabs={tabs}
+          action={changeTabAndLog}
+        />
       )}
-      <div className={classes.tabContents}>{renderedTab}</div>
+      <div className={classes.tabContents} style={{ height }} ref={ref}>
+        {renderedTab}
+      </div>
     </div>
   )
 }
