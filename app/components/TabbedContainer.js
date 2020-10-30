@@ -185,18 +185,13 @@ const TabbedContainer = ({ className, style, tabs }) => {
   }, [isPortrait])
 
   const [height, setHeight] = useState(0)
-  const handleResize = () => {
+
+  useLayoutEffect(() => {
     let agendaHeight = parseFloat(ref.current.offsetParent.style.height) || 0 // the height of the Agenda object
     let borderWidth = parseFloat(ref.current.offsetParent.style.borderWidth) || 0
     let agendaContainerHeight = agendaHeight - ref.current.offsetTop - 2 * borderWidth // less height of the button bar
     if (height !== agendaContainerHeight) setHeight(agendaContainerHeight)
-  }
-
-  useLayoutEffect(() => {
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [style, className, tabs])
+  }, [style, className, tabs]) // parent height might change on resize / orientation and such - that will cause a style change
 
   const prevSelectedTab = prevSelectedTabRef.current
   const renderedTab = tabs[selectedTab].contents
