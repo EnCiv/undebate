@@ -3453,6 +3453,32 @@
           "timeLimits": [10, 60, 60],
           "transcriptions": [
             {
+              "languages": {
+                "en": {
+                  "timedStrings": [
+                    {
+                      "startTime": 0,
+                      "endTime": 2.7,
+                      "string": "Hello, I'm David Fridley."
+                    },
+                    {
+                      "startTime": 2.7,
+                      "endTime": 7.8,
+                      "string": "This is a mock candidate conversation about an election for school board."
+                    },
+                    {
+                      "startTime": 7.8,
+                      "endTime": 16.6,
+                      "string": "These volunteers are acting as candidates to help us demonstrate how we can create a more human way of learning about our candidates online."
+                    },
+                    {
+                      "startTime": 16.6,
+                      "endTime": 27.9,
+                      "string": "And this can be easily deployed for all 511000 elected offices in the US. We will begin by letting each candidate give a quick introduction."
+                    }
+                  ]
+                }
+              },
               "confidence": 0.9644811749458313,
               "transcript": "Hello, I'm David Fridley. This is a Mont candidate conversation about an election for school board. These volunteers are acting as candidates to help us demonstrate how we can create a more human way of learning about our candidates online. And this can be easily deployed for all 511000 elected offices in the US. We will Begin by letting each candidate. Give a quick introduction.",
               "words": [
@@ -4239,6 +4265,27 @@
               ]
             },
             {
+              "languages": {
+                "en": {
+                  "timedStrings": [
+                    {
+                      "startTime": 0,
+                      "endTime": 1.5,
+                      "string": "Thank you for that!"
+                    },
+                    {
+                      "startTime": 1.5,
+                      "endTime": 6.8,
+                      "string": "Next we have a question that was the result of a voter engagement initiative in Chicago."
+                    },
+                    {
+                      "startTime": 6.8,
+                      "endTime": 11.5,
+                      "string": "We will invite each candidate to take a turn answering it."
+                    }
+                  ]
+                }
+              },
               "confidence": 0.9631034731864929,
               "transcript": "Thank you for that. Next we have a question that was the result of a voter engagement initiative in Chicago. We will invite each candidate to take a turn answering it.",
               "words": [
@@ -4617,6 +4664,37 @@
               ]
             },
             {
+              "languages": {
+                "en": {
+                  "timedStrings": [
+                    {
+                      "startTime": 0,
+                      "endTime": 1.2,
+                      "string": "Great!"
+                    },
+                    {
+                      "startTime": 1.2,
+                      "endTime": 4.1,
+                      "string": "Now we have reached our final round."
+                    },
+                    {
+                      "startTime": 4.1,
+                      "endTime": 9.2,
+                      "string": "In a real Candidate Conversation we would have more rounds and different formats."
+                    },
+                    {
+                      "startTime": 9.2,
+                      "endTime": 15.4,
+                      "string": "Some with people speaking all at the same time and others like this, with them speaking one by one."
+                    },
+                    {
+                      "startTime": 15.4,
+                      "endTime": 20.1,
+                      "string": "Let's conclude with a closing statement from each candidate."
+                    }
+                  ]
+                }
+              },
               "confidence": 0.9202861785888672,
               "transcript": "Great. Now we have reached our final round in a real Kennedy conversation. We would have more rounds and different formats. So I'm with speedball speaking all at the same time and others like this within speaking one by one. Let's conclude with a closing statement from each candidate.",
               "words": [

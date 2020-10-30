@@ -83,6 +83,11 @@ if (window.socket.NoSocket) {
 window.logger = log4js.getLogger('browser')
 logger.info('client main running on browser', window.location.pathname, reactProps.browserConfig)
 
+if (!window.language) {
+  // a button may change the language later
+  window.language = navigator.language.slice(0, 2)
+}
+
 function render(props) {
   try {
     window.reactContainer = document.getElementById('synapp')
