@@ -8,6 +8,6 @@ if [ ! "$2" ]; then
   echo "Missing backup directory name";
   exit 1;
 fi
-mongoexport /uri:$1 /collection:users /out:backups/$2/users.json
-mongoexport /uri:$1 /collection:iotas /out:backups/$2/iotas.json
-mongoexport /uri:$1 /collection:logs /out:backups/$2/logs.json
+mongoexport  /uri:$1 /collection:users  /out:backups/$2/users.json --jsonArray
+mongoexport  /uri:$1 /collection:iotas /out:backups/$2/iotas.json --jsonArray
+mongoexport  /uri:$1 /collection:logs /out:backups/$2/logs.json --jsonArray

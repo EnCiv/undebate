@@ -28,21 +28,35 @@ const AgendaItem = ({ agendaItem }) => {
 
 export const AgendaTranscript = ({ className, style, agendaItem, transcript, element }) => {
   const classes = useAgendaStyles()
+  let tabs = [
+    {
+      name: 'Agenda',
+      contents: <AgendaItem agendaItem={agendaItem} />,
+    },
+  ]
+  if (transcript && transcript.languages) {
+    if (transcript.languages.en)
+      tabs.push({
+        name: 'English',
+        contents: <Transcription transcript={transcript} element={element} language="en" />,
+      })
+    if (transcript.languages.es)
+      tabs.push({
+        name: 'Español',
+        contents: <Transcription transcript={transcript} element={element} language="es" />,
+      })
+  } else {
+    tabs.push({
+      name: 'Transcript',
+      contents: <Transcription transcript={transcript} element={element} language="en" />,
+    })
+  }
   return (
-    <div style={{ ...style, border: '5px solid #1d3491' }} className={cx(className, classes.agenda)}>
-      <TabbedContainer
-        tabs={[
-          {
-            name: 'Agenda',
-            contents: <AgendaItem agendaItem={agendaItem} />,
-          },
-          {
-            name: 'Transcript',
-            contents: <Transcription transcript={transcript} element={element} />,
-          },
-        ]}
-      />
-    </div>
+    <TabbedContainer
+      style={{ ...style, border: '5px solid #1d3491' }}
+      className={cx(className, classes.agenda)}
+      tabs={tabs}
+    />
   )
 }
 
@@ -56,6 +70,8 @@ const useAgendaStyles = createUseStyles({
     'box-sizing': 'border-box',
     'font-weight': '600',
     display: 'table',
+    margin: 0,
+    padding: 0,
   },
 })
 
@@ -68,7 +84,11 @@ const useStyles = createUseStyles({
     'font-weight': '600',
     display: 'table',
   },
-  innerAgenda: {},
+  innerAgenda: {
+    paddingLeft: '1rem',
+    paddingRight: '1rem',
+    paddingTop: '1em',
+  },
   agendaList: {
     padding: '0',
     listStyleType: 'none',

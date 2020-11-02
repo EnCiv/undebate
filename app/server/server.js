@@ -28,6 +28,15 @@ import Sniffr from 'sniffr'
 import Device from 'device'
 import { DataComponent } from '../components/data-components'
 
+function isHostOnLan(hostname) {
+  // so we can access the server from the LAN while in development - but not in production like http://192.168.1.6:3011
+  if (process.env.NODE_ENV !== 'development') return false
+  let parts = hostname.split('.')
+  if (parts.length !== 4) return false
+  if (parts[0] === '192' && parts[1] === '168') return true
+  return false
+}
+
 class HttpServer extends EventEmitter {
   sockets = {}
 
@@ -144,6 +153,12 @@ class HttpServer extends EventEmitter {
   router() {
     /*if ( process.env.NODE_ENV !== 'production' ) */ this.timeout()
     this.getBrowserConfig()
+    // Loader.io on Heroku requires the server to respond to their token request in order to validate
+    if (process.env.LOADERIO_TOKEN)
+      this.app.get('/' + process.env.LOADERIO_TOKEN + '/', (req, res) => {
+        res.type('text/plain')
+        res.send(process.env.LOADERIO_TOKEN)
+      })
     this.app.get('/robots.txt', (req, res) => {
       res.type('text/plain')
       res.send('User-agent: *\nAllow: /')
@@ -176,6 +191,7 @@ class HttpServer extends EventEmitter {
     this.app.use((req, res, next) => {
       let hostName = req.hostname
       if (hostName === 'localhost') return next()
+      if (isHostOnLan(hostName)) return next() //so we can access from the LAN
       if (!req.secure || req.protocol !== 'https') {
         console.info('server.httpToHttps redirecting to ', req.secure, 'https://' + req.hostname + req.url)
         res.redirect('https://' + req.hostname + req.url)
@@ -235,6 +251,11 @@ class HttpServer extends EventEmitter {
           next(err)
         }
       },
+      (req, res, next) => {
+        if (process.env.NODE_ENV === 'production')
+          res.set('Cache-Control', `public, max-age=${process.env.IOTA_MAX_AGE || 60 * 60}`)
+        next()
+      }, // age in seconds - only an hour because candidates may be added, or rerecord
       serverReactRender
     )
   }
@@ -286,7 +307,12 @@ class HttpServer extends EventEmitter {
   }
 
   cdn() {
-    this.app.use('/assets/', express.static('assets'))
+    this.app.use(
+      '/assets/',
+      express.static('assets', {
+        maxAge: process.env.NODE_ENV === 'production' ? process.env.ASSETS_MAX_AGE || 1 * 24 * 60 * 60 * 1000 : 0,
+      })
+    ) // max-age in ms - 1 days these things only change through development
   }
 
   notFound() {
