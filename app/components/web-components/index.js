@@ -16,6 +16,7 @@ const WebComponents = {
   HartfordVotes: require('./HartfordVotes'),
   FAQ: require('./FAQ'),
   About: require('./About'),
+  RecorderInstructions: require('./RecorderInstructions'),
   CcWrapper: require('./cc-wrapper'),
   Note: require('./note'),
 }
