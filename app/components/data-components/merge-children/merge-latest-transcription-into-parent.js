@@ -3,7 +3,7 @@
 export default function mergeLatestTranscriptionIntoParent(childIotas, parentIota) {
   // the list is sorted by date, find each transcription and add it to the participant in parentIota - caution there may be old transcriptions
   childIotas.forEach(iota => {
-    if (iota.component && iota.component.component !== 'Transcription') return
+    if (!iota.component || iota.component.component !== 'Transcription') return
     Object.keys(parentIota.webComponent.participants).forEach(participant => {
       if (parentIota.webComponent.participants[participant].participantId === iota.component.participantId) {
         if (parentIota.webComponent.participants[participant].transcriptions) return // there is already a transcription here
