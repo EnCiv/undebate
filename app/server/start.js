@@ -54,10 +54,13 @@ async function asyncStart(emitter) {
       verbose = true
     }
 
-    if (!process.env.MONGODB_URI) {
-      throw new Error('Missing MONGODB_URI')
+    // heroku is going to delete the MONGODB_URI var on Nov10 - we need something else to use in the mean time
+    const MONGODB_URI = process.env.PRIMARYDB_URI || process.env.MONGODB_URI
+
+    if (!MONGODB_URI) {
+      throw new Error('Missing PRIMARYDB_URI or MONGODB_URI')
     }
-    await MongoModels.connect({ uri: process.env.MONGODB_URI }, {})
+    await MongoModels.connect({ uri: MONGODB_URI }, {})
     // any models that need to createIndexes will push their init function
     for await (const init of MongoModels.toInit) {
       await init()

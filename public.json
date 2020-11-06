@@ -4,7 +4,7 @@
     "bigLimit": 20
   },
   "WebRTCMediaRecordPeriod": 100,
-  "MongoLogsCappedSize": 10485760,
+  "MongoLogsCappedSize": 104857600,
   "navigator batch size": 10,
   "sendEmailFrom": "no-reply@enciv.org",
   "sendFeedbackTo": "davidfridley@enciv.org",
