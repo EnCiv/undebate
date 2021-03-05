@@ -1377,8 +1377,8 @@ class Undebate extends React.Component {
     }
   }
 
-  saveRecordingToParticipants(speaking, round, blobs) {
-    logger.trace('saveRecordingToParticipants (locally)', speaking, round)
+  saveRecordingToParticipants(recordingPlaceHolder, round, blobs) {
+    logger.trace('saveRecordingToParticipants (locally)', recordingPlaceHolder, round)
     if (!blobs.length) return logger.error('saveRecordingToParticipants found no blobs', blobs)
     logger.trace(
       'save Recorded Blobs: ',
@@ -1387,7 +1387,7 @@ class Undebate extends React.Component {
       blobs.reduce((acc, blob) => acc + blob.size || 0, 0)
     )
     const blob = new Blob(blobs, { type: blobs[0].type }) // use the type from the blob because it might be different than the type we asked for - eg safari gives your video/mp4 no matter what
-    if (!speaking) {
+    if (recordingPlaceHolder) {
       this.participants.human.listeningBlob = blob
       this.participants.human.listeningObjectURL = URL.createObjectURL(blob)
     } else {
@@ -1402,13 +1402,21 @@ class Undebate extends React.Component {
     //if (part === 'human') return;
     // humans won't get here
     const { round, reviewing } = this.state
+    const { listeningRound, listeningSeat } = this.listening()
 
     let speaking = this.seatOfParticipant(part) === 'speaking'
 
     var objectURL
     if (speaking) {
       if (part === 'human') {
-        if (this.participants.human && this.participants.human.speakingObjectURLs[round] && !this.rerecord) {
+        if (round === listeningRound && listeningSeat === 'speaking') {
+          if (reviewing) {
+            if (!this.rerecord) {
+              if (this.participants.human.listeningObjectURL) objectURL = this.participants.human.listeningObjectURL
+              else objectURL = 'cameraStream'
+            } else objectURL = 'cameraStream'
+          }
+        } else if (this.participants.human && this.participants.human.speakingObjectURLs[round] && !this.rerecord) {
           objectURL = this.participants.human.speakingObjectURLs[round]
         } else {
           objectURL = 'cameraStream' // set it to something - but this.cameraStream should really be used
@@ -2070,7 +2078,16 @@ class Undebate extends React.Component {
   }
 
   maybeEnableRecording(newChair, listeningSeat, round, listeningRound, timeLimit) {
-    if (this.isRecordingPlaceHolder()) {
+    if (
+      newChair === 'speaking' &&
+      listeningRound === round &&
+      listeningSeat === 'speaking' &&
+      this.state.reviewing &&
+      !this.rerecord &&
+      this.participants.human.listeningObjectURL
+    ) {
+      // do not enable recording
+    } else if (this.isRecordingPlaceHolder()) {
       this.recordFromSpeakersSeat(listeningSeat, timeLimit, round)
     } else if (newChair === 'speaking') {
       if (this.rerecord) {
@@ -2082,9 +2099,10 @@ class Undebate extends React.Component {
   }
 
   recordWithCountdown(timeLimit, round, delay) {
+    const recordingPlaceHolder = this.isRecordingPlaceHolder() // do this now, to get the state now, don't want to do it in the closure below
     this.startCountDown(timeLimit, () => this.autoNextSpeaker(), delay)
     this.startTalkativeTimeout(timeLimit * 0.75)
-    this.startRecording(blobs => this.saveRecordingToParticipants(true, round, blobs), true)
+    this.startRecording(blobs => this.saveRecordingToParticipants(recordingPlaceHolder, round, blobs), true)
   }
 
   recordWithWarmup(timeLimit, round) {
@@ -2093,11 +2111,12 @@ class Undebate extends React.Component {
   }
 
   recordFromSpeakersSeat(listeningSeat, timeLimit, round) {
+    const recordingPlaceHolder = this.isRecordingPlaceHolder() // do this now, to get the state now, don't want to do it in the closure below
     if (listeningSeat === 'speaking') {
       // recording the listening segment from the speakers seat
       this.startCountDown(timeLimit, () => this.autoNextSpeaker(), TransitionTime)
     }
-    this.startRecording(blobs => this.saveRecordingToParticipants(false, round, blobs))
+    this.startRecording(blobs => this.saveRecordingToParticipants(recordingPlaceHolder, round, blobs))
   }
 
   finished() {
@@ -2150,8 +2169,15 @@ class Undebate extends React.Component {
     logger.info('Undebate.onUserUpload')
     logger.trace('onUserUpload', this.props)
     const userId = (this.props.user && this.props.user.id) || this.state.newUserId
-    createParticipant(this.props, this.participants.human, userId, this.state.name, progressObj =>
-      this.setState(progressObj)
+    const { listeningRound, listeningSeat } = this.listening()
+    createParticipant(
+      this.props,
+      this.participants.human,
+      userId,
+      this.state.name,
+      progressObj => this.setState(progressObj),
+      listeningRound,
+      listeningSeat
     )
   }
 
@@ -2170,6 +2196,7 @@ class Undebate extends React.Component {
 
     if (this.countdownTimeout) clearTimeout(this.countdownTimeout)
     this.countdownTimeout = setTimeout(() => counter(seconds), startDelay) // can't call setState from here because it will collide with the setstate of the parent event handler
+    this.state.countDown = seconds // kludge because this.countdownTimeout is the condition to show the countdownTimer and it will appear a moment the state change
   }
 
   stopCountDown() {
@@ -2203,6 +2230,7 @@ class Undebate extends React.Component {
       }
     }
     if (this.countdownTimeout) clearTimeout(this.countdownTimeout) // if users clicks again on the redo button within the coundown time
+    this.state.countDown = seconds // kludge because this.countdownTimeout is the condition to show the countdownTimer and it will appear a moment the state change
     counter(seconds)
   }
 
@@ -2224,7 +2252,7 @@ class Undebate extends React.Component {
         Object.keys(this.props.participants).forEach(part => this.nextMediaState(part))
         // special case where human is in seat2 initially - because seat2 is where we record their silence
         if (listeningRound === 0 && this.seatOfParticipant('human') === listeningSeat)
-          this.startRecording(blobs => this.saveRecordingToParticipants(false, 0, blobs)) // listening is not speaking
+          this.startRecording(blobs => this.saveRecordingToParticipants(true, 0, blobs)) // is recording placeholder
       } catch (e) {
         logger.error('getCameraMedia', e.name, e.message)
       }
@@ -3100,9 +3128,7 @@ class Undebate extends React.Component {
           <div
             className={cx(
               classes['countdown'],
-              humanSpeaking &&
-                (this.rerecord || !this.participants.human.speakingObjectURLs[round]) &&
-                classes['counting'],
+              this.countdownTimeout && classes['counting'],
               talkative && classes['talkative'],
               warmup && classes['warmup']
             )}

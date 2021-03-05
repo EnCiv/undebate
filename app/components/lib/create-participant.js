@@ -13,12 +13,22 @@ import { auto_quality, placeholder_image } from './cloudinary-urls'
  *
  */
 
-export default function createParticipant(props, human, userId, name, progressFunc) {
+function allThere(array, length) {
+  return array.length === length && array.every(i => typeof i !== 'undefined')
+}
+
+export default function createParticipant(props, human, userId, name, progressFunc, listeningRound, listeningSeat) {
   var transferred = 0
   var totalSize = 0
   var participant = { speaking: [], name: name }
   var uploadQueue = []
 
+  let adjustedSpeakingBlobs = human.speakingBlobs.slice() // make a copy so we don't mutate the original
+  if (listeningSeat === 'speaking') {
+    if (typeof adjustedSpeakingBlobs[listeningRound] !== 'undefined')
+      logger.error("createParticpant didn't expect blob for listening in speakingBlobs")
+    adjustedSpeakingBlobs.splice(listeningRound, 1) // if listening is in the speaking seat - skip that round
+  }
   function updateProgress(chunk) {
     transferred += chunk.length
     var percentComplete = Math.round((transferred / totalSize) * 100) + '%'
@@ -43,7 +53,7 @@ export default function createParticipant(props, human, userId, name, progressFu
         logger.error('upload video failed', file_name)
       }
       if (
-        participant.speaking.length === human.speakingBlobs.length &&
+        allThere(participant.speaking, adjustedSpeakingBlobs.length) &&
         !!human.listeningBlob === !!participant.listening
       ) {
         // have all of the pieces been uploaded
@@ -105,9 +115,9 @@ export default function createParticipant(props, human, userId, name, progressFu
   logger.info('Undebate.onUserUpload')
   logger.trace('onUserUpload', props)
 
-  for (let round = 0; round < human.speakingBlobs.length; round++) {
-    totalSize += human.speakingBlobs[round].size
-    uploadQueue.push([human.speakingBlobs[round], 'speaking', round])
+  for (let round = 0; round < adjustedSpeakingBlobs.length; round++) {
+    totalSize += adjustedSpeakingBlobs[round].size
+    uploadQueue.push([adjustedSpeakingBlobs[round], 'speaking', round])
   }
   if (human.listeningBlob) {
     uploadQueue.push([human.listeningBlob, 'listening', 0])
