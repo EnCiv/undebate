@@ -690,16 +690,25 @@ class Undebate extends React.Component {
           speakingObjectURLs: [],
           speakingImmediate: [],
           listeningObjectURL: null,
+          listeningObjectURLs: this.props.participants[participant].listeningURLs ? [] : undefined,
           listeningImmediate: false,
           placeholderUrl:
             (participant !== 'human' &&
               !youtube &&
               placeholder_image(
-                this.props.participants[participant].listening || this.props.participants[participant].speaking[0]
+                (this.props.participants[participant].listeningURLs &&
+                  this.props.participants[participant].listeningURLs[0]) ||
+                  this.props.participants[participant].listening ||
+                  this.props.participants[participant].speaking[0]
               )) ||
             '',
           youtube,
           element: React.createRef(),
+        }
+        if (this.props.participants[participant].listeningURLs) {
+          this.participants[participant].placeholderURLs = this.props.participants[participant].listeningURLs.map(url =>
+            placeholder_image(url)
+          )
         }
         if (participant === 'human') {
           this.participants.human.speakingBlobs = []
@@ -1429,7 +1438,11 @@ class Undebate extends React.Component {
     } else {
       if (part === 'human' && (!reviewing || (reviewing && this.rerecord))) objectURL = 'cameraStream'
       //set it to something - but this.cameraStream should really be used
-      else if (!(objectURL = this.participants[part].listeningObjectURL))
+      else if (
+        !(objectURL =
+          (this.participants[part].listeningObjectURLs && this.participants[part].listeningObjectURLs[round]) ||
+          this.participants[part].listeningObjectURL)
+      )
         if (this.props.participants[part].listening) {
           // listeningObject hasn't loaded yet
           this.participants[part].listeningImmediate = true
@@ -1466,6 +1479,9 @@ class Undebate extends React.Component {
     if (speaking) this.participants[part].speakingObjectURLs[round] = this.props.participants[part].speaking[round]
     else {
       this.participants[part].listeningObjectURL = this.props.participants[part].listening
+      if (this.props.participants[part].listeningURLs) {
+        this.participants[part].listeningObjectURLs[round] = this.props.participants[part].listeningURLs[round]
+      }
     }
     if (round == 0 && part === 'moderator') {
       this.setState({ moderatorReadyToStart: true })
@@ -2851,7 +2867,12 @@ class Undebate extends React.Component {
         if (bp_info.candidate_name) participant_name = bp_info.candidate_name
         else if (name) participant_name = name
         else if (firstName || lastName) participant_name = firstName + ' ' + lastName
-      } else participant_name = participants[participant].name
+      } else {
+        if (participants[participant].names) {
+          if (participants[participant].names.length > round) participant_name = participants[participant].names[round]
+          else participant_name = participants[participant].names[participants[participant].names.length - 1]
+        } else participant_name = participants[participant].name || ' ' // space needs to be something to show so it will render
+      }
       /*src={"https://www.youtube.com/embed/"+getYouTubeID(this.participants[participant].listeningObjectURL)+"?enablejsapi=1&autoplay=1&loop=1&controls=0&disablekb=1&fs=0&modestbranding=1&rel=0"}*/
       return (
         <div
@@ -2894,7 +2915,13 @@ class Undebate extends React.Component {
               }}
               height={(parseFloat(seatStyle['speaking'].width) * HDRatio * innerWidth) / 100}
               width="auto"
-              src={(this.participants[participant] && this.participants[participant].placeholderUrl) || undefined}
+              src={
+                (this.participants[participant] &&
+                  this.participants[participant].placeholderURLs &&
+                  this.participants[participant].placeholderURLs[round]) ||
+                this.participants[participant].placeholderUrl ||
+                undefined
+              }
             ></img>
           </div>
           {bot ? null : participant !== 'human' && this.participants[participant].youtube ? (

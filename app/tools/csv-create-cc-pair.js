@@ -128,10 +128,11 @@ if (args.src && args.db && args.pair) {
     .fromFile(args.src)
     .then(async csvRowObjList => {
       await MongoModels.connect({ uri: args.db }, { useUnifiedTopology: true })
+      /* skip the init
       while (MongoModels.toInit && MongoModels.toInit.length) {
         // any models that need to createIndexes will push their init function
         MongoModels.toInit.shift()()
-      }
+      } */
       async function doTheUpdate(i) {
         // need to make sure the preceeding update is done, before doing the next one - so don't do this in a forEach loop where they all get fired off in parallel
         const csvRowObj = csvRowObjList[i]
