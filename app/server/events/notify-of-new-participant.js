@@ -41,34 +41,7 @@ async function notifyOfNewParticipant(iota) {
     iota.component.participant.bp_info &&
     iota.component.participant.bp_info.candidate_emails &&
     viewer.bp_info &&
-    viewer.bp_info.election_source &&
-    (viewer.bp_info.election_source === 'UniversityOfCaliforniaLosAngeles.UndergraduateStudentsAssociation' ||
-      viewer.bp_info.election_source === 'CodeForAmerica.NAC')
-  ) {
-    let message = {
-      from: Config.sendEmailFrom,
-      to: iota.component.participant.bp_info.candidate_emails[0],
-      cc: process.env.UCLA_USA_EMAIL,
-      subject: 'Candidate Conversation for:' + iota.component.participant.bp_info.office,
-      text: `Welcome ${
-        iota.component.participant.bp_info.candidate_name
-      },\n\nYour Candidate Conversation has been uploaded and you can review it here:\n\n${
-        process.env.HOSTNAME === 'localhost' ? 'http' : 'https'
-      }://${process.env.HOSTNAME}${viewer &&
-        viewer.path}\n\nAfter you review it, if you need to re-record it you can go back to the recorder link that was previously sent to you and do it over.\n\nGood Luck\n\nEnCiv.org`,
-    }
-    logger.info('notifyOfNewParticipant:election_source', viewer.bp_info.election_source, message)
-    sendEmail(message).catch(error => cb({ error: error.message })) // no then because we we have nothing to do but send it out
-  }
-
-  if (
-    iota.component &&
-    iota.component.participant &&
-    iota.component.participant.bp_info &&
-    iota.component.participant.bp_info.candidate_emails &&
-    viewer.bp_info &&
-    viewer.bp_info.election_source &&
-    viewer.bp_info.election_source === 'CodeForAmerica.NAC'
+    viewer.bp_info.election_source
   ) {
     let message = {
       from: Config.sendEmailFrom,
