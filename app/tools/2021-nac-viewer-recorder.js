@@ -143,6 +143,7 @@ var viewer_recorder_pair = {
     webComponent: {
       webComponent: 'CandidateConversation',
       logo: 'undebate',
+      instructionLink: '',
       closing: {
         thanks: 'Thank You.',
         iframe: {
@@ -268,7 +269,9 @@ var viewer_recorder_pair = {
     webComponent: {
       webComponent: 'Undebate',
       logo: 'undebate',
+      instructionLink: '',
       participants: {},
+      opening: { noPreamble: false },
       closing: {
         thanks: 'Thank You.',
         iframe: {
