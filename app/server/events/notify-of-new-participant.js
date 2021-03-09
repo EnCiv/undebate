@@ -41,13 +41,11 @@ async function notifyOfNewParticipant(iota) {
     iota.component.participant.bp_info &&
     iota.component.participant.bp_info.candidate_emails &&
     viewer.bp_info &&
-    viewer.bp_info.election_source &&
-    viewer.bp_info.election_source === 'UniversityOfCaliforniaLosAngeles.UndergraduateStudentsAssociation'
+    viewer.bp_info.election_source
   ) {
     let message = {
       from: Config.sendEmailFrom,
       to: iota.component.participant.bp_info.candidate_emails[0],
-      cc: process.env.UCLA_USA_EMAIL,
       subject: 'Candidate Conversation for:' + iota.component.participant.bp_info.office,
       text: `Welcome ${
         iota.component.participant.bp_info.candidate_name

@@ -1,40 +1,12 @@
 'use strict'
 import React, { useState } from 'react'
-import { createPortal } from 'react-dom'
 import { createUseStyles } from 'react-jss'
-import Button from '../button'
 import cx from 'classnames'
 import ConversationHeader from '../conversation-header'
 import Agenda from './Agenda'
 import Steps from './Steps'
 import StartRecordingButton from './StartRecordingButton'
 import PreambleHeader from './PreambleHeader'
-
-/**
- * 
- * candidate_questions might look like this:
-candidate_questions=[
-    [
-        "Introductions",
-        "1- Name",
-        "2- City and State",
-        "3- One word to describe yourself",
-        "4- What office are you running for?"
-    ],
-    [
-        "What do you love about where you live?"
-    ],
-    [
-        "What inspired you to run for office?"
-    ],
-    [
-        "If elected, what will be your top 3 priorities?"
-    ],
-    [
-        "Thank you!"
-    ]
-  ]
- */
 
 const useStyles = createUseStyles({
   Preamble: {
@@ -85,7 +57,7 @@ const useStyles = createUseStyles({
       margin: 0,
       padding: '1.5em',
     },
-    // need to have someting here for portrait mode - but don't record in portrait mode for now.
+    // need to have something here for portrait mode - but don't record in portrait mode for now.
   },
   portrait: {
     marginTop: '20vh',
@@ -118,10 +90,18 @@ const useStyles = createUseStyles({
   },
 })
 
-function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questions, instructionLink, timeLimits }) {
+function CandidatePreamble({
+  onClick,
+  agreed,
+  bp_info,
+  subject,
+  candidate_questions,
+  instructionLink,
+  timeLimits,
+  logo,
+}) {
   const classes = useStyles()
   const [isPortrait, togglePortrait] = useState(false)
-  //bp_info.candidate_name = 'person'
 
   let preamble = (
     <div className={cx(classes['Preamble'], agreed && classes['agreed'])}>
@@ -129,6 +109,7 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
         subject={subject}
         bp_info={bp_info}
         handleOrientationChange={choice => togglePortrait(choice)}
+        logo={logo}
       />
       <div className={cx(classes['Preamble-inner'], isPortrait ? classes['portrait'] : undefined)}>
         <PreambleHeader onClickStartRecording={onClick} isPortrait={isPortrait} bp_info={bp_info} />
@@ -151,7 +132,6 @@ function CandidatePreamble({ onClick, agreed, bp_info, subject, candidate_questi
       </div>
     </div>
   )
-  //return typeof document === 'object' ? createPortal(preamble, document.getElementById('synapp')) : preamble
   return preamble
 }
 

@@ -129,8 +129,8 @@ function xxxx_xx_xxTommmdd_yyyy(str) {
   parts = str.split('/')
   if (parts.length === 3) {
     let year = parts[2]
-    let month = months[parseInt(parts[1])]
-    let day = parts[0]
+    let month = months[parseInt(parts[0])]
+    let day = parts[1]
     return `${month} ${day}, ${year}`
   }
   return ''
