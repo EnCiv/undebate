@@ -160,33 +160,27 @@ var viewer_recorder_pair = {
       participants: {
         moderator: {
           speaking: [
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267946/60658cdb7f01700017d440b7-0-speaking20210401T090542302Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267947/60658cdb7f01700017d440b7-1-speaking20210401T090545791Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267949/60658cdb7f01700017d440b7-2-speaking20210401T090547282Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267951/60658cdb7f01700017d440b7-3-speaking20210401T090548596Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267953/60658cdb7f01700017d440b7-4-speaking20210401T090550758Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267955/60658cdb7f01700017d440b7-5-speaking20210401T090553193Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1618095554/60714c15153190001750abd5-0-speaking20210410T225741023Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1618095556/60714c15153190001750abd5-1-speaking20210410T225750362Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1618095558/60714c15153190001750abd5-2-speaking20210410T225751823Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1618095561/60714c15153190001750abd5-3-speaking20210410T225754050Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1618095563/60714c15153190001750abd5-4-speaking20210410T225756961Z.mp4',
           ],
-          name: 'Alfred Tun ',
+          name: 'Palmer Turnbull',
           listening:
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267956/60658cdb7f01700017d440b7-0-listening20210401T090554706Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1618095567/60714c15153190001750abd5-0-listening20210410T225758866Z.mp4',
           agenda: [
-            ['Introduction', 'Who are you?', 'Why did you choose UCLA?', 'Why are your running for this position?'],
+            ['Introduction', 'Who are you?', 'Why did you choose UCLA?'],
+            ['Could you describe your referendum and explain its purpose?'],
             [
-              'What are two examples of the most relevant experience you have for this position? Describe one specific skill and one personality trait that makes you qualified for this position.',
+              'Seeing that an increase in student fees are generally considered last measures, has your referendum considered all other funding options and what have been some of the past challenges with the funding for your project?',
             ],
             [
-              'What are your platforms that you will be bringing into this election as a candidate? Include THREE specific platforms you have and explain how and why they will help the student body.',
-            ],
-            [
-              'What specific initiatives and projects do you have plans to enact if elected? Why? Make sure to include TWO specific projects or initiatives that you plan to enact that are specific and relevant to the position you are running for and explain why they are important.',
-            ],
-            [
-              'How will you increase the awareness of the significance of your position to a wide range of students? Include TWO specific ideas you have that will help increase overall awareness of not only your position, but about USAC and student government as a whole.',
+              'If the referendum is passed, when would students begin to see the tangible results from an increase in their student fees?',
             ],
             ['Thank you!'],
           ],
-          timeLimits: [20, 30, 30, 30, 30],
+          timeLimits: [20, 30, 60, 60, 60, 60],
         },
       },
     },
@@ -206,52 +200,44 @@ var viewer_recorder_pair = {
         moderator: {
           speaking: [
             'https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1617403763/5d5b74751e3b194174cd9b94-0-speaking20210402T224911384Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267946/60658cdb7f01700017d440b7-0-speaking20210401T090542302Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267947/60658cdb7f01700017d440b7-1-speaking20210401T090545791Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267949/60658cdb7f01700017d440b7-2-speaking20210401T090547282Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267951/60658cdb7f01700017d440b7-3-speaking20210401T090548596Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267953/60658cdb7f01700017d440b7-4-speaking20210401T090550758Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1618095554/60714c15153190001750abd5-0-speaking20210410T225741023Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1618095556/60714c15153190001750abd5-1-speaking20210410T225750362Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1618095558/60714c15153190001750abd5-2-speaking20210410T225751823Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1618095561/60714c15153190001750abd5-3-speaking20210410T225754050Z.mp4',
             'https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1617403764/5d5b74751e3b194174cd9b94-1-speaking20210402T224922326Z.mp4',
           ],
-          name: 'Alfred Tun ',
+          name: 'Palmer Turnbull',
           names: [
             'David Fridley',
-            'Alfred Tun',
-            'Alfred Tun',
-            'Alfred Tun',
-            'Alfred Tun',
-            'Alfred Tun',
+            'Palmer Turnbull',
+            'Palmer Turnbull',
+            'Palmer Turnbull',
+            'Palmer Turnbull',
             'David Fridley',
           ],
           listening:
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267956/60658cdb7f01700017d440b7-0-listening20210401T090554706Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1618095567/60714c15153190001750abd5-0-listening20210410T225758866Z.mp4',
           listeningURLs: [
             'https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1617403769/5d5b74751e3b194174cd9b94-5-speaking20210402T224926774Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267956/60658cdb7f01700017d440b7-0-listening20210401T090554706Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267956/60658cdb7f01700017d440b7-0-listening20210401T090554706Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267956/60658cdb7f01700017d440b7-0-listening20210401T090554706Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267956/60658cdb7f01700017d440b7-0-listening20210401T090554706Z.mp4',
-            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1617267956/60658cdb7f01700017d440b7-0-listening20210401T090554706Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1618095567/60714c15153190001750abd5-0-listening20210410T225758866Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1618095567/60714c15153190001750abd5-0-listening20210410T225758866Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1618095567/60714c15153190001750abd5-0-listening20210410T225758866Z.mp4',
+            'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1618095567/60714c15153190001750abd5-0-listening20210410T225758866Z.mp4',
             'https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1617403769/5d5b74751e3b194174cd9b94-5-speaking20210402T224926774Z.mp4',
           ],
           agenda: [
             ['1- How To', '2- Record Placeholder'],
-            ['Introduction', 'Who are you?', 'Why did you choose UCLA?', 'Why are your running for this position?'],
+            ['Introduction', 'Who are you?', 'Why did you choose UCLA?'],
+            ['Could you describe your referendum and explain its purpose?'],
             [
-              'What are two examples of the most relevant experience you have for this position? Describe one specific skill and one personality trait that makes you qualified for this position.',
+              'Seeing that an increase in student fees are generally considered last measures, has your referendum considered all other funding options and what have been some of the past challenges with the funding for your project?',
             ],
             [
-              'What are your platforms that you will be bringing into this election as a candidate? Include THREE specific platforms you have and explain how and why they will help the student body.',
-            ],
-            [
-              'What specific initiatives and projects do you have plans to enact if elected? Why? Make sure to include TWO specific projects or initiatives that you plan to enact that are specific and relevant to the position you are running for and explain why they are important.',
-            ],
-            [
-              'How will you increase the awareness of the significance of your position to a wide range of students? Include TWO specific ideas you have that will help increase overall awareness of not only your position, but about USAC and student government as a whole.',
+              'If the referendum is passed, when would students begin to see the tangible results from an increase in their student fees?',
             ],
             ['Thank you!'],
           ],
-          timeLimits: [20, 20, 30, 30, 30, 30],
+          timeLimits: [20, 20, 60, 60, 60, 60],
         },
         human: {
           listening: {
@@ -262,10 +248,10 @@ var viewer_recorder_pair = {
       },
     },
     webComponent: {
-      webComponent: 'Note',
-      title: 'Recorder Expired',
-      content: 'The cutoff for recording was April 7, 2021 at 11:59pm',
-      //webComponent: 'Undebate',
+      //"webComponent": "Note" // change to note when it is expired
+      //"title": "Recorder Expired",
+      //"content": "The cutoff for recording was April 7, 2021 at 11:59pm",
+      webComponent: 'Undebate',
       logo: 'undebate',
       instructionLink:
         'https://docs.google.com/document/d/e/2PACX-1vQeJDwY9vhNDH-YQh38JsC5kuqKVIWiDFdzidcdusFwQgT2TXh2HGwFWWXmYzLnBVdiPrX705BnboIY/pub',

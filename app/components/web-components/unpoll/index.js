@@ -21,12 +21,12 @@ const styles = {
 
 class PreInject extends React.Component {
   render() {
-    const { classes, question } = this.props
+    const { classes, description, subject } = this.props
 
     return (
       <div className={classes.outer}>
-        <div className={classes.title}>Hello World, Meet Unpoll</div>
-        <div className={classes.question}>{question}</div>
+        <div className={classes.title}>{subject}</div>
+        <div className={classes.question}>{description}</div>
       </div>
     )
   }
