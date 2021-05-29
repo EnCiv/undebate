@@ -18,7 +18,7 @@ module.exports = {
   devtool: 'source-map',
   entry: {
     'only-dev-server': 'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
-    main: './client/main.js',
+    main: './client/main-app.js',
   },
   output: {
     path: path.join(__dirname, 'assets/webpack'),
