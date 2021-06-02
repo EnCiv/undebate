@@ -1,5 +1,5 @@
 'use strict'
-import Iota from '../../models/iota'
+import { Iota } from 'civil-server'
 
 /* Example input document
 the input document example

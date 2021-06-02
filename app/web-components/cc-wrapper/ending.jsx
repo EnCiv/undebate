@@ -1,7 +1,7 @@
 'use strict;'
 import React, { useState } from 'react'
 import { createUseStyles } from 'react-jss'
-import { AuthForm } from '../../../node_modules/civil-server/dist/components/auth-form' // not from 'civil-server' because that cause webpack to pull the server code into the client which generates tons of errors
+import { AuthForm } from 'civil-server' // webpack for the client needs to ignore server or there will be errors
 import createParticipant from '../../components/lib/create-participant'
 import SurveyForm from './survey-form'
 import Input from '../../components/lib/input'

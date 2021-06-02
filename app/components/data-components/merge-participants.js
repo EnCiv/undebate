@@ -1,5 +1,5 @@
 'use strict'
-import Iota from '../../models/iota'
+import { Iota } from 'civil-server'
 import shuffle from 'shuffle-array'
 
 /* Example input document

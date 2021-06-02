@@ -6,7 +6,7 @@ import cx from 'classnames'
 import Join from '../components/join'
 import Input from '../components/lib/input'
 import SocialShareBtn from '../components/lib/socialShareBtn'
-import { AuthForm } from '../../node_modules/civil-server/dist/components/auth-form' // not from 'civil-server' because that cause webpack to pull the server code into the client which generates tons of errors
+import { AuthForm } from 'civil-server' // webpack for the client needs to ignore server or there will be errors
 
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep'
