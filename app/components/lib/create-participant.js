@@ -50,7 +50,7 @@ export default function createParticipant(props, human, userId, name, progressFu
           participant.speaking[round] = url // specify the round because the order is not assures - don't use push
         } else participant.listening = url
       } else {
-        logger.error('upload video failed', file_name)
+        logger.error('stream-upload-video failed', file_name)
       }
       if (
         allThere(participant.speaking, adjustedSpeakingBlobs.length) &&
@@ -75,7 +75,7 @@ export default function createParticipant(props, human, userId, name, progressFu
           delete pIota.component.participant.bp_info.personal_email
           if (props.bp_info.candidate_name) pIota.component.participant.name = props.bp_info.candidate_name
         }
-        window.socket.emit('create participant', pIota, result => {
+        window.socket.emit('create-participant', pIota, result => {
           logger.trace('participant created', result)
         })
       }
@@ -86,7 +86,7 @@ export default function createParticipant(props, human, userId, name, progressFu
       logger.error('AskWebRTC.upload socket stream error:', err)
     })
 
-    ss(window.socket).emit('upload video', stream, { name: file_name, size: blob.size }, responseUrl)
+    ss(window.socket).emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl)
 
     var bstream = ss
       .createBlobReadStream(blob, { highWaterMark: 1024 * 200 })

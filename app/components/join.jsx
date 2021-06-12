@@ -254,7 +254,7 @@ class Join extends React.Component {
 
     let email = this.refs.email.value
 
-    window.socket.emit('send password', email, window.location.pathname, response => {
+    window.socket.emit('send-password', email, window.location.pathname, response => {
       if (response.error) {
         let { error } = response
 

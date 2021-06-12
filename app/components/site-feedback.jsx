@@ -172,7 +172,7 @@ class SiteFeedback extends React.Component {
 
     this.setState({ response: 'Sending ....' })
 
-    window.socket.emit('send contact us', email, fname, lname, subject, message, response => {
+    window.socket.emit('send-contact-us', email, fname, lname, subject, message, response => {
       //onsole.info("contactUs response:", response);
       if (response && response.error) {
         let { error } = response

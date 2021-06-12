@@ -6,8 +6,7 @@ import cx from 'classnames'
 import Join from '../components/join'
 import Input from '../components/lib/input'
 import SocialShareBtn from '../components/lib/socialShareBtn'
-import { AuthForm } from 'civil-server' // webpack for the client needs to ignore server or there will be errors
-
+import AuthForm from '../../node_modules/civil-server/dist/components/auth-form' // pull components for the client out from the repo, so that server side stuff is not pulled into the client path is relative to app not root
 import TimeFormat from 'hh-mm-ss'
 import cloneDeep from 'lodash/cloneDeep'
 import getYouTubeID from 'get-youtube-id'

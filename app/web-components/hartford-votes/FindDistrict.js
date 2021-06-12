@@ -162,7 +162,7 @@ const FindDistrict = () => {
         if (state_and_zip) {
           const has_valid_zip = !!valid_zip_codes.find(element => element === state_and_zip[0].match(/\b\d{5}\b/gi)[0])
           console.log('validation: ', `${has_valid_zip ? 'has' : "doesn't have"} a valid zip`)
-          window.socket.emit('hartford address lookup', event.target.votersAddress.value, setCandidates)
+          window.socket.emit('hartford-address-lookup', event.target.votersAddress.value, setCandidates)
         } else {
           setNotification(
             <div style={{ color: '#9d0000' }}>

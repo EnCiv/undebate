@@ -594,7 +594,7 @@ class RASPUndebateLine extends React.Component {
 
     var name = userId + '-' + round + '-' + seat + '.mp4'
 
-    ss(window.socket).emit('upload video', stream, { name, size: blob.size })
+    ss(window.socket).emit('stream-upload-video', stream, { name, size: blob.size })
 
     var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }).pipe(stream) // high hiwWaterMark to increase upload speed
     bstream.on('error', err => logger.error('AskWebRTC.upload blob stream error:', err))
