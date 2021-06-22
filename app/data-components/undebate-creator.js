@@ -90,7 +90,7 @@ What we are trying to create:
     "subject": "Irvine School Board Candidate Conversation",
     "description": "The Irvine School Board Candidate discussion has 2 candidates, and a moderator",
     "webComponent": {
-        "component": "UndebateLine",
+        "component": "Undebate",
         "participants": {
             "moderator": {
                 "speaking": [
