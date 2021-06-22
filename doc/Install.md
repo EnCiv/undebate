@@ -1,42 +1,18 @@
 # Install
 
-You will need to install the following, if you do not already have them.
+This application is build on the EnCiv/civil-server. The civil-server is intended for building web sites in a modular fashion, where each "module" is built and tested separately, using the the civil-server as a component, that happens to be the server. Then, for integration, all the modules can be pulled together into one repo where the civil server is the server component..
 
-1. Git: On windows go to https://git-scm.com/download/win and install it. If you are on a Mac, install brew first, https://brew.sh/ and then `brew install git`
-2. Node.js: https://nodejs.org/en/download/
-3. Heroku: https://devcenter.heroku.com/articles/heroku-cli
-4. I use visual studio code, but you can use another environment, but you will need to be able to run git-bash terminal windows in your environment.
-   https://code.visualstudio.com/
+First, follow the [Getting Started](https://github.com/EnCiv/civil-server-template#getting-started) instructions for the [civil-server-template](https://github.com/EnCiv/civil-server-template) but when you got to the
 
-## Setup
+```
+git clone https://github.com/EnCiv/civil-server-template my-app
+```
 
-On your browser go to your github account and login
+instead do:
 
-If you have just installed VSC you need to setup the bash shell. Use Control-Shift-P
-In the input field type "Select Default Shell"
-Choose "Git Bash"
-
-Then open a git-bash shell - on VSC use Control-\`
-
-    mkdir enciv
-    cd enciv
-    git clone https://github.com/EnCiv/undebate
-    cd undebate
-    npm install
-
-Note - if you are using multiple accounts with heroku, make sure that on your browser you are logged into the account that you want to use.
-
-Heroku calls them 'apps' but think of it as a server instance in the cloud with a URL, the name you give it is part of the url. Create one with:
-
-    heroku create undebate-something-unique
-
-Then we add the MongoDB database. It's also in cloud. You will be able to use this one database when you are running locally, and when you are running in the cloud.
-
-    heroku addons:create mongolab:sandbox -a undebate-something-unique
-
-Now lets get the environment variable with the URI for that database and store it in your bash configuration file so you can use it when you run locally. This string has a password in it and it should never be shared or commited to a repo. The .gitignore file ignores .bashrc so it won't get added into a repo - just make sure it stays that way.
-
-    echo "export MONGODB_URI="\"`heroku config:get MONGODB_URI -a undebate-something-unique`\" >> .bashrc
+```
+git clone https://github.com/EnCiv/undebate undebate
+```
 
 Now we will add Cloudinary - a Content Delivery Network that has image and video manipulation features. A CDN gives you a place to store these things, and deliver them quickly over the internet. Your node server would be slower, and doesn't keep the files after the server restarts. In the text that follows, replace [something unique] with some name that you come up with, including the []'s for example undebate-banana
 
@@ -46,12 +22,7 @@ Again we get the environment variable with the URL for Cloudinary and store it i
 
     echo "export CLOUDINARY_URL="\"`heroku config:get CLOUDINARY_URL -a undebate-[something unique]`\" >> .bashrc
 
-Now we just tell node we are in development mode locally, but on heroku we set it to production. There are a few optimizations that are applied in production, and it's important to check to make sure it works that way.
-
-    echo "export NODE_ENV=development" >> .bashrc
-    heroku config:set NODE_ENV=production
-
-Then to get all these environment variable set in your current instance of bash do this. But you won't have to it the next time you start up.
+Then to get all these environment variables set in your current instance of bash do this. But you won't have to it the next time you start up.
 
     source .bashrc
 
@@ -135,5 +106,4 @@ If you use Zoho, you can do it like this.
     NODEMAILER_USER="no-reply@yourdomain.com"
     NODEMAILER_PASS="xxxxxxxxx"
 
-If you use some other service, or 'things change' as they always do, go to app/server/util/send-mail.js and address them, but don't break the above configurations
 After you make changes to the .bashrc file you will need to heroku config:set them to get them to heroku

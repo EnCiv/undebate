@@ -3,6 +3,7 @@ import cloudinary from 'cloudinary'
 
 export default function streamUploadVideo(stream, data, cb) {
   try {
+    let self = this // an ss(socket)
     const public_id = data.name.split('.')[0]
     var cloudStream = cloudinary.v2.uploader.upload_stream(
       {
@@ -25,7 +26,12 @@ export default function streamUploadVideo(stream, data, cb) {
       }
     )
     stream.pipe(cloudStream).on('error', err => {
-      logger.error('Error uploading stream:', filename, err)
+      if (err.code === 'ERR_STREAM_PREMATURE_CLOSE') {
+        //socket-stream does not close correctly so we need to do it manually
+        self._ondisconnect() // disconnect the stream
+        self.sio.disconnect(true) // disconnect the whole socket
+        logger.error('Error uploading stream - caught ERR_STREAM_PREMATIRE_CLOSE', public_id)
+      } else logger.error('Error uploading stream:', public_id, err)
       cb()
     })
     cloudStream.on('error', err => {

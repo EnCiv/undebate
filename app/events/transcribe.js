@@ -8,7 +8,7 @@ import wavFileInfo from 'wav-file-info'
 // transcribe the participantIota, transcriber is not a parameter passed by the event, but it is included here
 // because we export this so it can also be used by other tools
 //
-export function transcribeParticipantIota(participantIota, transcriber = streamTranscribe) {
+export default function transcribeParticipantIota(participantIota, transcriber = streamTranscribe) {
   return new Promise(async (ok, ko) => {
     var transcriptionIota = {
       parentId: participantIota.parentId,

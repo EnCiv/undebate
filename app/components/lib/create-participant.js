@@ -1,6 +1,7 @@
 'use strict;'
 import through2 from 'through2'
 import { auto_quality, placeholder_image } from './cloudinary-urls'
+import ss from '@sap_oss/node-socketio-stream'
 /**
  *
  * createParticipant uploads the video blobs that were collected, and then creates a new Iota for the participant
@@ -50,7 +51,7 @@ export default function createParticipant(props, human, userId, name, progressFu
           participant.speaking[round] = url // specify the round because the order is not assures - don't use push
         } else participant.listening = url
       } else {
-        logger.error('stream-upload-video failed', file_name)
+        logger.error('createParticipant.stream-upload-video failed', file_name)
       }
       if (
         allThere(participant.speaking, adjustedSpeakingBlobs.length) &&
@@ -76,30 +77,34 @@ export default function createParticipant(props, human, userId, name, progressFu
           if (props.bp_info.candidate_name) pIota.component.participant.name = props.bp_info.candidate_name
         }
         window.socket.emit('create-participant', pIota, result => {
-          logger.trace('participant created', result)
+          logger.trace('createParticipant participant created', result)
         })
       }
     }
 
     var stream = ss.createStream()
     stream.on('error', err => {
-      logger.error('AskWebRTC.upload socket stream error:', err)
+      logger.error('createParticipant.upload socket stream error:', err)
     })
 
-    ss(window.socket).emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl)
+    var ssSocket = ss(window.socket)
+    //use this for debugging
+    //ssSocket._oldEmit = ssSocket.emit
+    //ssSocket.emit = ((...args) => (console.info("emit", ...args), ssSocket._oldEmit(...args)))
+    ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl)
 
     var bstream = ss
-      .createBlobReadStream(blob, { highWaterMark: 1024 * 200 })
+      .createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
       .pipe(
         through2((chunk, enc, cb) => {
           updateProgress(chunk)
           cb(null, chunk) // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
         })
       )
-      .pipe(stream) // high hiwWaterMark to increase upload speed
+      .pipe(stream)
 
     bstream.on('error', err => {
-      logger.error('AskWebRTC.upload blob stream error:', err)
+      logger.error('createParticipant.upload blob stream error:', err)
     })
     stream.on('end', () => {
       var uploadArgs
@@ -107,13 +112,13 @@ export default function createParticipant(props, human, userId, name, progressFu
         return upload(...uploadArgs)
       } else {
         progressFunc && progressFunc({ progress: 'complete.', uploadComplete: true })
-        logger.trace('upload after login complete')
+        logger.trace('createParticipant upload after login complete')
       }
     })
   }
 
-  logger.info('Undebate.onUserUpload')
-  logger.trace('onUserUpload', props)
+  logger.info('createParticipant.onUserUpload')
+  logger.trace('createParticipant.onUserUpload', props)
 
   for (let round = 0; round < adjustedSpeakingBlobs.length; round++) {
     totalSize += adjustedSpeakingBlobs[round].size

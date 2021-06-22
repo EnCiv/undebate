@@ -2,14 +2,12 @@
 
 import { Iota, serverEvents } from 'civil-server'
 
-import sendEmail from '../util/send-email'
-import Config from '../../../public.json'
-
-serverEvents.eNameAdd('ParticipantCreated') // shouldn't be here but it's here for dev
+import sendEmail from 'nodemailerstart'
+import Config from '../../public.json'
 
 var SibApiV3Sdk = require('sib-api-v3-sdk')
 
-async function notifyOfNewParticipant(iota) {
+export default async function notifyOfNewParticipant(iota) {
   const viewer = await Iota.findOne({ _id: Iota.ObjectID(iota.parentId) })
 
   let viewer_url = `${process.env.HOSTNAME === 'localhost:3011' ? 'http' : 'https'}://${process.env.HOSTNAME}${viewer &&
