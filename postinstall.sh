@@ -32,6 +32,15 @@ node node_modules/civil-server/dist/tools/react-directory-indexer.js app/web-com
 #
 node node_modules/civil-server/dist/tools/react-directory-indexer.js --data app/data-components/ node_modules/civil-server/dist/data-components/
 
+#echo '*************************************************************************'
+#echo Svgr - create React components out of the svg files
+#echo '*************************************************************************'
+npm run svgr || {
+  echo Could not svgr
+  exit 1
+}
+echo "svgr ok"
+
 
 #echo '*************************************************************************'
 #echo TRANSPILE
@@ -42,6 +51,7 @@ npm run transpile  || {
   exit 1
 }
 echo "transpile ok"
+
 
 #echo '*************************************************************************'
 #echo WEBPACK
