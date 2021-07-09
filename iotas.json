@@ -5838,7 +5838,7 @@
       "$oid": "5f7ca753e7179a6ea5213fb0"
     },
     "path": "/qa/ccwrapper-recorder",
-    "subject": "Recorder: Candidate Conversation with 2 participants using CC wrapper",
+    "subject": "You are invited to record a Candidate Conversation",
     "description": "A Recorder for the Candidate Conversation with 2 participants using CC wrapper",
     "component": {
       "component": "UndebateCreator",

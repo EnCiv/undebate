@@ -1,6 +1,6 @@
 'use strict;'
 import React, { useReducer, useMemo } from 'react'
-import CandidatePreamble from '../components/candidate-preamble'
+import CandidatePreamble from '../../components/candidate-preamble'
 
 // don't want to rewire Candidate Preamble yet so here's a wrapper for now
 const WrappedCandidatePreamble = props => {

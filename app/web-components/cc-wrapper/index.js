@@ -2,7 +2,7 @@
 import React, { useReducer } from 'react'
 import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
-import WrappedCandidatePreamble from '../../components/candidate-preamble'
+import WrappedCandidatePreamble from './wrapped-candidate-preamble'
 import { Ending, HungUp } from './ending'
 import CanNotRecordHere from './can-not-record-here'
 import ViewerRecorder from './viewer-recorder'
