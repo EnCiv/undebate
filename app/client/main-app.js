@@ -1,6 +1,6 @@
 'use strict'
 
-import clientMain from '../../node_modules/civil-server/dist/client/main'
+import { clientMain } from 'civil-client'
 import App from '../components/app'
 
 // this is the entry point for the client App running on the browser
