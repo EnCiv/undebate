@@ -55,10 +55,13 @@ echo "transpile ok"
 #echo WEBPACK
 #echo '*************************************************************************'
 
-npm run packbuild  || {
-  echo Could not webpack;
-  exit 1
-}
-echo "webpack ok"
+echo $npm_lifecycle_event
+echo $npm_package_scripts_install
+
+#npm run packbuild  || {
+#  echo Could not webpack;
+#  exit 1
+#}
+#echo "webpack ok"
 
 

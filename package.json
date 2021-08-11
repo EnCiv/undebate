@@ -4,6 +4,7 @@
   "description": "Not debates, but a place where voters can get to know their candidates",
   "main": "dist/start.js",
   "scripts": {
+    "prestart": "webpack --config webpack-prod.config.js",
     "start": "node --max_old_space_size=460 dist/start.js",
     "test": "jest",
     "test:coverage": "npm test -- --coverage",
