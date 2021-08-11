@@ -2,11 +2,10 @@
 // this route will overwrite the route by the same name from civil-server
 // we need to do this in this repo because DataComponent needs to come from this repo, not the empty one in the civil-server repo
 
-import serverReactRender from '../../node_modules/civil-server/dist/server/routes/server-react-render'
 import Sniffr from 'sniffr'
 import Device from 'device'
 import { DataComponents } from '../data-components'
-import { Iota } from 'civil-server'
+import { Iota, serverReactRender } from 'civil-server'
 
 async function getIota(req, res, next) {
   try {
