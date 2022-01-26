@@ -27,14 +27,14 @@ export default function transcribeParticipantIota(participantIota, transcriber =
       )
     } catch (err) {
       logger.error('translateParticipantIota new recording caught error', err)
-      return ko(err)
+      return ok({}) // don't return ko(err) becasue we want the server to keep running if an event fails
     }
     try {
       await Iota.create(JSON.parse(JSON.stringify(transcriptionIota))) // parse.stringify to remove properties that start with $ that are undefined but make Mongo mad
       ok(transcriptionIota)
     } catch (err) {
       logger.error('translateParticipantIota Iota.create caught error', err)
-      return ko(err)
+      return ok({}) // don't ko(err) because we want the server to keep running if an event fails
     }
   })
 }

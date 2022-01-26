@@ -6,12 +6,10 @@
 // the program creates or updates records in the db, and generates a new spreadsheet -out.csv that includes the new links.  If a link was changes, a column shows that it was changed.
 // take pair as a parameter which is a js file that describes the data and how to operate on it
 
-const Iota = require('../models/iota')
-const cloneDeep = require('lodash/cloneDeep')
 const MongoModels = require('mongo-models')
 const csv = require('csvtojson')
 const ObjectsToCsv = require('objects-to-csv')
-const mergeWith = require('lodash/mergeWith')
+const undebatesFromTemplateAndRows = require('../lib/undebates-from-template-and-rows')
 
 function waitForKeyTryAgain(toDo) {
   if (!waitForKeyTryAgain.started) waitForKeyTryAgain.started = true
@@ -27,7 +25,7 @@ function waitForKeyTryAgain(toDo) {
   // i don't want binary, do you?
   stdin.setEncoding('utf8')
   // on any data into stdin
-  stdin.on('data', function(key) {
+  stdin.on('data', function (key) {
     // ctrl-c ( end of text )
     if (key === '\u0003') {
       process.exit()
@@ -49,64 +47,6 @@ if (!global.logger) {
   })
 }
 
-function mergeWithVerbose(dst, src) {
-  mergeWith(dst, src, (objValue, srcValue, key, object, source) => {
-    if (typeof objValue !== 'object' && typeof srcValue !== 'object' && objValue !== srcValue) {
-      console.info('key', key, 'changing', objValue, 'to', srcValue)
-    }
-    return undefined // do the default thing - were just here to print a message about it.
-  })
-}
-
-function updateOrCreatePair(csvRowObj, template) {
-  return new Promise(async (ok, ko) => {
-    async function createNewRecorder(viewerObj) {
-      try {
-        var newRecorder = cloneDeep(template.getRecorder(csvRowObj))
-        template.overWriteRecorderInfo.call(template, newRecorder, viewerObj, csvRowObj)
-        var recorderObj = await Iota.create(newRecorder)
-        console.info('created recorder', viewerObj.subject, viewerObj.path, recorderObj.path)
-        return ok({ viewerObj, recorderObj })
-      } catch (err) {
-        console.error('createNewRecorder caught err', err)
-        return err
-      }
-    }
-    var viewers = await Iota.find({ path: template.viewerPath.call(template, csvRowObj) })
-    if (viewers.length == 0) {
-      // create the new race
-      var newViewer = cloneDeep(template.getViewer(csvRowObj))
-      template.overWriteViewerInfo.call(template, newViewer, csvRowObj)
-      try {
-        var viewerObj = await Iota.create(newViewer)
-        createNewRecorder(viewerObj)
-        return
-      } catch (err) {
-        console.error('create viewer caught error:', err)
-        ko(err)
-      }
-    } else if (viewers.length) {
-      // update the race
-      var viewerObj = cloneDeep(viewers[0])
-      mergeWithVerbose(viewerObj, template.getViewer(csvRowObj))
-      template.overWriteViewerInfo.call(template, viewerObj, csvRowObj)
-      await Iota.findOneAndReplace({ _id: viewerObj._id }, viewerObj)
-      var recorders = await Iota.find({ path: template.recorderPath.call(template, csvRowObj) })
-      if (recorders.length === 0) {
-        // it didn't exist
-        createNewRecorder(viewerObj)
-        return
-      } else {
-        var newRecorder = cloneDeep(recorders[0])
-        mergeWithVerbose(newRecorder, template.getRecorder(csvRowObj))
-        template.overWriteRecorderInfo.call(template, newRecorder, viewerObj, csvRowObj)
-        var recorderObj = await Iota.findOneAndReplace({ _id: newRecorder._id }, newRecorder)
-        return ok({ viewerObj, recorderObj })
-      }
-    }
-  })
-}
-
 // fetch args from command line
 var argv = process.argv
 var args = {}
@@ -122,6 +62,27 @@ for (let arg = 2; arg < argv.length; arg++) {
   }
 }
 
+async function writeCSVAndExit(csvRowObjList) {
+  const csvOut = new ObjectsToCsv(csvRowObjList)
+  async function writeItOut() {
+    try {
+      await csvOut.toDisk(args.src) // write over the source file so changes will come back in
+      console.info('csv File updated', args.src)
+      process.exit(0)
+    } catch (error) {
+      if (error.code === 'EBUSY') {
+        // happens when excel has the file open
+        console.info(`${error.path} busy, try again? ^C to exit`)
+        waitForKeyTryAgain(writeItOut)
+      } else {
+        console.error('error trying to write csv file', error)
+        process.exit()
+      }
+    }
+  }
+  writeItOut()
+}
+
 if (args.src && args.db && args.pair) {
   const viewerRecorderPair = require(args.pair)
   csv()
@@ -133,37 +94,11 @@ if (args.src && args.db && args.pair) {
         // any models that need to createIndexes will push their init function
         MongoModels.toInit.shift()()
       } */
-      async function doTheUpdate(i) {
-        // need to make sure the preceeding update is done, before doing the next one - so don't do this in a forEach loop where they all get fired off in parallel
-        const csvRowObj = csvRowObjList[i]
-        var result = await updateOrCreatePair(csvRowObj, viewerRecorderPair)
-        viewerRecorderPair.updateProperties.call(viewerRecorderPair, csvRowObj, result.viewerObj, result.recorderObj)
-        if (++i < csvRowObjList.length) doTheUpdate(i)
-        else writeCSVAndDisconnect()
-      }
-      async function writeCSVAndDisconnect() {
-        MongoModels.disconnect()
-        const csvOut = new ObjectsToCsv(csvRowObjList)
-        async function writeItOut() {
-          try {
-            await csvOut.toDisk(args.src) // write over the source file so changes will come back in
-            console.info('csv File updated', args.src)
-            process.exit(0)
-          } catch (error) {
-            if (error.code === 'EBUSY') {
-              // happens when excel has the file open
-              console.info(`${error.path} busy, try again? ^C to exit`)
-              waitForKeyTryAgain(writeItOut)
-            } else {
-              console.error('error trying to write csv file', error)
-              process.exit()
-            }
-          }
-        }
-        writeItOut()
-      }
-      viewerRecorderPair.setup && viewerRecorderPair.setup(csvRowObjList)
-      doTheUpdate(0)
+      const messages = await undebatesFromTemplateAndRows(viewerRecorderPair, csvRowObjList)
+      console.info('merge message:')
+      console.info(messages.join('/n'))
+      MongoModels.disconnect()
+      writeCSVAndExit(csvRowObjList)
     })
     .catch(err => {
       console.error('csv caught error', err)

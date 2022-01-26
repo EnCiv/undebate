@@ -5,9 +5,12 @@ import { Iota, serverEvents } from 'civil-server'
 serverEvents.eNameAdd('ParticipantCreated')
 
 export default async function createParticipant(obj, cb) {
-  if (!this.synuser) cb() // if no user do nothing
-  obj.userId = this.synuser.id
   try {
+    if (!this.synuser) {
+      cb() // if no user do nothing
+      return
+    }
+    obj.userId = this.synuser.id
     var result = await Iota.create(obj)
     cb(result)
     serverEvents.emit(serverEvents.eNames.ParticipantCreated, result)
