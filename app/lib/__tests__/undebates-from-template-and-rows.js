@@ -2,7 +2,6 @@ import MongoModels from 'mongo-models'
 import { Iota } from 'civil-server'
 import undebatesFromTemplateAndRows from '../undebates-from-template-and-rows'
 import viewerRecorderTemplate from '../../tools/2021-nac-viewer-recorder'
-import showDeepDiff from '../show-deep-diff'
 
 // dummy out logger for tests
 if (!global.logger) {
