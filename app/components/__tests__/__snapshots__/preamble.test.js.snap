@@ -1,13 +1,105 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Preamble should render correctly 1`] = `
-<Preamble
-  classes={
-    Object {
-      "Preamble": "Preamble-Preamble-0-1-1",
-      "agreed": "Preamble-agreed-0-1-2",
-      "center": "Preamble-center-0-1-3",
+<div
+  className="Preamble-0-2-1"
+>
+  <div
+    style={
+      Object {
+        "display": "table",
+        "width": "100%",
+      }
     }
-  }
-/>
+  >
+    <div
+      style={
+        Object {
+          "display": "table-cell",
+          "textAlign": "center",
+          "width": "50%",
+        }
+      }
+    >
+      <img
+        src="https://ballotpedia.org/wiki/skins/Ballotpedia/images/bp-logo.svg"
+        style={
+          Object {
+            "height": "5vh",
+            "width": "auto",
+          }
+        }
+      />
+    </div>
+    <div
+      style={
+        Object {
+          "display": "table-cell",
+          "textAlign": "center",
+          "width": "50%",
+        }
+      }
+    >
+      <img
+        src="https://enciv.org/wp-content/uploads/2019/01/enciv-logo.png"
+        style={
+          Object {
+            "height": "5vh",
+            "width": "auto",
+          }
+        }
+      />
+    </div>
+  </div>
+  <p>
+    Welcome
+     
+  </p>
+  <p>
+    Dana and EnCiv are teaming up to create a better way for candidates to be heard, and voters to learn about their candidates.
+  </p>
+  <p>
+    You are invited to engage in an application that will include you, as part of a publicly available online video conversation.
+  </p>
+  <ul>
+    <li>
+      During the conversation, you will be asked questions, and your video will be recorded and stored on your computer.
+    </li>
+    <li>
+      At the end of the conversation, you will be asked to review and accept EnCiv's
+       
+      <a
+        href="https://enciv.org/terms"
+        target="_blank"
+      >
+        terms of service
+      </a>
+       
+      and create an account.
+    </li>
+    <li>
+      Then, hitting the 
+      <b>
+        Post
+      </b>
+       button will upload the recorded video and make it public.
+    </li>
+    <li>
+      Or, hitting the 
+      <b>
+        Hang Up
+      </b>
+       button or closing this window any time before hitting the 
+      <b>
+        Post
+      </b>
+       button will cause any recordings to be discarded.
+    </li>
+  </ul>
+  <div
+    className="center-0-2-3"
+  >
+    <StartRecordingButton />
+  </div>
+</div>
 `;
