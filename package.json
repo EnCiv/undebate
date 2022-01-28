@@ -37,6 +37,7 @@
   },
   "homepage": "https://github.com/Synaccord/undebate#readme",
   "devDependencies": {
+    "@shelf/jest-mongodb": "^2.2.0",
     "concurrently": "^6.4.0",
     "cypress": "^9.1.1",
     "enzyme": "^3.11.0",
