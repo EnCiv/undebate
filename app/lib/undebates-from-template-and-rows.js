@@ -64,14 +64,20 @@ function updateOrCreatePair(csvRowObj, template, messages) {
 
 function undebatesFromTemplateAndRows(viewerRecorderTemplate, rowObjs) {
   let messages = []
+  let updatedRowObjs = cloneDeep(rowObjs)
   return new Promise(async (ok, ko) => {
-    viewerRecorderTemplate.setup && viewerRecorderTemplate.setup(rowObjs)
-    for await (let csvRowObj of rowObjs) {
-      // need to make sure the preceeding update is done, before doing the next one - so don't do this in a forEach loop where they all get fired off in parallel
-      const { viewerObj, recorderObj } = await updateOrCreatePair(csvRowObj, viewerRecorderTemplate, messages)
-      viewerRecorderTemplate.updateProperties.call(viewerRecorderTemplate, csvRowObj, viewerObj, recorderObj)
+    viewerRecorderTemplate.setup && viewerRecorderTemplate.setup(updatedRowObjs)
+    try {
+      for await (let csvRowObj of updatedRowObjs) {
+        // need to make sure the preceeding update is done, before doing the next one - so don't do this in a forEach loop where they all get fired off in parallel
+        const { viewerObj, recorderObj } = await updateOrCreatePair(csvRowObj, viewerRecorderTemplate, messages)
+        viewerRecorderTemplate.updateProperties.call(viewerRecorderTemplate, csvRowObj, viewerObj, recorderObj)
+      }
+      ok({ rowObjs: updatedRowObjs, messages })
+    } catch (error) {
+      logger.error('undebatesFromTemplateAndRows caught error', error.message ? error.message : error)
+      ko(error)
     }
-    ok(messages)
   })
 }
 

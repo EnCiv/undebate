@@ -20,14 +20,18 @@ afterAll(async () => {
   MongoModels.disconnect()
 })
 
-const rowObjs = [
+const inputRowObjs = [
   { Seat: 'President', Name: 'John Doe', Email: 'johndoe@example.com' },
   { Seat: 'President', Name: 'Jane Doe', Email: 'janedoe@doe.com' },
 ]
 
 test('create an election in the db', async () => {
-  const messages = await undebatesFromTemplateAndRows(viewerRecorderTemplate, rowObjs)
+  const { rowObjs, messages } = await undebatesFromTemplateAndRows(viewerRecorderTemplate, inputRowObjs)
   console.info('messages', messages)
+  expect(rowObjs[0].viewer_url).toBe('https://cc.enciv.org/country:us/organization:cfa/office:president/2021-03-21')
+  expect(rowObjs[0].recorder_url).toMatch(
+    /https:\/\/cc.enciv.org\/country:us\/organization:cfa\/office:president\/2021-03-21-recorder-[a-f\d]{24}$/
+  )
   const viewers = await Iota.find({ path: '/country:us/organization:cfa/office:president/2021-03-21' })
   expect(viewers[0]).toMatchObject(viewerRecorderTemplate.candidateViewer)
   const [recorder0] = await Iota.find({ 'bp_info.candidate_name': rowObjs[0].Name })

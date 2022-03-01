@@ -1,6 +1,6 @@
 {
   "name": "undebate",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Not debates, but a place where voters can get to know their candidates",
   "main": "dist/index.js",
   "scripts": {
@@ -24,7 +24,8 @@
     "circularcheck": "webpack --config webpack-circular.config.js",
     "dev": "bash postinstall.sh && echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 20 && npm run hot-server\" \"sleep 15 && npm run hot-client\"",
     "dev-no-inspect": "echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 20 && npm run hot-server-no-inspect\" \"sleep 15 && npm run hot-client\"",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "dbtest": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand --config ./jest-db.config.js --runTestsByPath"
   },
   "repository": {
     "type": "git",
