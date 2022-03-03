@@ -45,7 +45,8 @@ function updateOrCreatePair(csvRowObj, template, messages) {
       var viewerObj = cloneDeep(viewers[0])
       mergeWithVerbose(viewerObj, template.getViewer(csvRowObj), messages)
       template.overWriteViewerInfo.call(template, viewerObj, csvRowObj)
-      await Iota.findOneAndReplace({ _id: viewerObj._id }, viewerObj)
+      const newViewerObj = await Iota.findOneAndReplace({ _id: viewerObj._id }, viewerObj, { returnNewDocument: true })
+      if (!newViewerObj) ko("couldn't update viewer")
       var recorders = await Iota.find({ path: template.recorderPath.call(template, csvRowObj) })
       if (recorders.length === 0) {
         // it didn't exist
@@ -55,7 +56,10 @@ function updateOrCreatePair(csvRowObj, template, messages) {
         var newRecorder = cloneDeep(recorders[0])
         mergeWithVerbose(newRecorder, template.getRecorder(csvRowObj), messages)
         template.overWriteRecorderInfo.call(template, newRecorder, viewerObj, csvRowObj)
-        var recorderObj = await Iota.findOneAndReplace({ _id: newRecorder._id }, newRecorder)
+        var recorderObj = await Iota.findOneAndReplace({ _id: newRecorder._id }, newRecorder, {
+          returnNewDocument: true,
+        })
+        if (!recorderObj) ko("couldn't update recorder")
         return ok({ viewerObj, recorderObj })
       }
     }
