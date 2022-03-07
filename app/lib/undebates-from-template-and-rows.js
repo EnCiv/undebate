@@ -1,15 +1,6 @@
 const cloneDeep = require('lodash/cloneDeep')
-const mergeWith = require('lodash/mergeWith')
 const Iota = require('civil-server').Iota
-
-function mergeWithVerbose(dst, src, messages) {
-  mergeWith(dst, src, (objValue, srcValue, key, object, source) => {
-    if (messages && typeof objValue !== 'object' && typeof srcValue !== 'object' && objValue !== srcValue) {
-      messages.push(`key: ${key} changing ${objValue} to ${srcValue}`)
-    }
-    return undefined // do the default thing - were just here to print a message about it.
-  })
-}
+const setOrDeleteWithMessages = require('../lib/set-or-delete-with-messages').default
 
 // When updating viewer/recorder pairs, once a url is created it can't be changed - even if data changes and even if some of that data is incorporated into the url calculation
 // recorders need to link to the viewer records
@@ -43,7 +34,7 @@ function updateOrCreatePair(csvRowObj, template, messages) {
     } else if (viewers.length) {
       // update the race
       var viewerObj = cloneDeep(viewers[0])
-      mergeWithVerbose(viewerObj, template.getViewer(csvRowObj), messages)
+      setOrDeleteWithMessages(viewerObj, template.getViewer(csvRowObj), messages)
       template.overWriteViewerInfo.call(template, viewerObj, csvRowObj)
       const newViewerObj = await Iota.findOneAndReplace({ _id: viewerObj._id }, viewerObj, { returnNewDocument: true })
       if (!newViewerObj) ko("couldn't update viewer")
@@ -54,7 +45,7 @@ function updateOrCreatePair(csvRowObj, template, messages) {
         return
       } else {
         var newRecorder = cloneDeep(recorders[0])
-        mergeWithVerbose(newRecorder, template.getRecorder(csvRowObj), messages)
+        setOrDeleteWithMessages(newRecorder, template.getRecorder(csvRowObj), messages)
         template.overWriteRecorderInfo.call(template, newRecorder, viewerObj, csvRowObj)
         var recorderObj = await Iota.findOneAndReplace({ _id: newRecorder._id }, newRecorder, {
           returnNewDocument: true,

@@ -1,6 +1,6 @@
 {
   "name": "undebate",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Not debates, but a place where voters can get to know their candidates",
   "main": "dist/index.js",
   "scripts": {
@@ -25,7 +25,9 @@
     "dev": "bash postinstall.sh && echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 20 && npm run hot-server\" \"sleep 15 && npm run hot-client\"",
     "dev-no-inspect": "echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 20 && npm run hot-server-no-inspect\" \"sleep 15 && npm run hot-client\"",
     "prepare": "husky install",
-    "dbtest": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand --config ./jest-db.config.js --runTestsByPath"
+    "dbtest": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand --config ./jest-db.config.js --runTestsByPath",
+    "storybook": "bash postinstall.sh && start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
@@ -39,6 +41,12 @@
   "homepage": "https://github.com/Synaccord/undebate#readme",
   "devDependencies": {
     "@shelf/jest-mongodb": "^2.2.0",
+    "@storybook/addon-actions": "^6.4.19",
+    "@storybook/addon-essentials": "^6.4.19",
+    "@storybook/addon-links": "^6.4.19",
+    "@storybook/builder-webpack5": "^6.4.19",
+    "@storybook/manager-webpack5": "^6.4.19",
+    "@storybook/react": "^6.4.19",
     "concurrently": "^6.4.0",
     "cypress": "^9.1.1",
     "enzyme": "^3.11.0",
