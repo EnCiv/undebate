@@ -40,31 +40,31 @@ function date_dash(date) {
 
 var viewer_recorder_pair = {
   electionList: [],
-  setup: function(csvRowObjList) {
+  setup: function (csvRowObjList) {
     // make a list of all the elections in the table, so each viewer can navigate to other ones
-    viewer_recorder_pair.electionList = csvRowObjList.reduce((acc, rowObj) => {
-      let viewer_path = viewer_recorder_pair.viewerPath(rowObj)
+    this.electionList = csvRowObjList.reduce((acc, rowObj) => {
+      let viewer_path = this.viewerPath(rowObj)
       if (!acc.includes(viewer_path)) acc.push(viewer_path)
       return acc
     }, [])
   },
-  viewerPath: function(csvRowObj) {
+  viewerPath: function (csvRowObj) {
     // ()=> here will not get 'this'
     return `/country:us/${getIotaPropertyFromCSVColumn.type_name()}:${getIotaPropertyFromCSVColumn
       .type_id(csvRowObj)
-      .toLowerCase()}/office:${S(getIotaPropertyFromCSVColumn.office(csvRowObj))
-      .slugify()
-      .value()}/${date_dash(getIotaPropertyFromCSVColumn.election_date(csvRowObj))}`
+      .toLowerCase()}/office:${S(getIotaPropertyFromCSVColumn.office(csvRowObj)).slugify().value()}/${date_dash(
+      getIotaPropertyFromCSVColumn.election_date(csvRowObj)
+    )}`
   },
-  recorderPath: function(csvRowObj) {
+  recorderPath: function (csvRowObj) {
     return this.viewerPath(csvRowObj) + '-recorder-' + getIotaPropertyFromCSVColumn.unique_id(csvRowObj)
   },
-  overWriteViewerInfo: function(newViewer, csvRowObj) {
+  overWriteViewerInfo: function (newViewer, csvRowObj) {
     newViewer.path = this.viewerPath(csvRowObj)
     newViewer.subject = getIotaPropertyFromCSVColumn.office(csvRowObj)
     newViewer.description = 'A Candidate Conversation for: ' + getIotaPropertyFromCSVColumn.office(csvRowObj)
-    newViewer.bp_info.electionList = viewer_recorder_pair.electionList
-    let nextPrev = viewer_recorder_pair.electionList.reduce((acc, viewerPath) => {
+    newViewer.bp_info.electionList = this.electionList
+    let nextPrev = this.electionList.reduce((acc, viewerPath) => {
       if (acc.nextElection);
       else if (acc.found)
         // after this is set there's nothing to do
@@ -77,7 +77,7 @@ var viewer_recorder_pair = {
     if (nextPrev.prevElection) newViewer.bp_info.prevElection = nextPrev.prevElection
     newViewer.bp_info.election_source = getIotaPropertyFromCSVColumn.election_source(csvRowObj)
   },
-  overWriteRecorderInfo: function(newRecorder, viewerObj, csvRowObj) {
+  overWriteRecorderInfo: function (newRecorder, viewerObj, csvRowObj) {
     newRecorder.subject = getIotaPropertyFromCSVColumn.office(csvRowObj) + '-Candidate Recorder'
     newRecorder.description = 'A Candidate Recorder for the undebate: ' + getIotaPropertyFromCSVColumn.office(csvRowObj)
     newRecorder.bp_info.office = getIotaPropertyFromCSVColumn.office(csvRowObj)
@@ -107,7 +107,7 @@ var viewer_recorder_pair = {
     newRecorder.bp_info.election_source = getIotaPropertyFromCSVColumn.election_source(csvRowObj)
     newRecorder.parentId = viewerObj._id.toString()
   },
-  updateLinkProperty: function(csvRowObj, property, path) {
+  updateLinkProperty: function (csvRowObj, property, path) {
     if (csvRowObj[property] && csvRowObj[property].length) {
       if (csvRowObj[property] !== hostName + path) {
         csvRowObj[property] = hostName + path
@@ -120,17 +120,17 @@ var viewer_recorder_pair = {
       csvRowObj[getIotaPropertyFromCSVColumn.url_update_name(property)] = 'yes'
     }
   },
-  updateProperties: function(csvRowObj, viewerObj, recorderObj) {
+  updateProperties: function (csvRowObj, viewerObj, recorderObj) {
     this.updateLinkProperty(csvRowObj, getIotaPropertyFromCSVColumn.recorder_url_name(), recorderObj.path)
     this.updateLinkProperty(csvRowObj, getIotaPropertyFromCSVColumn.viewer_url_name(), viewerObj.path)
     if (!getIotaPropertyFromCSVColumn.unique_id(csvRowObj))
       getIotaPropertyFromCSVColumn.set.unique_id(csvRowObj, recorderObj.bp_info.unique_id)
   },
-  getViewer: function(csvRowObj) {
-    return viewer_recorder_pair['candidateViewer']
+  getViewer: function (csvRowObj) {
+    return this.candidateViewer
   },
-  getRecorder: function(csvRowObj) {
-    return viewer_recorder_pair['candidateRecorder']
+  getRecorder: function (csvRowObj) {
+    return this.candidateRecorder
   },
   candidateViewer: {
     // properties that are commented out so prevent messages about their are being changed when they are overwriten by whats in the CSV file
@@ -147,8 +147,7 @@ var viewer_recorder_pair = {
       closing: {
         thanks: 'Thank You.',
         iframe: {
-          src:
-            'https://docs.google.com/forms/d/e/1FAIpQLSdDJIcMltkYr5_KRTS9q1-eQd3g79n0yym9yCmTkKpR61uPLA/viewform?embedded=true',
+          src: 'https://docs.google.com/forms/d/e/1FAIpQLSdDJIcMltkYr5_KRTS9q1-eQd3g79n0yym9yCmTkKpR61uPLA/viewform?embedded=true',
           width: '640',
           height: '4900',
         },
@@ -275,8 +274,7 @@ var viewer_recorder_pair = {
       closing: {
         thanks: 'Thank You.',
         iframe: {
-          src:
-            'https://docs.google.com/forms/d/e/1FAIpQLSchcQjvnbpwEcOl9ysmZ4-KwDyK7RynwJvxPqRTWhdq8SN02g/viewform?embedded=true',
+          src: 'https://docs.google.com/forms/d/e/1FAIpQLSchcQjvnbpwEcOl9ysmZ4-KwDyK7RynwJvxPqRTWhdq8SN02g/viewform?embedded=true',
           width: 640,
           height: 1550,
         },
