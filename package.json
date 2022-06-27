@@ -93,7 +93,7 @@
     "log4js-extend": "^0.2.1",
     "mongo-models": "^3.0.4",
     "mongodb": "^3.7.3",
-    "node-fetch": "^2.6.6",
+    "node-fetch": "^2.6.7",
     "nodemailer": "^6.7.2",
     "nodemailerstart": "github:EnCiv/nodemailerstart#main",
     "objects-to-csv": "^1.3.6",
