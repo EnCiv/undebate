@@ -14,7 +14,7 @@
 // but this was probably just a onetime issue and it shouldn't be a problem going forward.
 //
 
-const Iota = require('../models/iota')
+import { Iota } from 'civil-server'
 const MongoModels = require('mongo-models')
 
 // Iota uses logger

@@ -4,6 +4,6 @@ describe('Cypress', () => {
   })
 
   it('visits the app', () => {
-    cy.visit('/schoolboard-conversation')
+    cy.visit('/candidate-conversation')
   })
 })

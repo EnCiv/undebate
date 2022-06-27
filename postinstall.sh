@@ -4,39 +4,64 @@ echo '*************************************************************************'
 echo POSTINSTALL
 echo '*************************************************************************'
 
-echo '*************************************************************************'
-echo Symbolick link
-echo '*************************************************************************'
+#echo '*************************************************************************'
+#echo These directoies need to exist in dist, even if you don't have them in your project
+#echo '*************************************************************************'
 
-mkdir -p node_modules/syn
-# on windows environment make sure /tmp exisits so that stream uploads of pictures will work
-mkdir -p /tmp
-mkdir -p assets/js
-cp node_modules/socket.io-stream/socket.io-stream.js assets/js/
+mkdir -p dist/events
+mkdir -p dist/routes
+mkdir -p dist/socket-apis
+mkdir -p dist/data-components
+mkdir -p dist/web-components
+#
+# assets is where static files go
+#
+mkdir -p ./assets/js/
+# you can start with the favicon images from civil-server - but you should to replace them with your own some day
+mkdir -p ./assets/images
+cp -r node_modules/civil-server/assets/images ./assets/images
 
-echo '***'
-echo Svgr
-echo '***'
-npm run svgr
+#
+# Update/create web-components/index.js to require all react components in that director, and in the listed child/peer directories. Web components are used by the getIota route - which uses reactServerRender
+#
+node node_modules/civil-server/dist/tools/react-directory-indexer.js app/web-components/ node_modules/civil-server/dist/web-components/
+#
+# Update/create data-components/index.js to require all data-components in that director, and in the listed child/peer directories. Data components are used by the getIota route.
+#
+node node_modules/civil-server/dist/tools/react-directory-indexer.js --data app/data-components/ node_modules/civil-server/dist/data-components/
 
-echo '*************************************************************************'
-echo TRANSPILE
-echo '*************************************************************************'
+#echo '*************************************************************************'
+#echo Svgr - create React components out of the svg files
+#echo '*************************************************************************'
+npm run svgr || {
+  echo Could not svgr
+  exit 1
+}
+echo "svgr ok"
 
+
+#echo '*************************************************************************'
+#echo TRANSPILE
+#echo '*************#************************************************************'
+#
 npm run transpile  || {
   echo Could not transpile;
   exit 1
 }
 echo "transpile ok"
 
-echo '*************************************************************************'
-echo WEBPACK
-echo '*************************************************************************'
 
-npm run packbuild  || {
-  echo Could not webpack;
-  exit 1
-}
-echo "webpack ok"
+#echo '*************************************************************************'
+#echo WEBPACK
+#echo '*************************************************************************'
+#
+# packbuild is moved to "prestart" in package.json. packbuild does not work when installing undebate as a package in another repo because the paths aren't right.
+# but the main.js that would be created is not used when this is a package
+#
+# npm run packbuild  || {
+#  echo Could not webpack;
+#  exit 1
+#}
+#echo "webpack ok"
 
 

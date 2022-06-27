@@ -3,7 +3,7 @@
 import React from 'react'
 import { hot } from 'react-hot-loader'
 import AskWebRTC from './ask-webrtc'
-import WebComponent from '../components/web-components'
+import WebComponent from '../web-components'
 import Footer from './footer'
 import SiteFeedback from './site-feedback'
 import ErrorBoundary from './error-boundary'

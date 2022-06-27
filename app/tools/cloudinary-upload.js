@@ -22,7 +22,7 @@ function uploadFile(filename) {
         (err, result) => {
           // you can't set the timeout:120000 option in the first paramater - it gets an error 504
           if (err) {
-            console.error('upload video cloudinary.uploader.upload_stream error:', err, filename)
+            console.error('upload file cloudinary.uploader.upload_stream error:', err, filename)
             ko()
           } else {
             console.info(filename, 'got:', result)
