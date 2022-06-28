@@ -6,7 +6,7 @@
   "scripts": {
     "db-up": "start /b mongod --quiet --dbpath ./tmp/db --port 27017",
     "db-down": "mongo --eval \"db.getSiblingDB('admin').shutdownServer(); quit()\"",
-    "prestart": "webpack --config webpack-prod.config.js",
+    "heroku-postbuild": "webpack --config webpack-prod.config.js",
     "start": "node --max_old_space_size=460 dist/start.js",
     "test": "jest",
     "test:coverage": "npm test -- --coverage",
