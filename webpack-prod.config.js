@@ -7,7 +7,7 @@ module.exports = {
   entry: {
     main: './client/main-app.js',
   },
-  devtool: 'source-map',
+  devtool: 'inline-cheap-source-map',
   output: {
     path: path.join(__dirname, 'assets/webpack'),
     filename: '[name].js',
@@ -15,7 +15,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js|\.jsx$/,
+        test: /\.js$|\.jsx$/,
         exclude: /node_modules/,
         use: 'babel-loader',
       },
