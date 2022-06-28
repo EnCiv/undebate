@@ -1,6 +1,6 @@
 {
   "name": "undebate",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Not debates, but a place where voters can get to know their candidates",
   "main": "dist/index.js",
   "scripts": {
@@ -11,8 +11,6 @@
     "test": "jest",
     "test:coverage": "npm test -- --coverage",
     "test:watch": "npm test -- --watch",
-    "cypress": "cypress open",
-    "cypress:headless": "cypress run --headless --browser chrome",
     "svgr": "svgr --icon --filename-case kebab assets/svg --out-dir app/svgr && rm app/svgr/index.js",
     "transpile": "babel app --ignore **/__tests__ --out-dir dist --source-maps",
     "hot-transpile": "babel --watch app --ignore **/__tests__ --out-dir dist --source-maps",
@@ -48,7 +46,6 @@
     "@storybook/manager-webpack5": "^6.4.19",
     "@storybook/react": "^6.4.19",
     "concurrently": "^6.4.0",
-    "cypress": "^9.1.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "husky": "^7.0.4",
@@ -78,7 +75,7 @@
     "body-parser": "^1.19.1",
     "circular-dependency-plugin": "^5.2.2",
     "civil-client": "github:EnCiv/civil-client",
-    "civil-server": "github:EnCiv/civil-server#main",
+    "civil-server": "github:EnCiv/civil-server#heroku-oom",
     "classnames": "^2.3.1",
     "cloudinary": "^1.27.1",
     "color": "^4.1.0",
@@ -115,9 +112,5 @@
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.6.0",
     "webrtc-adapter": "^7.7.1"
-  },
-  "engines": {
-    "node": ">=16.x.x",
-    "npm": ">=8.x.x"
   }
 }
