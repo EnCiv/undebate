@@ -1,6 +1,6 @@
 {
   "name": "undebate",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Not debates, but a place where voters can get to know their candidates",
   "main": "dist/index.js",
   "scripts": {
@@ -36,14 +36,14 @@
     "url": "https://github.com/Synaccord/undebate/issues"
   },
   "homepage": "https://github.com/Synaccord/undebate#readme",
-  "peerDependencies": {
+  "optionalDependencies": {
     "@shelf/jest-mongodb": "^2.2.0",
-    "@storybook/addon-actions": "^6.4.19",
+    "@storybook/addon-actions": "^6.4.9",
     "@storybook/addon-essentials": "^6.4.19",
-    "@storybook/addon-links": "^6.4.19",
-    "@storybook/builder-webpack5": "^6.4.19",
-    "@storybook/manager-webpack5": "^6.4.19",
-    "@storybook/react": "^6.4.19",
+    "@storybook/addon-links": "^6.4.9",
+    "@storybook/builder-webpack5": "^6.4.9",
+    "@storybook/manager-webpack5": "^6.4.9",
+    "@storybook/react": "^6.4.9",
     "concurrently": "^6.4.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
@@ -55,7 +55,10 @@
     "pretty-quick": "^3.1.3",
     "webpack-dev-server": "^4.6.0"
   },
-  "devDependencies": {},
+  "peerDependencies": {
+    "civil-client": "github:EnCiv/civil-client#heroku-oom",
+    "civil-server": "github:EnCiv/civil-server#heroku-oom"
+  },
   "dependencies": {
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.16.0",
@@ -74,8 +77,6 @@
     "@svgr/cli": "^6.1.2",
     "babel-loader": "^8.2.3",
     "circular-dependency-plugin": "^5.2.2",
-    "civil-client": "github:EnCiv/civil-client#heroku-oom",
-    "civil-server": "github:EnCiv/civil-server#heroku-oom",
     "classnames": "^2.3.1",
     "cloudinary": "^1.27.1",
     "color": "^4.1.0",
