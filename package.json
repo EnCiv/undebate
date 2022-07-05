@@ -6,7 +6,6 @@
   "scripts": {
     "db-up": "start /b mongod --quiet --dbpath ./tmp/db --port 27017",
     "db-down": "mongo --eval \"db.getSiblingDB('admin').shutdownServer(); quit()\"",
-    "heroku-postbuild": "webpack --config webpack-prod.config.js",
     "start": "node --max_old_space_size=460 dist/start.js",
     "test": "jest",
     "test:coverage": "npm test -- --coverage",
@@ -17,13 +16,13 @@
     "hot-server": "nodemon --inspect dist/start.js",
     "hot-server-no-inspect": "nodemon dist/start.js",
     "hot-client": "webpack-dev-server --config webpack-dev.config.js --devtool source-map --host 0.0.0.0",
-    "postinstall": "bash postinstall.sh",
+    "build": "bash build.sh",
     "packbuild": "webpack --config webpack-prod.config.js",
     "circularcheck": "webpack --config webpack-circular.config.js",
-    "dev": "bash postinstall.sh && echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 20 && npm run hot-server\" \"sleep 15 && npm run hot-client\"",
+    "dev": "bash build.sh && echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 20 && npm run hot-server\" \"sleep 15 && npm run hot-client\"",
     "dev-no-inspect": "echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 20 && npm run hot-server-no-inspect\" \"sleep 15 && npm run hot-client\"",
     "dbtest": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand --config ./jest-db.config.js --runTestsByPath",
-    "storybook": "bash postinstall.sh && start-storybook -p 6006",
+    "storybook": "bash build.sh && start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "repository": {
