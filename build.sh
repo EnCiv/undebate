@@ -20,11 +20,11 @@ cp -rp node_modules/civil-server/assets/images ./assets/images
 #
 # Update/create web-components/index.js to require all react components in that director, and in the listed child/peer directories. Web components are used by the getIota route - which uses reactServerRender
 #
-react-directory-indexer app/web-components/ node_modules/civil-server/dist/web-components/
+npm exec react-directory-indexer app/web-components/ node_modules/civil-server/dist/web-components/
 #
 # Update/create data-components/index.js to require all data-components in that director, and in the listed child/peer directories. Data components are used by the getIota route.
 #
-react-directory-indexer --data app/data-components/ node_modules/civil-server/dist/data-components/
+npm exec react-directory-indexer --data app/data-components/ node_modules/civil-server/dist/data-components/
 
 npm run svgr || {
   echo Could not svgr
