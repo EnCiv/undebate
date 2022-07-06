@@ -42,6 +42,8 @@ npm run transpile  || {
   exit 1
 }
 
+npm config ls -l
+
 npm run packbuild  || {
   echo Could not webpack;
   exit 1
