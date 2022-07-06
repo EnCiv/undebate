@@ -42,12 +42,12 @@ npm run transpile  || {
   exit 1
 }
 
-npm config ls -l
-
-npm run packbuild  || {
-  echo Could not webpack;
-  exit 1
-}
-
+# don't run webpack if this is a dependency of another project - the memory usage will blow out heroku build 
+if test \"$NPM_PROJECT\" = \"\" || test \"$NPM_PROJECT\" == \"undebate\" ; then {
+  npm run packbuild  || {
+    echo Could not webpack;
+    exit 1
+  }
+}; fi
 
 
