@@ -1,6 +1,6 @@
 {
   "name": "undebate",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Not debates, but a place where voters can get to know their candidates",
   "main": "dist/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "hot-server": "nodemon --inspect dist/start.js",
     "hot-server-no-inspect": "nodemon dist/start.js",
     "hot-client": "webpack-dev-server --config webpack-dev.config.js --devtool source-map --host 0.0.0.0",
-    "build": "bash build.sh",
+    "prepare": "bash build.sh",
     "packbuild": "webpack --config webpack-prod.config.js",
     "circularcheck": "webpack --config webpack-circular.config.js",
     "dev": "bash build.sh && echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 20 && npm run hot-server\" \"sleep 15 && npm run hot-client\"",
