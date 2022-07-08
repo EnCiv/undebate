@@ -1,32 +1,28 @@
 {
   "name": "undebate",
-  "version": "0.0.5",
+  "version": "0.0.14",
   "description": "Not debates, but a place where voters can get to know their candidates",
   "main": "dist/index.js",
   "scripts": {
     "db-up": "start /b mongod --quiet --dbpath ./tmp/db --port 27017",
     "db-down": "mongo --eval \"db.getSiblingDB('admin').shutdownServer(); quit()\"",
-    "prestart": "webpack --config webpack-prod.config.js",
     "start": "node --max_old_space_size=460 dist/start.js",
     "test": "jest",
     "test:coverage": "npm test -- --coverage",
     "test:watch": "npm test -- --watch",
-    "cypress": "cypress open",
-    "cypress:headless": "cypress run --headless --browser chrome",
     "svgr": "svgr --icon --filename-case kebab assets/svg --out-dir app/svgr && rm app/svgr/index.js",
     "transpile": "babel app --ignore **/__tests__ --out-dir dist --source-maps",
     "hot-transpile": "babel --watch app --ignore **/__tests__ --out-dir dist --source-maps",
     "hot-server": "nodemon --inspect dist/start.js",
     "hot-server-no-inspect": "nodemon dist/start.js",
     "hot-client": "webpack-dev-server --config webpack-dev.config.js --devtool source-map --host 0.0.0.0",
-    "postinstall": "bash postinstall.sh",
+    "prepare": "bash build.sh",
     "packbuild": "webpack --config webpack-prod.config.js",
     "circularcheck": "webpack --config webpack-circular.config.js",
-    "dev": "bash postinstall.sh && echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 20 && npm run hot-server\" \"sleep 15 && npm run hot-client\"",
+    "dev": "bash build.sh && echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 20 && npm run hot-server\" \"sleep 15 && npm run hot-client\"",
     "dev-no-inspect": "echo \"these delays need to be kept up to date\" && concurrently -k \"npm run hot-transpile\" \"sleep 20 && npm run hot-server-no-inspect\" \"sleep 15 && npm run hot-client\"",
-    "prepare": "husky install",
     "dbtest": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand --config ./jest-db.config.js --runTestsByPath",
-    "storybook": "bash postinstall.sh && start-storybook -p 6006",
+    "storybook": "bash build.sh && start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "repository": {
@@ -39,26 +35,31 @@
     "url": "https://github.com/Synaccord/undebate/issues"
   },
   "homepage": "https://github.com/Synaccord/undebate#readme",
-  "devDependencies": {
+  "optionalDependencies": {
     "@shelf/jest-mongodb": "^2.2.0",
-    "@storybook/addon-actions": "^6.4.19",
+    "@storybook/addon-actions": "^6.4.9",
     "@storybook/addon-essentials": "^6.4.19",
-    "@storybook/addon-links": "^6.4.19",
-    "@storybook/builder-webpack5": "^6.4.19",
-    "@storybook/manager-webpack5": "^6.4.19",
-    "@storybook/react": "^6.4.19",
+    "@storybook/addon-links": "^6.4.9",
+    "@storybook/builder-webpack5": "^6.4.9",
+    "@storybook/manager-webpack5": "^6.4.9",
+    "@storybook/react": "^6.4.9",
+    "circular-dependency-plugin": "^5.2.2",
     "concurrently": "^6.4.0",
-    "cypress": "^9.1.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
-    "husky": "^7.0.4",
+    "husky": "^4.3.8",
     "jest": "^27.4.5",
     "jest-enzyme": "^7.1.2",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
-    "pretty-quick": "^3.1.3"
+    "pretty-quick": "^3.1.3",
+    "webpack-dev-server": "^4.6.0"
   },
-  "dependencies": {
+  "peerDependencies": {
+    "civil-client": "github:EnCiv/civil-client#heroku-oom",
+    "civil-server": "github:EnCiv/civil-server#heroku-oom"
+  },
+  "devDependencies": {
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.16.0",
     "@babel/plugin-proposal-class-properties": "^7.16.0",
@@ -68,17 +69,17 @@
     "@babel/plugin-transform-runtime": "^7.16.4",
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-react": "^7.16.0",
+    "@svgr/cli": "^6.1.2",
+    "babel-loader": "^8.2.3",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
+  },
+  "dependencies": {
     "@babel/runtime": "^7.16.3",
     "@google-cloud/speech": "^4.9.0",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@sap_oss/node-socketio-stream": "^1.0.3",
-    "@svgr/cli": "^6.1.2",
-    "babel-loader": "^8.2.3",
-    "body-parser": "^1.19.1",
-    "circular-dependency-plugin": "^5.2.2",
-    "civil-client": "github:EnCiv/civil-client",
-    "civil-server": "github:EnCiv/civil-server#main",
     "classnames": "^2.3.1",
     "cloudinary": "^1.27.1",
     "color": "^4.1.0",
@@ -111,13 +112,10 @@
     "through2": "^4.0.2",
     "underscore.string": "^3.3.5",
     "wav-file-info": "git+https://github.com/nSimonFR/Node-WAV-File-Info.git",
-    "webpack": "^5.65.0",
-    "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.6.0",
     "webrtc-adapter": "^7.7.1"
   },
   "engines": {
-    "node": ">=16.x.x",
-    "npm": ">=8.x.x"
+    "npm": "8.13.2",
+    "node": "16.16.0"
   }
 }
