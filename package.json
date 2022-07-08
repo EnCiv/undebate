@@ -1,6 +1,6 @@
 {
   "name": "undebate",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Not debates, but a place where voters can get to know their candidates",
   "main": "dist/index.js",
   "scripts": {
@@ -56,8 +56,8 @@
     "webpack-dev-server": "^4.6.0"
   },
   "peerDependencies": {
-    "civil-client": "github:EnCiv/civil-client#heroku-oom",
-    "civil-server": "github:EnCiv/civil-server#heroku-oom"
+    "civil-client": "github:EnCiv/civil-client",
+    "civil-server": "github:EnCiv/civil-server"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
