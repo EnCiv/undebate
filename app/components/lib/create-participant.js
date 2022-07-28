@@ -18,6 +18,16 @@ function allThere(array, length) {
   return array.length === length && array.every(i => typeof i !== 'undefined')
 }
 
+// webpack might include process.browser but if it doesn't the pipe opertion below needs process.nextTick
+if (typeof window !== 'undefined') {
+  if (typeof process === 'undefined') window.process = {}
+  if (!process.nextTick)
+    window.process.nextTick = (...args) => {
+      const func = args.shift()
+      setTimeout(() => func.apply(null, args))
+    }
+}
+
 export default function createParticipant(props, human, userId, name, progressFunc, listeningRound, listeningSeat) {
   var transferred = 0
   var totalSize = 0

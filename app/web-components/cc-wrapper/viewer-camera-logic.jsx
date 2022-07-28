@@ -509,7 +509,8 @@ export default class ViewerRecorderLogic extends React.Component {
         this.props.ccState.participants[part].youtubePlayer.playVideo()
     } else {
       let element = this.props.ccState.participants[part].element.current
-      if (element.src === objectURL) {
+      if (element.src === objectURL && element.loop) {
+        // element.loop because if there is only the moderator, and the next position is playing the same video we need to start playing it again. This is only for when the listening segment is the same for this position and the laste
         return // don't change it.
       }
       //element.src=null;
