@@ -5923,5 +5923,53 @@
       "title": "Recorder Expired",
       "content": "The cutoff for recording was April 7, 2021 at 11:59pm"
     }
+  },
+  {
+    "_id": {
+      "$oid": "62e2fcce837e805c64f7acca"
+    },
+    "component": {
+      "component": "MergeParticipants"
+    },
+    "webComponent": {
+      "webComponent": "CandidateConversation",
+      "logo": "undebate",
+      "instructionLink": "",
+      "closing": {
+        "thanks": "Thank You.",
+        "iframe": {
+          "src": "https://docs.google.com/forms/d/e/1FAIpQLSdDJIcMltkYr5_KRTS9q1-eQd3g79n0yym9yCmTkKpR61uPLA/viewform?embedded=true",
+          "width": "640",
+          "height": "4900"
+        }
+      },
+      "shuffle": true,
+      "participants": {
+        "moderator": {
+          "speaking": [
+            "https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1614893717/5d5b74751e3b194174cd9b94-3-speaking20210304T213516602Z.mp4",
+            "https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1614893718/5d5b74751e3b194174cd9b94-5-speaking20210304T213517487Z.mp4",
+            "https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1614893718/5d5b74751e3b194174cd9b94-5-speaking20210304T213517487Z.mp4",
+            "https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1614893719/5d5b74751e3b194174cd9b94-6-speaking20210304T213517927Z.mp4",
+            "https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1614894042/5d5b74751e3b194174cd9b94-1-speaking20210304T214041075Z.mp4",
+            "https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1614894043/5d5b74751e3b194174cd9b94-2-speaking20210304T214041861Z.mp4"
+          ],
+          "name": "David Fridley, EnCiv",
+          "listening": "https://res.cloudinary.com/huu1x9edp/video/upload/q_auto/v1614893720/5d5b74751e3b194174cd9b94-0-listening20210304T213518628Z.mp4",
+          "agenda": [["who"], ["what"], ["when"], ["where"], ["Make your closing - to the audience"], ["Thank you"]],
+          "timeLimits": ["9", "10", "11", "12"]
+        }
+      }
+    },
+    "bp_info": {
+      "electionList": ["/qa/viewer-shold-not-get-stuck"],
+      "office": "Moderator",
+      "election_date": "10/15/2022",
+      "election_source": "EnCiv"
+    },
+    "parentId": "62e2dc29c39e8568a46e8ae0",
+    "path": "/qa/viewer-should-not-get-stuck",
+    "subject": "Viewer should not get stuck",
+    "description": "This viewer has only the moderator, and two segments with the same video url. The viewer should not get stuck."
   }
 ]
