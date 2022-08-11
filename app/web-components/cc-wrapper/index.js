@@ -8,6 +8,7 @@ import CanNotRecordHere from './can-not-record-here'
 import ViewerRecorder from './viewer-recorder'
 import Precheck from './precheck'
 import useMicCameraConstraints from './mic-camera-constraints'
+import DynamicFontSizeHelmet from '../../components/dynamic-font-size-helmet'
 
 const pages = {
   CandidatePreamble: WrappedCandidatePreamble,
@@ -22,7 +23,7 @@ const PTS = Object.keys(pages).reduce((PTS, k) => ((PTS[k] = k), PTS), {}) //
 
 // through an error if someone tries to get a property that isn't defined
 const throwIfUndefined = {
-  get: function(obj, prop) {
+  get: function (obj, prop) {
     if (prop in obj) return obj[prop]
     throw Error('undefined action TYPE: ' + prop)
   },
@@ -84,6 +85,7 @@ function CcWrapper(props) {
   })
   return (
     <div className={cx(classes['wrapper'], ccState.pageToShow !== PTS.ViewerRecorder && classes['scrollable'])}>
+      <DynamicFontSizeHelmet />
       <Page
         {...props}
         dispatch={dispatch}

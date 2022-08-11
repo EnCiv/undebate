@@ -411,7 +411,7 @@ export default class ViewerRecorderLogic extends React.Component {
   preFetchObjectURL(part, speaking, round) {
     if (!this.props.participants[part]) return // part may not exist in this debate
 
-    if (true /*window.env!=='production' || this.props.ccState.participants[part].youtube */) {
+    if (true /*window.process.env.NODE_ENV!=='production' || this.props.ccState.participants[part].youtube */) {
       // in development, don'e prefetch the videos because they won't be cached by the browser and you'll end up consuming a lot of extra cloudinary bandwith, on youtube we can't prefetch
       logger.trace("undebate.preFetchObjectURl - in development we don't prefetch", part, speaking, round)
       this.setExternalObjectURL(part, speaking, round)

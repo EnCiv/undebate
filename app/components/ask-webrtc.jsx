@@ -6,6 +6,7 @@ import injectSheet from 'react-jss'
 import cx from 'classnames'
 
 import DebugOverlay from './debug-overlay'
+import DynamicFontSizeHelmet from './dynamic-font-size-helmet'
 
 const TransitionTime = 500
 const TopMargin = '0vh'
@@ -235,7 +236,7 @@ class RASPAskWebRTC extends React.Component {
   constructor(props) {
     super(props)
     if (typeof window !== 'undefined') {
-      if (window.env === 'development') this.rotateButton = true
+      if (window?.process?.env?.NODE_ENV === 'development') this.rotateButton = true
     } else {
       if (process.env.NODE_ENV === 'development') this.rotateButton = true
     }
@@ -775,6 +776,7 @@ class RASPAskWebRTC extends React.Component {
         style={{ position: 'relative', left: this.state.left, width: '100vw' }}
         ref={this.fixupLeft}
       >
+        <DynamicFontSizeHelmet />
         <DebugOverlay ref={this.debugOverlayRef} />
         <div className={classes['outerBox']}>
           {Object.keys(participants).map(videoBox)}
