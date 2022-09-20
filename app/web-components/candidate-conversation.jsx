@@ -40,6 +40,7 @@ import { auto_quality, placeholder_image } from '../components/lib/cloudinary-ur
 import createParticipant from '../components/lib/create-participant'
 import BeginButton from '../components/begin-button'
 import DonateButton from '../components/donate-button'
+import DynamicFontSizeHelmet from '../components/dynamic-font-size-helmet'
 
 function promiseSleep(time) {
   return new Promise((ok, ko) => setTimeout(ok, time))
@@ -562,7 +563,7 @@ class RASPUndebate extends React.Component {
     super(props)
     if (typeof window !== 'undefined') {
       this.startTime = Date.now()
-      if (window.env === 'development') this.rotateButton = true
+      if (window?.process?.env?.NODE_ENV === 'development') this.rotateButton = true
     } else {
       if (process.env.NODE_ENV === 'development') this.rotateButton = true
     }
@@ -1293,7 +1294,7 @@ class RASPUndebate extends React.Component {
   preFetchObjectURL(part, speaking, round) {
     if (!this.props.participants[part]) return // part may not exist in this debate
 
-    if (true /*window.env!=='production' || this.participants[part].youtube */) {
+    if (true /*window.process.env.NODE_ENV!=='production' || this.participants[part].youtube */) {
       // in development, don'e prefetch the videos because they won't be cached by the browser and you'll end up consuming a lot of extra cloudinary bandwith, on youtube we can't prefetch
       logger.trace("CandidateConversation.preFetchObjectURl - in development we don't prefetch", part, speaking, round)
       this.setExternalObjectURL(part, speaking, round)
@@ -1404,7 +1405,8 @@ class RASPUndebate extends React.Component {
         this.participants[part].youtubePlayer.playVideo()
     } else {
       let element = this.participants[part].element.current
-      if (element.src === objectURL) {
+      if (element.src === objectURL && element.loop) {
+        // element.loop because if there is only the moderator, and the next position is playing the same video we need to start playing it again. This is only for when the listening segment is the same for this position and the laste
         return // don't change it.
       }
       //element.src=null;
@@ -2668,6 +2670,7 @@ class RASPUndebate extends React.Component {
 
     return (
       <div className={cx(classes['wrapper'], scrollableIframe && classes['scrollableIframe'])}>
+        <DynamicFontSizeHelmet />
         {this.props.participants.human && <ReactCameraRecorder ref={this.getCamera} />}
         <section
           id="syn-ask-webrtc"

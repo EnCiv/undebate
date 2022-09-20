@@ -67,6 +67,5 @@ module.exports = {
     new webpack.NormalModuleReplacementPlugin(/.+\/the-civil-server\.js$/, '/client/client-side-model'), // on the clientsite map imports of civil-server to an empty module
     new webpack.HotModuleReplacementPlugin(), // DO NOT use --hot in the command line - it will cause a stack overflow on the client
     new webpack.ProvidePlugin({ Buffer: ['buffer', 'Buffer'] }), // Work around for Buffer is undefined: https://github.com/webpack/changelog-v5/issues/10
-    new webpack.ProvidePlugin({ process: 'process/browser' }), // fix "process is not defined" error: // (do "npm install process" before running the build)
   ],
 }
