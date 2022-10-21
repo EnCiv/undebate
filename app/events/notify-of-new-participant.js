@@ -26,7 +26,7 @@ export default async function notifyOfNewParticipant(iota) {
     )}`,
   }
   logger.info('notifyOfNewParticipant', request)
-  sendEmail(request).catch(error => logger.error('notifyOfNewParticipant caught error', error?.message || error)) // no then because we we have nothing to do but send it out
+  sendEmail(request).catch(error => logger.error('notifyOfNewParticipant caught error', error?.message || error)) // no .then() because we we have nothing to do but send it out
   /* since we have build the review capability into the recorder, we don't need to send these emails to the candidates after they have recorded.
    but lets leave the code for now.
   if (
