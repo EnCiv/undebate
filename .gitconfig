@@ -1,0 +1,2 @@
+[credential "https://git.heroku.com"]
+	provider = generic

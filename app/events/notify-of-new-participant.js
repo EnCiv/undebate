@@ -10,17 +10,12 @@ var SibApiV3Sdk = require('sib-api-v3-sdk')
 export default async function notifyOfNewParticipant(iota) {
   const viewer = await Iota.findOne({ _id: Iota.ObjectID(iota.parentId) })
 
-  let viewer_url = `${process.env.HOSTNAME === 'localhost:3011' ? 'http' : 'https'}://${process.env.HOSTNAME}${viewer &&
-    viewer.path}`
+  let viewer_url = `${process.env.HOSTNAME === 'localhost:3011' ? 'http' : 'https'}://${process.env.HOSTNAME}${
+    viewer && viewer.path
+  }`
   let request = {
     from: Config.sendEmailFrom,
-    to:
-      iota.component &&
-      iota.component.participant &&
-      iota.component.participant.bp_info &&
-      iota.component.participant.bp_info.candidate_stage_result_id
-        ? process.env.NOTIFY_OF_NEW_PARTICIPANT_TO || 'davidfridley@enciv.org'
-        : 'davidfridley@enciv.org',
+    to: process.env.NOTIFY_OF_NEW_PARTICIPANT_TO,
     subject: 'New Participant Recording',
     text: `New recording from ${iota.component.participant.name} running for ${
       iota.subject
@@ -30,10 +25,10 @@ export default async function notifyOfNewParticipant(iota) {
       '\t'
     )}`,
   }
-
   logger.info('notifyOfNewParticipant', request)
-  sendEmail(request).catch(error => cb({ error: error.message })) // no then because we we have nothing to do but send it out
-
+  sendEmail(request).catch(error => logger.error('notifyOfNewParticipant caught error', error?.message || error)) // no then because we we have nothing to do but send it out
+  /* since we have build the review capability into the recorder, we don't need to send these emails to the candidates after they have recorded.
+   but lets leave the code for now.
   if (
     iota.component &&
     iota.component.participant &&
@@ -105,7 +100,7 @@ export default async function notifyOfNewParticipant(iota) {
         logger.error('Sendingblue API caught error:', error)
       }
     )
-  }
+  }*/
 }
 if (
   ['SENDINBLUE_API_KEY', 'SENDINBLUE_TEMPLATE_ID', 'NOTIFY_OF_NEW_PARTICIPANT_TO'].reduce((allExist, name) => {
