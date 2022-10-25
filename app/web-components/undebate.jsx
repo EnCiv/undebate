@@ -1440,8 +1440,7 @@ class Undebate extends React.Component {
       //set it to something - but this.cameraStream should really be used
       else if (
         !(objectURL =
-          (this.participants[part].listeningObjectURLs && this.participants[part].listeningObjectURLs[round]) ||
-          this.participants[part].listeningObjectURL)
+          this.participants[part].listeningObjectURLs?.[round] || this.participants[part].listeningObjectURL)
       )
         if (this.props.participants[part].listening) {
           // listeningObject hasn't loaded yet
