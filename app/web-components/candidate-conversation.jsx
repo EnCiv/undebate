@@ -1588,6 +1588,7 @@ class RASPUndebate extends React.Component {
       this.beginButton()
     } else if (!this.state.allPaused) {
       Object.keys(this.participants).forEach(participant => {
+        if (participant === 'human') return // don't pause the human
         if (this.participants[participant].element.current) this.participants[participant].element.current.pause()
         if (this.participants[participant].youtubePlayer) this.participants[participant].youtubePlayer.pauseVideo()
       })

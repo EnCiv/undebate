@@ -1588,12 +1588,26 @@ class Undebate extends React.Component {
         this.participants[part].youtubePlayer.playVideo()
     } else {
       let element = this.participants[part].element.current
-      if (element.src === objectURL && element.loop) {
+      if (part === 'human' && speaking && reviewing && !this.rerecord) {
+        // reviewing what the human recorded in the speaking seat
+        const { listeningRound, listeningSeat } = this.listening()
+        if (this.state.round === listeningRound && listeningSeat === 'speaking') {
+          // this is the speaking seat, and the human recorded their listening (placeholder) segment
+          element.srcObject = null
+          element.src = objectURL
+          element.muted = true
+          element.loop = false // this is the listening segment, but we are reviwing so don't loop just skip ahead
+        } else {
+          // the human spoke in the speaking seat
+          element.srcObject = null
+          element.src = objectURL
+          element.muted = false
+          element.loop = false
+        }
+      } else if (element.src === objectURL && element.loop) {
         // element.loop because if there is only the moderator, and the next position is playing the same video we need to start playing it again. This is only for when the listening segment is the same for this position and the laste
         return // don't change it.
-      }
-      //element.src=null;
-      if (part === 'human' && !speaking && !reviewing) {
+      } else if (part === 'human' && !speaking && !reviewing) {
         // human is not speaking
         if (element.srcObject === this.cameraStream) {
           if (element.muted && element.loop) return
@@ -1814,6 +1828,7 @@ class Undebate extends React.Component {
 
   ensurePaused() {
     Object.keys(this.participants).forEach(participant => {
+      if (participant === 'human') return // don't pause the human
       if (this.participants[participant].element.current) this.participants[participant].element.current.pause()
       if (this.participants[participant].youtubePlayer) this.participants[participant].youtubePlayer.pauseVideo()
     })
