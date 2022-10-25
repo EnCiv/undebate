@@ -141,6 +141,7 @@ Undebate.args = {
 
 export const CandidateConversation = Template.bind({})
 const ccIota = merge(
+  {},
   iotas.find(doc => doc._id.$oid === '5e7e6e147c213e3443f116e5'),
   otherProps
 )
@@ -214,12 +215,12 @@ const ccWrapperIota = {
 
 export const CcWrapper = Template.bind({})
 CcWrapper.args = {
-  iota: merge(ccWrapperIota, otherProps),
+  iota: merge({}, ccWrapperIota, otherProps),
 }
 
 export const CcWrapperWithListeningFirst = Template.bind({})
 CcWrapperWithListeningFirst.args = {
-  iota: merge(iota, { webComponent: { webComponent: 'CcWrapper' } }),
+  iota: merge({}, iota, { webComponent: { webComponent: 'CcWrapper' } }),
 }
 
 export const NothingHere = Template.bind({})
