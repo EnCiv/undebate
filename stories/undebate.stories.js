@@ -139,13 +139,88 @@ Undebate.args = {
   iota: iota,
 }
 
+const cc3 = {
+  _id: {
+    $oid: '5e7e6e147c213e3443f116e5',
+  },
+  path: '/candidate-conversation-3',
+  subject: 'Candidate Conversation with 3 participants',
+  description: 'A prototype Candidate Conversation for schoolboard',
+  component: {
+    component: 'MergeChildren',
+  },
+  webComponent: {
+    webComponent: 'CandidateConversation',
+    opening: {
+      line1: 'You are about to experience a new kind of conversation',
+      line2: 'This is how voters can learn about candidates in a more human way',
+      line3:
+        'And this is how we can efficiently facilitate 500K conversations all over the country, every election season',
+      line4: 'The topic of the discussion is:',
+      bigLine: 'US School Board Candidate Conversation',
+      subLine: 'This is a mock conversation, these are not real candidates',
+    },
+    participants: {
+      moderator: {
+        name: 'David Fridley',
+        speaking: [
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788682/candidate-conversation-moderator-0_at5un1.mp4',
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788667/candidate-converation-moderator-1_z2kjhr.mp4',
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788659/candidate-confersation-moderator-2_cid3dq.mp4',
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788634/candidate-conversation-moderator-3_iq0npa.mp4',
+        ],
+        listening:
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566788719/candidate-conversation-moderator-listening_nlfeoy.mp4',
+        agenda: [
+          [
+            'Introductions',
+            '1- Who you are',
+            '2- Where you are',
+            '3- One word to describe yourself',
+            '4- What office you are running for',
+          ],
+          ['What type of skills should students be learning for success in the 21st century?'],
+          ['Closing Remarks'],
+          ['Thank you'],
+        ],
+        timeLimits: [10, 60, 60],
+      },
+      audience1: {
+        speaking: [
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942893/5d5dc697d32514001766ca87-1-speaking20190827T215452394Z.mp4',
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942898/5d5dc697d32514001766ca87-2-speaking20190827T215455964Z.mp4',
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942903/5d5dc697d32514001766ca87-3-speaking20190827T215503161Z.mp4',
+        ],
+        name: 'Will',
+        listening:
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566942901/5d5dc697d32514001766ca87-2-nextUp20190827T215500659Z.mp4',
+      },
+      audience2: {
+        speaking: [
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120064/5d685ab98d5ab100175a1dd7-1-speaking20190829T230738520Z.mp4',
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/du_41/v1567120076/5d685ab98d5ab100175a1dd7-2-speaking20190829T230743431Z.mp4',
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120089/5d685ab98d5ab100175a1dd7-3-speaking20190829T230802074Z.mp4',
+        ],
+        name: 'MaryBeth MaryBeth McGarvey',
+        listening:
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1567120083/5d685ab98d5ab100175a1dd7-2-nextUp20190829T230755711Z.mp4',
+      },
+      audience3: {
+        speaking: [
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839072/5d64111ba62cb60017dad9eb-1-speaking20190826T170428600Z.mp4',
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839081/5d64111ba62cb60017dad9eb-2-speaking20190826T170432708Z.mp4',
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566839337/5d64111ba62cb60017dad9eb-3-speaking20190826T170818981Z.mp4',
+        ],
+        name: 'Alex Johnson',
+        listening:
+          'https://res.cloudinary.com/hf6mryjpf/video/upload/q_auto/v1566926818/5d64111ba62cb60017dad9eb-listening20190826T170818981Z_s1wphm.mp4',
+      },
+    },
+  },
+}
+
 export const CandidateConversation = Template.bind({})
-const ccIota = merge(
-  {},
-  iotas.find(doc => doc._id.$oid === '5e7e6e147c213e3443f116e5'),
-  otherProps
-)
-console.info(ccIota)
+const ccIota = merge({}, cc3, otherProps)
 CandidateConversation.args = {
   iota: ccIota,
 }
