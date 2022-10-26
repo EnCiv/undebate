@@ -79,7 +79,7 @@ export default function ButtonBar(props) {
           title={button.title && button.title()}
           key={(button.title && button.title()) || 'empty' + i}
         >
-          <div onClick={button.func}>
+          <div onClick={button.disabled && button.disabled() ? null : button.func}>
             {button.name &&
               (button.disabled && button.disabled()
                 ? button.name(classes.iconButtonDisabled)
@@ -124,6 +124,9 @@ const useStyles = createUseStyles({
     },
     '& circle:hover': {
       fill: '	#565656',
+    },
+    '&:hover': {
+      cursor: 'pointer',
     },
   },
   iconButtonDisabled: {

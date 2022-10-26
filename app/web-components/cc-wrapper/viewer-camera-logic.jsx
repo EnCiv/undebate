@@ -141,13 +141,16 @@ export default class ViewerRecorderLogic extends React.Component {
             speakingObjectURLs: [],
             speakingImmediate: [],
             listeningObjectURL: null,
+            listeningObjectURLs: this.props.participants[participant].listeningURLs ? [] : undefined,
             listeningImmediate: false,
             placeholderUrl:
               (participant !== 'human' &&
                 !youtube &&
-                (this.props.participants[participant].listening || this.props.participants[participant].speaking[0]) &&
                 placeholder_image(
-                  this.props.participants[participant].listening || this.props.participants[participant].speaking[0]
+                  (this.props.participants[participant].listeningURLs &&
+                    this.props.participants[participant].listeningURLs[0]) ||
+                    this.props.participants[participant].listening ||
+                    this.props.participants[participant].speaking[0]
                 )) ||
               '',
             youtube,
@@ -350,13 +353,22 @@ export default class ViewerRecorderLogic extends React.Component {
     // humans won't get here
     const { round } = this.state
     const { reviewing } = this.props.ccState
+    const { listeningRound, listeningSeat } = this.listening()
 
     let speaking = this.seatOfParticipant(part) === 'speaking'
 
     var objectURL
     if (speaking) {
       if (part === 'human') {
-        if (
+        if (round === listeningRound && listeningSeat === 'speaking') {
+          if (reviewing) {
+            if (!this.rerecord) {
+              if (this.props.ccState.participants.human.listeningObjectURL)
+                objectURL = this.props.ccState.participants.human.listeningObjectURL
+              else objectURL = 'cameraStream'
+            } else objectURL = 'cameraStream'
+          }
+        } else if (
           this.props.ccState.participants.human &&
           this.props.ccState.participants.human.speakingObjectURLs[round] &&
           !this.rerecord
@@ -373,7 +385,11 @@ export default class ViewerRecorderLogic extends React.Component {
     } else {
       if (part === 'human' && (!reviewing || (reviewing && this.rerecord))) objectURL = 'cameraStream'
       //set it to something - but this.cameraStream should really be used
-      else if (!(objectURL = this.props.ccState.participants[part].listeningObjectURL))
+      else if (
+        !(objectURL =
+          this.props.ccState.participants[part]?.listeningObjectURLs?.[round] ||
+          this.props.ccState.participants[part].listeningObjectURL)
+      )
         if (this.props.participants[part].listening) {
           // listeningObject hasn't loaded yet
           this.props.ccState.participants[part].listeningImmediate = true
@@ -402,6 +418,10 @@ export default class ViewerRecorderLogic extends React.Component {
       this.props.ccState.participants[part].speakingObjectURLs[round] = this.props.participants[part].speaking[round]
     else {
       this.props.ccState.participants[part].listeningObjectURL = this.props.participants[part].listening
+      if (this.props.ccState.participants[part].listeningURLs) {
+        this.props.ccState.participants[part].listeningObjectURLs[round] =
+          this.props.ccState.participants[part].listeningURLs[round]
+      }
     }
     if (round == 0 && part === 'moderator') {
       this.setState({ moderatorReadyToStart: true })
@@ -509,12 +529,26 @@ export default class ViewerRecorderLogic extends React.Component {
         this.props.ccState.participants[part].youtubePlayer.playVideo()
     } else {
       let element = this.props.ccState.participants[part].element.current
-      if (element.src === objectURL && element.loop) {
+      if (part === 'human' && speaking && reviewing && !this.rerecord) {
+        // reviewing what the human recorded in the speaking seat
+        const { listeningRound, listeningSeat } = this.listening()
+        if (this.state.round === listeningRound && listeningSeat === 'speaking') {
+          // this is the speaking seat, and the human recorded their listening (placeholder) segment
+          element.srcObject = null
+          element.src = objectURL
+          element.muted = true
+          element.loop = false // this is the listening segment, but we are reviwing so don't loop just skip ahead
+        } else {
+          // the human spoke in the speaking seat
+          element.srcObject = null
+          element.src = objectURL
+          element.muted = false
+          element.loop = false
+        }
+      } else if (element.src === objectURL && element.loop) {
         // element.loop because if there is only the moderator, and the next position is playing the same video we need to start playing it again. This is only for when the listening segment is the same for this position and the laste
         return // don't change it.
-      }
-      //element.src=null;
-      if (part === 'human' && !speaking && !reviewing) {
+      } else if (part === 'human' && !speaking && !reviewing) {
         // human is not speaking
         if (element.srcObject === this.cameraStream) {
           if (element.muted && element.loop) return
@@ -642,6 +676,7 @@ export default class ViewerRecorderLogic extends React.Component {
 
   ensurePaused() {
     Object.keys(this.props.ccState.participants).forEach(participant => {
+      if (participant === 'human') return // don't pause the human
       if (this.props.ccState.participants[participant].element.current)
         this.props.ccState.participants[participant].element.current.pause()
       if (this.props.ccState.participants[participant].youtubePlayer)
@@ -855,6 +890,7 @@ export default class ViewerRecorderLogic extends React.Component {
       func: this.nextSection,
       title: () => 'Next Question',
       disabled: () =>
+        this.props.ccState.pageToShow !== 'Precheck' &&
         this.props.ccState.participants.human &&
         !this.props.ccState.participants.human.speakingObjectURLs[this.state.round],
     },
