@@ -1,13 +1,21 @@
 import React from 'react'
 
 import App from '../app/components/app'
-import { cloneDeep, merge } from 'lodash'
-import iotas from '../iotas.json'
+import { merge } from 'lodash'
+import { DynamicFontSizeClientHelmet } from '../app/components/dynamic-font-size-helmet'
 
 export default {
   title: 'Undebate',
   component: App,
   argTypes: {},
+  decorators: [
+    Story => (
+      <>
+        <DynamicFontSizeClientHelmet />
+        <Story />
+      </>
+    ),
+  ],
 }
 
 const iota = {
@@ -298,6 +306,7 @@ CcWrapperWithListeningFirst.args = {
   iota: merge({}, iota, { webComponent: { webComponent: 'CcWrapper' } }),
 }
 
+/* Todo fix Component so they do not error if empty props
 export const NothingHere = Template.bind({})
 NothingHere.args = {
   iota: {
@@ -306,3 +315,4 @@ NothingHere.args = {
     },
   },
 }
+*/
