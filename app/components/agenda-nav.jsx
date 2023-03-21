@@ -106,5 +106,8 @@ const useStyles = createUseStyles({
     'border-bottom': '1px solid lightGray',
     'padding-top': '0.5rem',
     'padding-bottom': '0.25rem',
+    '&:last-child': {
+      borderBottom: 'none'
+    }
   },
 })

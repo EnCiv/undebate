@@ -902,7 +902,8 @@ class ViewerRecorder extends ViewerRecorderLogic {
               )}
               style={agendaStyle}
               agendaItem={
-                (participants.moderator && participants.moderator.agenda && participants.moderator.agenda[round]) ||
+                (Array.isArray(participants?.moderator?.speaking?.[round]) && participants?.moderator?.agenda?.[round][this.state.moderatorSpeakingIndex || (this.state.seatOffset !== 0 ? (participants?.moderator?.agenda?.[round]?.length - 1) : 0)]) ||
+                (participants?.moderator?.agenda?.[round]) ||
                 (this.props.agenda && this.props.agenda[round])
               }
               prevSection={this.prevSection.bind(this)}
@@ -913,9 +914,9 @@ class ViewerRecorder extends ViewerRecorderLogic {
             className={cx(
               classes['countdown'],
               humanSpeaking &&
-                this.getTimeLimit() &&
-                (this.rerecord || !this.props.ccState.participants.human.speakingObjectURLs[round]) &&
-                classes['counting'],
+              this.getTimeLimit() &&
+              (this.rerecord || !this.props.ccState.participants.human.speakingObjectURLs[round]) &&
+              classes['counting'],
               talkative && classes['talkative'],
               warmup && classes['warmup']
             )}

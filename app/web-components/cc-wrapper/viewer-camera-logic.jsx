@@ -149,8 +149,8 @@ export default class ViewerRecorderLogic extends React.Component {
                 placeholder_image(
                   (this.props.participants[participant].listeningURLs &&
                     this.props.participants[participant].listeningURLs[0]) ||
-                    this.props.participants[participant].listening ||
-                    this.props.participants[participant].speaking[0]
+                  this.props.participants[participant].listening ||
+                  this.props.participants[participant].speaking[0]
                 )) ||
               '',
             youtube,
@@ -195,6 +195,7 @@ export default class ViewerRecorderLogic extends React.Component {
     isRecording: false,
     countDown: 0,
     warmup: false,
+    moderatorSpeakingIndex: Array.isArray(this.props?.participants?.moderator?.speaking?.[0]) ? 0 : undefined,
   }
 
   /***
@@ -351,7 +352,7 @@ export default class ViewerRecorderLogic extends React.Component {
     logger.trace(`nextMediaState part:${part}`)
     //if (part === 'human') return;
     // humans won't get here
-    const { round } = this.state
+    const { round, moderatorSpeakingIndex } = this.state
     const { reviewing } = this.props.ccState
     const { listeningRound, listeningSeat } = this.listening()
 
@@ -377,6 +378,11 @@ export default class ViewerRecorderLogic extends React.Component {
         } else {
           objectURL = 'cameraStream' // set it to something - but this.cameraStream should really be used
         }
+      } else if (part === 'moderator' && typeof moderatorSpeakingIndex === 'number') {
+        objectURL = this.props.ccState.participants[part].speakingObjectURLs[round][moderatorSpeakingIndex]
+        this.props.ccState.participants[part].speakingImmediate[round] = true
+        this.stallWatch(part)
+        logger.error('Undebate.nextMediaState need to do something about stallWatch with preFetch')
       } else if (!(objectURL = this.props.ccState.participants[part].speakingObjectURLs[round])) {
         this.props.ccState.participants[part].speakingImmediate[round] = true
         this.stallWatch(part)
@@ -775,8 +781,17 @@ export default class ViewerRecorderLogic extends React.Component {
   }
 
   nextSpeaker() {
-    var { seatOffset, round } = this.state
+    var { seatOffset, round, moderatorSpeakingIndex } = this.state
     logger.info('Undebate.nextSpeaker', seatOffset, round)
+    const moderatorSpeaking = this.seatOfParticipant('moderator') === 'speaking'
+    if (moderatorSpeaking && Array.isArray(this.props.ccState.participants.moderator.speakingObjectURLs[round])) {
+      if (++moderatorSpeakingIndex < this.props.ccState.participants.moderator.speakingObjectURLs[round].length) {
+        // do not go through newOrder that will cause a blink
+        this.playObjectURL('moderator', this.props.ccState.participants.moderator.speakingObjectURLs[round][moderatorSpeakingIndex], true, this.props.ccState.reviewing)
+        this.setState({ moderatorSpeakingIndex })
+        return
+      }
+    }
     if (this.numParticipants === 1) {
       round += 1
       if (round >= this.numRounds) return this.finished()
@@ -794,8 +809,17 @@ export default class ViewerRecorderLogic extends React.Component {
   }
 
   autoNextSpeaker() {
-    var { seatOffset, round } = this.state
+    let { seatOffset, round, moderatorSpeakingIndex } = this.state
     logger.trace('Undebate.autoNextSpeaker', seatOffset, round)
+    const moderatorSpeaking = this.seatOfParticipant('moderator') === 'speaking'
+    if (moderatorSpeaking && Array.isArray(this.props.ccState.participants.moderator.speakingObjectURLs[round])) {
+      if (++moderatorSpeakingIndex < this.props.ccState.participants.moderator.speakingObjectURLs[round].length) {
+        // do not go through newOrder that will cause a blink
+        this.playObjectURL('moderator', this.props.ccState.participants.moderator.speakingObjectURLs[round][moderatorSpeakingIndex], true, this.props.ccState.reviewing)
+        this.setState({ moderatorSpeakingIndex })
+        return
+      }
+    }
     if (this.numParticipants === 1) {
       round += 1
       if (round >= this.numRounds) return this.finished()
@@ -901,46 +925,52 @@ export default class ViewerRecorderLogic extends React.Component {
     },
   }
 
-  newOrder(seatOffset, round) {
+  newOrder(seatOffset, round, moderatorSpeakingIndex) {
     const { participants } = this.props
 
     this.clearStallWatch()
     var followup = []
-    Object.keys(participants).forEach((participant, i) => {
-      let oldChair = this.seat(i)
-      let newChair = this.seat(i, seatOffset)
-      logger.trace('rotateOrder', round, seatOffset, participant, oldChair, newChair)
+    if (moderatorSpeakingIndex) {
+      followup.push(() => this.nextMediaState('moderator'))
+    } else {
+      Object.keys(participants).forEach((participant, i) => {
+        let oldChair = this.seat(i)
+        let newChair = this.seat(i, seatOffset)
+        logger.trace('rotateOrder', round, seatOffset, participant, oldChair, newChair)
 
-      if (participant === 'human') {
-        const timeLimit = this.getTimeLimit()
-        const { listeningRound, listeningSeat } = this.listening()
-        if (oldChair === 'speaking' && newChair === 'speaking' && this.rerecord) {
-          // the user is initiating a rerecord
-        } else if (
-          oldChair === 'speaking' &&
-          (!this.props.ccState.participants.human.speakingObjectURLs[this.state.round] || this.rerecord)
-        ) {
-          // the oldChair and the old round
-          //this.rerecord = false
-          //this.stopRecording()
-        } else if (oldChair === listeningSeat && this.state.round === listeningRound && !this.props.ccState.reviewing) {
-          // the oldChair and the old round
-          //this.rerecord = false
-          //this.stopRecording()
+        if (participant === 'human') {
+          const timeLimit = this.getTimeLimit()
+          const { listeningRound, listeningSeat } = this.listening()
+          if (oldChair === 'speaking' && newChair === 'speaking' && this.rerecord) {
+            // the user is initiating a rerecord
+          } else if (
+            oldChair === 'speaking' &&
+            (!this.props.ccState.participants.human.speakingObjectURLs[this.state.round] || this.rerecord)
+          ) {
+            // the oldChair and the old round
+            //this.rerecord = false
+            //this.stopRecording()
+          } else if (oldChair === listeningSeat && this.state.round === listeningRound && !this.props.ccState.reviewing) {
+            // the oldChair and the old round
+            //this.rerecord = false
+            //this.stopRecording()
+          }
+          // then see if it needs to be turned on - both might happen at the same transition
+          followup.push(() => this.nextMediaState(participant))
+          followup.push(() => this.maybeEnableRecording(newChair, listeningSeat, round, listeningRound, timeLimit))
+        } else if (oldChair === 'speaking' || newChair === 'speaking' || this.state.allPaused) {
+          // will be speaking or need to start media again
+          followup.push(() => this.nextMediaState(participant))
+          if (participant === 'moderator' && newChair === 'speaking' && Array.isArray(this.props.ccState.participants.moderator.speakingObjectURLs[round]))
+            moderatorSpeakingIndex = 0
+        } else {
+          logger.trace('participant continue looping', participant)
         }
-        // then see if it needs to be turned on - both might happen at the same transition
-        followup.push(() => this.nextMediaState(participant))
-        followup.push(() => this.maybeEnableRecording(newChair, listeningSeat, round, listeningRound, timeLimit))
-      } else if (oldChair === 'speaking' || newChair === 'speaking' || this.state.allPaused) {
-        // will be speaking or need to start media again
-        followup.push(() => this.nextMediaState(participant))
-      } else {
-        logger.trace('participant continue looping', participant)
-      }
-    })
-    logger.trace('rotateOrder: ', seatOffset)
+      })
+      logger.trace('rotateOrder: ', seatOffset)
+    }
 
-    this.setState({ seatOffset, round, talkative: false, allPaused: false }, () => {
+    this.setState({ seatOffset, round, moderatorSpeakingIndex, talkative: false, allPaused: false }, () => {
       while (followup.length) followup.shift()()
     })
   }
