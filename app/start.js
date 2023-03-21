@@ -17,6 +17,7 @@ async function start() {
     server.routesDirPaths.push(path.resolve(__dirname, './routes'))
     server.socketAPIsDirPaths.push(path.resolve(__dirname, './socket-apis'))
     server.serverEventsDirPaths.push(path.resolve(__dirname, './events'))
+    server.directives.mediaSrc.push('video.wixstatic.com')
     await server.start()
     logger.info('started')
   } catch (error) {
