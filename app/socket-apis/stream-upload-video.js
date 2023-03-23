@@ -3,6 +3,7 @@ import cloudinary from 'cloudinary'
 
 export default function streamUploadVideo(stream, data, cb) {
   try {
+    logger.info("streamUploadVideo", data)
     let self = this // an ss(socket)
     const public_id = data.name.split('.')[0]
     var cloudStream = cloudinary.v2.uploader.upload_stream(
