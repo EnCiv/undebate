@@ -189,7 +189,7 @@ export default class ViewerRecorderLogic extends React.Component {
   state = {
     seatOffset: 0,
     round: 0,
-    moderatorReadyToStart: !this.props.participants.moderator, // if no moderators, no need to wait
+    moderatorReadyToStart: !this.props?.participants?.moderator, // if no moderators, no need to wait
     begin: false,
     allPaused: true, // so the play button shows
     isRecording: false,
@@ -240,11 +240,11 @@ export default class ViewerRecorderLogic extends React.Component {
 
   listening() {
     const listeningRound =
-      this.props.participants.human.listening && typeof this.props.participants.human.listening.round !== 'undefined'
+      this.props.participants?.human?.listening && typeof this.props.participants.human.listening.round !== 'undefined'
         ? this.props.participants.human.listening.round
         : Infinity // 0 is a valid round
     const listeningSeat =
-      (this.props.participants.human.listening && this.props.participants.human.listening.seat) || 'seat2'
+      (this.props.participants?.human?.listening && this.props.participants.human.listening.seat) || 'seat2'
     return { listeningRound, listeningSeat }
   }
 
@@ -380,9 +380,11 @@ export default class ViewerRecorderLogic extends React.Component {
         }
       } else if (part === 'moderator' && typeof moderatorSpeakingIndex === 'number') {
         objectURL = this.props.ccState.participants[part].speakingObjectURLs[round][moderatorSpeakingIndex]
-        this.props.ccState.participants[part].speakingImmediate[round] = true
-        this.stallWatch(part)
-        logger.error('Undebate.nextMediaState need to do something about stallWatch with preFetch')
+        if (!objectURL) {
+          this.props.ccState.participants[part].speakingImmediate[round] = true
+          this.stallWatch(part)
+          logger.error('Undebate.nextMediaState need to do something about stallWatch with preFetch')
+        }
       } else if (!(objectURL = this.props.ccState.participants[part].speakingObjectURLs[round])) {
         this.props.ccState.participants[part].speakingImmediate[round] = true
         this.stallWatch(part)

@@ -55,7 +55,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
     else {
       // we need to calculate the position of everything if rendered on the server, based on some size.
       let width, height
-      if (this.props.browserConfig.type === 'bot') {
+      if (this.props.browserConfig?.type === 'bot') {
         // running on a bot
         width = 1200 //Facebook image post size: 1200 x 900
         height = 900
@@ -140,7 +140,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
       },
 
       buttonBarStyle: {
-        bottom: '5vh',
+        bottom: '1rem',
         height: '14vh',
         position: 'absolute',
       },
@@ -164,7 +164,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
     if (typeof ResolutionToFontSizeTable[key] === 'number') {
       newFontSize = ResolutionToFontSizeTable[key]
     } else {
-      logger.trace('Undebate.calcFontSize not found', this.props.browserConfig.type, key, navigator.userAgent)
+      logger.trace('Undebate.calcFontSize not found', this.props.browserConfig?.type, key, navigator.userAgent)
     }
 
     if (!newFontSize) {
@@ -244,8 +244,12 @@ class ViewerRecorder extends ViewerRecorderLogic {
         let seatVerticalPitch = seatWidthRatio * HDRatio * width + verticalSeatSpace
         let seatLeft = seatStyle.nextUp.left //Math.min(seatStyle.nextUp.left, horizontalSeatSpace)
 
+        buttonBarStyle.width = (parseInt(seatStyle.speaking.width) * 7) / 6 + 'vw' // three are 7 buttons, 5 should be under the speaking window
+        buttonBarStyle.left = (100 - parseInt(buttonBarStyle.width)) / 2 + 'vw'
+        buttonBarStyle.height = ((((parseInt(buttonBarStyle.width) / 7) * 140) / 100) * width * 0.8) / 100 + 'px' // there are 7 buttons. the aspect ratio of the button is 100 wide by 140 tall and we are scaling the icon to 80% of it's div
+
         // down the left side
-        while (seatTop + seatVerticalPitch < height && seat <= 7) {
+        while (seatTop + seatVerticalPitch < (height - parseInt(buttonBarStyle.height)) && seat <= 7) {
           seatStyle['seat' + seat].top = seatTop
           seatStyle['seat' + seat].left = seatLeft
           seatStyle['seat' + seat].width = seatWidthRatio * 100 + 'vw'
@@ -253,7 +257,8 @@ class ViewerRecorder extends ViewerRecorderLogic {
           seat++
         }
 
-        seatTop = height - seatWidthRatio * HDRatio * width - verticalSeatSpace
+        //seatTop = height - seatWidthRatio * HDRatio * width - verticalSeatSpace
+        seatTop = parseInt(seatStyle.speaking.top) + ((parseInt(seatStyle.speaking.width) * width) / 100) * HDRatio + 2 * verticalSeatSpace
         seatLeft += seatWidthRatio * width + horizontalSeatSpace
         let seatHorizontalPitch = seatWidthRatio * width + horizontalSeatSpace
         // across the bottom
@@ -288,9 +293,6 @@ class ViewerRecorder extends ViewerRecorderLogic {
           agendaStyle.width = width - agendaStyle.left - 2 * horizontalSeatSpace
         agendaStyle.height = agendaStyle.width
 
-        buttonBarStyle.width = (parseInt(seatStyle.speaking.width) * 7) / 5 + 'vw' // three are 7 buttons, 5 should be under the speaking window
-        buttonBarStyle.left = (100 - parseInt(buttonBarStyle.width)) / 2 + 'vw'
-        buttonBarStyle.height = ((((parseInt(buttonBarStyle.width) / 7) * 140) / 100) * width * 0.8) / 100 + 'px' // there are 7 buttons. the aspect ratio of the button is 100 wide by 140 tall and we are scaling the icon to 80% of it's div
       } else {
         const speakingWidthRatio = 0.5
         const nextUpWidthRatio = 0.2
@@ -525,7 +527,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
   }
 
   preventPortraitRecording = () => {
-    if (this.props.browserConfig.type !== 'phone') return // nothing to do here if not a phone
+    if (this.props.browserConfig?.type !== 'phone') return // nothing to do here if not a phone
     const { isPortraitPhoneRecording } = this.state
     const portraitMode = typeof window !== 'undefined' && window.innerWidth < window.innerHeight
     if (isPortraitPhoneRecording && !portraitMode) {
@@ -609,7 +611,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
     const innerWidth = typeof window !== 'undefined' ? window.innerWidth : 1920
     const humanSpeaking = this.speakingNow() === 'human'
     const ifShowPreamble = this.props.ccState.participants.human && !opening.noPreamble && !intro && !begin && !done
-    const bot = browserConfig.type === 'bot'
+    const bot = browserConfig?.type === 'bot'
 
     const recordingPlaceholderBar = () => {
       if (participants.human) {

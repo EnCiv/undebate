@@ -35,11 +35,11 @@ export default function streamUploadVideo(stream, data, cb) {
       cb()
     })
     cloudStream.on('error', err => {
-      console.info('cloudStream error:', err)
+      logger.info('cloudStream error:', err)
       cb()
     })
   } catch (err) {
-    logger.error('caught error in streamUploadVideo, continuing')
+    logger.error('caught error in streamUploadVideo, continuing', err)
     return
   }
 }
