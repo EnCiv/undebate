@@ -54,7 +54,7 @@ export default function createParticipant(props, human, userId, name, progressFu
     const responseUrl = url => {
       // responses don't necessarily come in order
       if (url) {
-        logger.trace('url', url)
+        logger.info('url', url)
         url = auto_quality(url)
         if (seat === 'speaking') {
           // what if the come out of order -- to be determined
@@ -68,7 +68,7 @@ export default function createParticipant(props, human, userId, name, progressFu
         !!human.listeningBlob === !!participant.listening
       ) {
         // have all of the pieces been uploaded
-        logger.trace('creat participant', participant)
+        logger.info('creat participant', participant)
         var pIota = {
           //participant iota
           parentId: props.parentId || (props._id && props._id.toString()), // a viewer with a human has no parentId, but a recorder has the viewer as it's parentId
@@ -87,7 +87,7 @@ export default function createParticipant(props, human, userId, name, progressFu
           if (props.bp_info.candidate_name) pIota.component.participant.name = props.bp_info.candidate_name
         }
         window.socket.emit('create-participant', pIota, result => {
-          logger.trace('createParticipant participant created', result)
+          logger.info('createParticipant participant created', result)
         })
       }
     }
@@ -122,13 +122,13 @@ export default function createParticipant(props, human, userId, name, progressFu
         return upload(...uploadArgs)
       } else {
         progressFunc && progressFunc({ progress: 'complete.', uploadComplete: true })
-        logger.trace('createParticipant upload after login complete')
+        logger.info('createParticipant upload after login complete')
       }
     })
   }
 
   logger.info('createParticipant.onUserUpload')
-  logger.trace('createParticipant.onUserUpload', props)
+  logger.info('createParticipant.onUserUpload', props)
 
   for (let round = 0; round < adjustedSpeakingBlobs.length; round++) {
     totalSize += adjustedSpeakingBlobs[round].size
@@ -140,6 +140,7 @@ export default function createParticipant(props, human, userId, name, progressFu
   }
 
   let uploadArgs
+  logger.info("transferring:", totalSize)
   if ((uploadArgs = uploadQueue.shift())) {
     upload(...uploadArgs)
   }
