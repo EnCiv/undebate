@@ -25,6 +25,11 @@ export default function streamUploadVideo(stream, data, cb) {
         }
       }
     )
+    logger.info("streamUploadVideo cloudStream opened", cloudStream, stream, data)
+    cloudStream.on('error', err => {
+      logger.info('cloudStream error:', err)
+      cb()
+    })
     stream.pipe(cloudStream).on('error', err => {
       if (err.code === 'ERR_STREAM_PREMATURE_CLOSE') {
         //socket-stream does not close correctly so we need to do it manually
@@ -34,10 +39,7 @@ export default function streamUploadVideo(stream, data, cb) {
       } else logger.error('Error uploading stream:', public_id, err)
       cb()
     })
-    cloudStream.on('error', err => {
-      logger.info('cloudStream error:', err)
-      cb()
-    })
+    logger.info("streamUploadVideo stream.pipe opened")
   } catch (err) {
     logger.error('caught error in streamUploadVideo, continuing', err)
     return
