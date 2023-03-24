@@ -94,7 +94,7 @@ export default function createParticipant(props, human, userId, name, progressFu
       }
 
       var stream = ss.createStream()
-      logger.info("socket 1", window.socket)
+      logger.info("socket 1", window.socket.connected)
       stream.on('error', err => {
         logger.error('createParticipant.upload socket stream error:', err.message || err)
         progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
@@ -102,7 +102,7 @@ export default function createParticipant(props, human, userId, name, progressFu
         //throw err
         if (window.socket.disconnected) window.socket.open()
       })
-      logger.info("socket 2", window.socket)
+      logger.info("socket 2", window.socket.connected)
       stream.on('end', () => {
         var uploadArgs
         if ((uploadArgs = uploadQueue.shift())) {
@@ -112,30 +112,30 @@ export default function createParticipant(props, human, userId, name, progressFu
           logger.info('createParticipant upload after login complete')
         }
       })
-      logger.info("socket 3", window.socket)
+      logger.info("socket 3", window.socket.connected)
       var ssSocket = ss(window.socket)
-      logger.info("socket 4", window.socket)
+      logger.info("socket 4", window.socket.connected)
       //use this for debugging
       //ssSocket._oldEmit = ssSocket.emit
       //ssSocket.emit = ((...args) => (console.info("emit", ...args), ssSocket._oldEmit(...args)))
       ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl)
-      logger.info("socket 5", window.socket)
+      logger.info("socket 5", window.socket.connected)
       var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
-      logger.info("socket 6", window.socket)
+      logger.info("socket 6", window.socket.connected)
       bstream.on('error', err => {
         logger.error('createParticipant.upload blob stream error:', err.message || err)
         progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
       })
-      logger.info("socket 7", window.socket)
+      logger.info("socket 7", window.socket.connected)
       bstream.pipe(
         through2((chunk, enc, cb) => {
           updateProgress(chunk)
           cb(null, chunk) // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
         })
       )
-      logger.info("socket 8", window.socket)
+      logger.info("socket 8", window.socket.connected)
       bstream.pipe(stream)
-      logger.info("socket 9", window.socket)
+      logger.info("socket 9", window.socket.connected)
     }
 
     logger.info('createParticipant.onUserUpload')
