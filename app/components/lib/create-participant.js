@@ -99,6 +99,7 @@ export default function createParticipant(props, human, userId, name, progressFu
           progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
           uploadQueue = [] // empty the upload queue so we exit and try again
           //throw err
+          if (window.socket.disconnected) window.socket.open()
         })
         .on('end', () => {
           var uploadArgs
@@ -112,9 +113,9 @@ export default function createParticipant(props, human, userId, name, progressFu
 
       var ssSocket = ss(window.socket)
       //use this for debugging
-      ssSocket._oldEmit = ssSocket.emit
-      ssSocket.emit = ((...args) => (console.info("emit", ...args), ssSocket._oldEmit(...args)))
-      //ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl)
+      //ssSocket._oldEmit = ssSocket.emit
+      //ssSocket.emit = ((...args) => (console.info("emit", ...args), ssSocket._oldEmit(...args)))
+      ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl)
 
       var bstream = ss
         .createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
