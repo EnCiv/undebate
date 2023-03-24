@@ -93,10 +93,19 @@ export default function createParticipant(props, human, userId, name, progressFu
     }
 
     var stream = ss.createStream()
-    stream.on('error', err => {
-      logger.error('createParticipant.upload socket stream error:', err)
-      progressFunc && progressFunc({ progress: `There was an error uploading: ${JSON.stringify(err, null, 2)}`, uploadComplete: false, uploadStarted: false, uploadError: true })
+    stream.on('error', (...args) => {
+      logger.error('createParticipant.upload socket stream error:', args)
+      progressFunc && progressFunc({ progress: `There was an error uploading: ${JSON.stringify(args, null, 2)}`, uploadComplete: false, uploadStarted: false, uploadError: true })
     })
+      .on('end', () => {
+        var uploadArgs
+        if ((uploadArgs = uploadQueue.shift())) {
+          return upload(...uploadArgs)
+        } else {
+          progressFunc && progressFunc({ progress: 'complete.', uploadComplete: true, uploadStarted: true, uploadError: false })
+          logger.info('createParticipant upload after login complete')
+        }
+      })
 
     var ssSocket = ss(window.socket)
     //use this for debugging
@@ -106,6 +115,10 @@ export default function createParticipant(props, human, userId, name, progressFu
 
     var bstream = ss
       .createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
+      .on('error', (...args) => {
+        logger.error('createParticipant.upload blob stream error:', args)
+        progressFunc && progressFunc({ progress: `There was an error uploading: ${JSON.stringify(args, null, 2)}`, uploadComplete: false, uploadStarted: false, uploadError: true })
+      })
       .pipe(
         through2((chunk, enc, cb) => {
           updateProgress(chunk)
@@ -114,19 +127,6 @@ export default function createParticipant(props, human, userId, name, progressFu
       )
       .pipe(stream)
 
-    bstream.on('error', err => {
-      logger.error('createParticipant.upload blob stream error:', err)
-      progressFunc && progressFunc({ progress: `There was an error uploading: ${JSON.stringify(err, null, 2)}`, uploadComplete: false, uploadStarted: false, uploadError: true })
-    })
-    stream.on('end', () => {
-      var uploadArgs
-      if ((uploadArgs = uploadQueue.shift())) {
-        return upload(...uploadArgs)
-      } else {
-        progressFunc && progressFunc({ progress: 'complete.', uploadComplete: true, uploadStarted: true, uploadError: false })
-        logger.info('createParticipant upload after login complete')
-      }
-    })
   }
 
   logger.info('createParticipant.onUserUpload')
