@@ -94,43 +94,48 @@ export default function createParticipant(props, human, userId, name, progressFu
       }
 
       var stream = ss.createStream()
-        .on('error', err => {
-          logger.error('createParticipant.upload socket stream error:', err.message || err)
-          progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
-          uploadQueue = [] // empty the upload queue so we exit and try again
-          //throw err
-          if (window.socket.disconnected) window.socket.open()
-        })
-        .on('end', () => {
-          var uploadArgs
-          if ((uploadArgs = uploadQueue.shift())) {
-            return upload(...uploadArgs)
-          } else {
-            progressFunc && progressFunc({ progress: 'complete.', uploadComplete: true, uploadStarted: true, uploadError: false })
-            logger.info('createParticipant upload after login complete')
-          }
-        })
-
+      logger.info("socket 1", window.socket)
+      stream.on('error', err => {
+        logger.error('createParticipant.upload socket stream error:', err.message || err)
+        progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
+        uploadQueue = [] // empty the upload queue so we exit and try again
+        //throw err
+        if (window.socket.disconnected) window.socket.open()
+      })
+      logger.info("socket 2", window.socket)
+      stream.on('end', () => {
+        var uploadArgs
+        if ((uploadArgs = uploadQueue.shift())) {
+          return upload(...uploadArgs)
+        } else {
+          progressFunc && progressFunc({ progress: 'complete.', uploadComplete: true, uploadStarted: true, uploadError: false })
+          logger.info('createParticipant upload after login complete')
+        }
+      })
+      logger.info("socket 3", window.socket)
       var ssSocket = ss(window.socket)
+      logger.info("socket 4", window.socket)
       //use this for debugging
       //ssSocket._oldEmit = ssSocket.emit
       //ssSocket.emit = ((...args) => (console.info("emit", ...args), ssSocket._oldEmit(...args)))
       ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl)
-
-      var bstream = ss
-        .createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
-        .on('error', err => {
-          logger.error('createParticipant.upload blob stream error:', err.message || err)
-          progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
+      logger.info("socket 5", window.socket)
+      var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
+      logger.info("socket 6", window.socket)
+      bstream.on('error', err => {
+        logger.error('createParticipant.upload blob stream error:', err.message || err)
+        progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
+      })
+      logger.info("socket 7", window.socket)
+      bstream.pipe(
+        through2((chunk, enc, cb) => {
+          updateProgress(chunk)
+          cb(null, chunk) // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
         })
-        .pipe(
-          through2((chunk, enc, cb) => {
-            updateProgress(chunk)
-            cb(null, chunk) // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
-          })
-        )
-        .pipe(stream)
-
+      )
+      logger.info("socket 8", window.socket)
+      bstream.pipe(stream)
+      logger.info("socket 9", window.socket)
     }
 
     logger.info('createParticipant.onUserUpload')
