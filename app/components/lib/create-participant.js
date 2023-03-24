@@ -94,11 +94,12 @@ export default function createParticipant(props, human, userId, name, progressFu
       }
 
       var stream = ss.createStream()
-      stream.on('error', err => {
-        logger.error('createParticipant.upload socket stream error:', err.message || err)
-        progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
-        throw err
-      })
+        .on('error', err => {
+          logger.error('createParticipant.upload socket stream error:', err.message || err)
+          progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
+          uploadQueue = [] // empty the upload queue so we exit and try again
+          //throw err
+        })
         .on('end', () => {
           var uploadArgs
           if ((uploadArgs = uploadQueue.shift())) {
