@@ -43,7 +43,7 @@ export default function createParticipant(props, human, userId, name, progressFu
   function updateProgress(chunk) {
     transferred += chunk.length
     var percentComplete = Math.round((transferred / totalSize) * 100) + '%'
-    progressFunc && progressFunc({ progress: percentComplete, uploadComplete: false })
+    progressFunc && progressFunc({ progress: percentComplete, uploadComplete: false, uploadStarted: true, uploadError: false })
   }
 
   function upload(blob, seat, round) {
@@ -95,6 +95,7 @@ export default function createParticipant(props, human, userId, name, progressFu
     var stream = ss.createStream()
     stream.on('error', err => {
       logger.error('createParticipant.upload socket stream error:', err)
+      progressFunc && progressFunc({ progress: `There was an error uploading: ${JSON.stringify(err, null, 2)}`, uploadComplete: false, uploadStarted: false, uploadError: true })
     })
 
     var ssSocket = ss(window.socket)
@@ -115,13 +116,14 @@ export default function createParticipant(props, human, userId, name, progressFu
 
     bstream.on('error', err => {
       logger.error('createParticipant.upload blob stream error:', err)
+      progressFunc && progressFunc({ progress: `There was an error uploading: ${JSON.stringify(err, null, 2)}`, uploadComplete: false, uploadStarted: false, uploadError: true })
     })
     stream.on('end', () => {
       var uploadArgs
       if ((uploadArgs = uploadQueue.shift())) {
         return upload(...uploadArgs)
       } else {
-        progressFunc && progressFunc({ progress: 'complete.', uploadComplete: true })
+        progressFunc && progressFunc({ progress: 'complete.', uploadComplete: true, uploadStarted: true, uploadError: false })
         logger.info('createParticipant upload after login complete')
       }
     })
@@ -141,8 +143,8 @@ export default function createParticipant(props, human, userId, name, progressFu
 
   let uploadArgs
   logger.info("transferring:", totalSize)
+  progressFunc && progressFunc({ progress: `${totalSize} to upload`, uploadComplete: false, uploadStarted: true, uploadError: false })
   if ((uploadArgs = uploadQueue.shift())) {
     upload(...uploadArgs)
   }
-  progressFunc && progressFunc({ progress: `${totalSize} to upload`, uploadComplete: false })
 }

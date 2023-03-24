@@ -5,57 +5,16 @@ import { AuthForm } from 'civil-client' // pull components for the client out fr
 import createParticipant from '../../components/lib/create-participant'
 import SurveyForm from './survey-form'
 import Input from '../../components/lib/input'
-
-const useStyles = createUseStyles({
-  outerBox: {
-    display: 'block',
-    width: '100vw',
-    boxSizing: 'border-box',
-    height: 'auto',
-    minHeight: '100vh',
-  },
-  thanks: {
-    'font-size': '200%',
-    'font-weight': '600',
-    display: 'block',
-    paddingTop: '0.5em',
-    paddingBottom: '0.5em',
-  },
-  reviewIt: {
-    marginBottom: '2em',
-  },
-  beginButton: {
-    cursor: 'pointer',
-    color: 'white',
-    background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
-    'border-radius': '7px',
-    'border-width': '2px',
-    'border-color': 'white',
-    'font-size': '1.25em',
-    padding: '1em',
-    'margin-top': '1em',
-    '&:disabled': {
-      'text-decoration': 'none',
-      background: 'lightgray',
-    },
-  },
-  name: {
-    fontSize: '1.25em',
-    width: '11em',
-    height: '1em',
-    textAlign: 'center',
-  },
-})
+import cx from 'classnames'
 
 export const Ending = props => {
   const { closing = { thanks: 'Thank You' }, participants = {}, bp_info = {}, user, dispatch, ccState } = props
   const classes = useStyles()
   const [newUser, neverSetNewUser] = useState(!user) // if there is no user at the beginning, then this is a new user - which should persist throughout the existence of this component
   const [newUserInfo, setNewUserInfo] = useState({ userId: undefined, firstName: undefined, lastName: undefined })
-  const [progressObj, setProgressObj] = useState({ progress: '', uploadComplete: false })
-  const { progress, uploadComplete } = progressObj
+  const [progressObj, setProgressObj] = useState({ progress: '', uploadComplete: false, uploadStarted: false, uploadError: false })
+  const { progress, uploadComplete, uploadStarted, uploadError } = progressObj
   const [inputName, setInputName] = useState('')
-  const [uploadStarted, setUploadStarted] = useState(false)
   const thanks = () => <span className={classes['thanks']}>{closing.thanks}</span>
 
   const reviewButton = () =>
@@ -66,26 +25,13 @@ export const Ending = props => {
           className={classes.beginButton}
           onClick={
             () => dispatch({ type: dispatch.TYPES.ReviewIt })
-            /* going to need to reset the viewer/recorder somehow
-          this.setState(
-            {
-              intro: true,
-              stylesSet: true,
-              allPaused: false,
-              round: 0,
-              seatOffset: 0,
-              done: 0,
-              finishUp: 0,
-              reviewing: 1,
-            },
-            () => this.onIntroEnd()
-          )*/
           }
         >
           Review It
         </button>
       </div>
     )
+
   const onUserLogin = info => {
     logger.info('ending.onUserLogin')
     logger.trace('ending.onUserLogin', info)
@@ -94,9 +40,6 @@ export const Ending = props => {
   }
 
   const onUserUpload = () => {
-    // prevent double uploads - the users might double click the upload button
-    if (uploadStarted) return
-    else setUploadStarted(true)
     logger.info('ending.onUserUpload')
     logger.trace('ending.onUserUpload', props)
     const userId = (user && user.id) || newUserInfo.userId
@@ -154,11 +97,11 @@ export const Ending = props => {
     !uploadComplete && (
       <>
         <div>
-          <button disabled={newUser && !newUserInfo.userId} className={classes['beginButton']} onClick={onUserUpload}>
+          <button disabled={uploadStarted || (newUser && !newUserInfo.userId)} className={classes['beginButton']} onClick={onUserUpload}>
             Post
           </button>
         </div>
-        {progress && <div>{'uploading: ' + progress}</div>}
+        {progress && <div className={cx(uploadError && classes['error'])}>{'uploading: ' + progress}</div>}
       </>
     )
 
@@ -195,3 +138,47 @@ export const HungUp = props => {
     </div>
   )
 }
+
+const useStyles = createUseStyles({
+  outerBox: {
+    display: 'block',
+    width: '100vw',
+    boxSizing: 'border-box',
+    height: 'auto',
+    minHeight: '100vh',
+  },
+  thanks: {
+    'font-size': '200%',
+    'font-weight': '600',
+    display: 'block',
+    paddingTop: '0.5em',
+    paddingBottom: '0.5em',
+  },
+  reviewIt: {
+    marginBottom: '2em',
+  },
+  beginButton: {
+    cursor: 'pointer',
+    color: 'white',
+    background: 'linear-gradient(to bottom, #ff8f00 0%,#ff7002 51%,#ff7002 100%)',
+    'border-radius': '7px',
+    'border-width': '2px',
+    'border-color': 'white',
+    'font-size': '1.25em',
+    padding: '1em',
+    'margin-top': '1em',
+    '&:disabled': {
+      'text-decoration': 'none',
+      background: 'lightgray',
+    },
+  },
+  name: {
+    fontSize: '1.25em',
+    width: '11em',
+    height: '1em',
+    textAlign: 'center',
+  },
+  error: {
+    color: 'red'
+  }
+})
