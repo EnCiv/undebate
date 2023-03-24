@@ -120,7 +120,7 @@ export default function createParticipant(props, human, userId, name, progressFu
       //ssSocket.emit = ((...args) => (console.info("emit", ...args), ssSocket._oldEmit(...args)))
       ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl)
       logger.info("socket 5", window.socket.connected)
-      var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
+      var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 100 }) // high hiwWaterMark to increase upload speed
       logger.info("socket 6", window.socket.connected)
       bstream.on('error', err => {
         logger.error('createParticipant.upload blob stream error:', err.message || err)
