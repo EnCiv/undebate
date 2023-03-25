@@ -127,14 +127,14 @@ export default function createParticipant(props, human, userId, name, progressFu
         progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
       })
       logger.info("socket 7", window.socket.connected)
-      bstream.pipe(
+      /*bstream.pipe(
         through2((chunk, enc, cb) => {
           logger.info("socket chunk", window.socket.connected)
           updateProgress(chunk)
           cb(null, chunk) // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
         })
       )
-      logger.info("socket 8", window.socket.connected)
+      logger.info("socket 8", window.socket.connected)*/
       setTimeout(() => bstream.pipe(stream))
       logger.info("socket 9", window.socket.connected)
     }
