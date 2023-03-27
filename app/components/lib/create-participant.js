@@ -120,13 +120,13 @@ export default function createParticipant(props, human, userId, name, progressFu
         logger.error('createParticipant.upload blob stream error:', err.message || err)
         progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
       })
-        .pipe(
-          through2((chunk, enc, cb) => {
-            //setTimeout(() => updateProgress(chunk.length, 100)) // don't slow down the pipe
-            cb(null, chunk) // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
-          })
-        )
-        .pipe(stream)
+      let newPipe = bstream.pipe(
+        through2((chunk, enc, cb) => {
+          setTimeout(() => updateProgress(chunk.length, 100)) // don't slow down the pipe
+          cb(null, chunk) // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
+        })
+      )
+      setTimeout(() => newPipe.pipe(stream), 1) // start this later - have been having problems with sudden aborts of the whole socket
     }
 
     logger.info('createParticipant.onUserUpload')
