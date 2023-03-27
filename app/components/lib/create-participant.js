@@ -126,7 +126,7 @@ export default function createParticipant(props, human, userId, name, progressFu
           cb(null, chunk) // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
         })
       )
-      setTimeout(() => newPipe.pipe(stream), 1000) // start this later - have been having problems with sudden aborts of the whole socket
+      setTimeout(() => newPipe.pipe(stream), 10000) // start this later - have been having problems with sudden aborts of the whole socket
     }
 
     logger.info('createParticipant.onUserUpload')
