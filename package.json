@@ -57,7 +57,7 @@
   },
   "peerDependencies": {
     "civil-client": "github:EnCiv/civil-client",
-    "civil-server": "github:EnCiv/civil-server"
+    "civil-server": "github:EnCiv/civil-server#sockup"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
