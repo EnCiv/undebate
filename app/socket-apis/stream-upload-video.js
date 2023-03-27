@@ -26,7 +26,7 @@ export default function streamUploadVideo(stream, data, cb) {
         }
       }
     )
-    logger.info("streamUploadVideo cloudStream opened", cloudStream, stream, data)
+    logger.info("streamUploadVideo cloudStream opened")
     cloudStream.on('error', err => {
       logger.info('cloudStream error:', err)
       cb()
