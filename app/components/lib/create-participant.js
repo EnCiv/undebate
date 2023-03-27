@@ -122,7 +122,7 @@ export default function createParticipant(props, human, userId, name, progressFu
       })
         .pipe(
           through2((chunk, enc, cb) => {
-            setTimeout(() => updateProgress(chunk.length)) // don't slow down the pipe - w/o this setTimeout here sometimes the socket would disconnect
+            setTimeout(() => updateProgress(chunk.length, 100)) // don't slow down the pipe
             cb(null, chunk) // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
           })
         )
