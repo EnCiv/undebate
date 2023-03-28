@@ -28,7 +28,7 @@ if (typeof window !== 'undefined') {
       setTimeout(() => func.apply(null, args))
     }
 }
-const onAnyListener = (eventName, ...args) => console.info("onAny", eventName)
+const onAnyListener = (eventName, ...args) => console.info("onAny", eventName, ...args)
 let onAnySet = 0
 
 export default function createParticipant(props, human, userId, name, progressFunc, listeningRound, listeningSeat) {
@@ -54,7 +54,7 @@ export default function createParticipant(props, human, userId, name, progressFu
 
     function upload(blob, seat, round) {
       var file_name = userId + '-' + round + '-' + seat + new Date().toISOString().replace(/[^A-Z0-9]/gi, '') + '.mp4' // mp4 was put here to get around something with Apple - check in future
-
+      console.info('connected?', socket.connected)
       // socketIo-streams does not seem to be passing call backs (undefined is received)
       // so we are using a socket io event to send the response back
       const responseUrl = url => {
@@ -135,7 +135,7 @@ export default function createParticipant(props, human, userId, name, progressFu
       newPipe.pipe(stream)*/
       bstream.on('data', chunk => { console.info('chunk', chunk.length); setTimeout(() => updateProgress(chunk.length)) })
       bstream.pipe(stream); console.info("pipe started")
-      setTimeout(() => { console.info("stream upload start"); ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl); console.info("stream upload sent") }, parseInt(process.env.STREAM_DELAY || '5000'))
+      setTimeout(() => { console.info("stream upload start after", socket.connected, parseInt(process.env.STREAM_DELAY || '5000')); ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl); console.info("stream upload sent") }, parseInt(process.env.STREAM_DELAY || '5000'))
     }
 
     logger.info('createParticipant.onUserUpload')
