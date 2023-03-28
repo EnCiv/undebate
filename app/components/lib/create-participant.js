@@ -115,18 +115,20 @@ export default function createParticipant(props, human, userId, name, progressFu
       //ssSocket._oldEmit = ssSocket.emit
       //ssSocket.emit = ((...args) => (console.info("emit", ...args), ssSocket._oldEmit(...args)))
       ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl)
-      var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
-      bstream.on('error', err => {
-        logger.error('createParticipant.upload blob stream error:', err.message || err)
-        progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
-      })
-      let newPipe = bstream.pipe(
-        through2((chunk, enc, cb) => {
-          setTimeout(() => updateProgress(chunk.length, 100)) // don't slow down the pipe
-          cb(null, chunk) // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
+      setTimeout(() => {
+        var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
+        bstream.on('error', err => {
+          logger.error('createParticipant.upload blob stream error:', err.message || err)
+          progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
         })
-      )
-      setTimeout(() => newPipe.pipe(stream), 10000) // start this later - have been having problems with sudden aborts of the whole socket
+        let newPipe = bstream.pipe(
+          through2((chunk, enc, cb) => {
+            setTimeout(() => updateProgress(chunk.length, 100)) // don't slow down the pipe
+            cb(null, chunk) // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
+          })
+        )
+        setTimeout(() => newPipe.pipe(stream), 10000) // start this later - have been having problems with sudden aborts of the whole socket
+      }, 100)
     }
 
     logger.info('createParticipant.onUserUpload')
