@@ -32,9 +32,12 @@ import ButtonBar from './button-bar' // lowercase because using .call to pass th
 import HangupButton from '../../components/hangup-button'
 import BeginButton from '../../components/begin-button'
 
+import ss from '@sap_oss/node-socketio-stream'
+
 class ViewerRecorder extends ViewerRecorderLogic {
   constructor(props) {
     super(props)
+    if (!window.ssSocket) window.ssSocket = ss(window.socket)
     if (this.canNotRecordHere) return // don't render anything if can't record
     //this.createDefaults();
     this.calculatePositionAndStyle = this.calculatePositionAndStyle.bind(this)

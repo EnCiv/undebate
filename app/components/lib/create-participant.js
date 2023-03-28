@@ -114,7 +114,7 @@ export default function createParticipant(props, human, userId, name, progressFu
           logger.info('createParticipant upload after login complete')
         }
       })
-      var ssSocket = ss(window.socket)
+      //var ssSocket = ss(window.socket)
       //use this for debugging
       //ssSocket._oldEmit = ssSocket.emit
       //ssSocket.emit = ((...args) => (console.info("emit", ...args), ssSocket._oldEmit(...args)))
