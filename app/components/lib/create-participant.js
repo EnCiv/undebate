@@ -19,6 +19,7 @@ function allThere(array, length) {
   return array.length === length && array.every(i => typeof i !== 'undefined')
 }
 
+
 // webpack might include process.browser but if it doesn't the pipe opertion below needs process.nextTick
 if (typeof window !== 'undefined') {
   if (typeof process === 'undefined') window.process = {}
@@ -28,8 +29,6 @@ if (typeof window !== 'undefined') {
       setTimeout(() => func.apply(null, args))
     }
 }
-//const onAnyListener = (eventName, ...args) => console.info("onAny", eventName, ...args)
-//let onAnySet = 0
 
 export default function createParticipant(props, human, userId, name, progressFunc, listeningRound, listeningSeat) {
   try {
@@ -101,8 +100,8 @@ export default function createParticipant(props, human, userId, name, progressFu
 
       var stream = ss.createStream()
       stream.on('error', err => {
+        logger.error('createParticipant.upload socket stream error:', err.message || err, "connected:", window.socket.connected)
         if (window.socket.disconnected) window.socket.open() // some problems with the pipe would cause the stream to disconnect. It's fixed but lets leave this here.
-        logger.error('createParticipant.upload socket stream error:', err.message || err)
         progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
         uploadQueue = [] // empty the upload queue so we exit and try again
       })
@@ -139,7 +138,7 @@ export default function createParticipant(props, human, userId, name, progressFu
         setTimeout(() => updateProgress(chunk.length))
       })
       bstream.pipe(stream); console.info("pipe started")
-      setTimeout(() => { console.info("stream upload start after", socket.connected, parseInt(process.env.STREAM_DELAY || '5000')); ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl); console.info("stream upload sent") }, parseInt(process.env.STREAM_DELAY || '5000'))
+      setTimeout(() => { console.info("stream upload start after", socket.connected, parseInt(process.env.STREAM_DELAY || '5000')); ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl); console.info("stream upload sent", socket.connected) }, parseInt(process.env.STREAM_DELAY || '5000'))
     }
 
     logger.info('createParticipant.onUserUpload')
