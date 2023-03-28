@@ -114,6 +114,7 @@ export default function createParticipant(props, human, userId, name, progressFu
       //use this for debugging
       //ssSocket._oldEmit = ssSocket.emit
       //ssSocket.emit = ((...args) => (console.info("emit", ...args), ssSocket._oldEmit(...args)))
+      ssSocket.on("error", err => logger.error("ssSocket got error:", err.message || error))
 
       var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
       bstream.on('error', err => {
