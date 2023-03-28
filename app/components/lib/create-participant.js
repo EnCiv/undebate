@@ -28,8 +28,8 @@ if (typeof window !== 'undefined') {
       setTimeout(() => func.apply(null, args))
     }
 }
-const onAnyListener = (eventName, ...args) => console.info("onAny", eventName, ...args)
-let onAnySet = 0
+//const onAnyListener = (eventName, ...args) => console.info("onAny", eventName, ...args)
+//let onAnySet = 0
 
 export default function createParticipant(props, human, userId, name, progressFunc, listeningRound, listeningSeat) {
   try {
@@ -38,7 +38,7 @@ export default function createParticipant(props, human, userId, name, progressFu
     var participant = { speaking: [], name: name }
     var uploadQueue = []
 
-    if (!onAnySet++) window.socket.onAny(onAnyListener)
+    //if (!onAnySet++) window.socket.onAny(onAnyListener)
 
     let adjustedSpeakingBlobs = human.speakingBlobs.slice() // make a copy so we don't mutate the original
     if (listeningSeat === 'speaking') {
