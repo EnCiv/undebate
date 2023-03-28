@@ -137,14 +137,9 @@ export default function createParticipant(props, human, userId, name, progressFu
       bstream.on('data', chunk => {
         console.info('chunk', chunk.length);
         setTimeout(() => updateProgress(chunk.length))
-        if (!streamStarted) {
-          console.info('starting stream', parseInt(process.env.STREAM_DELAY || '5000'))
-          setTimeout(() => ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl), parseInt(process.env.STREAM_DELAY || '5000'))
-          streamStarted = true
-        }
       })
       bstream.pipe(stream); console.info("pipe started")
-      //setTimeout(() => { console.info("stream upload start after", socket.connected, parseInt(process.env.STREAM_DELAY || '5000')); ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl); console.info("stream upload sent") }, parseInt(process.env.STREAM_DELAY || '5000'))
+      setTimeout(() => { console.info("stream upload start after", socket.connected, parseInt(process.env.STREAM_DELAY || '5000')); ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl); console.info("stream upload sent") }, parseInt(process.env.STREAM_DELAY || '5000'))
     }
 
     logger.info('createParticipant.onUserUpload')
