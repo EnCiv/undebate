@@ -1,5 +1,5 @@
 'use strict;'
-import through2 from 'through2'
+//import through2 from 'through2'
 import { auto_quality, placeholder_image } from './cloudinary-urls'
 import ss from '@sap_oss/node-socketio-stream'
 
@@ -121,13 +121,16 @@ export default function createParticipant(props, human, userId, name, progressFu
         logger.error('createParticipant.upload blob stream error:', err.message || err)
         progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
       })
+      /*
       let newPipe = bstream.pipe(
         through2((chunk, enc, cb) => {
           setTimeout(() => updateProgress(chunk.length, 100)) // don't slow down the pipe
           cb(null, chunk) // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
         })
       )
-      newPipe.pipe(stream)
+      newPipe.pipe(stream)*/
+      bstream.on('data', chunk => setTimeout(() => updateProgress(chunk.length, 100)))
+      bstream.pipe(stream)
       ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl)
     }
 
