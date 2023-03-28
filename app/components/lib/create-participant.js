@@ -119,12 +119,13 @@ export default function createParticipant(props, human, userId, name, progressFu
       //ssSocket._oldEmit = ssSocket.emit
       //ssSocket.emit = ((...args) => (console.info("emit", ...args), ssSocket._oldEmit(...args)))
       ssSocket.on("error", err => logger.error("ssSocket got error:", err.message || error))
-
+      console.info('before createBlob', socket.connected)
       var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
       bstream.on('error', err => {
         logger.error('createParticipant.upload blob stream error:', err.message || err)
         progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
       })
+      console.info('after crateBlob', socket.connected)
       /*
       let newPipe = bstream.pipe(
         through2((chunk, enc, cb) => {
