@@ -138,8 +138,8 @@ export default function createParticipant(props, human, userId, name, progressFu
         console.info('chunk', chunk.length);
         setTimeout(() => updateProgress(chunk.length))
         if (!streamStarted) {
-          console.info('starting stream')
-          ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl)
+          console.info('starting stream', parseInt(process.env.STREAM_DELAY || '5000'))
+          setTimeout(() => ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl), parseInt(process.env.STREAM_DELAY || '5000'))
           streamStarted = true
         }
       })
