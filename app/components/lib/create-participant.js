@@ -134,9 +134,8 @@ export default function createParticipant(props, human, userId, name, progressFu
       )
       newPipe.pipe(stream)*/
       bstream.on('data', chunk => setTimeout(() => updateProgress(chunk.length)))
-      ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl)
-      console.info("stream api sent")
-      setTimeout(() => { bstream.pipe(stream); console.info("pipe started") }, 5000)
+      bstream.pipe(stream); console.info("pipe started")
+      setTimeout(() => { console.info("sending stream upload"); ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl); console.info("stream upload sent") }, 5000)
     }
 
     logger.info('createParticipant.onUserUpload')
