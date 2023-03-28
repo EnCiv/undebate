@@ -128,7 +128,7 @@ export default function createParticipant(props, human, userId, name, progressFu
           })
         )
         setTimeout(() => newPipe.pipe(stream), 10000) // start this later - have been having problems with sudden aborts of the whole socket
-      }, 100)
+      }, 1000)
     }
 
     logger.info('createParticipant.onUserUpload')
