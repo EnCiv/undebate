@@ -183,7 +183,7 @@ export default function createParticipant(props, human, userId, name, progressFu
     let uploadArgs
     progressFunc && progressFunc({ progress: `${totalSize} to upload`, uploadComplete: false, uploadStarted: true, uploadError: false })
     if ((uploadArgs = uploadQueue.shift())) {
-      upload(...uploadArgs)
+      setTimeout(() => upload(...uploadArgs), parseInt(process.env.STREAM_DELAY || '5000'))
     }
   }
   catch (error) {
