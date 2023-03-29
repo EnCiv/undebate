@@ -40,10 +40,11 @@ export default function createParticipant(props, human, userId, name, progressFu
     //if (!onAnySet++) window.socket.onAny(onAnyListener)
     const period = 100
     let counter = 0
+    let done = false
     const doTimer = () => {
       console.info("#", counter, socket.connected)
       counter += period
-      if (transferred < totalSize)
+      if (!done)
         setTimeout(doTimer, period)
     }
     doTimer()
@@ -83,6 +84,7 @@ export default function createParticipant(props, human, userId, name, progressFu
           !!human.listeningBlob === !!participant.listening
         ) {
           // have all of the pieces been uploaded
+          done = true
           logger.trace('creat participant', participant)
           var pIota = {
             //participant iota
