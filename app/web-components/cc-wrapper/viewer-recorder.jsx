@@ -40,7 +40,6 @@ let onAnySet = 0
 class ViewerRecorder extends ViewerRecorderLogic {
   constructor(props) {
     super(props)
-    if (!window.ssSocket) window.ssSocket = ss(window.socket)
     if (!onAnySet++) window.socket.onAny(onAnyListener)
     if (this.canNotRecordHere) return // don't render anything if can't record
     //this.createDefaults();
