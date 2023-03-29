@@ -38,6 +38,15 @@ export default function createParticipant(props, human, userId, name, progressFu
     var uploadQueue = []
 
     //if (!onAnySet++) window.socket.onAny(onAnyListener)
+    const period = 100
+    let counter = 0
+    const doTimer = () => {
+      console.info("#", counter, socket.connected)
+      counter += period
+      if (transferred < totalSize)
+        setTimeout(doTimer, period)
+    }
+    doTimer()
 
     let adjustedSpeakingBlobs = human.speakingBlobs.slice() // make a copy so we don't mutate the original
     if (listeningSeat === 'speaking') {
