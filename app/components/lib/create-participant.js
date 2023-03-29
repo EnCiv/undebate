@@ -48,7 +48,7 @@ export default function createParticipant(props, human, userId, name, progressFu
     }
     doTimer()
     window.socket.on('error', err => console.error("createParticipant got error on socket", Date.now() - start, err.message || err))
-    window.socket.on('disconnect', (err) => console.error("createParticipant got disconnect on socket", Date.now() - start, err.message || err))
+    window.socket.on('disconnect', err => console.error("createParticipant got disconnect on socket", Date.now() - start, err.message || err))
 
     let adjustedSpeakingBlobs = human.speakingBlobs.slice() // make a copy so we don't mutate the original
     if (listeningSeat === 'speaking') {
@@ -131,18 +131,13 @@ export default function createParticipant(props, human, userId, name, progressFu
       //ssSocket._oldEmit = ssSocket.emit
       //ssSocket.emit = ((...args) => (console.info("emit", ...args), ssSocket._oldEmit(...args)))
       ssSocket.on("error", err => logger.error("ssSocket got error:", Date.now() - start, err.message || error))
-
-      console.info("stream upload start after", Date.now() - start, socket.connected);
-      ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl);
-      console.info("stream upload sent", Date.now() - start, socket.connected)
-
+      console.info('before createBlob', socket.connected)
       var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
-      console.info('after crateBlob', Date.now() - start, socket.connected)
       bstream.on('error', err => {
         logger.error('createParticipant.upload blob stream error:', err.message || err)
         progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
       })
-      console.info('after bstream.on', socket.connected)
+      console.info('after crateBlob', socket.connected)
       /*
       let newPipe = bstream.pipe(
         through2((chunk, enc, cb) => {
@@ -155,9 +150,14 @@ export default function createParticipant(props, human, userId, name, progressFu
         console.info('chunk', chunk.length, Date.now() - start, socket.connected);
         setTimeout(() => updateProgress(chunk.length))
       })
-      console.info("before pipe", Date.now() - start, socket.connected)
       bstream.pipe(stream)
       console.info("pipe started", Date.now() - start, socket.connected)
+      setTimeout(() => {
+        console.info("stream upload start after", Date.now() - start, socket.connected, 2 * parseInt(process.env.STREAM_DELAY || '5000'));
+        ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl);
+        console.info("stream upload sent", Date.now() - start, socket.connected)
+      },
+        2 * parseInt(process.env.STREAM_DELAY || '5000'))
     }
 
     logger.info('createParticipant.onUserUpload')
