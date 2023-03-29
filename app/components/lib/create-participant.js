@@ -130,27 +130,31 @@ export default function createParticipant(props, human, userId, name, progressFu
       //use this for debugging
       //ssSocket._oldEmit = ssSocket.emit
       //ssSocket.emit = ((...args) => (console.info("emit", ...args), ssSocket._oldEmit(...args)))
-      console.info('before createBlob', socket.connected)
-      var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
-      bstream.on('error', err => {
-        logger.error('createParticipant.upload blob stream error:', err.message || err)
-        progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
-      })
-      console.info('after crateBlob', socket.connected)
-      /*
-      let newPipe = bstream.pipe(
-        through2((chunk, enc, cb) => {
-          setTimeout(() => updateProgress(chunk.length, 100)) // don't slow down the pipe
-          cb(null, chunk) // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
+
+      setTimeout(() => {
+        console.info('before createBlob', Date.now() - start, socket.connected)
+        var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
+        bstream.on('error', err => {
+          logger.error('createParticipant.upload blob stream error:', err.message || err)
+          progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
         })
-      )
-      newPipe.pipe(stream)*/
-      bstream.on('data', chunk => {
-        console.info('chunk', chunk.length, Date.now() - start, socket.connected);
-        setTimeout(() => updateProgress(chunk.length))
-      })
-      bstream.pipe(stream)
-      console.info("pipe started", Date.now() - start, socket.connected)
+        console.info('after crateBlob', Date.now() - start, socket.connected)
+        /*
+        let newPipe = bstream.pipe(
+          through2((chunk, enc, cb) => {
+            setTimeout(() => updateProgress(chunk.length, 100)) // don't slow down the pipe
+            cb(null, chunk) // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
+          })
+        )
+        newPipe.pipe(stream)*/
+        bstream.on('data', chunk => {
+          console.info('chunk', chunk.length, Date.now() - start, socket.connected);
+          setTimeout(() => updateProgress(chunk.length))
+        })
+        bstream.pipe(stream)
+        console.info("pipe started", Date.now() - start, socket.connected)
+      }, parseInt(process.env.STREAM_DELAY || '5000'))
+
       setTimeout(() => {
         console.info("stream upload start after", Date.now() - start, socket.connected, 2 * parseInt(process.env.STREAM_DELAY || '5000'));
         if (!window.ssSocket) {
