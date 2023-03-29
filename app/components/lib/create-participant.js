@@ -169,7 +169,7 @@ export default function createParticipant(props, human, userId, name, progressFu
     }
 
     logger.info('createParticipant.onUserUpload')
-    logger.trace('createParticipant.onUserUpload', props)
+    //logger.trace('createParticipant.onUserUpload', props)
 
     for (let round = 0; round < adjustedSpeakingBlobs.length; round++) {
       totalSize += adjustedSpeakingBlobs[round].size
