@@ -1,13 +1,14 @@
 const path = require('path')
 const webpack = require('webpack')
+const production = process.env.NODE_ENV === 'production'
 
 module.exports = {
-  mode: 'production',
+  mode: production ? 'production' : 'development',
   context: path.resolve(__dirname, 'dist'), // dist because app failed when building this as a node_module in another component
   entry: {
     main: './client/main-app.js',
   },
-  devtool: 'inline-cheap-source-map',
+  devtool: production ? 'inline-cheap-source-map' : 'source-map',
   output: {
     path: path.join(__dirname, 'assets/webpack'),
     filename: '[name].js',
