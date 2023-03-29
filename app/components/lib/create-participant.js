@@ -47,6 +47,8 @@ export default function createParticipant(props, human, userId, name, progressFu
         setTimeout(doTimer, period)
     }
     doTimer()
+    window.socket.on('error', err => console.error("createParticipant got error on socket", Date.now() - start, err.message || err))
+    window.socket.on('disconnect', (err) => console.error("createParticipant got disconnect on socket", Date.now() - start, err.message || err))
 
     let adjustedSpeakingBlobs = human.speakingBlobs.slice() // make a copy so we don't mutate the original
     if (listeningSeat === 'speaking') {
