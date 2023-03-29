@@ -131,13 +131,18 @@ export default function createParticipant(props, human, userId, name, progressFu
       //ssSocket._oldEmit = ssSocket.emit
       //ssSocket.emit = ((...args) => (console.info("emit", ...args), ssSocket._oldEmit(...args)))
       ssSocket.on("error", err => logger.error("ssSocket got error:", Date.now() - start, err.message || error))
-      console.info('before createBlob', socket.connected)
+
+      console.info("stream upload start after", Date.now() - start, socket.connected);
+      ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl);
+      console.info("stream upload sent", Date.now() - start, socket.connected)
+
       var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
+      console.info('after crateBlob', Date.now() - start, socket.connected)
       bstream.on('error', err => {
         logger.error('createParticipant.upload blob stream error:', err.message || err)
         progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
       })
-      console.info('after crateBlob', socket.connected)
+      console.info('after bstream.on', socket.connected)
       /*
       let newPipe = bstream.pipe(
         through2((chunk, enc, cb) => {
@@ -150,13 +155,9 @@ export default function createParticipant(props, human, userId, name, progressFu
         console.info('chunk', chunk.length, Date.now() - start, socket.connected);
         setTimeout(() => updateProgress(chunk.length))
       })
-      setTimeout(() => { bstream.pipe(stream); console.info("pipe started", Date.now() - start, socket.connected) }, parseInt(process.env.STREAM_DELAY || '5000'))
-      setTimeout(() => {
-        console.info("stream upload start after", Date.now() - start, socket.connected, 2 * parseInt(process.env.STREAM_DELAY || '5000'));
-        ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl);
-        console.info("stream upload sent", Date.now() - start, socket.connected)
-      },
-        2 * parseInt(process.env.STREAM_DELAY || '5000'))
+      console.info("before pipe", Date.now() - start, socket.connected)
+      bstream.pipe(stream)
+      console.info("pipe started", Date.now() - start, socket.connected)
     }
 
     logger.info('createParticipant.onUserUpload')
