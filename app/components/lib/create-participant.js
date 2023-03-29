@@ -44,7 +44,7 @@ export default function createParticipant(props, human, userId, name, progressFu
     const doTimer = () => {
       console.info("#", counter, socket.connected)
       counter += period
-      if (!done)
+      if (!done && count < 1000 * 30)
         setTimeout(doTimer, period)
     }
     doTimer()
@@ -129,7 +129,7 @@ export default function createParticipant(props, human, userId, name, progressFu
       //use this for debugging
       //ssSocket._oldEmit = ssSocket.emit
       //ssSocket.emit = ((...args) => (console.info("emit", ...args), ssSocket._oldEmit(...args)))
-      ssSocket.on("error", err => logger.error("ssSocket got error:", err.message || error))
+      ssSocket.on("error", err => logger.error("ssSocket got error:", count, err.message || error))
       console.info('before createBlob', socket.connected)
       var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
       bstream.on('error', err => {
@@ -146,11 +146,11 @@ export default function createParticipant(props, human, userId, name, progressFu
       )
       newPipe.pipe(stream)*/
       bstream.on('data', chunk => {
-        console.info('chunk', chunk.length);
+        console.info('chunk', chunk.length, count, socket.connected);
         setTimeout(() => updateProgress(chunk.length))
       })
-      bstream.pipe(stream); console.info("pipe started")
-      setTimeout(() => { console.info("stream upload start after", socket.connected, parseInt(process.env.STREAM_DELAY || '5000')); ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl); console.info("stream upload sent", socket.connected) }, parseInt(process.env.STREAM_DELAY || '5000'))
+      bstream.pipe(stream); console.info("pipe started", count, socket.connected)
+      setTimeout(() => { console.info("stream upload start after", count, socket.connected, parseInt(process.env.STREAM_DELAY || '5000')); ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl); console.info("stream upload sent", count, socket.connected) }, parseInt(process.env.STREAM_DELAY || '5000'))
     }
 
     logger.info('createParticipant.onUserUpload')
