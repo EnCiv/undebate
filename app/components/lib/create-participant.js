@@ -1,5 +1,4 @@
 'use strict;'
-//import through2 from 'through2'
 import { auto_quality, placeholder_image } from './cloudinary-urls'
 import ss from '@sap_oss/node-socketio-stream'
 
