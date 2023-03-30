@@ -63,7 +63,6 @@ export default function createParticipant(props, human, userId, name, progressFu
     }
 
     function upload(blob, seat, round) {
-      let streamStarted = false
       var file_name = userId + '-' + round + '-' + seat + new Date().toISOString().replace(/[^A-Z0-9]/gi, '') + '.mp4' // mp4 was put here to get around something with Apple - check in future
       console.info('connected?', socket.connected)
       // socketIo-streams does not seem to be passing call backs (undefined is received)
@@ -169,7 +168,7 @@ export default function createParticipant(props, human, userId, name, progressFu
     }
 
     logger.info('createParticipant.onUserUpload')
-    //logger.trace('createParticipant.onUserUpload', props)
+    logger.trace('createParticipant.onUserUpload', props)
 
     for (let round = 0; round < adjustedSpeakingBlobs.length; round++) {
       totalSize += adjustedSpeakingBlobs[round].size
