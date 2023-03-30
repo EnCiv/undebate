@@ -68,8 +68,8 @@ function reducer(state, action) {
 function CcWrapper(props) {
   // this is for debugging - we are having a problem with socket disconnects
   if (typeof window != 'undefined') {
-    window.socket.on('error', err => console.error("CcWrapper got error on socket", Date.now() - start, err.message || err))
-    window.socket.on('disconnect', err => console.error("CcWrapper got disconnect on socket", Date.now() - start, err.message || err))
+    window.socket.on('error', err => console.error("CcWrapper got error on socket", err.message || err))
+    window.socket.on('disconnect', err => console.error("CcWrapper got disconnect on socket", err.message || err))
   }
   const classes = useStyles()
   const [ccState, dispatch] = useReducer(reducer, {
