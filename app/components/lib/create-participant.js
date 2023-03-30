@@ -36,7 +36,17 @@ export default function createParticipant(props, human, userId, name, progressFu
     var participant = { speaking: [], name: name }
     var uploadQueue = []
 
-    function eventError(message) {
+    const period = 100
+    let start = Date.now()
+    let done = false
+    const doTimer = () => {
+      console.info("#", Date.now() - start, socket.connected)
+      if (!done && (Date.now() - start) < 1000 * 30)
+        setTimeout(doTimer, period)
+    }
+    doTimer()
+
+    const eventError = (message) => {
       transferred = 'error'
       if (window.socket.disconnected) window.socket.open() // some problems with the pipe would cause the stream to disconnect. It's fixed but lets leave this here.
       logger.error("createParticipant caught error", message) // but it might not make it to the sever if the transport may be broke
@@ -49,16 +59,6 @@ export default function createParticipant(props, human, userId, name, progressFu
     }
 
     if (!window.socket.connected) return eventError('The connection to the server is down.')
-
-    const period = 100
-    let start = Date.now()
-    let done = false
-    const doTimer = () => {
-      console.info("#", Date.now() - start, socket.connected)
-      if (!done && (Date.now() - start) < 1000 * 30)
-        setTimeout(doTimer, period)
-    }
-    doTimer()
 
     const ssSocket = ss(window.socket)
 
@@ -169,7 +169,11 @@ export default function createParticipant(props, human, userId, name, progressFu
     }
   }
   catch (error) {
-    eventError(`creatParticipant caught error ${error.message || error}`)
+    if (window.socket.disconnected) window.socket.open() // some problems with the pipe would cause the stream to disconnect. It's fixed but lets leave this here.
+    logger.error("createParticipant caught error", message) // but it might not make it to the sever if the transport may be broke
+    try {
+      progressFunc?.({ progress: `upload failed. ${error.messaage || error}`, uploadComplete: false, uploadStarted: false, uploadError: true })
+    } catch (err) { } // if that doesn't work just continue
     // then carry on
   }
 }
