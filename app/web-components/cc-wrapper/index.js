@@ -1,5 +1,5 @@
 'use strict;'
-import React, { useReducer } from 'react'
+import React, { useReducer, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import cx from 'classnames'
 import WrappedCandidatePreamble from './wrapped-candidate-preamble'
