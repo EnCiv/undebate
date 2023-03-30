@@ -35,7 +35,7 @@ export default function createParticipant(props, human, userId, name, progressFu
     var totalSize = 0
     var participant = { speaking: [], name: name }
     var uploadQueue = []
-    if (!window.socket.connect) return eventError('connection to the server is down')
+    if (!window.socket.connected) return eventError('The connection to the server is down.')
 
     const period = 100
     let start = Date.now()
