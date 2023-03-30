@@ -19,7 +19,6 @@ function allThere(array, length) {
   return array.length === length && array.every(i => typeof i !== 'undefined')
 }
 
-
 // webpack might include process.browser but if it doesn't the pipe opertion below needs process.nextTick
 if (typeof window !== 'undefined') {
   if (typeof process === 'undefined') window.process = {}
@@ -36,8 +35,8 @@ export default function createParticipant(props, human, userId, name, progressFu
     var totalSize = 0
     var participant = { speaking: [], name: name }
     var uploadQueue = []
+    if (!window.socket.connect) return eventError('connection to the server is down')
 
-    //if (!onAnySet++) window.socket.onAny(onAnyListener)
     const period = 100
     let start = Date.now()
     let done = false
@@ -47,12 +46,8 @@ export default function createParticipant(props, human, userId, name, progressFu
         setTimeout(doTimer, period)
     }
     doTimer()
-    window.socket.on('error', err => console.error("createParticipant got error on socket", Date.now() - start, err.message || err))
-    window.socket.on('disconnect', err => console.error("createParticipant got disconnect on socket", Date.now() - start, err.message || err))
 
     const ssSocket = ss(window.socket)
-    ssSocket.on("error", err => logger.error("ssSocket got error:", err.message || error))
-    console.info('ssSocket open')
 
     let adjustedSpeakingBlobs = human.speakingBlobs.slice() // make a copy so we don't mutate the original
     if (listeningSeat === 'speaking') {
@@ -74,18 +69,16 @@ export default function createParticipant(props, human, userId, name, progressFu
       uploadQueue = [] // stop other files from being uploaded
       done = true
       try {
-        progressFunc?.({ progress: `There was an error uploading: ${message}`, uploadComplete: false, uploadStarted: false, uploadError: true })
+        progressFunc?.({ progress: message, uploadComplete: false, uploadStarted: false, uploadError: true })
       } catch (err) { } // if that doesn't work just continue
       // then carry on
     }
 
     function upload(blob, seat, round) {
       var file_name = userId + '-' + round + '-' + seat + new Date().toISOString().replace(/[^A-Z0-9]/gi, '') + '.mp4' // mp4 was put here to get around something with Apple - check in future
-      console.info('connected?', socket.connected)
       // socketIo-streams does not seem to be passing call backs (undefined is received)
       // so we are using a socket io event to send the response back
       const responseUrl = url => {
-        // responses don't necessarily come in order
         if (url) {
           logger.trace('createParticipant upload url', url)
           url = auto_quality(url)
