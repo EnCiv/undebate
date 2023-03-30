@@ -40,8 +40,9 @@ export const Ending = props => {
   }
 
   const onUserUpload = () => {
-    //logger.info('ending.onUserUpload')
-    //logger.trace('ending.onUserUpload', props)
+    logger.info('ending.onUserUpload')
+    logger.trace('ending.onUserUpload', props)
+    console.info("onUserUpload props length", JSON.stringify(props).length)
     const userId = (user && user.id) || newUserInfo.userId
     createParticipant(props, ccState.participants.human, userId, inputName, setProgressObj)
   }
