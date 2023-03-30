@@ -61,15 +61,18 @@ export default function createParticipant(props, human, userId, name, progressFu
       adjustedSpeakingBlobs.splice(listeningRound, 1) // if listening is in the speaking seat - skip that round
     }
     function updateProgress(length) {
+      if (transferred === 'error') return // don't overwrite the error with progressFunc
       transferred += length
       var percentComplete = Math.round((transferred / totalSize) * 100) + '%'
       progressFunc?.({ progress: percentComplete, uploadComplete: false, uploadStarted: true, uploadError: false })
     }
 
     function eventError(message) {
+      transferred = 'error'
       if (window.socket.disconnected) window.socket.open() // some problems with the pipe would cause the stream to disconnect. It's fixed but lets leave this here.
-      logger.error("creatParticipant caught error", message) // but it might not make it to the sever if the transport may be broke
+      logger.error("createParticipant caught error", message) // but it might not make it to the sever if the transport may be broke
       uploadQueue = [] // stop other files from being uploaded
+      done = true
       try {
         progressFunc?.({ progress: `There was an error uploading: ${message}`, uploadComplete: false, uploadStarted: false, uploadError: true })
       } catch (err) { } // if that doesn't work just continue
