@@ -41,7 +41,7 @@ export const Ending = props => {
 
   const onUserUpload = () => {
     logger.info('ending.onUserUpload')
-    logger.trace('ending.onUserUpload', props)
+    // logger.trace('ending.onUserUpload', props)  // do not log props ccState has Blobs in it and trying to send them through socket.io causes the websocket to disconnect
     console.info("onUserUpload props length", JSON.stringify(props).length)
     const userId = (user && user.id) || newUserInfo.userId
     createParticipant(props, ccState.participants.human, userId, inputName, setProgressObj)

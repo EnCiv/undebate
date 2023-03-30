@@ -1903,7 +1903,7 @@ class RASPUndebate extends React.Component {
 
   onUserUpload() {
     logger.info('CandidateConversation.onUserUpload')
-    logger.trace('onUserUpload', this.props)
+    //logger.trace('onUserUpload', this.props) // do not log props. If there are Blobs in there it will casue the transport socket to disconnect
     const userId = (this.props.user && this.props.user.id) || this.state.newUserId
     createParticipant(this.props, this.participants.human, userId, this.state.name, progressObj =>
       this.setState(progressObj)
@@ -2656,8 +2656,8 @@ class RASPUndebate extends React.Component {
             className={cx(
               classes['countdown'],
               humanSpeaking &&
-                (this.rerecord || !this.participants.human.speakingObjectURLs[round]) &&
-                classes['counting'],
+              (this.rerecord || !this.participants.human.speakingObjectURLs[round]) &&
+              classes['counting'],
               talkative && classes['talkative']
             )}
           >

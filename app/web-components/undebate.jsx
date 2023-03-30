@@ -698,8 +698,8 @@ class Undebate extends React.Component {
               placeholder_image(
                 (this.props.participants[participant].listeningURLs &&
                   this.props.participants[participant].listeningURLs[0]) ||
-                  this.props.participants[participant].listening ||
-                  this.props.participants[participant].speaking[0]
+                this.props.participants[participant].listening ||
+                this.props.participants[participant].speaking[0]
               )) ||
             '',
           youtube,
@@ -2198,7 +2198,7 @@ class Undebate extends React.Component {
     // prevent double uploads - the users might double click the upload button
     else this.uploadStarted = true
     logger.info('Undebate.onUserUpload')
-    logger.trace('onUserUpload', this.props)
+    // logger.trace('onUserUpload', this.props) // do not log props - if there are Blobs it may crash the transport socket to the server
     const userId = (this.props.user && this.props.user.id) || this.state.newUserId
     const { listeningRound, listeningSeat } = this.listening()
     createParticipant(
@@ -3008,8 +3008,8 @@ class Undebate extends React.Component {
       const style = finishUp
         ? {}
         : noOverlay || bot || intro
-        ? agendaStyle
-        : Object.assign({}, agendaStyle, introSeatStyle['agenda'])
+          ? agendaStyle
+          : Object.assign({}, agendaStyle, introSeatStyle['agenda'])
       return (
         <div
           style={style}

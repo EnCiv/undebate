@@ -50,6 +50,10 @@ export default function createParticipant(props, human, userId, name, progressFu
     window.socket.on('error', err => console.error("createParticipant got error on socket", Date.now() - start, err.message || err))
     window.socket.on('disconnect', err => console.error("createParticipant got disconnect on socket", Date.now() - start, err.message || err))
 
+    const ssSocket = ss(window.socket)
+    ssSocket.on("error", err => logger.error("ssSocket got error:", err.message || error))
+    console.info('ssSocket open')
+
     let adjustedSpeakingBlobs = human.speakingBlobs.slice() // make a copy so we don't mutate the original
     if (listeningSeat === 'speaking') {
       if (typeof adjustedSpeakingBlobs[listeningRound] !== 'undefined')
@@ -59,7 +63,7 @@ export default function createParticipant(props, human, userId, name, progressFu
     function updateProgress(length) {
       transferred += length
       var percentComplete = Math.round((transferred / totalSize) * 100) + '%'
-      progressFunc && progressFunc({ progress: percentComplete, uploadComplete: false, uploadStarted: true, uploadError: false })
+      progressFunc?.({ progress: percentComplete, uploadComplete: false, uploadStarted: true, uploadError: false })
     }
 
     function upload(blob, seat, round) {
@@ -70,7 +74,7 @@ export default function createParticipant(props, human, userId, name, progressFu
       const responseUrl = url => {
         // responses don't necessarily come in order
         if (url) {
-          logger.trace('url', url)
+          logger.trace('createParticipant upload url', url)
           url = auto_quality(url)
           if (seat === 'speaking') {
             // what if the come out of order -- to be determined
@@ -78,6 +82,7 @@ export default function createParticipant(props, human, userId, name, progressFu
           } else participant.listening = url
         } else {
           logger.error('createParticipant.stream-upload-video failed', file_name)
+          throw Error(`There was an error uploading the video no url`)
         }
         if (
           allThere(participant.speaking, adjustedSpeakingBlobs.length) &&
@@ -112,64 +117,38 @@ export default function createParticipant(props, human, userId, name, progressFu
       var stream = ss.createStream()
       stream.on('error', err => {
         logger.error('createParticipant.upload socket stream error:', err.message || err, "connected:", window.socket.connected)
-        if (window.socket.disconnected) window.socket.open() // some problems with the pipe would cause the stream to disconnect. It's fixed but lets leave this here.
-        progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
-        uploadQueue = [] // empty the upload queue so we exit and try again
+        throw Error('There was an error uploading the video. See if you can try again')
       })
       stream.on('end', () => {
         var uploadArgs
         if ((uploadArgs = uploadQueue.shift())) {
           return upload(...uploadArgs)
         } else {
-          progressFunc && progressFunc({ progress: 'complete.', uploadComplete: true, uploadStarted: true, uploadError: false })
-          logger.info('createParticipant upload after login complete')
+          progressFunc?.({ progress: 'complete.', uploadComplete: true, uploadStarted: true, uploadError: false })
+          logger.info('createParticipant upload complete')
         }
       })
-      //var ssSocket = ss(window.socket)
-      //use this for debugging
-      //ssSocket._oldEmit = ssSocket.emit
-      //ssSocket.emit = ((...args) => (console.info("emit", ...args), ssSocket._oldEmit(...args)))
+      console.info('before createBlob', Date.now() - start, socket.connected)
+      var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
+      bstream.on('error', err => {
+        logger.error('createParticipant.upload blob stream error:', err.message || err)
+        throw Error(`There was an error uploading: ${err.message || err}`)
+      })
+      console.info('after crateBlob', Date.now() - start, socket.connected)
+      bstream.on('data', chunk => {
+        console.info('chunk', chunk.length, Date.now() - start, socket.connected);
+        setTimeout(() => updateProgress(chunk.length)) // just to be safe don't do much within the pipe
+      })
+      bstream.pipe(stream)
+      console.info("pipe started", Date.now() - start, socket.connected)
 
-      setTimeout(() => {
-        console.info('before createBlob', Date.now() - start, socket.connected)
-        var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
-        bstream.on('error', err => {
-          logger.error('createParticipant.upload blob stream error:', err.message || err)
-          progressFunc && progressFunc({ progress: `There was an error uploading: ${err.message || err}`, uploadComplete: false, uploadStarted: false, uploadError: true })
-        })
-        console.info('after crateBlob', Date.now() - start, socket.connected)
-        /*
-        let newPipe = bstream.pipe(
-          through2((chunk, enc, cb) => {
-            setTimeout(() => updateProgress(chunk.length, 100)) // don't slow down the pipe
-            cb(null, chunk) // 'this' becomes this of the react component rather than this of through2 - so pass the data back in the callback
-          })
-        )
-        newPipe.pipe(stream)*/
-        bstream.on('data', chunk => {
-          console.info('chunk', chunk.length, Date.now() - start, socket.connected);
-          setTimeout(() => updateProgress(chunk.length))
-        })
-        bstream.pipe(stream)
-        console.info("pipe started", Date.now() - start, socket.connected)
-      }, parseInt(process.env.STREAM_DELAY || '5000'))
-
-      setTimeout(() => {
-        console.info("stream upload start after", Date.now() - start, socket.connected, 2 * parseInt(process.env.STREAM_DELAY || '5000'));
-        if (!window.ssSocket) {
-          window.ssSocket = ss(window.socket)
-          ssSocket.on("error", err => logger.error("ssSocket got error:", Date.now() - start, err.message || error))
-          console.info('ssSocket open')
-        }
-        ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl);
-        console.info("stream upload sent", Date.now() - start, socket.connected)
-      },
-        2 * parseInt(process.env.STREAM_DELAY || '5000'))
+      console.info("stream upload start after", Date.now() - start, socket.connected, 2 * parseInt(process.env.STREAM_DELAY || '5000'));
+      ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl);
+      console.info("stream upload sent", Date.now() - start, socket.connected)
     }
 
-    //logger.info('createParticipant.onUserUpload')
-    //logger.trace('createParticipant.onUserUpload', props)
-    console.info("createParticipant")
+    logger.info('createParticipant.onUserUpload')
+    //logger.trace('createParticipant.onUserUpload', props) // do not log props. If there are Blobs in there it will cause the transport websocket to disconnect
 
     for (let round = 0; round < adjustedSpeakingBlobs.length; round++) {
       totalSize += adjustedSpeakingBlobs[round].size
@@ -180,15 +159,19 @@ export default function createParticipant(props, human, userId, name, progressFu
       totalSize += human.listeningBlob.size
     }
 
+    progressFunc?.({ progress: `${totalSize} to upload`, uploadComplete: false, uploadStarted: true, uploadError: false })
+
     let uploadArgs
-    setTimeout(() => progressFunc && progressFunc({ progress: `${totalSize} to upload`, uploadComplete: false, uploadStarted: true, uploadError: false }))
     if ((uploadArgs = uploadQueue.shift())) {
-      setTimeout(() => upload(...uploadArgs), parseInt(process.env.STREAM_DELAY || '5000'))
+      upload(...uploadArgs)
     }
   }
   catch (error) {
-    if (window.socket.disconnected) window.socket.open()
-    console.error("creatParticipant caught error", error.message || error)
-    // then continue
+    if (window.socket.disconnected) window.socket.open() // some problems with the pipe would cause the stream to disconnect. It's fixed but lets leave this here.
+    console.error("creatParticipant caught error", error.message || error) // no logger here because the transport may be broke
+    try {
+      progressFunc?.({ progress: `There was an error uploading: ${error.message || error}`, uploadComplete: false, uploadStarted: false, uploadError: true })
+    } catch (err) { } // if that doesn't work just continue
+    // then carry on
   }
 }
