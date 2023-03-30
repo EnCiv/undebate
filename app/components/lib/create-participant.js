@@ -35,6 +35,19 @@ export default function createParticipant(props, human, userId, name, progressFu
     var totalSize = 0
     var participant = { speaking: [], name: name }
     var uploadQueue = []
+
+    function eventError(message) {
+      transferred = 'error'
+      if (window.socket.disconnected) window.socket.open() // some problems with the pipe would cause the stream to disconnect. It's fixed but lets leave this here.
+      logger.error("createParticipant caught error", message) // but it might not make it to the sever if the transport may be broke
+      uploadQueue = [] // stop other files from being uploaded
+      done = true
+      try {
+        progressFunc?.({ progress: message, uploadComplete: false, uploadStarted: false, uploadError: true })
+      } catch (err) { } // if that doesn't work just continue
+      // then carry on
+    }
+
     if (!window.socket.connected) return eventError('The connection to the server is down.')
 
     const period = 100
@@ -60,18 +73,6 @@ export default function createParticipant(props, human, userId, name, progressFu
       transferred += length
       var percentComplete = Math.round((transferred / totalSize) * 100) + '%'
       progressFunc?.({ progress: percentComplete, uploadComplete: false, uploadStarted: true, uploadError: false })
-    }
-
-    function eventError(message) {
-      transferred = 'error'
-      if (window.socket.disconnected) window.socket.open() // some problems with the pipe would cause the stream to disconnect. It's fixed but lets leave this here.
-      logger.error("createParticipant caught error", message) // but it might not make it to the sever if the transport may be broke
-      uploadQueue = [] // stop other files from being uploaded
-      done = true
-      try {
-        progressFunc?.({ progress: message, uploadComplete: false, uploadStarted: false, uploadError: true })
-      } catch (err) { } // if that doesn't work just continue
-      // then carry on
     }
 
     function upload(blob, seat, round) {
