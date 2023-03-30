@@ -167,8 +167,9 @@ export default function createParticipant(props, human, userId, name, progressFu
         2 * parseInt(process.env.STREAM_DELAY || '5000'))
     }
 
-    logger.info('createParticipant.onUserUpload')
-    logger.trace('createParticipant.onUserUpload', props)
+    //logger.info('createParticipant.onUserUpload')
+    //logger.trace('createParticipant.onUserUpload', props)
+    console.info("createParticipant")
 
     for (let round = 0; round < adjustedSpeakingBlobs.length; round++) {
       totalSize += adjustedSpeakingBlobs[round].size
@@ -180,14 +181,14 @@ export default function createParticipant(props, human, userId, name, progressFu
     }
 
     let uploadArgs
-    progressFunc && progressFunc({ progress: `${totalSize} to upload`, uploadComplete: false, uploadStarted: true, uploadError: false })
+    setTimeout(() => progressFunc && progressFunc({ progress: `${totalSize} to upload`, uploadComplete: false, uploadStarted: true, uploadError: false }))
     if ((uploadArgs = uploadQueue.shift())) {
       setTimeout(() => upload(...uploadArgs), parseInt(process.env.STREAM_DELAY || '5000'))
     }
   }
   catch (error) {
     if (window.socket.disconnected) window.socket.open()
-    logger.error("creatParticipant caught error", error.message || error)
+    console.error("creatParticipant caught error", error.message || error)
     // then continue
   }
 }
