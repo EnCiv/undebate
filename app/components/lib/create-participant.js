@@ -36,22 +36,11 @@ export default function createParticipant(props, human, userId, name, progressFu
     var participant = { speaking: [], name: name }
     var uploadQueue = []
 
-    const period = 100
-    let start = Date.now()
-    let done = false
-    const doTimer = () => {
-      console.info("#", Date.now() - start, socket.connected)
-      if (!done && (Date.now() - start) < 1000 * 30)
-        setTimeout(doTimer, period)
-    }
-    doTimer()
-
     const eventError = (message) => {
       transferred = 'error'
       if (window.socket.disconnected) window.socket.open() // some problems with the pipe would cause the stream to disconnect. It's fixed but lets leave this here.
       logger.error("createParticipant caught error", message) // but it might not make it to the sever if the transport may be broke
       uploadQueue = [] // stop other files from being uploaded
-      done = true
       try {
         progressFunc?.({ progress: message, uploadComplete: false, uploadStarted: false, uploadError: true })
       } catch (err) { } // if that doesn't work just continue
@@ -98,7 +87,6 @@ export default function createParticipant(props, human, userId, name, progressFu
           !!human.listeningBlob === !!participant.listening
         ) {
           // have all of the pieces been uploaded
-          done = true
           logger.info('createParticipant upload complete')
           progressFunc?.({ progress: 'complete.', uploadComplete: true, uploadStarted: true, uploadError: false })
           logger.trace('creat participant', participant)
@@ -130,23 +118,16 @@ export default function createParticipant(props, human, userId, name, progressFu
         logger.error('createParticipant.upload socket stream error:', err.message || err, "connected:", window.socket.connected)
         eventError('There was an error uploading the video. See if you can try again')
       })
-      console.info('before createBlob', Date.now() - start, socket.connected)
       var bstream = ss.createBlobReadStream(blob, { highWaterMark: 1024 * 200 }) // high hiwWaterMark to increase upload speed
       bstream.on('error', err => {
         logger.error('createParticipant.upload blob stream error:', err.message || err)
         eventError(`There was an error uploading: ${err.message || err}`)
       })
-      console.info('after createBlob', Date.now() - start, socket.connected)
       bstream.on('data', chunk => {
-        console.info('chunk', chunk.length, Date.now() - start, socket.connected);
         setTimeout(() => updateProgress(chunk.length)) // just to be safe don't do much within the pipe
       })
       bstream.pipe(stream)
-      console.info("pipe started", Date.now() - start, socket.connected)
-
-      console.info("stream upload start after", Date.now() - start, socket.connected, 2 * parseInt(process.env.STREAM_DELAY || '5000'));
       ssSocket.emit('stream-upload-video', stream, { name: file_name, size: blob.size }, responseUrl);
-      console.info("stream upload sent", Date.now() - start, socket.connected)
     }
 
     logger.info('createParticipant.onUserUpload')
