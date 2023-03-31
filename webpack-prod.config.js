@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const production = process.env.NODE_ENV === 'production'
 
 module.exports = {
-  mode: production ? 'production' : 'development',
+  mode: 'production', // meaning no hot loading of changes
   context: path.resolve(__dirname, 'dist'), // dist because app failed when building this as a node_module in another component
   entry: {
     main: './client/main-app.js',
