@@ -112,6 +112,8 @@ const styles = {
   boxContainer: {
     width: 'max-content',
     margin: '1vh',
+    position: 'absolute',
+    top: 0,
   },
   portrait: {},
 }
