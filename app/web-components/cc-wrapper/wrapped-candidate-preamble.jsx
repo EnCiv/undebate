@@ -4,7 +4,7 @@ import CandidatePreamble from '../../components/candidate-preamble'
 
 // don't want to rewire Candidate Preamble yet so here's a wrapper for now
 const WrappedCandidatePreamble = props => {
-  const { subject, bp_info = {}, participants, instructionLink, dispatch } = props
+  const { subject, bp_info = {}, participants, instructionLink, logo, dispatch } = props
   return (
     <CandidatePreamble
       subject={subject}
@@ -17,6 +17,7 @@ const WrappedCandidatePreamble = props => {
       candidate_questions={participants.moderator.agenda}
       instructionLink={instructionLink}
       timeLimits={participants.moderator.timeLimits}
+      logo={logo}
     />
   )
 }

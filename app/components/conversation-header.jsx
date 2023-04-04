@@ -137,20 +137,11 @@ function xxxx_xx_xxTommmdd_yyyy(str) {
 }
 
 const LogoLinks = ({ classes, logo }) => {
-  // curried function to make link
-  const link_image = src => classname => href => (
-    <a target="#" href={href}>
-      <img className={classes[classname]} src={src} />
-    </a>
-  )
-  const makeLink = link => {
-    //builds the link one html attribute at a time using currying
-    let link_html = link_image
-    for (const attribute in link) {
-      link_html = link_html(link[attribute])
-    }
-    return link_html
-  }
+
+  const makeLink = link => (
+    <a target="#" href={link.href}>
+      <img className={classes[link.classname]} src={link.src} />
+    </a>)
 
   // Defines the logo link attribute values for logo links in the header
   const list_of_links = {
@@ -169,7 +160,7 @@ const LogoLinks = ({ classes, logo }) => {
         'https://res.cloudinary.com/hf6mryjpf/image/upload/v1578591434/assets/Candidate_Conversations_logo-stacked_300_res.png',
       classname: 'logo',
       href: 'https://ballotpedia.org/Candidate_Conversations',
-    },
+    }
   }
   const { enciv, undebate, ballotpedia } = list_of_links
   // actual layout of different links
@@ -177,7 +168,7 @@ const LogoLinks = ({ classes, logo }) => {
     <>
       {' '}
       {makeLink(enciv)}
-      {logo && logo === 'undebate' ? makeLink(undebate) : makeLink(ballotpedia)}
+      {logo !== 'none' ? (list_of_links[logo] ? makeLink(list_of_links[logo]) : makeLink(ballotpedia)) : null}
     </>
   )
 }
@@ -281,8 +272,8 @@ class ConversationHeader extends React.Component {
         <div id="bcon" className={classes['boxContainer']}>
           {' '}
           {makeBox('leftBoxContainer')('leftBox')('conversationTopicContent')(subject)}
-          {makeBox('rightBoxContainer')('rightBox')('conversationElectionDate')(
-            xxxx_xx_xxTommmdd_yyyy(bp_info && bp_info.election_date)
+          {bp_info?.election_date && makeBox('rightBoxContainer')('rightBox')('conversationElectionDate')(
+            xxxx_xx_xxTommmdd_yyyy(bp_info.election_date)
           )}
         </div>
       </div>
