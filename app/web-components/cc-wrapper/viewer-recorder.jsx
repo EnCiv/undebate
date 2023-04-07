@@ -313,13 +313,18 @@ class ViewerRecorder extends ViewerRecorderLogic {
         seatStyle.nextUp.width = nextUpWidthRatio * 100 + 'vw'
 
         let seat = 2
+
         let seatTop = seatStyle.nextUp.top + nextUpWidthRatio * HDRatio * width + verticalSeatSpace
         let seatLeft = horizontalSeatSpace
         let seatHorizontalPitch = seatWidthRatio * width + horizontalSeatSpace
         let seatVerticalPitch = seatWidthRatio * HDRatio * width + verticalSeatSpace
 
+        buttonBarStyle.width = (parseInt(seatStyle.speaking.width) * 7) / 6 + 'vw' // three are 7 buttons, 6 should be under the speaking window
+        buttonBarStyle.left = (100 - parseInt(buttonBarStyle.width)) / 2 + 'vw'
+        buttonBarStyle.height = ((((parseInt(buttonBarStyle.width) / 7) * 140) / 100) * width * 0.8) / 100 + 'px' // there are 7 buttons. the aspect ratio of the button is 100 wide by 140 tall and we are scaling the icon to 80% of it's div
+
         // down the left side
-        while (seatTop + seatVerticalPitch < height && seat <= 7) {
+        while (seatTop + seatVerticalPitch < (height - parseInt(buttonBarStyle.height)) && seat <= 7) {
           seatStyle['seat' + seat].top = seatTop
           seatStyle['seat' + seat].left = seatLeft
           seatStyle['seat' + seat].width = seatWidthRatio * 100 + 'vw'
@@ -327,7 +332,8 @@ class ViewerRecorder extends ViewerRecorderLogic {
           seat++
         }
 
-        seatTop = height - seatWidthRatio * HDRatio * width - verticalSeatSpace
+        //seatTop = height - seatWidthRatio * HDRatio * width - verticalSeatSpace
+        seatTop = parseInt(seatStyle.speaking.top) + ((parseInt(seatStyle.speaking.width) * width) / 100) * HDRatio + 1 * verticalSeatSpace
         seatLeft += seatHorizontalPitch
 
         // across the bottom
@@ -360,7 +366,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
           agendaStyle.width = width - agendaStyle.left - 2 * horizontalSeatSpace
         agendaStyle.height = Math.max(0.175 * width, 20 * fontSize)
 
-        buttonBarStyle.width = (parseInt(seatStyle.speaking.width) * 7) / 5 + 'vw' // three are 7 buttons, 5 should be under the speaking window
+        buttonBarStyle.width = (parseInt(seatStyle.speaking.width) * 7) / 6 + 'vw' // three are 7 buttons, 6 should be under the speaking window
         buttonBarStyle.left = (100 - parseInt(buttonBarStyle.width)) / 2 + 'vw'
         buttonBarStyle.height = ((((parseInt(buttonBarStyle.width) / 7) * 140) / 100) * width * 0.8) / 100 + 'px' // there are 7 buttons. the aspect ratio of the button is 100 wide by 140 tall and we are scaling the icon to 80% of it's div
       }
@@ -971,7 +977,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
             isRecording={isRecording}
             buttonLogic={this.buttonList}
           />
-          {!participants.human && !bot && beginOverlay()}
+          {!bot && beginOverlay()}
           {permissionOverlay()}
           {waitingOnModeratorOverlay()}
           {renderHangupButton()}

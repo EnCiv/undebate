@@ -20,6 +20,7 @@ export default {
 
 const iota = {
     webComponent: {
+        "autoCameraStart": true,
         "opening": {
             "noPreamble": true
         },

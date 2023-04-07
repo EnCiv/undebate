@@ -275,7 +275,8 @@ export default class ViewerRecorderLogic extends React.Component {
         if (this.props.participants[participant].speaking[i]) this.preFetchObjectURL(participant, true, i)
       })
     }
-    if (this.props.participants.human) this.beginButton() // there use to be a button click that started this -but  now we just go after being mounted
+    if (this.props.autoBegin) this.beginButton() // there use to be a button click that started this -but  now we just go after being mounted
+    if (this.props.autoCameraStart) this.getCameraMedia() // start the camera
   }
 
   /****************************************************************************************************************
@@ -1055,7 +1056,7 @@ export default class ViewerRecorderLogic extends React.Component {
         const { listeningRound, listeningSeat } = this.listening()
         logger.trace('getUserMedia() got stream:', this.cameraStream)
         //it will be set by nextMediaState this.human.current.src = stream;
-        Object.keys(this.props.participants).forEach(part => this.nextMediaState(part))
+        this.nextMediaState('human')
         // special case where human is in seat2 initially - because seat2 is where we record their silence
         if (listeningRound === 0 && this.seatOfParticipant('human') === listeningSeat)
           this.startRecording(blobs => this.saveRecordingToParticipants(false, 0, blobs)) // listening is not speaking
@@ -1134,6 +1135,7 @@ export default class ViewerRecorderLogic extends React.Component {
   onIntroEnd() {
     this.setState({ begin: true }, () => {
       this.getCameraMedia()
+      Object.keys(this.props.participants).forEach(part => part !== 'human' && this.nextMediaState(part))
     })
   }
 

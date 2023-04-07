@@ -242,6 +242,7 @@ const ccWrapperIota = {
   description: 'A Recorder for the Candidate Conversation with 2 participants using CC wrapper',
   webComponent: {
     webComponent: 'CcWrapper',
+    autoBegin: true,
     instructionLink: 'https://docs.google.com/document/d/1fORs9PlLss9azlsnf0A0lxFoOzDQJ9RJ-zNRZ583SVo/edit?usp=sharing',
     participants: {
       moderator: {
@@ -303,7 +304,7 @@ CcWrapper.args = {
 
 export const CcWrapperWithListeningFirst = Template.bind({})
 CcWrapperWithListeningFirst.args = {
-  iota: merge({}, iota, { webComponent: { webComponent: 'CcWrapper' } }),
+  iota: merge({}, iota, { webComponent: { webComponent: 'CcWrapper', autoBegin: 'true' } }),
 }
 
 /* Todo fix Component so they do not error if empty props

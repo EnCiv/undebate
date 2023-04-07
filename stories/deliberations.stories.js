@@ -20,6 +20,7 @@ export default {
 
 const iota = {
     webComponent: {
+        "autoCameraStart": true,
         "opening": {
             "noPreamble": true
         },
@@ -283,6 +284,7 @@ const ccWrapperIota = {
     subject: 'You are invited to record a Candidate Conversation',
     description: 'A Recorder for the Candidate Conversation with 2 participants using CC wrapper',
     webComponent: {
+        autoBegin: true,
         webComponent: 'CcWrapper',
         instructionLink: 'https://docs.google.com/document/d/1fORs9PlLss9azlsnf0A0lxFoOzDQJ9RJ-zNRZ583SVo/edit?usp=sharing',
         participants: {
@@ -345,7 +347,7 @@ CcWrapper.args = {
 
 export const CcWrapperWithListeningFirst = Template.bind({})
 CcWrapperWithListeningFirst.args = {
-    iota: merge({}, iota, { webComponent: { webComponent: 'CcWrapper' } }),
+    iota: merge({}, iota, { webComponent: { webComponent: 'CcWrapper', autoBegin: true } }),
 }
 
 /* Todo fix Component so they do not error if empty props
