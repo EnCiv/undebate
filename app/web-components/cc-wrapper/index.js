@@ -68,7 +68,7 @@ function reducer(state, action) {
 function CcWrapper(props) {
   const classes = useStyles()
   const [ccState, dispatch] = useReducer(reducer, {
-    pageToShow: props.participants.human ? PTS.CandidatePreamble : PTS.ViewerRecorder,
+    pageToShow: PTS[props.firstPage] || (props.participants.human ? PTS.CandidatePreamble : PTS.ViewerRecorder),
     reviewing: false, // true then ViewerRecorder is in review mode rather than record mode
     participants: {}, // this is written directly by ViewerRecorder to preserve stored video, and computed video url, referenced by Ending to upload the videos
   })

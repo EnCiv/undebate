@@ -54,8 +54,6 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
     }
   })
 
-  const [cameraIsStreaming, setCameraIsStreaming] = useState(false)
-
   // the properties in reactThis are changed in realtime by events that are associated to an instance of this
   // the useState setter is not used here because that doesn't change the value of the state  until sometime after the event has been processed, just before render
   // and changes to these properties are not intended to cause a rerender
@@ -77,15 +75,24 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
 
   // called by parent to turn on the camera and get the video in a stream - but doesn't start recording yet
   // it's up to the parent to render the video from the stream if and wherever it wants
+
   const getCameraStream = () => {
     if (canNotRecordHere) return Promise.reject(new Error('can not record here'))
     else {
-      setCameraIsStreaming(true)
-      return new Promise((ok, ko) => {
-        getCameraStreamFromCalculatedConstraints(ok, ko)
-      })
+      if (reactThis.cameraStream) {
+        logger.error('ReactCameraRecorder camera is already streaming')
+        Promise.resolve(reactThis.cameraStream)
+      } else {
+        return new Promise((ok, ko) => {
+          getCameraStreamFromCalculatedConstraints(ok, ko)
+        })
+      }
     }
   }
+
+  // warning if navigator.mediaDevices.getUserMedia is called a second time - without releaseing the stream
+  // there will be an "notreadableerror could not start video source" - after a delay
+  // also consider that if the user changed the camera selection, that will cause getCameraStreamFromCalulatedConstraints to be called again
 
   const getCameraStreamFromCalculatedConstraints = async (ok, ko) => {
     try {
@@ -226,9 +233,12 @@ const ReactCameraRecorder = React.forwardRef((props, ref) => {
 
   // if a camera or mic index changes, get the new stream - but don't do it initially only do this on index changes after the camera is streaming
   useEffect(() => {
-    if (cameraIsStreaming) getCameraStreamFromCalculatedConstraints(props.onCameraChange)
+    if (reactThis.cameraStream) {
+      releaseCamera()
+      getCameraStreamFromCalculatedConstraints(props.onCameraChange)
+    }
   }, [props.constraints])
-  return false
+  return () => { releaseCamera() } // if unmounting release the camera
 })
 
 export default ReactCameraRecorder

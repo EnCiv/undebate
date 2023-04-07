@@ -24,6 +24,8 @@ const iota = {
             "noPreamble": true
         },
         "logo": "none",
+        "firstPage": "ViewerRecorder",
+        "showMicCamera": true,
         "instructionLink": "/candidate-conversation-candidate-recorder/instructions",
         "metaTags": [
             "property=\"og:title\" content=\"What is Democracy\"",

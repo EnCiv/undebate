@@ -1285,4 +1285,8 @@ export default class ViewerRecorderLogic extends React.Component {
     this.stallWatchTimeout = false
     if (this.state.stalled) this.setState({ stalled: false, waitingPercent: 0 })
   }
+  componentWillUnmount() {
+    if (this.stallWatchTimeout) clearTimeout(this.stallWatchTimeout)
+    this.stallWatchTimeout = false
+  }
 }
