@@ -29,14 +29,14 @@ function calculateConstraints(state) {
   return { ...state, constraints }
 }
 const throwIfUndefined = {
-  get: function(obj, prop) {
+  get: function (obj, prop) {
     if (prop in obj) return obj[prop]
     throw Error('undefined action TYPE: ' + prop)
   },
 }
 
 const TYPES = new Proxy({}, throwIfUndefined)
-;['NextMic', 'NextCamera', 'UpdateDevices'].forEach(k => (TYPES[k] = k))
+  ;['NextMic', 'NextCamera', 'UpdateDevices'].forEach(k => (TYPES[k] = k))
 
 function reducer(state, action) {
   switch (action.type) {
@@ -71,7 +71,7 @@ export default function useMicCameraConstraints(
   const [state, dispatch] = useReducer(reducer, {
     audioinputs: [],
     videoinputs: [],
-    mixIndex: undefined,
+    micIndex: undefined,
     cameraIndex: undefined,
     constraints,
   })
@@ -95,17 +95,18 @@ export default function useMicCameraConstraints(
     return typeof navigator !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices
   }
 
-  const onDeviceChange = () =>
+  const onDeviceChange = () => {
     supportsEnumerateDevices() && navigator.mediaDevices.enumerateDevices().then(updateDevices) // some browsers don't support navigator.mediaDevices.enumerateDevices
+  }
 
   useEffect(() => {
+    navigator?.mediaDevices?.addEventListener('devicechange', onDeviceChange)
     if (supportsEnumerateDevices()) {
       // the values for inputDevices need to be set asynchronously because mediaDevices.enumerateDevices returns a promise
-      navigator.mediaDevices.enumerateDevices().then(updateDevices)
       //register an event listener such that update devices is called when a new device is plugged in or another decice gets removed.
-      navigator.mediaDevices.addEventListener('devicechange', onDeviceChange)
-      return () => navigator.mediaDevices.removeEventListener('devicechange', onDeviceChange)
+      navigator.mediaDevices.enumerateDevices().then(updateDevices)
     }
+    return () => navigator?.mediaDevices?.removeEventListener('devicechange', onDeviceChange)
   }, [])
   return [state, dispatch]
 }

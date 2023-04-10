@@ -5,6 +5,11 @@ import IconPlay from '../svgr/icon-play'
 
 const useStyles = createUseStyles({
   outer: {
+    width: '100%',
+    height: '100%',
+    '&:disabled': {
+      backgroundColor: 'gray',
+    },
     opacity: props => props.opacity,
     '& :hover': {
       opacity: props => props.opacity * 0.8,
@@ -31,12 +36,12 @@ const useStyles = createUseStyles({
   },
 })
 
-const BeginButton = ({ children, width, height, onClick, ...props }) => {
+const BeginButton = ({ children, width, height, onClick, disabled, ...props }) => {
   const classes = useStyles(props)
   return (
-    <div className={classes.outer} title="Begin">
-      <IconPlay width={width} height={height} className={classes.icon} onClick={onClick} data-testid="begin-button" />
-    </div>
+    <button className={classes.outer} onClick={onClick} disabled={disabled} title="Begin">
+      <IconPlay width={width} height={height} className={classes.icon} data-testid="begin-button" />
+    </button>
   )
 }
 

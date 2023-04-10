@@ -658,7 +658,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
         <div className={cx(classes['outerBox'], classes['beginBox'])}>
           <div style={{ width: '100%', height: '100%', display: 'table' }}>
             <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center' }}>
-              <BeginButton onClick={this.beginButton} {...this.props.beginButton} />
+              <BeginButton disabled={this.props.autoCameraStart && !this.cameraStream} onClick={this.beginButton} {...this.props.beginButton} />
             </div>
           </div>
         </div>
@@ -951,7 +951,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
               onCanNotRecordHere={status => (
                 dispatch({ type: dispatch.TYPES.CanNotRecordHere }), (this.canNotRecordHere = status)
               )}
-              onCameraStream={stream => (this.cameraStream = stream)}
+              onCameraStream={stream => (this.cameraStream = stream, typeof micCameraConstraintsState.micIndex === 'undefined' && navigator.mediaDevices.dispatchEvent(new Event('devicechange')) /* if the user has just allowed the audio/video we need to update the micCameraConstraintsState */)}
               onCameraChange={() => this.nextMediaState('human')}
               constraints={micCameraConstraintsState.constraints}
             />
