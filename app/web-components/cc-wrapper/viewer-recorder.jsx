@@ -807,6 +807,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
     }
 
     const renderHangupButton = () =>
+      !hangupButton.disabled &&
       !ifShowPreamble &&
       !hungUp &&
       this.props.ccState.participants.human && (
