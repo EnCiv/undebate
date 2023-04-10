@@ -299,7 +299,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
         const seatWidthRatio = 0.2
         const verticalSeatSpaceRatio = 0.05
         const horizontalSeatSpaceRatio = 0.0125
-        const navBarHeightRatio = 0.08
+        const navBarHeightRatio = 0.06
 
         const verticalSeatSpace = Math.max(verticalSeatSpaceRatio * height, titleHeight)
         const horizontalSeatSpace = Math.max(horizontalSeatSpaceRatio * width, fontSize)
@@ -319,7 +319,7 @@ class ViewerRecorder extends ViewerRecorderLogic {
         let seatHorizontalPitch = seatWidthRatio * width + horizontalSeatSpace
         let seatVerticalPitch = seatWidthRatio * HDRatio * width + verticalSeatSpace
 
-        buttonBarStyle.width = (parseInt(seatStyle.speaking.width) * 7) / 6 + 'vw' // three are 7 buttons, 6 should be under the speaking window
+        buttonBarStyle.width = (parseInt(seatStyle.speaking.width) * 7) / 7 + 'vw' // three are 7 buttons, 6 should be under the speaking window
         buttonBarStyle.left = (100 - parseInt(buttonBarStyle.width)) / 2 + 'vw'
         buttonBarStyle.height = ((((parseInt(buttonBarStyle.width) / 7) * 140) / 100) * width * 0.8) / 100 + 'px' // there are 7 buttons. the aspect ratio of the button is 100 wide by 140 tall and we are scaling the icon to 80% of it's div
 
@@ -365,10 +365,6 @@ class ViewerRecorder extends ViewerRecorderLogic {
         if (agendaStyle.left + agendaStyle.width > width)
           agendaStyle.width = width - agendaStyle.left - 2 * horizontalSeatSpace
         agendaStyle.height = Math.max(0.175 * width, 20 * fontSize)
-
-        buttonBarStyle.width = (parseInt(seatStyle.speaking.width) * 7) / 6 + 'vw' // three are 7 buttons, 6 should be under the speaking window
-        buttonBarStyle.left = (100 - parseInt(buttonBarStyle.width)) / 2 + 'vw'
-        buttonBarStyle.height = ((((parseInt(buttonBarStyle.width) / 7) * 140) / 100) * width * 0.8) / 100 + 'px' // there are 7 buttons. the aspect ratio of the button is 100 wide by 140 tall and we are scaling the icon to 80% of it's div
       }
     } else {
       // portrait mode
@@ -1061,7 +1057,7 @@ const styles = {
     },
   },
   hangUpButton: {
-    right: 0,
+    right: '5vw',
     position: 'absolute',
   },
   finishButton: {
