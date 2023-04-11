@@ -70,6 +70,7 @@ export const Ending = props => {
     )
 
   const nameInput = () =>
+    !uploadComplete &&
     !bp_info.candidate_name &&
     (newUserInfo.userId || user) && (
       <div style={{ display: 'flex', flexDirection: 'column' }}>
